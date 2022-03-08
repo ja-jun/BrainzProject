@@ -24,16 +24,11 @@
 		<property name="driverClassName" value="org.postgresql.Driver"></property>
 		<property name="url" value="jdbc:postgresql://localhost:5432/postgres"></property>
 		<property name="username" value="postgres"></property>
-		<property name="password" value="scott"></property>
+		<property name="password" value="postgres"></property>
 	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath:com/brainz/ja/mapper/*.xml"/>
-	</bean>
-	
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="sqlSessionFactory"/>
+		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.brainz.ja.mapper"/>
