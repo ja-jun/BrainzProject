@@ -1,57 +1,70 @@
+
 package com.brainz.ja.controller;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brainz.ja.service.CalendarService;
-import com.brainz.ja.vo.CalendarVo;
-import com.brainz.ja.vo.TestVo;
+import com.brainz.ja.service.CalendarServiceJun;
 
 @RestController
-@RequestMapping("/calendar/*")
+@RequestMapping("/schedule/*")
 public class RestCalendarController {
 	
-
 	@Autowired
-	private CalendarService calendarService;
+	private CalendarServiceJun serviceJun;
 	
+	@Autowired
+	private CalendarService service;
 	
-	@RequestMapping("getCalendarList")
-	public HashMap<String, Object> getCalendarList(Model model) {
+	@RequestMapping("getList")
+	public HashMap<String, Object> getList(int month, int year){
+		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		HashMap<String, Object> data = new HashMap<String, Object>(); 
-		
-		ArrayList<CalendarVo> calendarList = calendarService.getCalendarList();
-		
-		data.put("result", "success");
-		data.put("calendarList", calendarList);
+		data.put("scheduleList", service.getScheduleList(year, month));
 		
 		return data;
 	}
-	
 	
 	@RequestMapping("getServerList")
-	public HashMap<String, Object> getServerList(Model model) {
-		
-		HashMap<String, Object> data = new HashMap<String, Object>(); 
-		
-		ArrayList<HashMap<String, Object>> serverList = calendarService.getServerList();
-		
-		data.put("result", "success");
-		data.put("serverList", serverList);
-		
+	public HashMap<String, Object> getServerList(){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		data.put("serverList", serviceJun.getServerList());
 		return data;
 	}
 	
-
+	@RequestMapping("insertDate")
+	public HashMap<String, Object> insertDate(String date){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		System.out.println(date);
+		
+		try {
+			LocalDate test = LocalDate.parse(date);
+			System.out.println("String to LocalDate : " + test);
+			
+			serviceJun.insertGood(date);
+			
+			data.put("result", "success");
+		} catch(Exception e) {
+			data.put("result", "fail");
+		}
+		return data;
+	}
+	
+	
+	@RequestMapping("regTest")
+	public HashMap<String, Object> test(String start_date , String repeat_cat){
+		
+		System.out.println("test : " + repeat_cat + ":" + start_date);
+		
+		return null;
+	}
 	
 }
+
