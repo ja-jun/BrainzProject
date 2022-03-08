@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JQgrid 테스트입니다.</title>
+    <link rel="stylesheet" type="text/css" href="../../../resources/jqgrid/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheey" type="text/css" href="../../../resources/jqgrid/jquery.jqGrid/css/ui.jqgrid.css" />
+
+    <script type="text/javascript" src="../../../resources/jqgrid/jquery.jqGrid/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../../../resources/jqgrid/jquery.jqGrid/js/i18n/grid.locale-kr.js"></script>
+    <script type="text/javascript" src="../../../resources/jqgrid/jquery.jqGrid/js/jquery.jqGrid.min.js"></script>
+    <script>
+        var searchResultColNames = ['게시글관리번호', '번호', '제목', '작성자', '날짜', '조회수'];
+        var searchResultColModel = [{
+            name: 'bbsMgtNo',
+            index: 'bbsMgtNo',
+            align: 'center',
+            hidden: true
+        }, {
+            name: 'bbsNum',
+            index: 'bbsNum',
+            align: 'left',
+            width: '12%'
+        }, {
+            name: 'bbsTitle',
+            index: 'bbsTitle',
+            align: 'center',
+            width: '50%'
+        }, {
+            name: 'bbsWriter',
+            index: 'bbsWriter',
+            align: 'center',
+            width: '14%'
+        }, {
+            name: 'bbsDate',
+            index: 'bbsDate',
+            align: 'center',
+            width: '12%'
+        }, {
+            name: 'bbsHit',
+            index: 'bbsHit',
+            align: 'center',
+            width: '12%'
+        }];
+
+        $(function() {
+            $('#mainGrid').jqGrid({
+                height: 261,
+                width: 1019,
+                colNames: searchResultColNames,
+                colModel: searchResultColModel,
+                rowNum: 10,
+                pager: "pager"
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="table">
+        <table id="mainGrid"></table>
+        <div id="pager"></div>
+    </div>
+</body>
+
+</html>
