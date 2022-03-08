@@ -6,18 +6,33 @@
 						http://www.springframework.org/schema/security/spring-security.xsd
 						http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<security:http>
-		<security:intercept-url pattern="/**" access="hasRole('USER')" />
-		<security:form-login/>
-		<security:logout/>
-	</security:http>
 	
-	<!-- provider -->
+	<security:http auto-config="true" use-expressions="true">
+		<security:csrf disabled="true"/>
+		<security:form-login
+				username-parameter="user_id"
+				password-parameter="user_pw"
+				login-processing-url="/login_check" 
+				login-page="/jbLogin" 
+				authentication-failure-url="/jbLogin?ng"
+				default-target-url="/jbWork"
+			/>
+			<security:logout 
+				logout-url="/security_logout"
+				logout-success-url="/jbLogin"
+				invalidate-session="true"
+				delete-cookies="true"
+			/>	
+		<security:intercept-url pattern="/jbLogin" access="isAnonymous()"/>
+		<security:intercept-url pattern="/jbWork" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/jbRegisterUser" access="hasRole('ROLE_ADMIN')" />
+		<security:access-denied-handler error-page="/qwer"/>
+	</security:http>
+		
 	<security:authentication-manager>
-		<security:authentication-provider>
-			<security:user-service>
-				<security:user name="user" password="password" authorities="ROLE_USER" />
-			</security:user-service>
-		</security:authentication-provider>
-	</security:authentication-manager>
+		<security:authentication-provider ref="userLoginAuthenticationProvider"/>
+	</security:authentication-manager>	
+		
+		
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans>
