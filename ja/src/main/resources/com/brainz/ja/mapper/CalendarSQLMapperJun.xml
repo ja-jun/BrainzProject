@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brainz.ja.mapper.CalendarSQLMapperJun">
+	<select id="selectNextScNo" resultType="int">
+		select nextval('bp_schedule_seq')
+	</select>
+	
+	<insert id="insertSchedule">
+		insert into bp_schedule
+		values (
+			#{sc_no },
+			#{user_no },
+			#{start_date },
+			#{start_itme },
+			#{end_date },
+			#{end_time },
+			#{repeat_cat },
+			#{repeat_day },
+			#{repeat_week },
+			#{mon },
+			#{the },
+			#{wed },
+			#{thu },
+			#{fri },
+			#{sat },
+			#{sun },
+			now(),
+			#{delete_date }
+		)
+	</insert>
+	
+	<insert id="insertMgmtServer">
+		insert into bp_mgmt_server
+		values (
+			nextval('bp_mgmt_server_seq'),
+			#{server_no },
+			#{sc_no }
+		)
+	</insert>
+	
+	<select id="selectServer" resultType="com.brainz.ja.vo.ServerVo">
+		select * from bp_server
+	</select>
+	
+	<insert id="insertGood">
+		insert into good
+		values (
+			#{value }
+		)
+	</insert>
+	
+	<select id="selectScheduleByMonth" resultType="com.brainz.ja.vo.ScheduleVo">
+		select 	bs.sc_no, bs.user_no, bs.title,
+				bs.start_date, bs.end_date, 
+				bs.start_time, bs.end_time,
+				bs.repeat_cat, bs.repeat_day, 
+				bs.repeat_week, 
+				bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun,
+				bs.write_date
+		from bp_schedule bs
+		<![CDATA[
+		where (to_char(bs.start_date, 'MM')::int <= #{month }) 
+		   and (to_char(bs.end_date, 'MM')::int >= #{month })
+		]]>
+		order by bs.start_date desc
+	</select>
+</mapper>

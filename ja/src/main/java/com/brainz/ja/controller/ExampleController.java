@@ -19,4 +19,28 @@ public class ExampleController {
 		
 		return "/test";
 	}
+	
+	@RequestMapping("calendar01")
+	public String calendar01() {
+		
+		return "calendar/calendar01";
+	}
+	
+	@RequestMapping("calendar02")
+	public String calendar02() {
+		
+		return "calendar/calendar02";
+	}
+	
+	@RequestMapping("test001")
+	public String test001() {
+		
+		return "calendar/calendarGridPage";
+	}
+	
+	@RequestMapping("test002")
+	public String test002() {
+		
+		return "calendar/calendarListPage";
+	}
 }
