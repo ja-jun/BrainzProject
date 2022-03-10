@@ -487,6 +487,7 @@ function regBtn(){
 				</div>
 			</div>
 			
+			
 			<div id="serverModal">
 				<table id="list"></table>
 				<div class="btnBox2">
