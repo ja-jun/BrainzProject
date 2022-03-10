@@ -14,8 +14,8 @@
 				password-parameter="user_pw"
 				login-processing-url="/login_check" 
 				login-page="/jbLogin" 
-				authentication-failure-url="/jbLogin?ng"
 				default-target-url="/jbWork"
+				authentication-failure-url="/jbLogin?ng"
 			/>
 			<security:logout 
 				logout-url="/security_logout"
