@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import com.brainz.ja.mapper.CalendarSQLMapperJun;
 import com.brainz.ja.vo.MgmtVo;
 import com.brainz.ja.vo.ScheduleVo;
+import com.brainz.ja.vo.ServerVo;
+import com.brainz.ja.vo.SetScheduleVo;
 
 @Service
 public class CalendarService {
@@ -23,14 +25,8 @@ public class CalendarService {
 	private CalendarSQLMapperJun sqlMapper;
 	
 	// 일정 등록 프로세스
-	public void regSchedule(ScheduleVo sVo, int[] server_no) {
-		int sc_no = sqlMapper.selectNextScNo();
-		
-		sVo.setSc_no(sc_no);
-		
-		for(int no : server_no) {
-			sqlMapper.insertMgmtServer(new MgmtVo(0, no, sc_no));
-		}
+	public void regSchedule(SetScheduleVo ssVo) {
+		sqlMapper.insertSchedule(ssVo);
 	}
 	
 	public ArrayList<HashMap<String, Object>> getScheduleList(int year,int month){
@@ -144,6 +140,10 @@ public class CalendarService {
 		System.out.println(event.get("event_date"));
 		System.out.println(event.get("start_time"));
 		System.out.println(event.get("end_time"));
+	}
+	
+	public ArrayList<ServerVo> getServerList(){
+		return sqlMapper.selectServer();
 	}
 }
 
