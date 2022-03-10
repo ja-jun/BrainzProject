@@ -355,30 +355,29 @@ window.addEventListener("DOMContentLoaded" , function(){
 	
 	getCalendarList();
 	getServerList();
-	
-	
 
 });
 
 function regBtn(){
-	
-	var formData = new FormData(document.getElementById('regScheduleInfo'));
-	
-	
-    $.ajax({
-        url: './regTest',
-        data: formData,
-        processData: false,
-        type: 'POST',
-        success: function ( data ) {
-            alert( data );
-        }
-    });
-	
-}
-
-
-
+	$('#regScheduleInfo').click(function(){
+		var formData = new FormData(this);
+		
+		$.ajax({
+			url: './regSchedule',
+			data: formData,
+			enctype: 'multipart/form-data',
+			processData: false,
+			contentType: false,
+			type: 'post',
+			seccess: function(data){
+				alert('success');
+			},
+			error: function(data){
+				alert('fail');
+			}
+		});
+	});
+};
 </script>
 
 </head>
@@ -407,7 +406,7 @@ function regBtn(){
 			<div class="window">
 				<div class="modalBox">
 					<!-- Form 태그 시작 -->
-					<form id="regScheduleInfo">
+					<form id="regScheduleInfo" enctype="multipart/form-data" name="refInfo">
 					<div class="top">
 						<h3 class="title">작업 등록</h3>
 						<i class="bi bi-x" onclick="delBtn()"></i>

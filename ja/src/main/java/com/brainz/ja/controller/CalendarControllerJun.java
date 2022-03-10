@@ -16,15 +16,6 @@ public class CalendarControllerJun {
 	@Autowired
 	private CalendarServiceJun service;
 	
-	@RequestMapping("regSchedule")
-	public HashMap<String, Object> regSchedule(ScheduleVo sVo){
-		HashMap<String, Object> data = new HashMap<String, Object>();
-		
-		service.regSchedule(sVo);
-		
-		return data;
-	}
-	
 	@RequestMapping("calendarPage")
 	public String calendarPage() {
 		return "calendar/calendarListPage";
