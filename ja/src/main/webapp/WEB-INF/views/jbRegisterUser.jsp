@@ -95,7 +95,7 @@
 						</div>
 						<div class="row mt-1">
 							<div class="col">
-								<input type="text" style="height:100px;" name="dsc" class="form-control">
+							    <textarea name="dsc" rows="4" class="form-control"></textarea>
 							</div>
 						</div>
 					</div>
