@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brainz.ja.mapper.ServerSQLMapper">
+
+	<insert id="insertServer">
+		INSERT into BP_server values(
+			nextval('BP_server_seq'),
+			#{user_no},
+			#{name},
+			#{ip},
+			#{os},
+			#{loc},
+			#{mac},
+			#{control_num},
+			#{dsc},
+			now()
+		)
+	</insert>
+
+	<select id="getServerList" resultType="hashmap">
+		SELECT * FROM BP_server
+		WHERE name LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') OR ip LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'')
+	</select>
+
+	<select id="getServer" resultType="com.brainz.ja.vo.ServerVo">
+		SELECT * FROM BP_SERVER
+		WHERE server_no=#{server_no}
+	</select>
+
+	<update id="updateServer">
+		UPDATE BP_server 
+		SET name=#{name}, ip=#{ip}, os=#{os}, loc=#{loc}, 
+			mac=#{mac}, control_no=#{control_no}, dsc=#{dsc}
+	</update>
+
+	<delete id="deleteServer">
+		DELETE FROM BP_server
+		WHERE server_no=#{server_no}
+	</delete>
+
+	<insert id="test">
+		INSERT INTO test VALUES(1)
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
