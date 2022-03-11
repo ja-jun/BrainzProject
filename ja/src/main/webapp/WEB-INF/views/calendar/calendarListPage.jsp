@@ -344,8 +344,12 @@ window.addEventListener("DOMContentLoaded" , function(){
  		} else if($("input[name='repeat_11']:checked").val() == "1") {
             const timeBox = document.querySelector('.timeBox');
 			timeBox.setAttribute("style","display: none");
-			const limitless = document.getElementById("radioBoxCheck");
-			limitless.setAttribute("style","display: none");
+			const radioBoxCheck = document.getElementById("radioBoxCheck");
+			radioBoxCheck.setAttribute("style","display: none");
+			const noneBox2 = document.querySelector('.noneBox2');
+			noneBox2.setAttribute("style","display: none");
+			const timepickerBox = document.getElementById("timepickerBox");
+			timepickerBox.setAttribute("style","display: flex");
  		}
  	});
  	
@@ -502,9 +506,11 @@ function regBtn(){
 		                   		<span class="ing">~</span>
 		                   		<div id="timepicker-selectbox2"></div>
 		                   	</div> -->
+		                   	<div id="timepickerBox">
 		                   	<input id="datetimepicker1" type="text" >
 		                   	<span class="ing">~</span>
 		                   	<input id="datetimepicker2" type="text" >
+		                   	</div>
 						</div>
 					</div>
 		
