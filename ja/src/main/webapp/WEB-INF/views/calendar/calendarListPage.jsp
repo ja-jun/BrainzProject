@@ -409,9 +409,10 @@ function regBtn(){
 	
 	
     $.ajax({
-        url: './regTest',
+        url: './regSchedule',
         data: formData,
         processData: false,
+        contentType: false,
         type: 'POST',
         success: function ( data ) {
             alert( data );
@@ -450,7 +451,7 @@ function regBtn(){
 			<div class="window">
 				<div class="modalBox">
 					<!-- Form 태그 시작 -->
-					<form id="regScheduleInfo">
+					<form id="regScheduleInfo" name="param">
 					<div class="top">
 						<h3 class="title">작업 등록</h3>
 						<i class="bi bi-x" onclick="delBtn()"></i>

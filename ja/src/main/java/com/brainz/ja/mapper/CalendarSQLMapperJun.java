@@ -16,4 +16,5 @@ public interface CalendarSQLMapperJun {
 	public ArrayList<ScheduleVo> selectScheduleByMonth(int month);
 	public void insertMgmtServer(MgmtVo vo);
 	public void insertSchedule(SetScheduleVo ssVo);
+	public void insertTest(SetScheduleVo ssVo);
 }
