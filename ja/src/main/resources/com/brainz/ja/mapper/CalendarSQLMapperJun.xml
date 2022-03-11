@@ -10,8 +10,9 @@
 		values (
 			#{sc_no },
 			#{user_no },
+			#{title },
 			#{start_date },
-			#{start_itme },
+			#{start_time },
 			#{end_date },
 			#{end_time },
 			#{repeat_cat },
@@ -64,4 +65,11 @@
 		]]>
 		order by bs.start_date desc
 	</select>
+	
+	<insert id="insertTest">
+		insert into test
+		values(
+			#{start_date }
+		)
+	</insert>
 </mapper>

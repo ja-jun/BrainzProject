@@ -30,5 +30,12 @@
 		<property name="maxUploadSize" value="100000000" />
 		<property name="defaultEncoding" value="EUC-KR" />
 	</bean>	
+	
+	<!-- 다국어 설정을 위한 intercepter -->
+	<mvc:interceptors>
+		<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang"/>
+		</bean>
+	</mvc:interceptors>
 
 </beans>

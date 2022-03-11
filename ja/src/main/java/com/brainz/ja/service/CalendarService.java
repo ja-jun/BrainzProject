@@ -26,6 +26,11 @@ public class CalendarService {
 	
 	// 일정 등록 프로세스
 	public void regSchedule(SetScheduleVo ssVo) {
+		ssVo.setStart_time("16:00:00");
+		ssVo.setEnd_time("18:00:00");
+		int sc_no = sqlMapper.selectNextScNo();
+		ssVo.setSc_no(sc_no);
+		
 		sqlMapper.insertSchedule(ssVo);
 	}
 	
@@ -75,7 +80,7 @@ public class CalendarService {
 					case 1:
 						System.out.println("1인 경우 실행은 해봤습니다." + day);
 						// 기간 내 특정 요일만 선택하는 경우
-						if(dayCheck[day].equals("y")) {
+						if(dayCheck[day] != null) {
 							System.out.println("1인 경우");
 							event.put("sc_no", sc_no);
 							event.put("title", title);
