@@ -29,16 +29,33 @@
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
+
+
+<link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
+<script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
+
 
 
  function delBtn() {
 	const modal = document.getElementById("modal");
-	modal.setAttribute("style","display: none");
-	
-	const serverModal = document.getElementById("serverModal");
-	serverModal.setAttribute("style","display: none");
+	modal.setAttribute("style","display:none");
+	document.getElementById("regScheduleInfo").reset();
 }
+
+
+
+function writeBtn() {
+	var modal = document.getElementById("modal");
+	modal.setAttribute("style","display:flex");
+	$("html, body").addClass("not_scroll");
+}
+ 
+
+
+
+	 
+
 
 function getCalendarList(){
 		var xhr = new XMLHttpRequest();
@@ -240,39 +257,13 @@ function getServerList(){
   
 window.addEventListener("DOMContentLoaded" , function(){
 	
+	
+	
 	$(window).resize(function() {
-
 		$("#list").setGridWidth($(this).width() * .100);
-
 	});
 
-
-	$(function(){
-	    $('.datepicker').datepicker({
-            dateFormat: 'yy.mm.dd'
-	    });
-	  })
-	  
-	  
-	 $(function(){ 
-     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox', {
-                initialHour: 12,
-                initialMinute: 00,
-                inputType: 'selectbox',
-                showMeridiem: false
-            });
-	 })
-
-
-     $(function(){ 
-     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox2', {
-                initialHour: 12,
-                initialMinute: 00,
-                inputType: 'selectbox',
-                showMeridiem: false
-            });
-	 })
-	 
+	
 	  
 	 
 	/* 요일선택 했을시  */ 
@@ -290,7 +281,7 @@ window.addEventListener("DOMContentLoaded" , function(){
    		   input.setAttribute("value","y");
 			$(this).append(input);
   		}
-	});
+	}); 
 
 
     
@@ -304,28 +295,6 @@ window.addEventListener("DOMContentLoaded" , function(){
   		   $(btnDay).addClass("active");  
   		}
           
-	});
-    
-    
-
-	/* 모달 등록 버튼 클릭시 */
-    $('#writeBtn').click(function(){
-    	var modal = document.getElementById("modal");
-    	modal.setAttribute("class","modal-overlay");
-    	modal.setAttribute("style","display: flex");
-    	modal.innerHTML = "";
-    	
-    	
-    	var window = document.createElement("div");
-    	window.setAttribute("class","window");
-    	
-    	
-    	var window = document.createElement("div");
-    	window.setAttribute("class","window");
-    	
-    	
-    	
-    	$("html, body").addClass("not_scroll");
 	});
     
     
@@ -343,11 +312,14 @@ window.addEventListener("DOMContentLoaded" , function(){
     
      $('.limitless').click(function(){
         const noneBox = document.querySelector('.noneBox2');
+        noneBox.setAttribute("style","display: none");  
         
-        if($(noneBox).hasClass("noneBox")){
-   		   $(noneBox).removeClass("noneBox");
+        var a = $('.limitless').is(':checked');
+        
+        if(a == true){
+        	noneBox.setAttribute("style","display: none");  
    		}else{
-   		   $(noneBox).addClass("noneBox");  
+   			noneBox.setAttribute("style","display: block");  
    		}
           
 	}); 
@@ -368,46 +340,100 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
  	$("input[name='repeat_11']").change(function() {
  		if($("input[name='repeat_11']:checked").val() == "0") {
-			const timeBox = document.querySelector('.timeBox');
-			timeBox.setAttribute("style","display: flex");
+			const timeBox = document.querySelector('.Boxxx');
+			timeBox.setAttribute("style","display: block");
 			const limitless = document.getElementById("radioBoxCheck");
 			limitless.setAttribute("style","display: block");
+			const noneBox2 = document.querySelector('.noneBox2');
+			noneBox2.setAttribute("style","display: block");
  		} else if($("input[name='repeat_11']:checked").val() == "1") {
-            const timeBox = document.querySelector('.timeBox');
+            const timeBox = document.querySelector('.Boxxx');
 			timeBox.setAttribute("style","display: none");
-			const limitless = document.getElementById("radioBoxCheck");
-			limitless.setAttribute("style","display: none");
+			const radioBoxCheck = document.getElementById("radioBoxCheck");
+			radioBoxCheck.setAttribute("style","display: none");
+			const noneBox2 = document.querySelector('.noneBox2');
+			noneBox2.setAttribute("style","display: none");
+			const timepickerBox = document.getElementById("timepickerBox");
+			timepickerBox.setAttribute("style","display: flex");
  		}
  	});
+ 	
+ 	
+/* 	 $(function(){ 
+	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox', {
+	                initialHour: 12,
+	                initialMinute: 00,
+	                inputType: 'selectbox',
+	                showMeridiem: false
+	            });
+		 })
 
-	
+
+	     $(function(){ 
+	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox2', {
+	                initialHour: 12,
+	                initialMinute: 00,
+	                inputType: 'selectbox',
+	                showMeridiem: false
+	            });
+		 }) */
+		 
+		 
+			$(function(){
+			    $('.datepicker').datepicker({
+		            dateFormat: 'yy.mm.dd'
+			    });
+			  })
+		 
+	     $(function(){
+	    	 $('#datetimepicker1').datetimepicker({
+	    		 datepicker:false,
+	    		  format:'H:i',
+	    		  step: 1
+	    		});
+	  })
+	  
+	  $(function(){
+	    	 $('#datetimepicker2').datetimepicker({
+	    		 datepicker:false,
+	    		  format:'H:i',
+	    		  step: 1
+	    		});
+	  })
+		 
+ 	
+ 	
+
 	getCalendarList();
+	writeBtn();
 	getServerList();
-	
-	
+	delBtn();
 
+	
 });
 
 function regBtn(){
-	$('#regScheduleInfo').click(function(){
-		var formData = new FormData(this);
-		
-		$.ajax({
-			url: './regSchedule',
-			data: formData,
-			enctype: 'multipart/form-data',
-			processData: false,
-			contentType: false,
-			type: 'post',
-			seccess: function(data){
-				alert('success');
-			},
-			error: function(data){
-				alert('fail');
-			}
-		});
-	});
-};
+	
+	var formData = new FormData(document.getElementById('regScheduleInfo'));
+	
+	
+    $.ajax({
+        url: './regSchedule',
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function ( data ) {
+            alert("등록에 성공했습니다.");
+            delBtn();
+            location.reload();
+        }
+    });
+	
+}
+
+
+
 </script>
 
 </head>
@@ -427,7 +453,7 @@ function regBtn(){
 			</div>
 			
 	    	<div id="box">
-	    		<button class="writeBtn" id="writeBtn">등록</button>
+	    		<button class="writeBtn" onclick="writeBtn()">등록</button>
 	    	<div id="calendar"></div>
 	    	</div>
 	    </div>	
@@ -436,7 +462,7 @@ function regBtn(){
 			<div class="window">
 				<div class="modalBox">
 					<!-- Form 태그 시작 -->
-					<form id="regScheduleInfo">
+					<form id="regScheduleInfo" name="param">
 					<div class="top">
 						<h3 class="title">작업 등록</h3>
 						<i class="bi bi-x" onclick="delBtn()"></i>
@@ -468,6 +494,7 @@ function regBtn(){
 					<div class="timeBox">
 						<strong class="text">반복설정</strong>
 						<div class="radioBox">
+						<div class="Boxxx">
 							<input type="radio" name="repeat_cat" value="1" checked> 매일
 							<input type="radio" name="repeat_cat" value="2" class="day"> 매월 <input type="text" name="repeat_week" class="dayBox">째주
 							<input type="radio" name="repeat_cat" value="3" class="day"> 매월 <input type="text" name="repeat_day" class="dayBox">일
@@ -482,10 +509,16 @@ function regBtn(){
 		                   		<button type="button" value="fri" name="fri" class="btnDay">FRI</button>
 		                   		<button type="button" value="sat" name="sat" class="btnDay">SAT</button>
 		                   	</div>
-		                   	<div id="timepickerBox">
+		                   	</div>
+<!-- 		                   	<div id="timepickerBox">
 		                   		<div id="timepicker-selectbox"></div>
 		                   		<span class="ing">~</span>
 		                   		<div id="timepicker-selectbox2"></div>
+		                   	</div> -->
+		                   	<div id="timepickerBox">
+		                   	<input id="datetimepicker1" type="text" >
+		                   	<span class="ing">~</span>
+		                   	<input id="datetimepicker2" type="text" >
 		                   	</div>
 						</div>
 					</div>
@@ -527,6 +560,12 @@ function regBtn(){
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
 	
 	
 </body>

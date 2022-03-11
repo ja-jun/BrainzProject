@@ -10,8 +10,9 @@
 		values (
 			#{sc_no },
 			#{user_no },
+			#{title },
 			#{start_date },
-			#{start_itme },
+			#{start_time },
 			#{end_date },
 			#{end_time },
 			#{repeat_cat },

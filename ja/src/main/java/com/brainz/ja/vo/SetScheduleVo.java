@@ -25,9 +25,6 @@ public class SetScheduleVo {
 	private String delete_date;
 	private String[] server_no;
 	
-	private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-	private DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-	
 	public SetScheduleVo() {
 		super();
 	}
@@ -80,6 +77,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalDate getStart_date() {
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 		return LocalDate.parse(this.start_date, dateFormat);
 	}
 	public void setStart_date(String start_date) {
@@ -87,6 +85,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalDate getEnd_date() {
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 		return LocalDate.parse(this.end_date, dateFormat);
 	}
 	public void setEnd_date(String end_date) {
@@ -94,6 +93,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalTime getStart_time() {
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 		return LocalTime.parse(this.start_time, timeFormat);
 	}
 	public void setStart_time(String start_time) {
@@ -101,6 +101,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalTime getEnd_time() {
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 		return LocalTime.parse(this.end_time, timeFormat);
 	}
 	public void setEnd_time(String end_time) {
