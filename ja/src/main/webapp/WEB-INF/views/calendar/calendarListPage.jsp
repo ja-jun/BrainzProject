@@ -341,6 +341,8 @@ window.addEventListener("DOMContentLoaded" , function(){
 			timeBox.setAttribute("style","display: flex");
 			const limitless = document.getElementById("radioBoxCheck");
 			limitless.setAttribute("style","display: block");
+			const noneBox2 = document.querySelector('.noneBox2');
+			noneBox2.setAttribute("style","display: block");
  		} else if($("input[name='repeat_11']:checked").val() == "1") {
             const timeBox = document.querySelector('.timeBox');
 			timeBox.setAttribute("style","display: none");
