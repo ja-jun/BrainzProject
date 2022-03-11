@@ -65,11 +65,4 @@
 		]]>
 		order by bs.start_date desc
 	</select>
-	
-	<insert id="insertTest">
-		insert into test
-		values(
-			#{start_date }
-		)
-	</insert>
 </mapper>

@@ -30,6 +30,19 @@ public class CalendarService {
 		ssVo.setSc_no(sc_no);
 		
 		sqlMapper.insertSchedule(ssVo);
+		
+		if(ssVo.getServer_no() != null) {
+			System.out.println("우선 실행은 됐습니다.");
+			for(String server_no : ssVo.getServer_no()) {
+				int i = 0;
+				System.out.println("반복문 실행 " + (++i));
+				MgmtVo mVo = new MgmtVo();
+				mVo.setSc_no(sc_no);
+				mVo.setServer_no(Integer.parseInt(server_no));
+				
+				sqlMapper.insertMgmtServer(mVo);
+			}
+		}
 	}
 	
 	public ArrayList<HashMap<String, Object>> getScheduleList(int year,int month){

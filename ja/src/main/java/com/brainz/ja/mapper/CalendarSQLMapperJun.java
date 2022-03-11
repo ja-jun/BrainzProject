@@ -2,6 +2,7 @@ package com.brainz.ja.mapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.brainz.ja.vo.MgmtVo;
 import com.brainz.ja.vo.ScheduleVo;
@@ -16,5 +17,4 @@ public interface CalendarSQLMapperJun {
 	public ArrayList<ScheduleVo> selectScheduleByMonth(int month);
 	public void insertMgmtServer(MgmtVo vo);
 	public void insertSchedule(SetScheduleVo ssVo);
-	public void insertTest(SetScheduleVo ssVo);
 }
