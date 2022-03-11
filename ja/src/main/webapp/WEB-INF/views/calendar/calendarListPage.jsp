@@ -312,11 +312,14 @@ window.addEventListener("DOMContentLoaded" , function(){
     
      $('.limitless').click(function(){
         const noneBox = document.querySelector('.noneBox2');
+        noneBox.setAttribute("style","display: none");  
         
-        if($(noneBox).hasClass("noneBox")){
-   		   $(noneBox).removeClass("noneBox");
+        var a = $('.limitless').is(':checked');
+        
+        if(a == true){
+        	noneBox.setAttribute("style","display: none");  
    		}else{
-   		   $(noneBox).addClass("noneBox");  
+   			noneBox.setAttribute("style","display: block");  
    		}
           
 	}); 
@@ -337,14 +340,14 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
  	$("input[name='repeat_11']").change(function() {
  		if($("input[name='repeat_11']:checked").val() == "0") {
-			const timeBox = document.querySelector('.timeBox');
-			timeBox.setAttribute("style","display: flex");
+			const timeBox = document.querySelector('.Boxxx');
+			timeBox.setAttribute("style","display: block");
 			const limitless = document.getElementById("radioBoxCheck");
 			limitless.setAttribute("style","display: block");
 			const noneBox2 = document.querySelector('.noneBox2');
 			noneBox2.setAttribute("style","display: block");
  		} else if($("input[name='repeat_11']:checked").val() == "1") {
-            const timeBox = document.querySelector('.timeBox');
+            const timeBox = document.querySelector('.Boxxx');
 			timeBox.setAttribute("style","display: none");
 			const radioBoxCheck = document.getElementById("radioBoxCheck");
 			radioBoxCheck.setAttribute("style","display: none");
@@ -489,6 +492,7 @@ function regBtn(){
 					<div class="timeBox">
 						<strong class="text">반복설정</strong>
 						<div class="radioBox">
+						<div class="Boxxx">
 							<input type="radio" name="repeat_cat" value="1" checked> 매일
 							<input type="radio" name="repeat_cat" value="2" class="day"> 매월 <input type="text" name="repeat_week" class="dayBox">째주
 							<input type="radio" name="repeat_cat" value="3" class="day"> 매월 <input type="text" name="repeat_day" class="dayBox">일
@@ -502,6 +506,7 @@ function regBtn(){
 		                   		<button type="button" value="thu" name="thu" class="btnDay">THU</button>
 		                   		<button type="button" value="fri" name="fri" class="btnDay">FRI</button>
 		                   		<button type="button" value="sat" name="sat" class="btnDay">SAT</button>
+		                   	</div>
 		                   	</div>
 <!-- 		                   	<div id="timepickerBox">
 		                   		<div id="timepicker-selectbox"></div>
