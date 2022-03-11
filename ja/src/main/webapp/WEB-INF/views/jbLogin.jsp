@@ -5,18 +5,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="/demo/resources/sample.css">
-<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href='./resources/css/jbLogin.css'>
+<link rel="stylesheet" href="./resources/css/jbLogin2.css">
+<title>LOGIN</title>
 </head>
 <body>
-	<h1>LOGIN</h1>
-	<form action="login_check" method="post">
-		<c:if test="${param.ng!=null}">
-			<p> error : <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/> </p>
+
+<form action="login_check" method="post">
+<section class="login">
+    <h2>LOGIN</h2>
+    <ul>
+      <li><input type="text" name="user_id" placeholder="아이디"></li>
+      <li><input type="password"  name="user_pw" placeholder="비밀번호"></li>
+      <li><button type="submit">로그인</button></li>
+      <li>
+	    <c:if test="${LoginFailMessage!=null}">
+			<p><c:out value="${LoginFailMessage}"/></p>
 		</c:if>
-		USER : <input type="text" name="user_id"><br>
-		PASSWORD : <input type="password" name="user_pw"><br>
-		<input type="submit" value="Login">
-	</form>
+	  <li>
+    </ul>
+</section>
+</form>
+
 </body>
 </html>

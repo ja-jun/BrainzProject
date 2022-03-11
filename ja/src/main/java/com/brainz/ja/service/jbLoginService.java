@@ -10,7 +10,7 @@ import com.brainz.ja.mapper.jbUserSQLMapper;
 import com.brainz.ja.vo.jbUserDetailsVo;
 import com.brainz.ja.vo.jbUserVo;
 
-@Service("loginService")
+@Service
 public class jbLoginService implements UserDetailsService {
 
 	@Autowired
@@ -18,8 +18,6 @@ public class jbLoginService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException  {
-		
-		System.out.println("test!!!!!!!!!!!!!!!!!!!!!!!");
 		
 		// 최종적으로 리턴해야할 객체
 		jbUserDetailsVo userDetails = new jbUserDetailsVo();

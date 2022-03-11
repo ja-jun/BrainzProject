@@ -23,7 +23,7 @@
 				<div class="col"></div>
 				<div class="col-4">
 					<form action="./registerUserProcess" method="post">
-					<div class="row" style="padding-top: 70px;">
+					<div class="row" style="padding-top: 40px;">
 						<div class="col text-center fs-2 fw-bold">사용자 등록</div>
 					</div>	
 					<div class="row mt-3">
@@ -95,7 +95,7 @@
 						</div>
 						<div class="row mt-1">
 							<div class="col">
-							    <textarea name="dsc" rows="4" class="form-control"></textarea>
+							    <textarea name="dsc" rows="3" class="form-control"></textarea>
 							</div>
 						</div>
 					</div>
