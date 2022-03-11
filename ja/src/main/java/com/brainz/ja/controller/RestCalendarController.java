@@ -38,6 +38,9 @@ public class RestCalendarController {
 	@RequestMapping("regSchedule")
 	public HashMap<String, Object> regSchedule(HttpServletRequest param, SetScheduleVo ssVo){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		if(ssVo.getRepeat_cat() == null) {
+			ssVo.setRepeat_cat(0);
+		}
 		
 		service.regSchedule(ssVo);
 		

@@ -93,7 +93,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalTime getStart_time() {
-		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 		return LocalTime.parse(this.start_time, timeFormat);
 	}
 	public void setStart_time(String start_time) {
@@ -101,7 +101,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalTime getEnd_time() {
-		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 		return LocalTime.parse(this.end_time, timeFormat);
 	}
 	public void setEnd_time(String end_time) {
