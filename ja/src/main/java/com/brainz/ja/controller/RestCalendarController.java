@@ -41,7 +41,7 @@ public class RestCalendarController {
 		if(ssVo.getRepeat_cat() == null) {
 			ssVo.setRepeat_cat(0);
 		}
-		
+		System.out.println(ssVo.getStart_time() + ", " + ssVo.getEnd_time());
 		service.regSchedule(ssVo);
 		
 		return data;
