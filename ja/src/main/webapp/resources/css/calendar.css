@@ -162,6 +162,7 @@
     margin-left: 45px;
     color: #222;
     font-weight: 300;
+    /* display: flex; */
 }
 #modal .modalBox .dateBox .radioBox .datepicker{
     height: 33px;
@@ -420,3 +421,27 @@
 
 
 .ui-jqgrid .ui-jqgrid-htable{width:100%}
+
+
+.pBox{
+    /* align-content: normal; */
+    display: contents;
+    vertical-align:middle;
+}
+
+
+
+#datetimepicker1{
+    border: 1px solid #ccc;
+    height: 33px;
+    width: 130px;
+    padding-left: 8px;
+    margin-top: 15px;
+}
+
+#datetimepicker2{
+    border: 1px solid #ccc;
+    height: 33px;
+    width: 130px;
+    padding-left: 8px;
+}

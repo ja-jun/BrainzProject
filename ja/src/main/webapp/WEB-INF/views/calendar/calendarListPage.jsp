@@ -28,22 +28,32 @@
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
+
+
+<link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
+<script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
 
 
-function writeBtn() {
-	const modal = document.getElementById("modal");
-	modal.setAttribute("style","display: flex");
-	$("html, body").addClass("not_scroll");
-}
-
 function delBtn() {
 	const modal = document.getElementById("modal");
-	modal.setAttribute("style","display: none");
-	
-	const serverModal = document.getElementById("serverModal");
-	serverModal.setAttribute("style","display: none");
+	modal.setAttribute("style","display:none");
+	document.getElementById("regScheduleInfo").reset();
 }
+
+
+
+function writeBtn() {
+	var modal = document.getElementById("modal");
+	modal.setAttribute("style","display:flex");
+	$("html, body").addClass("not_scroll");
+}
+ 
+
+
+
+	 
+
 
 function getCalendarList(){
 		var xhr = new XMLHttpRequest();
@@ -245,51 +255,34 @@ function getServerList(){
   
 window.addEventListener("DOMContentLoaded" , function(){
 	
+	
+	
 	$(window).resize(function() {
-
 		$("#list").setGridWidth($(this).width() * .100);
-
 	});
 
-
-	$(function(){
-	    $('.datepicker').datepicker({
-            dateFormat: 'yy.mm.dd'
-	    });
-	  })
+	
 	  
-	  
-	 $(function(){ 
-     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox', {
-                initialHour: 12,
-                initialMinute: 00,
-                inputType: 'selectbox',
-                showMeridiem: false
-            });
-	 })
-
-
-     $(function(){ 
-     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox2', {
-                initialHour: 12,
-                initialMinute: 00,
-                inputType: 'selectbox',
-                showMeridiem: false
-            });
-	 })
-	 
-	  
-	  
-	$('.btnDay').click(function(){
+	
+ 	$('.btnDay').click(function(){
   		if($(this).hasClass("active")){
   		   $(this).removeClass("active");
+  		   $(this).children().remove();
   		}else{
   		   $(this).addClass("active");  
+  		   var valueByClass = $(this).val();
+  		   console.log(valueByClass);
+   		   var input =document.createElement("input");
+   		   input.setAttribute("type","hidden");
+   		   input.setAttribute("name",valueByClass);
+   		   input.setAttribute("value","y");
+			$(this).append(input);
   		}
-	});
+	}); 
 
 
     
+	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
         const btnDay = document.querySelectorAll('.btnDay'); 
 
@@ -302,8 +295,9 @@ window.addEventListener("DOMContentLoaded" , function(){
 	});
     
     
-    $("input[name='radio1']").change(function() {
- 		if($("input[name='radio1']:checked").val() == "2") {
+    
+    $("input[name='repeat_cat']").change(function() {
+ 		if($("input[name='repeat_cat']:checked").val() == "3") {
  			const dayBox = document.getElementById("dayBox"); 
  	        dayBox.setAttribute("style","display: none");
  		} else {
@@ -338,46 +332,93 @@ window.addEventListener("DOMContentLoaded" , function(){
 	}); 
  	
  	
- 	$("input[name='radio']").change(function() {
- 		if($("input[name='radio']:checked").val() == "0") {
+ 	$("input[name='repeat_11']").change(function() {
+ 		if($("input[name='repeat_11']:checked").val() == "0") {
 			const timeBox = document.querySelector('.timeBox');
 			timeBox.setAttribute("style","display: flex");
 			const limitless = document.getElementById("radioBoxCheck");
 			limitless.setAttribute("style","display: block");
- 		} else if($("input[name='radio']:checked").val() == "1") {
+ 		} else if($("input[name='repeat_11']:checked").val() == "1") {
             const timeBox = document.querySelector('.timeBox');
 			timeBox.setAttribute("style","display: none");
 			const limitless = document.getElementById("radioBoxCheck");
 			limitless.setAttribute("style","display: none");
  		}
  	});
+ 	
+ 	
+/* 	 $(function(){ 
+	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox', {
+	                initialHour: 12,
+	                initialMinute: 00,
+	                inputType: 'selectbox',
+	                showMeridiem: false
+	            });
+		 })
+
+
+	     $(function(){ 
+	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox2', {
+	                initialHour: 12,
+	                initialMinute: 00,
+	                inputType: 'selectbox',
+	                showMeridiem: false
+	            });
+		 }) */
+		 
+		 
+			$(function(){
+			    $('.datepicker').datepicker({
+		            dateFormat: 'yy.mm.dd'
+			    });
+			  })
+		 
+	     $(function(){
+	    	 $('#datetimepicker1').datetimepicker({
+	    		 datepicker:false,
+	    		  format:'H:i',
+	    		  step: 1
+	    		});
+	  })
+	  
+	  $(function(){
+	    	 $('#datetimepicker2').datetimepicker({
+	    		 datepicker:false,
+	    		  format:'H:i',
+	    		  step: 1
+	    		});
+	  })
+		 
+ 	
+ 	
+
+	getCalendarList();
+	writeBtn();
+	getServerList();
+	delBtn();
 
 	
-	getCalendarList();
-	getServerList();
-
 });
 
 function regBtn(){
-	$('#regScheduleInfo').click(function(){
-		var formData = new FormData(this);
-		
-		$.ajax({
-			url: './regSchedule',
-			data: formData,
-			enctype: 'multipart/form-data',
-			processData: false,
-			contentType: false,
-			type: 'post',
-			seccess: function(data){
-				alert('success');
-			},
-			error: function(data){
-				alert('fail');
-			}
-		});
-	});
-};
+	
+	var formData = new FormData(document.getElementById('regScheduleInfo'));
+	
+	
+    $.ajax({
+        url: './regTest',
+        data: formData,
+        processData: false,
+        type: 'POST',
+        success: function ( data ) {
+            alert( data );
+        }
+    });
+	
+}
+
+
+
 </script>
 
 </head>
@@ -406,7 +447,7 @@ function regBtn(){
 			<div class="window">
 				<div class="modalBox">
 					<!-- Form 태그 시작 -->
-					<form id="regScheduleInfo" enctype="multipart/form-data" name="refInfo">
+					<form id="regScheduleInfo">
 					<div class="top">
 						<h3 class="title">작업 등록</h3>
 						<i class="bi bi-x" onclick="delBtn()"></i>
@@ -418,8 +459,8 @@ function regBtn(){
 					<div class="dateBox">
 						<strong class="text">기간설정</strong>
 						<div class="radioBox">
-							<input type="radio" name="" value="0" class="arr" checked> 반복설정
-							<input type="radio" name="repeat_cat" value="0" class="timearr"> 하루설정
+							<input type="radio" name="repeat_11" value="0" class="arr" checked> 반복설정
+							<input type="radio" name="repeat_11" value="1" class="timearr"> 하루설정
 							<br>
 		            	    <div id="radioBoxRepeat">
 		                	    <!-- <div class="imgBox"><img src="../Desktop/aa/calendar.png"></div> -->
@@ -444,19 +485,22 @@ function regBtn(){
 							<br>
 		                   	<div id="dayBox">
 								<input type="checkbox" name="" value="" class="checkboxAll"><span class="checkAll">전체</span> 
-		                   		<button type="button" value="y" name="sun" class="btnDay">SUN</button>
-		                   		<button type="button" value="y" name="mon" class="btnDay">MON</button>
-		                   		<button type="button" value="y" name="the" class="btnDay">TUE</button>
-		                   		<button type="button" value="y" name="wed" class="btnDay">WED</button>
-		                   		<button type="button" value="y" name="thu" class="btnDay">THU</button>
-		                   		<button type="button" value="y" name="fri" class="btnDay">FRI</button>
-		                   		<button type="button" value="y" name="sat" class="btnDay">SAT</button>
+		                   		<button type="button" value="sun" name="sun" class="btnDay">SUN</button>
+		                   		<button type="button" value="mon" name="mon" class="btnDay">MON</button>
+		                   		<button type="button" value="the" name="the" class="btnDay">TUE</button>
+		                   		<button type="button" value="wed" name="wed" class="btnDay">WED</button>
+		                   		<button type="button" value="thu" name="thu" class="btnDay">THU</button>
+		                   		<button type="button" value="fri" name="fri" class="btnDay">FRI</button>
+		                   		<button type="button" value="sat" name="sat" class="btnDay">SAT</button>
 		                   	</div>
-		                   	<div id="timepickerBox">
+<!-- 		                   	<div id="timepickerBox">
 		                   		<div id="timepicker-selectbox"></div>
 		                   		<span class="ing">~</span>
 		                   		<div id="timepicker-selectbox2"></div>
-		                   	</div>
+		                   	</div> -->
+		                   	<input id="datetimepicker1" type="text" >
+		                   	<span class="ing">~</span>
+		                   	<input id="datetimepicker2" type="text" >
 						</div>
 					</div>
 		
@@ -479,7 +523,7 @@ function regBtn(){
 					</table>
 					
 					<div class="btnBox">
-						<input type="button" name="" value="등록" class="btnBoxbtn" onclick='regBtn()'>
+						<input type="button" name="" value="등록" class="btnBoxbtn" onclick="regBtn()">
 						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="delBtn()">
 					</div>
 					</form>
@@ -497,6 +541,12 @@ function regBtn(){
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
 	
 	
 </body>
