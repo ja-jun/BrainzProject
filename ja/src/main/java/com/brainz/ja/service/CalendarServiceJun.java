@@ -2,6 +2,7 @@ package com.brainz.ja.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
@@ -11,29 +12,13 @@ import org.springframework.stereotype.Service;
 import com.brainz.ja.mapper.CalendarSQLMapperJun;
 import com.brainz.ja.vo.ScheduleVo;
 import com.brainz.ja.vo.ServerVo;
+import com.brainz.ja.vo.SetScheduleVo;
 
 @Service
 public class CalendarServiceJun {
 	
 	@Autowired
 	private CalendarSQLMapperJun sqlMapper;
-	
-	// Schedule 등록 총괄
-	public void regSchedule(ScheduleVo sVo) {
-		int scNo = sqlMapper.selectNextScNo();
-		
-		sVo.setSc_no(scNo);
-		sqlMapper.insertSchedule(sVo);
-		
-		if(sVo.getRepeat_cat() == 0) {
-			regWeekExList(sVo, 2);
-		} else if(sVo.getRepeat_cat() == 1) {
-			
-		} else if(sVo.getRepeat_cat() == 2) {
-			regMonthExList(sVo, 2);
-		} else if(sVo.getRepeat_cat() == 3) {
-		}
-	}
 	
 	// 선택된 요일에 넣는 Method
 	public void regWeekExList(ScheduleVo sVo, int monthVal) {
@@ -92,7 +77,7 @@ public class CalendarServiceJun {
 		return sqlMapper.selectServer();
 	}
 	
-	public void insertGood(String value) {
-		sqlMapper.insertGood(LocalDate.parse(value));
+	public void insertSchedule(SetScheduleVo ssVo) {
+		
 	}
 }
