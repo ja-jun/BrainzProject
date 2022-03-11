@@ -421,7 +421,9 @@ function regBtn(){
         contentType: false,
         type: 'POST',
         success: function ( data ) {
-            alert( data );
+            alert("등록에 성공했습니다.");
+            delBtn();
+            location.reload();
         }
     });
 	
