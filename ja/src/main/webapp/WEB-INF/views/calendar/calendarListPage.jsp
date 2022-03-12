@@ -48,7 +48,7 @@
 function writeBtn() {
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
-	$("html, body").addClass("not_scroll");
+	//$("html, body").addClass("not_scroll");
 }
  
 
@@ -144,8 +144,9 @@ function getCalendarList(){
 		
 		var today = new Date();
 		
-		xhr.open("get" , "../schedule/getList?year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1) , true);
-		xhr.send();	
+		xhr.open("post" , "../schedule/getList", true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
 
 function getServerList(){
@@ -251,10 +252,11 @@ function getServerList(){
 				});
 		}
 	};
-	xhr.open("get" , "./getServerList" , true);
+	xhr.open("post" , "./getServerList" , true);
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
-  
+
 window.addEventListener("DOMContentLoaded" , function(){
 	
 	
@@ -274,7 +276,6 @@ window.addEventListener("DOMContentLoaded" , function(){
   		}else{
   		   $(this).addClass("active");  
   		   var valueByClass = $(this).val();
-  		   console.log(valueByClass);
    		   var input =document.createElement("input");
    		   input.setAttribute("type","hidden");
    		   input.setAttribute("name",valueByClass);
@@ -282,19 +283,26 @@ window.addEventListener("DOMContentLoaded" , function(){
 			$(this).append(input);
   		}
 	}); 
-
-
-    
+	
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
-        const btnDay = document.querySelectorAll('.btnDay'); 
-
+        const btnDay = document.querySelectorAll('.btnDay');
+        /* 전체 선택을 눌러도 input hidden 값이 생기고 소멸하도록 변경 */
+        /* 여기서 function 자체를 따로 빼서 생성 한다면 좋겠다.*/ 
         if($(btnDay).hasClass("active")){
   		   $(btnDay).removeClass("active");
+  		   $(btnDay).children().remove();
   		}else{
-  		   $(btnDay).addClass("active");  
-  		}
-          
+  		   $(btnDay).addClass("active");
+  		   $(btnDay).each(function(index, el){
+  			   var valueByClass = $(this).val();
+  			   var input = document.createElement("input");
+  			   input.setAttribute("type","hidden");
+  			   input.setAttribute("name",valueByClass);
+  			   input.setAttribute("value","y");
+  			   $(this).append(input);
+  		   });
+  		} 
 	});
     
     
