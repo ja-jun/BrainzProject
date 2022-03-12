@@ -486,7 +486,7 @@ function regBtn(){
 								</div>
 		                    </div>   
 		                    <div id="radioBoxCheck">
-		                    	<input type="checkbox" name="end_date" value="9999-12-31" class="limitless"> 무기한
+		                    	<input type="checkbox" name="end_date" value="9999.12.31" class="limitless"> 무기한
 		                    </div>
 						</div>
 					</div>
@@ -516,9 +516,9 @@ function regBtn(){
 		                   		<div id="timepicker-selectbox2"></div>
 		                   	</div> -->
 		                   	<div id="timepickerBox">
-		                   	<input id="datetimepicker1" type="text" >
+		                   	<input id="datetimepicker1" type="text" name="start_time">
 		                   	<span class="ing">~</span>
-		                   	<input id="datetimepicker2" type="text" >
+		                   	<input id="datetimepicker2" type="text" name="end_time">
 		                   	</div>
 						</div>
 					</div>
