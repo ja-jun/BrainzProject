@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -34,28 +33,17 @@
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
 <script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
-
-
-
- function delBtn() {
+function delBtn() {
 	const modal = document.getElementById("modal");
 	modal.setAttribute("style","display:none");
 	document.getElementById("regScheduleInfo").reset();
 }
-
-
 
 function writeBtn() {
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
 	//$("html, body").addClass("not_scroll");
 }
- 
-
-
-
-	 
-
 
 function getCalendarList(){
 		var xhr = new XMLHttpRequest();
@@ -109,7 +97,8 @@ function getCalendarList(){
 					}
 					
 					reXhr.open("get", "../schedule/getList?year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1), true);
-					reXhr.send();
+					reXhr.setRequestHeader("Content-type","applicaion/x-www-form-urlencoded");
+					reXhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 				};
 				
 				var next = document.getElementsByClassName('fc-next-button fc-button fc-button-primary');
@@ -137,7 +126,8 @@ function getCalendarList(){
 					}
 					
 					reXhr.open("get", "../schedule/getList?year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1), true);
-					reXhr.send();
+					reXhr.setRequestHeader("Content-type","applicaion/x-www-form-urlencoded");
+					reXhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 				};
 			}
 		};
@@ -240,7 +230,7 @@ function getServerList(){
 						tr6.appendChild(th11);
 						var th12 =document.createElement("input");
 						th12.setAttribute("type","hidden");
-						th12.setAttribute("name","serverList");
+						th12.setAttribute("name","server_no");
 						th12.setAttribute("value",params[i].server_no);
 						tr6.appendChild(th12);
  					}  
@@ -260,14 +250,10 @@ function getServerList(){
 window.addEventListener("DOMContentLoaded" , function(){
 	
 	
-	
 	$(window).resize(function() {
 		$("#list").setGridWidth($(this).width() * .100);
 	});
-
 	
-	  
-	 
 	/* 요일선택 했을시  */ 
 	$('.btnDay').click(function(){
   		if($(this).hasClass("active")){
@@ -282,8 +268,8 @@ window.addEventListener("DOMContentLoaded" , function(){
    		   input.setAttribute("value","y");
 			$(this).append(input);
   		}
-	}); 
-	
+	});
+
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
         const btnDay = document.querySelectorAll('.btnDay');
@@ -304,9 +290,7 @@ window.addEventListener("DOMContentLoaded" , function(){
   		   });
   		} 
 	});
-    
-    
-    
+	
     $("input[name='repeat_cat']").change(function() {
  		if($("input[name='repeat_cat']:checked").val() == "3") {
  			const dayBox = document.getElementById("dayBox"); 
@@ -317,22 +301,19 @@ window.addEventListener("DOMContentLoaded" , function(){
  		}
  	});
     
-    
-     $('.limitless').click(function(){
-        const noneBox = document.querySelector('.noneBox2');
-        noneBox.setAttribute("style","display: none");  
-        
-        var a = $('.limitless').is(':checked');
-        
-        if(a == true){
-        	noneBox.setAttribute("style","display: none");  
-   		}else{
-   			noneBox.setAttribute("style","display: block");  
-   		}
-          
+    $('.limitless').click(function(){
+	   const noneBox = document.querySelector('.noneBox2');
+	   noneBox.setAttribute("style","display: none");  
+	   
+	   var a = $('.limitless').is(':checked');
+	   
+	   if(a == true){
+	   	noneBox.setAttribute("style","display: none");  
+		}else{
+			noneBox.setAttribute("style","display: block");  
+		}
 	}); 
-     
-    
+
     $('#btn1').click(function(){
          const serverModal = document.getElementById("serverModal"); 
          serverModal.setAttribute("style","display: block");  
@@ -344,7 +325,6 @@ window.addEventListener("DOMContentLoaded" , function(){
         const serverModal = document.getElementById("serverModal"); 
         serverModal.setAttribute("style","display: none");
 	}); 
- 	
  	
  	$("input[name='repeat_11']").change(function() {
  		if($("input[name='repeat_11']:checked").val() == "0") {
@@ -366,7 +346,6 @@ window.addEventListener("DOMContentLoaded" , function(){
  		}
  	});
  	
- 	
 /* 	 $(function(){ 
 	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox', {
 	                initialHour: 12,
@@ -387,61 +366,77 @@ window.addEventListener("DOMContentLoaded" , function(){
 		 }) */
 		 
 		 
-			$(function(){
-			    $('.datepicker').datepicker({
-		            dateFormat: 'yy.mm.dd'
-			    });
-			  })
+		$(function(){
+			$('.datepicker').datepicker({
+		    	dateFormat: 'yy.mm.dd'
+				});
+			})
 		 
-	     $(function(){
-	    	 $('#datetimepicker1').datetimepicker({
-	    		 datepicker:false,
-	    		  format:'H:i',
-	    		  step: 1
-	    		});
-	  })
-	  
-	  $(function(){
-	    	 $('#datetimepicker2').datetimepicker({
-	    		 datepicker:false,
-	    		  format:'H:i',
-	    		  step: 1
-	    		});
-	  })
+	    $(function(){
+	    	$('#datetimepicker1').datetimepicker({
+	    		datepicker:false,
+	    		format:'H:i',
+	    		step: 1
+	    	});
+	  	})
+	  	
+	  	$(function(){
+	    	$('#datetimepicker2').datetimepicker({
+	    		datepicker:false,
+	    		format:'H:i',
+	    		step: 1
+	    	});
+	  	})
 		 
- 	
- 	
-
+	/* page load후 바로 실행 되는 함수들 */  	
 	getCalendarList();
 	writeBtn();
 	getServerList();
 	delBtn();
-
-	
 });
 
 function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
-	
-    $.ajax({
-        url: './regSchedule',
-        data: formData,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function ( data ) {
-            alert("등록에 성공했습니다.");
-            delBtn();
-            location.reload();
-        }
-    });
-	
+	if(formData.getAll("title") == ""){
+		alert("제목을 입력해주세요.");
+		return;
+	} else if(formData.getAll("start_date") == "" || formData.getAll("end_date") == ""){
+		alert("작업 날짜를 입력해주세요.");
+		return;
+	} else if(formData.getAll("start_time") == "" || formData.getAll("end_time") == ""){
+		alert("작업 시간을 입력해주세요.");
+		return;
+	} else if(formData.getAll("repeat_cat") == "1" && !formData.has("sun","mon","the","wed","thu","fir","sat")){
+		alert("적어도 1개의 요일을 선택해주세요.");
+		return;
+	} else if(formData.getAll("repeat_cat") == "2"){
+		if(formData.getAll("repeat_week") == ""){
+			alert("작업을 등록할 주차를 입력해주세요.");
+			return;
+		} else if(!formData.has("sun","mon","the","wed","thu","fri","sat")){
+			alert("적어도 1개의 요일을 선택해주세요.");
+			return
+		}
+	} else if(formData.getAll("repeat_cat") == "3" && !formData.has("repeat_day")){
+		alert("작업을 등록할 특정 요일을 입력해주세요.");
+		return;
+	} else{
+	    $.ajax({
+	        url: './regSchedule',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        type: 'POST',
+	        success: function ( data ) {
+	            alert("등록에 성공했습니다.");
+	            delBtn();
+	            location.reload();
+	        }
+	    });
+	}	
 }
-
-
-
 </script>
 
 </head>
@@ -568,14 +563,6 @@ function regBtn(){
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>
