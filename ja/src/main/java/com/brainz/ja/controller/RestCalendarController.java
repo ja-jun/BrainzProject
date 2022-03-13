@@ -1,10 +1,12 @@
 
 package com.brainz.ja.controller;
 
+import java.awt.SystemTray;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,7 @@ public class RestCalendarController {
 	public HashMap<String, Object> getServerList(){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		data.put("serverList", service.getServerList());
+		System.out.println(data);
 		
 		return data;
 	}
