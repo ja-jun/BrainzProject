@@ -162,7 +162,6 @@
     margin-left: 45px;
     color: #222;
     font-weight: 300;
-    /* display: flex; */
 }
 #modal .modalBox .dateBox .radioBox .datepicker{
     height: 33px;
@@ -274,7 +273,6 @@
     display: grid;
 }
 .serverList .serverHeader{
-    /* border-bottom: 1px solid #e5e5e5; */
     display: flex;
     padding-left: 30px;
     padding-bottom: 15px;
@@ -319,7 +317,6 @@
     display: flex;
     float: right;
     margin: 0px 30px 30px 0px;
-    /* position: relative; */
 }
 .btnBox .btnBoxbtn{
     margin-left: 8px;
@@ -359,10 +356,11 @@
 }
 
 .imgBox{
-    width: 1.1vw;
+    width: 25px;
     align-content: center;
     display: grid;
-    margin-right: 0.5vw;
+    opacity: 0.5;
+    margin-left: 10px;
 }
 .imgBox img{width: 100%;}
 
@@ -372,7 +370,22 @@
 
 .noneBox{display:none}
 
-#serverModal{display:none;position: absolute;bottom: 11vw;z-index: 999;background: #fff;border: 1px solid #222;/* left: 1vw; */}
+#serverModal{
+	display:none;
+	z-index: 9999;
+	background: #fff;
+	border: 1px solid #222;
+	width:700px;
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+#serverModalBox{
+	width:100%;
+	overflow: hidden;
+	}
 
 
 /* 바디에 스크롤 막는 방법 */
@@ -424,7 +437,6 @@
 
 
 .pBox{
-    /* align-content: normal; */
     display: contents;
     vertical-align:middle;
 }
@@ -436,7 +448,6 @@
     height: 33px;
     width: 130px;
     padding-left: 8px;
-    /* margin-top: 15px; */
 }
 
 #datetimepicker2{

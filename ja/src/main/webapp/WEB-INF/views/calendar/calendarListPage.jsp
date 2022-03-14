@@ -33,16 +33,20 @@
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
 <script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
+
+
+/* 팝업닫기 버튼 클릭시 */
 function delBtn() {
 	const modal = document.getElementById("modal");
 	modal.setAttribute("style","display:none");
 	document.getElementById("regScheduleInfo").reset();
 }
 
+
+/* 등록 클릭시 */
 function writeBtn() {
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
-	//$("html, body").addClass("not_scroll");
 }
 
 function getCalendarList(){
@@ -162,14 +166,14 @@ function getServerList(){
 					datatype: "local",
 					data: jsonArr,
 					rowNum: 10,
-					autowidth:true,
+					rowList:[10,20,30],
+					width:700,
 					 colModel: [	
 							{name: 'name', label : '서버명', align:'left'},
 					        {name: 'ip', label : 'IP', align:'left'},
 					        {name: 'os', label : 'OS분류', align:'center'},
 					        {name: 'server_no', hidden: true}
 							],
-					rowList:[10,20,30],
 				    pager: '#pager',
 				    multiselect: true
 				
@@ -242,7 +246,8 @@ function getServerList(){
 				});
 		}
 	};
-	xhr.open("post" , "./getServerList" , true);
+	
+	xhr.open("get" , "../schedule/getServerList" , true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
@@ -268,29 +273,45 @@ window.addEventListener("DOMContentLoaded" , function(){
    		   input.setAttribute("value","y");
 			$(this).append(input);
   		}
-	});
+  		var total = $('.btnDay').length;
+		var checked = $('.btnDay.active').length;
 
+		if(total != checked){
+			$('.checkboxAll').prop("checked", false);
+		}else{
+			$('.checkboxAll').prop("checked", true); 
+		}
+	}); 
+
+	
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
-        const btnDay = document.querySelectorAll('.btnDay');
-        /* 전체 선택을 눌러도 input hidden 값이 생기고 소멸하도록 변경 */
-        /* 여기서 function 자체를 따로 빼서 생성 한다면 좋겠다.*/ 
-        if($(btnDay).hasClass("active")){
-  		   $(btnDay).removeClass("active");
-  		   $(btnDay).children().remove();
-  		}else{
-  		   $(btnDay).addClass("active");
-  		   $(btnDay).each(function(index, el){
-  			   var valueByClass = $(this).val();
-  			   var input = document.createElement("input");
-  			   input.setAttribute("type","hidden");
-  			   input.setAttribute("name",valueByClass);
-  			   input.setAttribute("value","y");
-  			   $(this).append(input);
-  		   });
-  		} 
+        const btnDay = document.querySelectorAll('.btnDay'); 
+
+		var a = $('.checkboxAll').is(':checked');
+        
+        if(a == true){
+        	$(btnDay).addClass("active");
+        	$(btnDay).each(function() { 
+        		var test = $(this).val();
+        		var input =document.createElement("input");
+        		   input.setAttribute("type","hidden");
+        		   input.setAttribute("name",test);
+        		   input.setAttribute("value","y");
+     			$(this).append(input);
+        		});
+        	
+   		}else{
+   			$(btnDay).removeClass("active");
+   			$(btnDay).children().remove();
+   		}
 	});
 	
+	
+    
+    
+    
+    /* 매월, 매일 */
     $("input[name='repeat_cat']").change(function() {
  		if($("input[name='repeat_cat']:checked").val() == "3") {
  			const dayBox = document.getElementById("dayBox"); 
@@ -301,29 +322,36 @@ window.addEventListener("DOMContentLoaded" , function(){
  		}
  	});
     
-    $('.limitless').click(function(){
-	   const noneBox = document.querySelector('.noneBox2');
-	   noneBox.setAttribute("style","display: none");  
-	   
-	   var a = $('.limitless').is(':checked');
-	   
-	   if(a == true){
-	   	noneBox.setAttribute("style","display: none");  
-		}else{
-			noneBox.setAttribute("style","display: block");  
-		}
+    
+    /* 무기한 클릭시 */
+     $('.limitless').click(function(){
+        const noneBox = document.querySelector('.noneBox2');
+        noneBox.setAttribute("style","display: none");  
+        
+        var a = $('.limitless').is(':checked');
+        
+        if(a == true){
+        	noneBox.setAttribute("style","display: none");  
+   		}else{
+   			noneBox.setAttribute("style","display: block");  
+   		}
 	}); 
+    
 
     $('#btn1').click(function(){
          const serverModal = document.getElementById("serverModal"); 
-         serverModal.setAttribute("style","display: block");  
-         $("html, body").removeClass("not_scroll");
+         serverModal.setAttribute("style","display: block"); 
  	}); 
     
     
     $('.btnBoxbtn3').click(function(){
         const serverModal = document.getElementById("serverModal"); 
         serverModal.setAttribute("style","display: none");
+        
+        var cbox = document.getElementsByClassName('cbox');
+        for (var i = 0; i < cbox.length; i++) {
+        	cbox[i].checked = false;
+        }
 	}); 
  	
  	$("input[name='repeat_11']").change(function() {
@@ -346,26 +374,7 @@ window.addEventListener("DOMContentLoaded" , function(){
  		}
  	});
  	
-/* 	 $(function(){ 
-	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox', {
-	                initialHour: 12,
-	                initialMinute: 00,
-	                inputType: 'selectbox',
-	                showMeridiem: false
-	            });
-		 })
-
-
-	     $(function(){ 
-	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox2', {
-	                initialHour: 12,
-	                initialMinute: 00,
-	                inputType: 'selectbox',
-	                showMeridiem: false
-	            });
-		 }) */
-		 
-		 
+ 	
 		$(function(){
 			$('.datepicker').datepicker({
 		    	dateFormat: 'yy.mm.dd'
@@ -472,24 +481,26 @@ function regBtn(){
 					</div>
 					<div class="titleBox">
 						<strong class="text">작업명<span class="star">*</span></strong>
-						<input type="text" name="title" class="textBox">
+						<input type="text" name="title" class="textBox" autocomplete='off'>
 					</div>
 					<div class="dateBox">
 						<strong class="text">기간설정</strong>
 						<div class="radioBox">
-							<input type="radio" name="repeat_11" value="0" class="arr" checked> 반복설정
-							<input type="radio" name="repeat_11" value="1" class="timearr"> 하루설정
+							<input type="radio" name="repeat_11" value="0" class="arr" autocomplete='off' checked> 반복설정
+							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> 하루설정
 							<br>
 		            	    <div id="radioBoxRepeat">
-		                	    <!-- <div class="imgBox"><img src="../Desktop/aa/calendar.png"></div> -->
-		                        <input type="text" class="datepicker" name="start_date" value="">
+		                	    
+		                        <input type="text" class="datepicker" name="start_date" autocomplete='off'>
 		                        <div class="noneBox2">
 		                        	<span class="ing">~</span>
-		                           	<input type="text" class="datepicker" name="end_date" value="">
+		                           	<input type="text" class="datepicker" name="end_date" autocomplete='off'>
 								</div>
+		                    <div class="imgBox"><img src="../resources/img/calendar.svg"></div>
 		                    </div>   
 		                    <div id="radioBoxCheck">
-		                    	<input type="checkbox" name="end_date" value="9999.12.31" class="limitless"> 무기한
+
+		                    	<input type="checkbox" name="end_date" value="9999-12-31" class="limitless" autocomplete='off'> 무기한
 		                    </div>
 						</div>
 					</div>
@@ -498,12 +509,12 @@ function regBtn(){
 						<strong class="text">반복설정</strong>
 						<div class="radioBox">
 						<div class="Boxxx">
-							<input type="radio" name="repeat_cat" value="1" checked> 매일
-							<input type="radio" name="repeat_cat" value="2" class="day"> 매월 <input type="text" name="repeat_week" class="dayBox">째주
-							<input type="radio" name="repeat_cat" value="3" class="day"> 매월 <input type="text" name="repeat_day" class="dayBox">일
+							<input type="radio" name="repeat_cat" value="1" autocomplete='off' checked> 매일
+							<input type="radio" name="repeat_cat" value="2" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_week" class="dayBox" autocomplete='off'>째주
+							<input type="radio" name="repeat_cat" value="3" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_day" class="dayBox" autocomplete='off'>일
 							<br>
 		                   	<div id="dayBox">
-								<input type="checkbox" name="" value="" class="checkboxAll"><span class="checkAll">전체</span> 
+								<input type="checkbox" name="checkboxAll" value="" class="checkboxAll" autocomplete='off'><span class="checkAll">전체</span> 
 		                   		<button type="button" value="sun" name="sun" class="btnDay">SUN</button>
 		                   		<button type="button" value="mon" name="mon" class="btnDay">MON</button>
 		                   		<button type="button" value="the" name="the" class="btnDay">TUE</button>
@@ -513,15 +524,14 @@ function regBtn(){
 		                   		<button type="button" value="sat" name="sat" class="btnDay">SAT</button>
 		                   	</div>
 		                   	</div>
-<!-- 		                   	<div id="timepickerBox">
-		                   		<div id="timepicker-selectbox"></div>
-		                   		<span class="ing">~</span>
-		                   		<div id="timepicker-selectbox2"></div>
-		                   	</div> -->
+		                   	
 		                   	<div id="timepickerBox">
-		                   	<input id="datetimepicker1" type="text" name="start_time">
+
+		                   	
+		                   	<input id="datetimepicker1" type="text" name="start_time" autocomplete='off'>
 		                   	<span class="ing">~</span>
-		                   	<input id="datetimepicker2" type="text" name="end_time">
+		                   	<input id="datetimepicker2" type="text" name="end_time" autocomplete='off'>
+		                   	<div class="imgBox"><img src="../resources/img/alarm.svg"></div>
 		                   	</div>
 						</div>
 					</div>
@@ -529,14 +539,14 @@ function regBtn(){
 					<div class="listBox">
 						<strong class="text">작업대상<span class="star">*</span></strong>
 						<div class="btnList">
-							<input type="button" name="" value="추가" class="btn1" id="btn1">
-							<input type="button" name="" value="삭제" class="btn1">
+							<input type="button" value="추가" class="btn1" id="btn1" autocomplete='off'>
+							<input type="button" value="삭제" class="btn1" autocomplete='off'>
 						</div>
 					</div>
 					<table class="serverList" id="serverListM">
 						<thead id="theadList">
 							<tr class="serverHeader">
-								<th class="serverHeaderText"><input type="checkbox" name="" value=""></th>
+								<th class="serverHeaderText"><input type="checkbox" autocomplete='off'></th>
 								<th class="serverHeaderText">서버명</th>
 								<th class="serverHeaderText">IP</th>
 								<th class="serverHeaderText">OS분류</th>
@@ -545,23 +555,28 @@ function regBtn(){
 					</table>
 					
 					<div class="btnBox">
-						<input type="button" name="" value="등록" class="btnBoxbtn" onclick="regBtn()">
-						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="delBtn()">
+						<input type="button" value="등록" class="btnBoxbtn" onclick="regBtn()" autocomplete='off'>
+						<input type="button" value="닫기" class="btnBoxbtn" onclick="delBtn()" autocomplete='off'>
 					</div>
 					</form>
 					<!-- Form 태그 종료 -->
 				</div>
 			</div>
 			
-			<div id="serverModal">
+			
+		</div>
+		
+		<div id="serverModal">
+		<div id="serverModalBox">
 				<table id="list"></table>
 				<div class="btnBox2">
-					<input type="button" name="" value="등록" class="btnBoxbtn2">
-					<input type="button" name="" value="닫기" class="btnBoxbtn3">
+					<input type="button" value="등록" class="btnBoxbtn2" autocomplete='off'>
+					<input type="button" value="닫기" class="btnBoxbtn3" autocomplete='off'>
 				</div>
 				<div id="pager"></div> 
 			</div>
-		</div>
+			</div>
+		
 	</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
