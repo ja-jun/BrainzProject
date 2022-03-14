@@ -65,4 +65,16 @@
 		]]>
 		order by bs.start_date desc
 	</select>
+	
+	<select id="selectScheduleByNo" resultType="com.brainz.ja.vo.ScheduleVo">
+		select bs.sc_no, bs.user_no, bs.title,
+				bs.start_date, bs.end_date, 
+				bs.start_time, bs.end_time,
+				bs.repeat_cat, bs.repeat_day, 
+				bs.repeat_week, 
+				bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun,
+				bs.write_date
+		from bp_schedule bs
+		where bs.sc_no = ${sc_no }
+	</select>
 </mapper>

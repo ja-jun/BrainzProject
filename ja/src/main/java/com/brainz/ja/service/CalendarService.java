@@ -130,5 +130,10 @@ public class CalendarService {
 	public ArrayList<ServerVo> getServerList(){
 		return sqlMapper.selectServer();
 	}
+	
+	// 특정 스케줄 정보 가져오기
+	public ScheduleVo getScheduleInfo(int sc_no) {
+		return sqlMapper.selectScheduleByNo(sc_no);
+	}
 }
 

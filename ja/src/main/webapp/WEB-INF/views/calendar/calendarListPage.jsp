@@ -61,7 +61,8 @@ function getCalendarList(){
     				return {
 						title : item.title,
 						start : item.event_date + "T" + item.start_time,
-						end : item.event_date + "T" + item.end_time
+						end : item.event_date + "T" + item.end_time,
+						id : item.sc_no
 					}
     			}); 
  				
@@ -72,7 +73,47 @@ function getCalendarList(){
 				            right: 'next'
 				        },
 					events : events,
-					locale: 'ko'
+					locale: 'ko',
+					contentHeight: 'auto',
+					eventClick: function(info){
+						/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
+						$.ajax({
+					        url: 'http://localhost:8080/ja/schedule/getScheduleInfo',
+					        data: "sc_no=" + info.event.id,
+					        type: 'POST',
+					        success: function(data) {
+					            writeBtn();
+					            var sc_info = data.scheduleInfo;
+					            $('.textBox').val(sc_info.title);
+					            $('input[name=start_date]').val(sc_info.start_date);
+					            if(sc_info.end_date == ''){
+					            	$('.timearr').addClass('active');
+					            } else if(sc_info.end_date == '9999.12.31'){
+					            	$('.limitless').addClass('checked');
+					            } else {
+					            	$('.noneBox2 .datepicker').val(sc_info.end_date);
+					            }
+					            
+					            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
+					            $(repeat_cat).attr('checked','checked');
+					            
+					            var days = [sc_info.sun, sc_info.mon, sc_info.the, sc_info.wed, sc_info.thu, sc_info.fri, sc_info.sat];
+					            for(var i = 0; i < 7; i++){
+					            	if(days[i] == 'y'){
+					            		var day = $('.btnDay').get(i);
+					            		$(day).addClass('active');
+					            	}
+					            }
+					            
+					            if($('button.active').length == 7){
+					            	$('.checkboxAll').attr('checked','checked');
+					            }
+					        },
+					        error: function() {
+					        	alert("잘못된 접근입니다.");
+					        }
+					    });
+					}
 				});
 				calendar.render();
 				
@@ -92,7 +133,8 @@ function getCalendarList(){
 								return {
 									title : item.title,
 									start : item.event_date + "T" + item.start_time,
-									end : item.event_date + "T" + item.end_time
+									end : item.event_date + "T" + item.end_time,
+									id : item.sc_no
 								}
 							});
 							
@@ -100,9 +142,9 @@ function getCalendarList(){
 						}
 					}
 					
-					reXhr.open("get", "../schedule/getList?year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1), true);
-					reXhr.setRequestHeader("Content-type","applicaion/x-www-form-urlencoded");
-					reXhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
+					reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 				};
 				
 				var next = document.getElementsByClassName('fc-next-button fc-button fc-button-primary');
@@ -121,7 +163,8 @@ function getCalendarList(){
 								return {
 									title : item.title,
 									start : item.event_date + "T" + item.start_time,
-									end : item.event_date + "T" + item.end_time
+									end : item.event_date + "T" + item.end_time,
+									id : item.sc_no
 								}
 							});
 							
@@ -129,16 +172,16 @@ function getCalendarList(){
 						}
 					}
 					
-					reXhr.open("get", "../schedule/getList?year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1), true);
-					reXhr.setRequestHeader("Content-type","applicaion/x-www-form-urlencoded");
-					reXhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
+					reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 				};
 			}
 		};
 		
 		var today = new Date();
 		
-		xhr.open("post" , "../schedule/getList", true);
+		xhr.open("post" , "http://localhost:8080/ja/schedule/getList", true);
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
@@ -247,7 +290,7 @@ function getServerList(){
 		}
 	};
 	
-	xhr.open("get" , "../schedule/getServerList" , true);
+	xhr.open("post" , "http://localhost:8080/ja/schedule/getServerList" , true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
@@ -271,7 +314,7 @@ window.addEventListener("DOMContentLoaded" , function(){
    		   input.setAttribute("type","hidden");
    		   input.setAttribute("name",valueByClass);
    		   input.setAttribute("value","y");
-			$(this).append(input);
+		   $(this).append(input);
   		}
   		var total = $('.btnDay').length;
 		var checked = $('.btnDay.active').length;
@@ -404,36 +447,85 @@ window.addEventListener("DOMContentLoaded" , function(){
 	delBtn();
 });
 
+function validationCheck(target){
+	var result = 1;
+	
+	if(target.getAll('title') == ''){
+		/* 	1. 제목이 있는지 여부 
+			   제목에 혹시 어떠한 특수 문자가 들어갔는지 확인 해야함
+		*/
+		alert('제목을 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('start_date') == ''){
+		/* 	2. 시작 날짜가 제대로 입력 됐는지 확인
+		 	   날짜 형식이 제대로 되었는지도 확인 해야함 
+		 */
+		alert('작업 시작 날짜를 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('end_date') == '' && !$('.limitless').is(':checked') && target.getAll('repeat_11') == '0'){
+		/*	3. 종료 날짜가 제대로 입력 됐는지 확인
+			   날짜 형식이 제대로 되었는지도 확인 해야함
+		*/
+		alert('작업 종료 날짜를 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('start_time') == '' || target.getAll('end_time') ==''){
+		/*	4. 시작 시간과 끝나는 시작이 입력 됐는지 확인
+			   위 날짜 처럼 추후 형식을 확인 했는지도 확인 해야함
+		*/
+		alert('작업 시간을 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('repeat_cat') == '1'){
+		/*	5. 매일 이라는 반복 유형 선택 시 특정 요일을 선택 했는지 확인 */
+		if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
+			result = 1;
+		} else {
+			alert('작업을 원하는 요일을 선택해주세요.');
+			result = 0;
+		}
+	} else if(target.getAll('repeat_cat') == '2'){
+		/*	6. 매 달 특정 주차가 선택이 되었는지 확인 */
+		if(target.getAll('repeat_week') < 1 || target.getAll('repeat_week') > 4){
+			alert('매 달 1주차 부터 4주차 까지만 선택 가능합니다.');
+			result = 0;
+		} else if(target.getAll('repeat_week') == ''){
+			alert('작업을 등록할 주차를 입력해주세요.');
+			result = 0;
+		} else {
+			/* 7. 특정 주차가 선택되어 있다면 요일도 선택되어 있는지 확인 */
+			if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
+				alert('작업을 원하는 주차를 입력해주세요.');
+				result = 0;
+			} else {
+				alert('작업을 원하는 요일을 선택해주세요.');
+				result = 0;
+			}
+		}
+	} else if(target.getAll('repeat_cat') == '3'){
+		/*	8. 매 달 특정 요일이 선택되어 있는지 그리고 정확한 값인지 확인 */
+		if(!target.has('repeat_day')){
+			alert('작업을 원하는 매 월 특정 요일을 입력해주세요.');
+			result = 0;
+		} else if(target.getAll('repeat_day') < 1 || target.getAll('repeat_day') > 28){
+			alert('특정 요일은 1일 부터 28일 까지만 선택 가능합니다.');
+			result = 0;
+		}
+	}
+	
+	return result;
+}
+
 function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
-	if(formData.getAll("title") == ""){
-		alert("제목을 입력해주세요.");
+	if(validationCheck(formData) == 0){
 		return;
-	} else if(formData.getAll("start_date") == "" || formData.getAll("end_date") == ""){
-		alert("작업 날짜를 입력해주세요.");
-		return;
-	} else if(formData.getAll("start_time") == "" || formData.getAll("end_time") == ""){
-		alert("작업 시간을 입력해주세요.");
-		return;
-	} else if(formData.getAll("repeat_cat") == "1" && !formData.has("sun","mon","the","wed","thu","fir","sat")){
-		alert("적어도 1개의 요일을 선택해주세요.");
-		return;
-	} else if(formData.getAll("repeat_cat") == "2"){
-		if(formData.getAll("repeat_week") == ""){
-			alert("작업을 등록할 주차를 입력해주세요.");
-			return;
-		} else if(!formData.has("sun","mon","the","wed","thu","fri","sat")){
-			alert("적어도 1개의 요일을 선택해주세요.");
-			return
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date','9999.12.31');
 		}
-	} else if(formData.getAll("repeat_cat") == "3" && !formData.has("repeat_day")){
-		alert("작업을 등록할 특정 요일을 입력해주세요.");
-		return;
-	} else{
 	    $.ajax({
-	        url: './regSchedule',
+	        url: 'http://localhost:8080/ja/schedule/regSchedule',
 	        data: formData,
 	        processData: false,
 	        contentType: false,
@@ -491,16 +583,16 @@ function regBtn(){
 							<br>
 		            	    <div id="radioBoxRepeat">
 		                	    
-		                        <input type="text" class="datepicker" name="start_date" autocomplete='off'>
+		                        <input type="text" class="datepicker start_date" name="start_date" autocomplete='off'>
 		                        <div class="noneBox2">
 		                        	<span class="ing">~</span>
-		                           	<input type="text" class="datepicker" name="end_date" autocomplete='off'>
+		                           	<input type="text" class="datepicker end_date" name="end_date" autocomplete='off'>
 								</div>
 		                    <div class="imgBox"><img src="../resources/img/calendar.svg"></div>
 		                    </div>   
 		                    <div id="radioBoxCheck">
 
-		                    	<input type="checkbox" name="end_date" value="9999-12-31" class="limitless" autocomplete='off'> 무기한
+		                    	<input type="checkbox" class="limitless" autocomplete='off'> 무기한
 		                    </div>
 						</div>
 					</div>
