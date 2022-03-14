@@ -1,4 +1,3 @@
-
 package com.brainz.ja.service;
 
 import java.time.DayOfWeek;
@@ -32,10 +31,7 @@ public class CalendarService {
 		sqlMapper.insertSchedule(ssVo);
 		
 		if(ssVo.getServer_no() != null) {
-			System.out.println("우선 실행은 됐습니다.");
 			for(String server_no : ssVo.getServer_no()) {
-				int i = 0;
-				System.out.println("반복문 실행 " + (++i));
 				MgmtVo mVo = new MgmtVo();
 				mVo.setSc_no(sc_no);
 				mVo.setServer_no(Integer.parseInt(server_no));
@@ -54,7 +50,6 @@ public class CalendarService {
 		for(ScheduleVo vo : list) {
 			LocalDate start_date = vo.getStart_date();
 			LocalDate end_date = vo.getEnd_date();
-			int i = 1;
 			
 			// 해당 달의 1일자 날짜 객체를 생성
 			LocalDate cur_date = LocalDate.of(year,month,1);
@@ -85,7 +80,6 @@ public class CalendarService {
 					case 1:
 						// 기간 내 특정 요일만 선택하는 경우
 						if(dayCheck[day] != null) {
-							System.out.println("1인 경우");
 							event.put("sc_no", sc_no);
 							event.put("title", title);
 							event.put("event_date", cur_date.toString());
