@@ -7,13 +7,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.brainz.ja.vo.jbUserDetailsVo;
+import com.brainz.ja.vo.UserDetailsVo;
 
 @Service
 public class UserLoginAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	private jbLoginService loginService;  // DB의 값을 가져다주는 커스터마이징 클래스
+	private LoginService loginService;  // DB의 값을 가져다주는 커스터마이징 클래스
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;  // 패스워드 암호화 객체
@@ -37,7 +37,7 @@ public class UserLoginAuthenticationProvider implements AuthenticationProvider {
 		}
 		
 		/* DB에서 가져온 정보 */
-		jbUserDetailsVo userDetails = (jbUserDetailsVo) loginService.loadUserByUsername(encryptid);		
+		UserDetailsVo userDetails = (UserDetailsVo) loginService.loadUserByUsername(encryptid);		
 
 		
 		/* 인증 진행 */

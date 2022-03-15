@@ -1,80 +1,107 @@
 package com.brainz.ja.vo;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class UserVo {
+	
 	private int user_no;
 	private String user_id;
 	private String user_pw;
 	private String name;
-	private String email;
+	private String authority;
 	private String phone;
-	private String dec;
-	private LocalDateTime write_date;
+	private String email;
+	private String dsc;
+	private Date write_date;
 	
-	public UserVo() {
+	private UserVo() {
 		super();
 	}
-	
-	public UserVo(int user_no, String user_id, String user_pw, String name, String email, String phone, String dec,
-			LocalDateTime write_date) {
+
+	private UserVo(int user_no, String user_id, String user_pw, String name, String authority, String phone,
+			String email, String dsc, Date write_date) {
 		super();
 		this.user_no = user_no;
 		this.user_id = user_id;
 		this.user_pw = user_pw;
 		this.name = name;
-		this.email = email;
+		this.authority = authority;
 		this.phone = phone;
-		this.dec = dec;
+		this.email = email;
+		this.dsc = dsc;
 		this.write_date = write_date;
 	}
-	
+
 	public int getUser_no() {
 		return user_no;
 	}
+
 	public void setUser_no(int user_no) {
 		this.user_no = user_no;
 	}
+
 	public String getUser_id() {
 		return user_id;
 	}
+
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
+
 	public String getUser_pw() {
 		return user_pw;
 	}
+
 	public void setUser_pw(String user_pw) {
 		this.user_pw = user_pw;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEmail() {
-		return email;
+
+	public String getAuthority() {
+		return authority;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getDec() {
-		return dec;
+
+	public String getEmail() {
+		return email;
 	}
-	public void setDec(String dec) {
-		this.dec = dec;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public LocalDateTime getWrite_date() {
+
+	public String getDsc() {
+		return dsc;
+	}
+
+	public void setDsc(String dsc) {
+		this.dsc = dsc;
+	}
+
+	public Date getWrite_date() {
 		return write_date;
 	}
-	public void setWrite_date(LocalDateTime write_date) {
+
+	public void setWrite_date(Date write_date) {
 		this.write_date = write_date;
 	}
+
 }

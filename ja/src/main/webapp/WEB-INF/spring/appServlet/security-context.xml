@@ -12,20 +12,20 @@
 		<security:form-login
 				username-parameter="user_id"
 				password-parameter="user_pw"
-				login-processing-url="/login_check" 
-				login-page="/jbLogin" 
+				login-processing-url="/login/login_check" 
+				login-page="/login/loginPage" 
 				default-target-url="/user/mainPage"
 				authentication-failure-handler-ref="loginFailHandler"
 			/>
 			<security:logout 
-				logout-url="/security_logout"
-				logout-success-url="/jbLogin"
+				logout-url="/user/security_logout"
+				logout-success-url="/login/loginPage"
 				invalidate-session="true"
 				delete-cookies="true"
 			/>	
-		<security:intercept-url pattern="/jbLogin" access="isAnonymous()"/>
-		<security:intercept-url pattern="/jbWork" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')" />
-		<security:intercept-url pattern="/jbRegisterUser" access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/login/loginPage" access="isAnonymous()"/>
+		<security:intercept-url pattern="/user/mainPage" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')" />
+		<security:intercept-url pattern="/user/registerUser" access="hasRole('ROLE_ADMIN')" />
 		<security:access-denied-handler error-page="/qwer" />
 	</security:http>
 		

@@ -6,29 +6,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.brainz.ja.service.jbUserService;
-import com.brainz.ja.vo.jbUserVo;
+import com.brainz.ja.service.UserService;
+import com.brainz.ja.vo.UserVo;
 
 @Controller
 @RequestMapping("/user/*")
 public class UserController {
 	
 	@Autowired
-	private jbUserService userService;
+	private UserService userService;
 	
 	@RequestMapping("mainPage")
 	public String mainPage(HttpSession session) {
 		
-		return "/user/mainPage";
+		return "user/mainPage";
 	}
 	
 	@RequestMapping("registerUser")
 	public String registerUser() {
-		return "/user/registerUser";
+		return "user/registerUser";
 	}
 	
 	@RequestMapping("/registerUserProcess")
-	public String registerUserProcess(jbUserVo vo) throws Exception {
+	public String registerUserProcess(UserVo vo) throws Exception {
 		
 		userService.register(vo);
 		

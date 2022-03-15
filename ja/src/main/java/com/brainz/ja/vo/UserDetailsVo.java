@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class jbUserDetailsVo implements UserDetails {
+public class UserDetailsVo implements UserDetails {
 
 	private String user_id;
 	private String user_pw;

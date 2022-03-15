@@ -35,9 +35,9 @@
 				<ul>
 					<!-- 네비바 페이지 이름 변경/a태그 안에 각자 만든 페이지 경로 넣기 -->
 					<!-- 활성화 된 페이지는 li class에 있는 on을 활성화 된 페이지에 복붙 -->
-					<li class="pageList on"><a href="jbWork"><i class="bi bi-person"></i>사용자 관리</a></li>
+					<li class="pageList on"><a href="mainPage"><i class="bi bi-person"></i>사용자 관리</a></li>
 					<li class="pageList"><a href=""><i class="bi bi-shield-check"></i>서버 관리</a></li>
-					<li class="pageList"><a href="./calendar/calendarListPage"><i class="bi bi-calendar-check"></i>작업 관리</a></li>
+					<li class="pageList"><a href="../calendar/calendarListPage"><i class="bi bi-calendar-check"></i>작업 관리</a></li>
 				</ul>
 			</div>
 			

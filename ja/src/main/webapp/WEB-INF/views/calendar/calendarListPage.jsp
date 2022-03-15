@@ -662,7 +662,7 @@ function regBtn(){
 		<div id="content">
 			<div class="navBar">
 				<ul>
-					<li class="pageList"><a href="../jbWork"><i class="bi bi-person"></i>사용자 관리</a></li>
+					<li class="pageList"><a href="../user/mainPage"><i class="bi bi-person"></i>사용자 관리</a></li>
 					<li class="pageList"><a href=""><i class="bi bi-shield-check"></i>서버 관리</a></li>
 					<li class="pageList on"><a href=""><i class="bi bi-calendar-check"></i>작업 관리</a></li>
 				</ul>
