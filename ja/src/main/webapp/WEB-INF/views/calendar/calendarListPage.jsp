@@ -46,8 +46,7 @@ function delBtn() {
 /* 등록 클릭시 */
 function writeBtn() {
 	var modal = document.getElementById("modal");
-	modal.setAttribute("style","display:flex");
-	
+	modal.setAttribute("style","display:flex");.')
 	 var btn1 = document.getElementById('btnBoxbtn1');
      btn1.innerHTML="";
      btn1.setAttribute("value","등록");
@@ -201,6 +200,9 @@ function getCalendarList(){
 					            		$(day).addClass('active');
 					            	}
 					            }
+					            
+					            $('input[name=start_time]').val(sc_info.start_time);
+					            $('input[name=end_time]').val(sc_info.end_time);
 					            
 					            if($('button.active').length == 7){
 					            	$('.checkboxAll').attr('checked','checked');

@@ -9,7 +9,7 @@
 <body>
 	<script type="text/javascript">
 		alert("사용자 등록을 하였습니다.");
-		window.location.href = "./jbWork";
+		window.location.href = "./mainPage";
 	</script>
 </body>
 </html>
