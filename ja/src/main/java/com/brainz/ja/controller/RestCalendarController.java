@@ -1,6 +1,7 @@
 
 package com.brainz.ja.controller;
 
+
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -96,4 +97,3 @@ public class RestCalendarController {
 		return data;
 	}
 }
-

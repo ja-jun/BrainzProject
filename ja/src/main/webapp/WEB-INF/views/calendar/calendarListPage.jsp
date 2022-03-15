@@ -47,6 +47,101 @@ function delBtn() {
 function writeBtn() {
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
+	
+	 var btn1 = document.getElementById('btnBoxbtn1');
+     btn1.innerHTML="";
+     btn1.setAttribute("value","등록");
+     btn1.setAttribute("class","btnBoxbtn");
+     btn1.setAttribute("id","btnBoxbtn1");
+     btn1.setAttribute("onclick","regBtn()");
+     
+     var btn2 = document.getElementById('btnBoxbtn2');
+     btn2.innerHTML="";
+     btn2.setAttribute("value","닫기");
+     btn2.setAttribute("class","btnBoxbtn");
+     btn2.setAttribute("id","btnBoxbtn2");
+     btn2.setAttribute("onclick","delBtn()");
+}
+
+
+/* 삭제 버튼 클릭시 */
+function molBtn() {
+	const deleteRadio = document.getElementById("deleteRadio");
+	deleteRadio.setAttribute("style","display:block");
+	deleteRadio.innerHTML="";
+	
+	var div = document.createElement("div");
+	div.setAttribute("class","radioBox");
+	
+	var ul = document.createElement("ul");
+	
+	var radioBoxList = document.createElement("li");
+	radioBoxList.setAttribute("class","radioBoxList");
+	
+	var input = document.createElement("input");
+	input.setAttribute("type","radio");
+	input.setAttribute("name","delete_radio");
+	input.setAttribute("value","0");
+	input.setAttribute("checked","checked");
+	var span = document.createElement("span");
+	span.setAttribute("class","sapnRadio");
+	span.innerText="이 일정";
+	
+	var radioBoxList2 = document.createElement("li");
+	radioBoxList2.setAttribute("class","radioBoxList");
+	
+	var input2 = document.createElement("input");
+	input2.setAttribute("type","radio");
+	input2.setAttribute("name","delete_radio");
+	input2.setAttribute("value","1");
+	var span2 = document.createElement("span");
+	span2.setAttribute("class","sapnRadio");
+	span2.innerText="이 일정 및 향후 일정";
+	
+	var radioBoxList3 = document.createElement("li");
+	radioBoxList3.setAttribute("class","radioBoxList");
+	
+	var input3 = document.createElement("input");
+	input3.setAttribute("type","radio");
+	input3.setAttribute("name","delete_radio");
+	input3.setAttribute("value","2");
+	var span3 = document.createElement("span");
+	span3.setAttribute("class","sapnRadio");
+	span3.innerText="모든 일정";
+	
+	var btnBox2 = document.createElement("div");
+	btnBox2.setAttribute("class","btnBox2");
+	var button = document.createElement("input");
+	button.setAttribute("type","button");
+	button.setAttribute("value","삭제");
+	button.setAttribute("class","btnBoxbtn2");
+	button.setAttribute("onclick","");
+	var button2 = document.createElement("input");
+	button2.setAttribute("type","button");
+	button2.setAttribute("value","취소");
+	button2.setAttribute("class","btnBoxbtn3");
+	button2.setAttribute("onclick","delBox()");
+	
+	deleteRadio.appendChild(div);
+	div.appendChild(ul);
+	div.appendChild(btnBox2);
+	btnBox2.appendChild(button);
+	btnBox2.appendChild(button2);
+	ul.appendChild(radioBoxList);
+	ul.appendChild(radioBoxList2);
+	ul.appendChild(radioBoxList3);
+	radioBoxList.appendChild(input);
+	radioBoxList.appendChild(span);
+	radioBoxList2.appendChild(input2);
+	radioBoxList2.appendChild(span2);
+	radioBoxList3.appendChild(input3);
+	radioBoxList3.appendChild(span3);
+}
+
+/* 삭제 취소 버튼 클릭시 */
+function delBox() {
+	const deleteRadio = document.getElementById("deleteRadio");
+	deleteRadio.setAttribute("style","display:none");
 }
 
 function getCalendarList(){
@@ -110,6 +205,20 @@ function getCalendarList(){
 					            if($('button.active').length == 7){
 					            	$('.checkboxAll').attr('checked','checked');
 					            }
+					            
+					            var btn1 = document.getElementById('btnBoxbtn1');
+					            btn1.innerHTML="";
+					            btn1.setAttribute("value","수정");
+					            btn1.setAttribute("class","btnBoxbtn");
+					            btn1.setAttribute("id","btnBoxbtn1");
+					            btn1.setAttribute("onclick","regBtn()");
+					            
+					            var btn2 = document.getElementById('btnBoxbtn2');
+					            btn2.innerHTML="";
+					            btn2.setAttribute("value","삭제");
+					            btn2.setAttribute("class","btnBoxbtn");
+					            btn2.setAttribute("id","btnBoxbtn2");
+					            btn2.setAttribute("onclick","molBtn()");
 					        },
 					        error: function() {
 					        	alert("잘못된 접근입니다.");
@@ -648,8 +757,8 @@ function regBtn(){
 					</table>
 					
 					<div class="btnBox">
-						<input type="button" value="등록" class="btnBoxbtn" onclick="regBtn()" autocomplete='off'>
-						<input type="button" value="닫기" class="btnBoxbtn" onclick="delBtn()" autocomplete='off'>
+						<input type="button" value="등록" class="btnBoxbtn" id="btnBoxbtn1" onclick="regBtn()" autocomplete='off'>
+						<input type="button" value="닫기" class="btnBoxbtn" id="btnBoxbtn2" onclick="delBtn()" autocomplete='off'>
 					</div>
 					</form>
 					<!-- Form 태그 종료 -->
@@ -669,6 +778,9 @@ function regBtn(){
 				<div id="pager"></div> 
 			</div>
 			</div>
+			
+			
+		<div id="deleteRadio"></div>
 		
 	</div>
 </body>

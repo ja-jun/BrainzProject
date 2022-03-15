@@ -18,63 +18,21 @@
 </head>
 <script>
 
-	
-function getCalendarList(){
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			var data = JSON.parse(xhr.responseText);
-			
-			
-			var aaa = data.calendarList;
-
-			var jsonArr = [];
-			for (var i = 0; i < aaa.length; i++) {
-			    jsonArr.push({
-			    	'작업명': aaa[i].title,
-			    	'시작날짜': aaa[i].start_date,
-			    	'마감날짜': aaa[i].end_date,
-			    	'시작시간': aaa[i].start_hour,
-			    	'마감시간': aaa[i].end_hour,
-			    	'반복요일': aaa[i].repeat_week,
-			    	'작성일': aaa[i].write_date
-			    });
-			}
-			
-			
-			
 			
 				$("#list").jqGrid({
-					datatype: "local",
-					data: jsonArr,
+					url:'./aaa',
+					datatype: "json",
 					rowNum: 10,
 					height: 500,
 					autowidth:true,
+					colNames:['IP'],
 					 colModel: [	
-							{name: '작업명', label : '작업명', align:'left'},
-					        {name: '시작날짜', label : '시작날짜', align:'left'},
-					        {name: '마감날짜', label : '마감날짜', align:'left'},
-					        {name: '시작시간', label : '시작시간', align:'left'},
-					        {name: '마감시간', label : '마감시간', align:'left'},
-					        {name: '반복요일', label : '반복요일', align:'left'},
-					        {name: '작성일', label : '작성일', align:'left'}
+							{name:'IP',index:'seq_user', align:'left'}
 							],
 				    pager: '#pager',
 				    multiselect: true
 				});
 				
-			
-			
-		}
-		
-	};
-	
-	xhr.open("get" , "./getCalendarList" , true);
-	xhr.send();	
-	
-}
-	
 	
 	
 window.addEventListener("DOMContentLoaded" , function(){
@@ -83,10 +41,6 @@ window.addEventListener("DOMContentLoaded" , function(){
 		$("#list").setGridWidth($(this).width() * .100);
 
 	});
-
-
-
-	getCalendarList();
 });	
 
 </script>
