@@ -9,13 +9,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-<link href='./resources/css/calendar.css' rel='stylesheet' />
-<link href='./resources/css/reset.css' rel='stylesheet' />
+<link href='../resources/css/calendar.css' rel='stylesheet' />
+<link href='../resources/css/reset.css' rel='stylesheet' />
 
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
-<script src="./resources/js/grid.locale-kr.js"></script>
-<script src="./resources/js/jquery.jqGrid.js"></script>
+<script src="../resources/js/grid.locale-kr.js"></script>
+<script src="../resources/js/jquery.jqGrid.js"></script>
 <script>
 
 
@@ -42,7 +42,7 @@
 			</div>
 			
 	    	<div id="box">
-	    		<button class="writeBtn" id="writeBtn" onclick="location.href='./jbRegisterUser' ">등록</button>
+	    		<button class="writeBtn" id="writeBtn" onclick="location.href='./registerUser' ">등록</button>
 	    		<button class="writeBtn" id="writeBtn" onclick="location.href='./security_logout' ">로그아웃</button>
 	    	<div id="calendar"></div>
 	    	</div>
