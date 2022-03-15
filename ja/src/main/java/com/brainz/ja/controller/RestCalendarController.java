@@ -23,6 +23,7 @@ public class RestCalendarController {
 	@RequestMapping("getList")
 	public HashMap<String, Object> getList(Integer year, Integer month){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		
 		data.put("scheduleList", service.getScheduleList(year, month));
 		
 		return data;
@@ -31,7 +32,10 @@ public class RestCalendarController {
 	@RequestMapping("getScheduleInfo")
 	public HashMap<String, Object> getScheduleInfo(Integer sc_no){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		
 		data.put("scheduleInfo", service.getScheduleInfo(sc_no));
+		data.put("serverList", service.getServerList(sc_no));
+		
 		return data;
 	}
 	
@@ -78,15 +82,15 @@ public class RestCalendarController {
 		
 		if(del_cat == 0) {
 			service.delCat0(ssVo.getSc_no());
-			data.put("result",0);
+			data.put("result", 0);
 		} else if(del_cat == 1) {
 			service.delCat1(ssVo, cur_date);
-			data.put("result",0);
+			data.put("result", 0);
 		} else if(del_cat == 2) {
 			service.delCat2(ssVo, cur_date);
-			data.put("result",0);
+			data.put("result", 0);
 		} else {
-			data.put("result",1);
+			data.put("result", 1);
 		}
 		
 		return data;
