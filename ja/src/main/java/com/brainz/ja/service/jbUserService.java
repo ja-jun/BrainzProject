@@ -9,20 +9,37 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class jbUserService {
-	
+
 	@Autowired
 	private jbUserSQLMapper userSQLMapper;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	// 회원가입 시 비밀번호 암호화
-	public void register(jbUserVo vo) {
+	@Autowired
+	AESUtil aes;
+	
+	public void register(jbUserVo vo) throws Exception {
 		
+		// 비밀번호 단방향 암호화
 		String encodedPW = bCryptPasswordEncoder.encode(vo.getUser_pw());
 		vo.setUser_pw(encodedPW);
 		
+		// 개인정보 양방향 암호화
+		String encryptid = aes.encrypt(vo.getUser_id());
+		vo.setUser_id(encryptid);
+		
+		String encryptname = aes.encrypt(vo.getName());
+		vo.setName(encryptname);
+		
+		String encryptphone = aes.encrypt(vo.getPhone());
+		vo.setPhone(encryptphone);
+		
+		String encryptemail = aes.encrypt(vo.getEmail());
+		vo.setEmail(encryptemail);
+
+		
 		userSQLMapper.insertUser(vo);
 	}
-	
+
 }

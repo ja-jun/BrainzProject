@@ -137,6 +137,10 @@ public class CalendarService {
 		return sqlMapper.selectScheduleByNo(sc_no);
 	}
 	
+	public ArrayList<MgmtVo> getServerList(int sc_no){
+		return sqlMapper.selectServerBySc_no(sc_no);
+	}
+	
 	// del_cat = 0 인 경우 해당 스케줄을 과거 미래 내역 모두 삭제
 	public void delCat0(int sc_no) {
 		sqlMapper.updateDeleteDate(sc_no);

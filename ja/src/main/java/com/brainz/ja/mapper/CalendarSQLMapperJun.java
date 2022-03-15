@@ -20,4 +20,5 @@ public interface CalendarSQLMapperJun {
 	public ScheduleVo selectScheduleByNo(int sc_no);
 	public void updateDeleteDate(int sc_no);
 	public void updateSchedule(SetScheduleVo ssVo);
+	public ArrayList<MgmtVo> selectServerBySc_no(int sc_no);
 }

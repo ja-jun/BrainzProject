@@ -1,24 +1,18 @@
 
 package com.brainz.ja.controller;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brainz.ja.service.CalendarService;
-import com.brainz.ja.vo.ServerVo;
 import com.brainz.ja.vo.SetScheduleVo;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
 
 @RestController
 @RequestMapping("/schedule/*")
@@ -30,6 +24,7 @@ public class RestCalendarController {
 	@RequestMapping("getList")
 	public HashMap<String, Object> getList(Integer year, Integer month){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		
 		data.put("scheduleList", service.getScheduleList(year, month));
 		
 		return data;
@@ -38,7 +33,10 @@ public class RestCalendarController {
 	@RequestMapping("getScheduleInfo")
 	public HashMap<String, Object> getScheduleInfo(Integer sc_no){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		
 		data.put("scheduleInfo", service.getScheduleInfo(sc_no));
+		data.put("serverList", service.getServerList(sc_no));
+		
 		return data;
 	}
 	
@@ -50,21 +48,6 @@ public class RestCalendarController {
 		
 		return data;
 	}
-	
-	@RequestMapping("aaa")
-	@ResponseBody
-	public Gson aaa(){
-		Gson gsonObj = new Gson();
-		ArrayList<ServerVo> aa = service.getServerList();
-		Map<String, String> inputMap = new HashMap<String, String>();
-		for (int j = 0; j < aa.size(); j++) {
-			inputMap.put("IP", aa.get(j).getIp());
-		}
-		String jsonStr = gsonObj.toJson(inputMap);
-		System.out.println("MAP -> JSON 테스트 : " + jsonStr);
-		
-		return gsonObj;
-		}
 	
 	@RequestMapping("regSchedule")
 	public HashMap<String, Object> regSchedule(HttpServletRequest param, SetScheduleVo ssVo){
@@ -100,15 +83,15 @@ public class RestCalendarController {
 		
 		if(del_cat == 0) {
 			service.delCat0(ssVo.getSc_no());
-			data.put("result",0);
+			data.put("result", 0);
 		} else if(del_cat == 1) {
 			service.delCat1(ssVo, cur_date);
-			data.put("result",0);
+			data.put("result", 0);
 		} else if(del_cat == 2) {
 			service.delCat2(ssVo, cur_date);
-			data.put("result",0);
+			data.put("result", 0);
 		} else {
-			data.put("result",1);
+			data.put("result", 1);
 		}
 		
 		return data;
