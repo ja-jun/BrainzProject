@@ -83,4 +83,9 @@
 			update bp_schedule set delete_date = now()
 			where sc_no = #{sc_no}
 	</delete>
+	
+	<update id="updateSchedule">
+		update bp_schedule set end_date = #{end_date }, start_time = #{start_time }, end_time = #{end_time }
+		where sc_no = #{sc_no }
+	</update>
 </mapper>

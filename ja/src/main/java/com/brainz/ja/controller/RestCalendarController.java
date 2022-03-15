@@ -73,17 +73,20 @@ public class RestCalendarController {
 //	2 - 선택된 날짜 이후만 삭제
 	
 	@RequestMapping("delSchedule")
-	public HashMap<String, Object> delSchedule(Integer del_cat, Integer sc_no, String cur_date){
+	public HashMap<String, Object> delSchedule(Integer del_cat, SetScheduleVo ssVo, String cur_date){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
 		if(del_cat == 0) {
-			service.delCat0(sc_no);
+			service.delCat0(ssVo.getSc_no());
+			data.put("result",0);
 		} else if(del_cat == 1) {
-			service.delCat1(sc_no, cur_date);
+			service.delCat1(ssVo, cur_date);
+			data.put("result",0);
 		} else if(del_cat == 2) {
-			service.delCat2(sc_no, cur_date);
+			service.delCat2(ssVo, cur_date);
+			data.put("result",0);
 		} else {
-			data.put("result", 0);
+			data.put("result",1);
 		}
 		
 		return data;

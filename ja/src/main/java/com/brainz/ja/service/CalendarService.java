@@ -3,6 +3,7 @@ package com.brainz.ja.service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -138,17 +139,49 @@ public class CalendarService {
 	
 	// del_cat = 0 인 경우 해당 스케줄을 과거 미래 내역 모두 삭제
 	public void delCat0(int sc_no) {
-		
+		sqlMapper.updateDeleteDate(sc_no);
 	}
 	
 	// del_cat = 1 인 경우 해당 날짜의 스케줄만 삭제
-	public void delCat1(int sc_no, String cur_date) {
+	public void delCat1(SetScheduleVo ssVo, String cur_date) {
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		LocalDate current_date = LocalDate.parse(cur_date, dateFormat);
 		
+		LocalDate pre_date = current_date.minusDays(1);
+		LocalDate aft_date = current_date.plusDays(1);
+		
+		// 기존 schedule을 해당 날짜 -1 일 까지로 end_date를 업데이트
+		SetScheduleVo pre_ssVo = ssVo;
+		pre_ssVo.setEnd_date(pre_date.format(dateFormat));
+		sqlMapper.updateSchedule(pre_ssVo);
+		
+		// 해당 날짜 다음 날 부터 시작되는 새로운 스케줄을 등록
+		SetScheduleVo aft_ssVo = ssVo;
+		aft_ssVo.setSc_no(sqlMapper.selectNextScNo());
+		aft_ssVo.setStart_date(aft_date.format(dateFormat));
+		
+		if(aft_ssVo.getServer_no() != null) {
+			for(String server_no : ssVo.getServer_no()) {
+				MgmtVo mVo = new MgmtVo();
+				mVo.setSc_no(aft_ssVo.getSc_no());
+				mVo.setServer_no(Integer.parseInt(server_no));
+				
+				sqlMapper.insertMgmtServer(mVo);
+			}
+		}
 	}
 	
 	// del_cat = 2 인 경우 해당 날짜 이후만 삭제
-	public void delCat2(int sc_no, String cur_date) {
+	public void delCat2(SetScheduleVo ssVo, String cur_date) {
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		LocalDate current_date = LocalDate.parse(cur_date, dateFormat);
 		
+		LocalDate pre_date = current_date.minusDays(1);
+		
+		// 기존 schedule을 해당 날짜 -1 일 까지로 end_date를 업데이트
+		SetScheduleVo pre_ssVo = ssVo;
+		pre_ssVo.setEnd_date(pre_date.format(dateFormat));
+		sqlMapper.updateSchedule(pre_ssVo);
 	}
 }
 

@@ -18,4 +18,6 @@ public interface CalendarSQLMapperJun {
 	public void insertMgmtServer(MgmtVo vo);
 	public void insertSchedule(SetScheduleVo ssVo);
 	public ScheduleVo selectScheduleByNo(int sc_no);
+	public void updateDeleteDate(int sc_no);
+	public void updateSchedule(SetScheduleVo ssVo);
 }
