@@ -63,6 +63,29 @@
 		where (to_char(bs.start_date, 'MM')::int <= #{month }) 
 		   and (to_char(bs.end_date, 'MM')::int >= #{month })
 		]]>
+		   and delete_date is null
 		order by bs.start_date desc
 	</select>
+	
+	<select id="selectScheduleByNo" resultType="com.brainz.ja.vo.ScheduleVo">
+		select bs.sc_no, bs.user_no, bs.title,
+				bs.start_date, bs.end_date, 
+				bs.start_time, bs.end_time,
+				bs.repeat_cat, bs.repeat_day, 
+				bs.repeat_week, 
+				bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun,
+				bs.write_date
+		from bp_schedule bs
+		where bs.sc_no = ${sc_no }
+	</select>
+	
+	<delete id="updateDeleteDate">
+			update bp_schedule set delete_date = now()
+			where sc_no = #{sc_no}
+	</delete>
+	
+	<update id="updateSchedule">
+		update bp_schedule set end_date = #{end_date }, start_time = #{start_time }, end_time = #{end_time }
+		where sc_no = #{sc_no }
+	</update>
 </mapper>
