@@ -32,6 +32,10 @@ public class CalendarController {
 		return "/calendar/calendarGridPage";
 	}
 	
+	@RequestMapping("multilang")
+	public String multilang() {
+		return "/calendar/multilang";
+	}
 	
 	@RequestMapping("aaa")
 	@ResponseBody

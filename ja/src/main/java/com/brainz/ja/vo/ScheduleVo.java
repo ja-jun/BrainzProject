@@ -12,11 +12,11 @@ public class ScheduleVo {
 	private String title;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate start_date;
-	@JsonFormat(pattern = "kk:mm:ss")
+	@JsonFormat(pattern = "kk:mm")
 	private LocalTime start_time;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate end_date;
-	@JsonFormat(pattern = "kk:mm:ss")
+	@JsonFormat(pattern = "kk:mm")
 	private LocalTime end_time;
 	private Integer repeat_cat;
 	private Integer repeat_day;
@@ -28,9 +28,9 @@ public class ScheduleVo {
 	private String fri;
 	private String sat;
 	private String sun;
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm")
 	private LocalDateTime write_date;
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd kk:mm")
 	private LocalDateTime delete_date;
 	
 	public ScheduleVo() {
