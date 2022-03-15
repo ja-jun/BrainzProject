@@ -45,9 +45,7 @@ public class jbHomeController {
 	}
 	
 	@RequestMapping("/registerUserProcess")
-	public String registerUserProcess(jbUserVo vo) {
-		
-		System.out.println("아이디 등록");
+	public String registerUserProcess(jbUserVo vo) throws Exception {
 		
 		userService.register(vo);
 		

@@ -24,36 +24,44 @@ public class UserLoginAuthenticationProvider implements AuthenticationProvider {
 		/* 사용자가 입력한 정보 */
 		String userId = authentication.getName();
 		String userPw = (String) authentication.getCredentials();
-
+		
+		
+		AESUtil aes = new AESUtil();
+		String encryptid = null;
+		try {
+			encryptid = aes.encrypt(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		/* DB에서 가져온 정보 */
-		jbUserDetailsVo userDetails = (jbUserDetailsVo) loginService.loadUserByUsername(userId);		
+		jbUserDetailsVo userDetails = (jbUserDetailsVo) loginService.loadUserByUsername(encryptid);		
 
 		
 		/* 인증 진행 */
 		// DB에 정보가 없는 경우 예외 발생 (아이디/패스워드 잘못됐을 때와 동일한 것이 좋음)
 		// ID 및 PW 체크해서 안 맞을 경우 (matches를 이용한 암호화 체크를 해야함)
-		if (userDetails == null || !userId.equals(userDetails.getUsername())
+		if (userDetails == null || !encryptid.equals(userDetails.getUsername())
 				|| !bCryptPasswordEncoder.matches(userPw, userDetails.getPassword())) {
 			
-			throw new BadCredentialsException(userId);
+			throw new BadCredentialsException(encryptid);
 			
 		// 계정 정보 맞으면 나머지 부가 메소드 체크 (이부분도 필요한 부분만 커스터마이징 하면 됨)
 		// 잠긴 계정일 경우	
 		} else if (!userDetails.isAccountNonLocked()) {
-			throw new LockedException(userId);
+			throw new LockedException(encryptid);
 
 		// 비활성화된 계정일 경우
 		} else if (!userDetails.isEnabled()) {
-			throw new DisabledException(userId);
+			throw new DisabledException(encryptid);
 
 		// 만료된 계정일 경우
 		} else if (!userDetails.isAccountNonExpired()) {
-			throw new AccountExpiredException(userId);
+			throw new AccountExpiredException(encryptid);
 
 		// 비밀번호가 만료된 경우
 		} else if (!userDetails.isCredentialsNonExpired()) {
-			throw new CredentialsExpiredException(userId);
+			throw new CredentialsExpiredException(encryptid);
 		}
 		
 		// 다 썼으면 패스워드 정보는 지워줌 (객체를 계속 사용해야 하므로)
