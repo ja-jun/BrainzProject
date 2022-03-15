@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -36,26 +35,19 @@
 <script>
 
 
-
- function delBtn() {
+/* 팝업닫기 버튼 클릭시 */
+function delBtn() {
 	const modal = document.getElementById("modal");
 	modal.setAttribute("style","display:none");
 	document.getElementById("regScheduleInfo").reset();
 }
 
 
-
+/* 등록 클릭시 */
 function writeBtn() {
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
-	$("html, body").addClass("not_scroll");
 }
- 
-
-
-
-	 
-
 
 function getCalendarList(){
 		var xhr = new XMLHttpRequest();
@@ -69,7 +61,8 @@ function getCalendarList(){
     				return {
 						title : item.title,
 						start : item.event_date + "T" + item.start_time,
-						end : item.event_date + "T" + item.end_time
+						end : item.event_date + "T" + item.end_time,
+						id : item.sc_no
 					}
     			}); 
  				
@@ -80,7 +73,49 @@ function getCalendarList(){
 				            right: 'next'
 				        },
 					events : events,
-					locale: 'ko'
+					locale: 'ko',
+					contentHeight: 'auto',
+					eventClick: function(info){
+						/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
+						$.ajax({
+					        url: 'http://localhost:8080/ja/schedule/getScheduleInfo',
+					        data: "sc_no=" + info.event.id,
+					        type: 'POST',
+					        success: function(data) {
+					            writeBtn();
+					            var sc_info = data.scheduleInfo;
+					            $('.textBox').val(sc_info.title);
+					            $('input[name=start_date]').val(sc_info.start_date);
+					            if(sc_info.end_date == ''){
+					            	$('.timearr').addClass('active');
+					            } else if(sc_info.end_date == '9999-12-31'){
+					            	$('.limitless').attr('checked','checked');
+					            	const noneBox = document.querySelector('.noneBox2');
+					                noneBox.setAttribute("style","display: none");
+					            } else {
+					            	$('.noneBox2 .datepicker').val(sc_info.end_date);
+					            }
+					            
+					            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
+					            $(repeat_cat).attr('checked','checked');
+					            
+					            var days = [sc_info.sun, sc_info.mon, sc_info.the, sc_info.wed, sc_info.thu, sc_info.fri, sc_info.sat];
+					            for(var i = 0; i < 7; i++){
+					            	if(days[i] == 'y'){
+					            		var day = $('.btnDay').get(i);
+					            		$(day).addClass('active');
+					            	}
+					            }
+					            
+					            if($('button.active').length == 7){
+					            	$('.checkboxAll').attr('checked','checked');
+					            }
+					        },
+					        error: function() {
+					        	alert("잘못된 접근입니다.");
+					        }
+					    });
+					}
 				});
 				calendar.render();
 				
@@ -100,7 +135,8 @@ function getCalendarList(){
 								return {
 									title : item.title,
 									start : item.event_date + "T" + item.start_time,
-									end : item.event_date + "T" + item.end_time
+									end : item.event_date + "T" + item.end_time,
+									id : item.sc_no
 								}
 							});
 							
@@ -108,8 +144,9 @@ function getCalendarList(){
 						}
 					}
 					
-					reXhr.open("get", "../schedule/getList?year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1), true);
-					reXhr.send();
+					reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 				};
 				
 				var next = document.getElementsByClassName('fc-next-button fc-button fc-button-primary');
@@ -128,7 +165,8 @@ function getCalendarList(){
 								return {
 									title : item.title,
 									start : item.event_date + "T" + item.start_time,
-									end : item.event_date + "T" + item.end_time
+									end : item.event_date + "T" + item.end_time,
+									id : item.sc_no
 								}
 							});
 							
@@ -136,16 +174,18 @@ function getCalendarList(){
 						}
 					}
 					
-					reXhr.open("get", "../schedule/getList?year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1), true);
-					reXhr.send();
+					reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 				};
 			}
 		};
 		
 		var today = new Date();
 		
-		xhr.open("get" , "../schedule/getList?year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1) , true);
-		xhr.send();	
+		xhr.open("post" , "http://localhost:8080/ja/schedule/getList", true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
 
 function getServerList(){
@@ -171,14 +211,14 @@ function getServerList(){
 					datatype: "local",
 					data: jsonArr,
 					rowNum: 10,
-					autowidth:true,
+					rowList:[10,20,30],
+					width:700,
 					 colModel: [	
 							{name: 'name', label : '서버명', align:'left'},
 					        {name: 'ip', label : 'IP', align:'left'},
 					        {name: 'os', label : 'OS분류', align:'center'},
 					        {name: 'server_no', hidden: true}
 							],
-					rowList:[10,20,30],
 				    pager: '#pager',
 				    multiselect: true
 				
@@ -239,7 +279,7 @@ function getServerList(){
 						tr6.appendChild(th11);
 						var th12 =document.createElement("input");
 						th12.setAttribute("type","hidden");
-						th12.setAttribute("name","serverList");
+						th12.setAttribute("name","server_no");
 						th12.setAttribute("value",params[i].server_no);
 						tr6.appendChild(th12);
  					}  
@@ -251,21 +291,19 @@ function getServerList(){
 				});
 		}
 	};
-	xhr.open("get" , "./getServerList" , true);
+	
+	xhr.open("post" , "http://localhost:8080/ja/schedule/getServerList" , true);
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
-  
+
 window.addEventListener("DOMContentLoaded" , function(){
-	
 	
 	
 	$(window).resize(function() {
 		$("#list").setGridWidth($(this).width() * .100);
 	});
-
 	
-	  
-	 
 	/* 요일선택 했을시  */ 
 	$('.btnDay').click(function(){
   		if($(this).hasClass("active")){
@@ -274,31 +312,51 @@ window.addEventListener("DOMContentLoaded" , function(){
   		}else{
   		   $(this).addClass("active");  
   		   var valueByClass = $(this).val();
-  		   console.log(valueByClass);
    		   var input =document.createElement("input");
    		   input.setAttribute("type","hidden");
    		   input.setAttribute("name",valueByClass);
    		   input.setAttribute("value","y");
-			$(this).append(input);
+		   $(this).append(input);
   		}
+  		var total = $('.btnDay').length;
+		var checked = $('.btnDay.active').length;
+
+		if(total != checked){
+			$('.checkboxAll').prop("checked", false);
+		}else{
+			$('.checkboxAll').prop("checked", true); 
+		}
 	}); 
 
-
-    
+	
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
         const btnDay = document.querySelectorAll('.btnDay'); 
 
-        if($(btnDay).hasClass("active")){
-  		   $(btnDay).removeClass("active");
-  		}else{
-  		   $(btnDay).addClass("active");  
-  		}
-          
+		var a = $('.checkboxAll').is(':checked');
+        
+        if(a == true){
+        	$(btnDay).addClass("active");
+        	$(btnDay).each(function() { 
+        		var test = $(this).val();
+        		var input =document.createElement("input");
+        		   input.setAttribute("type","hidden");
+        		   input.setAttribute("name",test);
+        		   input.setAttribute("value","y");
+     			$(this).append(input);
+        		});
+        	
+   		}else{
+   			$(btnDay).removeClass("active");
+   			$(btnDay).children().remove();
+   		}
 	});
+	
+	
     
     
     
+    /* 매월, 매일 */
     $("input[name='repeat_cat']").change(function() {
  		if($("input[name='repeat_cat']:checked").val() == "3") {
  			const dayBox = document.getElementById("dayBox"); 
@@ -310,6 +368,7 @@ window.addEventListener("DOMContentLoaded" , function(){
  	});
     
     
+    /* 무기한 클릭시 */
      $('.limitless').click(function(){
         const noneBox = document.querySelector('.noneBox2');
         noneBox.setAttribute("style","display: none");  
@@ -321,22 +380,24 @@ window.addEventListener("DOMContentLoaded" , function(){
    		}else{
    			noneBox.setAttribute("style","display: block");  
    		}
-          
 	}); 
-     
     
+
     $('#btn1').click(function(){
          const serverModal = document.getElementById("serverModal"); 
-         serverModal.setAttribute("style","display: block");  
-         $("html, body").removeClass("not_scroll");
+         serverModal.setAttribute("style","display: block"); 
  	}); 
     
     
     $('.btnBoxbtn3').click(function(){
         const serverModal = document.getElementById("serverModal"); 
         serverModal.setAttribute("style","display: none");
+        
+        var cbox = document.getElementsByClassName('cbox');
+        for (var i = 0; i < cbox.length; i++) {
+        	cbox[i].checked = false;
+        }
 	}); 
- 	
  	
  	$("input[name='repeat_11']").change(function() {
  		if($("input[name='repeat_11']:checked").val() == "0") {
@@ -359,81 +420,125 @@ window.addEventListener("DOMContentLoaded" , function(){
  	});
  	
  	
-/* 	 $(function(){ 
-	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox', {
-	                initialHour: 12,
-	                initialMinute: 00,
-	                inputType: 'selectbox',
-	                showMeridiem: false
-	            });
-		 })
-
-
-	     $(function(){ 
-	     var tpSelectbox = new tui.TimePicker('#timepicker-selectbox2', {
-	                initialHour: 12,
-	                initialMinute: 00,
-	                inputType: 'selectbox',
-	                showMeridiem: false
-	            });
-		 }) */
+		$(function(){
+			$('.datepicker').datepicker({
+		    	dateFormat: 'yy.mm.dd'
+				});
+			})
 		 
+	    $(function(){
+	    	$('#datetimepicker1').datetimepicker({
+	    		datepicker:false,
+	    		format:'H:i',
+	    		step: 1
+	    	});
+	  	})
+	  	
+	  	$(function(){
+	    	$('#datetimepicker2').datetimepicker({
+	    		datepicker:false,
+	    		format:'H:i',
+	    		step: 1
+	    	});
+	  	})
 		 
-			$(function(){
-			    $('.datepicker').datepicker({
-		            dateFormat: 'yy.mm.dd'
-			    });
-			  })
-		 
-	     $(function(){
-	    	 $('#datetimepicker1').datetimepicker({
-	    		 datepicker:false,
-	    		  format:'H:i',
-	    		  step: 1
-	    		});
-	  })
-	  
-	  $(function(){
-	    	 $('#datetimepicker2').datetimepicker({
-	    		 datepicker:false,
-	    		  format:'H:i',
-	    		  step: 1
-	    		});
-	  })
-		 
- 	
- 	
-
+	/* page load후 바로 실행 되는 함수들 */  	
 	getCalendarList();
 	writeBtn();
 	getServerList();
 	delBtn();
-
-	
 });
+
+function validationCheck(target){
+	var result = 1;
+	
+	if(target.getAll('title') == ''){
+		/* 	1. 제목이 있는지 여부 
+			   제목에 혹시 어떠한 특수 문자가 들어갔는지 확인 해야함
+		*/
+		alert('제목을 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('start_date') == ''){
+		/* 	2. 시작 날짜가 제대로 입력 됐는지 확인
+		 	   날짜 형식이 제대로 되었는지도 확인 해야함 
+		 */
+		alert('작업 시작 날짜를 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('end_date') == '' && !$('.limitless').is(':checked') && target.getAll('repeat_11') == '0'){
+		/*	3. 종료 날짜가 제대로 입력 됐는지 확인
+			   날짜 형식이 제대로 되었는지도 확인 해야함
+		*/
+		alert('작업 종료 날짜를 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('start_time') == '' || target.getAll('end_time') ==''){
+		/*	4. 시작 시간과 끝나는 시작이 입력 됐는지 확인
+			   위 날짜 처럼 추후 형식을 확인 했는지도 확인 해야함
+		*/
+		alert('작업 시간을 입력해주세요.');
+		result = 0;
+	} else if(target.getAll('repeat_cat') == '1'){
+		/*	5. 매일 이라는 반복 유형 선택 시 특정 요일을 선택 했는지 확인 */
+		if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
+			result = 1;
+		} else {
+			alert('작업을 원하는 요일을 선택해주세요.');
+			result = 0;
+		}
+	} else if(target.getAll('repeat_cat') == '2'){
+		/*	6. 매 달 특정 주차가 선택이 되었는지 확인 */
+		if(target.getAll('repeat_week') < 1 || target.getAll('repeat_week') > 4){
+			alert('매 달 1주차 부터 4주차 까지만 선택 가능합니다.');
+			result = 0;
+		} else if(target.getAll('repeat_week') == ''){
+			alert('작업을 등록할 주차를 입력해주세요.');
+			result = 0;
+		} else {
+			/* 7. 특정 주차가 선택되어 있다면 요일도 선택되어 있는지 확인 */
+			if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
+				result = 1;
+			} else {
+				alert('작업을 원하는 요일을 선택해주세요.');
+				result = 0;
+			}
+		}
+	} else if(target.getAll('repeat_cat') == '3'){
+		/*	8. 매 달 특정 요일이 선택되어 있는지 그리고 정확한 값인지 확인 */
+		if(!target.has('repeat_day')){
+			alert('작업을 원하는 매 월 특정 요일을 입력해주세요.');
+			result = 0;
+		} else if(target.getAll('repeat_day') < 1 || target.getAll('repeat_day') > 28){
+			alert('특정 요일은 1일 부터 28일 까지만 선택 가능합니다.');
+			result = 0;
+		}
+	}
+	
+	return result;
+}
 
 function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
-	
-    $.ajax({
-        url: './regSchedule',
-        data: formData,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function ( data ) {
-            alert("등록에 성공했습니다.");
-            delBtn();
-            location.reload();
-        }
-    });
-	
+	if(validationCheck(formData) == 0){
+		return;
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date','9999.12.31');
+		}
+	    $.ajax({
+	        url: 'http://localhost:8080/ja/schedule/regSchedule',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        type: 'POST',
+	        success: function ( data ) {
+	            alert("등록에 성공했습니다.");
+	            delBtn();
+	            location.reload();
+	        }
+	    });
+	}	
 }
-
-
-
 </script>
 
 </head>
@@ -469,24 +574,26 @@ function regBtn(){
 					</div>
 					<div class="titleBox">
 						<strong class="text">작업명<span class="star">*</span></strong>
-						<input type="text" name="title" class="textBox">
+						<input type="text" name="title" class="textBox" autocomplete='off'>
 					</div>
 					<div class="dateBox">
 						<strong class="text">기간설정</strong>
 						<div class="radioBox">
-							<input type="radio" name="repeat_11" value="0" class="arr" checked> 반복설정
-							<input type="radio" name="repeat_11" value="1" class="timearr"> 하루설정
+							<input type="radio" name="repeat_11" value="0" class="arr" autocomplete='off' checked> 반복설정
+							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> 하루설정
 							<br>
 		            	    <div id="radioBoxRepeat">
-		                	    <!-- <div class="imgBox"><img src="../Desktop/aa/calendar.png"></div> -->
-		                        <input type="text" class="datepicker" name="start_date" value="">
+		                	    
+		                        <input type="text" class="datepicker start_date" name="start_date" autocomplete='off'>
 		                        <div class="noneBox2">
 		                        	<span class="ing">~</span>
-		                           	<input type="text" class="datepicker" name="end_date" value="">
+		                           	<input type="text" class="datepicker end_date" name="end_date" autocomplete='off'>
 								</div>
+		                    <div class="imgBox"><img src="../resources/img/calendar.svg"></div>
 		                    </div>   
 		                    <div id="radioBoxCheck">
-		                    	<input type="checkbox" name="end_date" value="9999-12-31" class="limitless"> 무기한
+
+		                    	<input type="checkbox" class="limitless" autocomplete='off'> 무기한
 		                    </div>
 						</div>
 					</div>
@@ -495,12 +602,12 @@ function regBtn(){
 						<strong class="text">반복설정</strong>
 						<div class="radioBox">
 						<div class="Boxxx">
-							<input type="radio" name="repeat_cat" value="1" checked> 매일
-							<input type="radio" name="repeat_cat" value="2" class="day"> 매월 <input type="text" name="repeat_week" class="dayBox">째주
-							<input type="radio" name="repeat_cat" value="3" class="day"> 매월 <input type="text" name="repeat_day" class="dayBox">일
+							<input type="radio" name="repeat_cat" value="1" autocomplete='off' checked> 매일
+							<input type="radio" name="repeat_cat" value="2" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_week" class="dayBox" autocomplete='off'>째주
+							<input type="radio" name="repeat_cat" value="3" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_day" class="dayBox" autocomplete='off'>일
 							<br>
 		                   	<div id="dayBox">
-								<input type="checkbox" name="" value="" class="checkboxAll"><span class="checkAll">전체</span> 
+								<input type="checkbox" name="checkboxAll" value="" class="checkboxAll" autocomplete='off'><span class="checkAll">전체</span> 
 		                   		<button type="button" value="sun" name="sun" class="btnDay">SUN</button>
 		                   		<button type="button" value="mon" name="mon" class="btnDay">MON</button>
 		                   		<button type="button" value="the" name="the" class="btnDay">TUE</button>
@@ -510,15 +617,14 @@ function regBtn(){
 		                   		<button type="button" value="sat" name="sat" class="btnDay">SAT</button>
 		                   	</div>
 		                   	</div>
-<!-- 		                   	<div id="timepickerBox">
-		                   		<div id="timepicker-selectbox"></div>
-		                   		<span class="ing">~</span>
-		                   		<div id="timepicker-selectbox2"></div>
-		                   	</div> -->
+		                   	
 		                   	<div id="timepickerBox">
-		                   	<input id="datetimepicker1" type="text" >
+
+		                   	
+		                   	<input id="datetimepicker1" type="text" name="start_time" autocomplete='off'>
 		                   	<span class="ing">~</span>
-		                   	<input id="datetimepicker2" type="text" >
+		                   	<input id="datetimepicker2" type="text" name="end_time" autocomplete='off'>
+		                   	<div class="imgBox"><img src="../resources/img/alarm.svg"></div>
 		                   	</div>
 						</div>
 					</div>
@@ -526,14 +632,14 @@ function regBtn(){
 					<div class="listBox">
 						<strong class="text">작업대상<span class="star">*</span></strong>
 						<div class="btnList">
-							<input type="button" name="" value="추가" class="btn1" id="btn1">
-							<input type="button" name="" value="삭제" class="btn1">
+							<input type="button" value="추가" class="btn1" id="btn1" autocomplete='off'>
+							<input type="button" value="삭제" class="btn1" autocomplete='off'>
 						</div>
 					</div>
 					<table class="serverList" id="serverListM">
 						<thead id="theadList">
 							<tr class="serverHeader">
-								<th class="serverHeaderText"><input type="checkbox" name="" value=""></th>
+								<th class="serverHeaderText"><input type="checkbox" autocomplete='off'></th>
 								<th class="serverHeaderText">서버명</th>
 								<th class="serverHeaderText">IP</th>
 								<th class="serverHeaderText">OS분류</th>
@@ -542,32 +648,29 @@ function regBtn(){
 					</table>
 					
 					<div class="btnBox">
-						<input type="button" name="" value="등록" class="btnBoxbtn" onclick="regBtn()">
-						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="delBtn()">
+						<input type="button" value="등록" class="btnBoxbtn" onclick="regBtn()" autocomplete='off'>
+						<input type="button" value="닫기" class="btnBoxbtn" onclick="delBtn()" autocomplete='off'>
 					</div>
 					</form>
 					<!-- Form 태그 종료 -->
 				</div>
 			</div>
 			
-			<div id="serverModal">
+			
+		</div>
+		
+		<div id="serverModal">
+		<div id="serverModalBox">
 				<table id="list"></table>
 				<div class="btnBox2">
-					<input type="button" name="" value="등록" class="btnBoxbtn2">
-					<input type="button" name="" value="닫기" class="btnBoxbtn3">
+					<input type="button" value="등록" class="btnBoxbtn2" autocomplete='off'>
+					<input type="button" value="닫기" class="btnBoxbtn3" autocomplete='off'>
 				</div>
 				<div id="pager"></div> 
 			</div>
-		</div>
+			</div>
+		
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>
