@@ -1,5 +1,7 @@
 package com.brainz.ja.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,5 +21,13 @@ public class CalendarController {
 		return "/calendar/calendarGridPage";
 	}
 	
-
+	@RequestMapping("multilangTest")
+	public String multilangTest() {
+		return "/calendar/multilangTest";
+	}
+	
+	@RequestMapping("multilang")
+	public String multilang() {
+		return "/calendar/multilang";
+	}
 }
