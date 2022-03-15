@@ -55,14 +55,35 @@ public class RestCalendarController {
 		}
 		
 		if(ssVo.getTitle() == null) {
-			data.put("result", 0);
-		} else if(ssVo.getStart_date() == null || ssVo.getEnd_date() == null) {
 			data.put("result", 1);
-		} else if(ssVo.getStart_time() == null || ssVo.getEnd_time() == null) {
+		} else if(ssVo.getStart_date() == null || ssVo.getEnd_date() == null) {
 			data.put("result", 2);
+		} else if(ssVo.getStart_time() == null || ssVo.getEnd_time() == null) {
+			data.put("result", 3);
 		} else {
 			service.regSchedule(ssVo);
-			data.put("result", 3);
+			data.put("result", 0);
+		}
+		
+		return data;
+	}
+	
+//	0 - 선택된 날짜 이전 이후 모두 삭제
+//	1 - 선택된 날짜만 삭제
+//	2 - 선택된 날짜 이후만 삭제
+	
+	@RequestMapping("delSchedule")
+	public HashMap<String, Object> delSchedule(Integer del_cat, Integer sc_no, String cur_date){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		if(del_cat == 0) {
+			service.delCat0(sc_no);
+		} else if(del_cat == 1) {
+			service.delCat1(sc_no, cur_date);
+		} else if(del_cat == 2) {
+			service.delCat2(sc_no, cur_date);
+		} else {
+			data.put("result", 0);
 		}
 		
 		return data;

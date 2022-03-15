@@ -88,8 +88,10 @@ function getCalendarList(){
 					            $('input[name=start_date]').val(sc_info.start_date);
 					            if(sc_info.end_date == ''){
 					            	$('.timearr').addClass('active');
-					            } else if(sc_info.end_date == '9999.12.31'){
-					            	$('.limitless').addClass('checked');
+					            } else if(sc_info.end_date == '9999-12-31'){
+					            	$('.limitless').attr('checked','checked');
+					            	const noneBox = document.querySelector('.noneBox2');
+					                noneBox.setAttribute("style","display: none");
 					            } else {
 					            	$('.noneBox2 .datepicker').val(sc_info.end_date);
 					            }
@@ -493,8 +495,7 @@ function validationCheck(target){
 		} else {
 			/* 7. 특정 주차가 선택되어 있다면 요일도 선택되어 있는지 확인 */
 			if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
-				alert('작업을 원하는 주차를 입력해주세요.');
-				result = 0;
+				result = 1;
 			} else {
 				alert('작업을 원하는 요일을 선택해주세요.');
 				result = 0;

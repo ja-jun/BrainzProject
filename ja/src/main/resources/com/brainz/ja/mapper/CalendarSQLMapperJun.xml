@@ -63,6 +63,7 @@
 		where (to_char(bs.start_date, 'MM')::int <= #{month }) 
 		   and (to_char(bs.end_date, 'MM')::int >= #{month })
 		]]>
+		   and delete_date is null
 		order by bs.start_date desc
 	</select>
 	
@@ -77,4 +78,9 @@
 		from bp_schedule bs
 		where bs.sc_no = ${sc_no }
 	</select>
+	
+	<delete id="updateDeleteDate">
+			update bp_schedule set delete_date = now()
+			where sc_no = #{sc_no}
+	</delete>
 </mapper>

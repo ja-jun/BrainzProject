@@ -135,5 +135,20 @@ public class CalendarService {
 	public ScheduleVo getScheduleInfo(int sc_no) {
 		return sqlMapper.selectScheduleByNo(sc_no);
 	}
+	
+	// del_cat = 0 인 경우 해당 스케줄을 과거 미래 내역 모두 삭제
+	public void delCat0(int sc_no) {
+		
+	}
+	
+	// del_cat = 1 인 경우 해당 날짜의 스케줄만 삭제
+	public void delCat1(int sc_no, String cur_date) {
+		
+	}
+	
+	// del_cat = 2 인 경우 해당 날짜 이후만 삭제
+	public void delCat2(int sc_no, String cur_date) {
+		
+	}
 }
 
