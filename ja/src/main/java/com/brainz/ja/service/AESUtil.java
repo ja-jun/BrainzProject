@@ -12,7 +12,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AESUtil {
 
     private static final int keySize = 128;

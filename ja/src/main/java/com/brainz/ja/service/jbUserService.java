@@ -16,16 +16,16 @@ public class jbUserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
+	AESUtil aes;
 	
 	public void register(jbUserVo vo) throws Exception {
 		
 		// 비밀번호 단방향 암호화
 		String encodedPW = bCryptPasswordEncoder.encode(vo.getUser_pw());
 		vo.setUser_pw(encodedPW);
-	   
 		
 		// 개인정보 양방향 암호화
-		AESUtil aes = new AESUtil();
 		String encryptid = aes.encrypt(vo.getUser_id());
 		vo.setUser_id(encryptid);
 		

@@ -18,6 +18,9 @@ public class UserLoginAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;  // 패스워드 암호화 객체
 	
+	@Autowired
+	AESUtil aes;
+	
 	@Override // 인증 로직
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
@@ -26,7 +29,6 @@ public class UserLoginAuthenticationProvider implements AuthenticationProvider {
 		String userPw = (String) authentication.getCredentials();
 		
 		
-		AESUtil aes = new AESUtil();
 		String encryptid = null;
 		try {
 			encryptid = aes.encrypt(userId);
