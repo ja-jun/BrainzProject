@@ -18,15 +18,15 @@
 				authentication-failure-handler-ref="loginFailHandler"
 			/>
 			<security:logout 
-				logout-url="/user/security_logout"
+				logout-url="/security_logout"
 				logout-success-url="/login/loginPage"
 				invalidate-session="true"
 				delete-cookies="true"
 			/>	
-		<security:intercept-url pattern="/login/loginPage" access="isAnonymous()"/>
+		<security:intercept-url pattern="/login/loginPage" access="permitAll"/>
 		<security:intercept-url pattern="/user/mainPage" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')" />
 		<security:intercept-url pattern="/user/registerUser" access="hasRole('ROLE_ADMIN')" />
-		<security:access-denied-handler error-page="/qwer" />
+		<security:access-denied-handler ref="webAccessDeniedHandler" />
 	</security:http>
 		
 	<security:authentication-manager>

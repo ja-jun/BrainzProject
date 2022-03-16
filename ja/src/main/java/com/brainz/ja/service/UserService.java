@@ -26,12 +26,6 @@ public class UserService {
 		vo.setUser_pw(encodedPW);
 		
 		// 개인정보 양방향 암호화
-		String encryptid = aes.encrypt(vo.getUser_id());
-		vo.setUser_id(encryptid);
-		
-		String encryptname = aes.encrypt(vo.getName());
-		vo.setName(encryptname);
-		
 		String encryptphone = aes.encrypt(vo.getPhone());
 		vo.setPhone(encryptphone);
 		

@@ -43,7 +43,7 @@
 			
 	    	<div id="box">
 	    		<button class="writeBtn" id="writeBtn" onclick="location.href='./registerUser' ">등록</button>
-	    		<button class="writeBtn" id="writeBtn" onclick="location.href='./security_logout' ">로그아웃</button>
+	    		<button class="writeBtn" id="writeBtn" onclick="location.href='../security_logout' ">로그아웃</button>
 	    	<div id="calendar"></div>
 	    	</div>
 	    </div>
