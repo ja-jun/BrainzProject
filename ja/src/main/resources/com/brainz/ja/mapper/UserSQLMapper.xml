@@ -10,7 +10,7 @@
 		select authority from bp_user where user_id = #{user_id}
 	</select>
 	
-	<insert id="insertUser">
+	<insert id="registerUser">
 		insert into bp_user values (
 			nextval('bp_user_seq'),
 			#{user_id},
@@ -23,6 +23,23 @@
 			now()
 		)
 	</insert>
+	
+	<select id="getUserList" resultType="map">
+		select * from bp_user
+	<if test="searchWord !=null">
+		WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+		<!-- WHERE name LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') OR ip LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') -->	
+	</if>
+		order by user_no desc	
+ 		<!-- WHERE name LIKE CONCAT('%',#{searchWord},'%') OR ip LIKE CONCAT('%',#{searchWord},'%') -->
+ 	</select>
+
+
+	<select id="getUser" resultType="com.brainz.ja.vo.UserVo">
+		select * from bp_user
+		where user_no=#{user_no}
+	</select>
+	
 	
 	
 	

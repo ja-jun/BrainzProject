@@ -20,12 +20,10 @@
 
 
 <script>
-
 	function search(){
 		
 		var searchWordInput = document.getElementsByName("searchWord");
 		var searchWordValue = searchWordInput[0].value;
-
 		var xhr = new XMLHttpRequest();
 		
 		xhr.onreadystatechange = function(){
@@ -73,7 +71,6 @@
 		xhr.open("get" , "./getServerList?searchWord=" + searchWordValue, true);
 		xhr.send();			
 	}
-
 	
 	function createAndInitGrid(){
         $("#list").jqGrid({
@@ -114,14 +111,12 @@
 	function searchTest(){
 		var searchWordInput = document.getElementsByName("searchWord");
 		var searchWordValue = searchWordInput[0].value;
-
 		var xhr = new XMLHttpRequest();
 		
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState == 4 && xhr.status == 200){
 				var data = JSON.parse(xhr.responseText);
 				
-
 		         renderGridByDatas(data.serverList);
 			}			
 		};
@@ -148,7 +143,6 @@
 		         $('#list').jqGrid('setGridParam', {data: jsonArr}).trigger('reloadGrid');
 		};
 		
-
 	function getServerList(){
 			
 			
@@ -228,7 +222,6 @@
 		createAndInitGrid();
 		getListTest();
 	});
-
 	
 	
 	
