@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/login/*")
 public class LoginController {
 
-	@RequestMapping("/index")
-	public String home(Model model) {
-		return "home";
-	}
 	
 	@RequestMapping("loginPage")
 	public String login(Model model) {

@@ -29,14 +29,17 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
 			throws IOException, ServletException {
 		res.setStatus(HttpStatus.FORBIDDEN.value());
 		
+		String requestUri = req.getRequestURI();
+		
 		if(ade instanceof AccessDeniedException) {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if (authentication != null && 
-					((UserDetailsVo) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+			if (authentication != null && requestUri.equals("/ja/user/registerUser") &&
+					((UserDetailsVo) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) 
+			{
 				req.setAttribute("msg", "접근권한 없는 사용자입니다.");
 				req.setAttribute("nextPage", "../user/mainPage");
 			} else {
-				req.setAttribute("msg", "로그인 권한이 없는 아이디입니다.");
+				req.setAttribute("msg", "(로그인 상태) 로그아웃 되었습니다.");
 				req.setAttribute("nextPage", "../user/mainPage");
 				res.setStatus(HttpStatus.UNAUTHORIZED.value());
 				SecurityContextHolder.clearContext();

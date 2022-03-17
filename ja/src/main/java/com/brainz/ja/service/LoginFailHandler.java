@@ -46,7 +46,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 		else request.setAttribute("LoginFailMessage", "계정을 찾을 수 없습니다.");
 		
 		// 로그인 페이지로 다시 포워딩
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/jbLogin");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/login/loginPage");
 		dispatcher.forward(request, response);
 		
 		
