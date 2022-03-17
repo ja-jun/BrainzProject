@@ -96,4 +96,16 @@ public class RestCalendarController {
 		
 		return data;
 	}
+	
+	@RequestMapping("modSchedule")
+	public HashMap<String, Object> modSchedule(SetScheduleVo ssVo){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(ssVo));
+		
+		service.modSchedule(ssVo);
+		
+		return data;
+	}
 }

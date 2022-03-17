@@ -42,6 +42,11 @@ public class CalendarService {
 		}
 	}
 	
+	// 일정 수정 프로세스
+	public void modSchedule(SetScheduleVo ssVo) {
+		sqlMapper.updateSchedule(ssVo);
+	}
+	
 	public ArrayList<HashMap<String, Object>> getScheduleList(int year,int month){
 		ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String, Object>>();
 		

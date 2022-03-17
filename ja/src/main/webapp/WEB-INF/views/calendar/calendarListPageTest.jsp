@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +34,7 @@
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
 <script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
-
+var test = '<spring:message code="calendar.repeat.all"/>';
 
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
@@ -119,7 +120,7 @@ function molBtn() {
 	button2.setAttribute("type","button");
 	button2.setAttribute("value","취소");
 	button2.setAttribute("class","btnBoxbtn3");
-	button2.setAttribute("onclick","delBtn()");
+	button2.setAttribute("onclick","delBox()");
 	
 	deleteRadio.appendChild(div);
 	div.appendChild(ul);
@@ -167,7 +168,7 @@ function getCalendarList(){
 				            right: 'next'
 				        },
 					events : events,
-					locale: 'ko',
+					locale: 'en',
 					contentHeight: 'auto',
 					eventClick: function(info){
 						/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
@@ -192,17 +193,24 @@ function getCalendarList(){
 					            
 					            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
 					            $(repeat_cat).attr('checked','checked');
+					            if($(repeat_cat).val() == 2){
+					            	$('input[name=repeat_week]').val(sc_info.repeat_week);
+					            } else if($(repeat_cat).val() == 3){
+					            	$('input[name=repeat_day]').val(sc_info.repeat_day);
+					            }
 					            
 					            var days = [sc_info.sun, sc_info.mon, sc_info.the, sc_info.wed, sc_info.thu, sc_info.fri, sc_info.sat];
 					            for(var i = 0; i < 7; i++){
 					            	if(days[i] == 'y'){
 					            		var day = $('.btnDay').get(i);
 					            		$(day).addClass('active');
+					            		$(day).attr('checked', 'checked');
 					            	}
 					            }
 					            
 					            $('input[name=start_time]').val(sc_info.start_time);
 					            $('input[name=end_time]').val(sc_info.end_time);
+					            $('#sc_no').val(sc_info.sc_no);
 					            
 					            if($('button.active').length == 7){
 					            	$('.checkboxAll').attr('checked','checked');
@@ -213,7 +221,7 @@ function getCalendarList(){
 					            btn1.setAttribute("value","수정");
 					            btn1.setAttribute("class","btnBoxbtn");
 					            btn1.setAttribute("id","btnBoxbtn1");
-					            btn1.setAttribute("onclick","regBtn()");
+					            btn1.setAttribute("onclick","modBtn()");
 					            
 					            var btn2 = document.getElementById('btnBoxbtn2');
 					            btn2.innerHTML="";
@@ -221,6 +229,13 @@ function getCalendarList(){
 					            btn2.setAttribute("class","btnBoxbtn");
 					            btn2.setAttribute("id","btnBoxbtn2");
 					            btn2.setAttribute("onclick","molBtn()");
+					            
+					            var input_date = document.createElement('input');
+					            var cur_date = info.event.start;
+					            input_date.setAttribute("name","cur_date");
+					            input_date.setAttribute("type","hidden");
+					            input_date.setAttribute("value", cur_date.)
+					            console.log(info.event.start);
 					        },
 					        error: function() {
 					        	alert("잘못된 접근입니다.");
@@ -325,9 +340,9 @@ function getServerList(){
 					rowList:[10,20,30],
 					width:700,
 					 colModel: [	
-							{name: 'name', label : '서버명', align:'left'},
+							{name: 'name', label : '<spring:message code="calendar.serverlist.serverName"/>', align:'left'},
 					        {name: 'ip', label : 'IP', align:'left'},
-					        {name: 'os', label : 'OS분류', align:'center'},
+					        {name: 'os', label : 'OS', align:'center'},
 					        {name: 'server_no', hidden: true}
 							],
 				    pager: '#pager',
@@ -650,6 +665,32 @@ function regBtn(){
 	    });
 	}	
 }
+
+/* 수정 기능 */
+function modBtn(){
+	
+	var formData = new FormData(document.getElementById('regScheduleInfo'));
+	
+	if(validationCheck(formData) == 0){
+		return;
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date','9999.12.31');
+		}
+		$.ajax({
+			url: 'http://localhost:8080/ja/schedule/modSchedule',
+			data: formData,
+			processData: false,
+			contentType: false,
+			type: 'POST',
+			success: function(data){
+				alert("수정에 성공했습니다.");
+				delBtn();
+				location.reload();
+			}
+		});
+	}
+}
 </script>
 
 </head>
@@ -662,14 +703,31 @@ function regBtn(){
 		<div id="content">
 			<div class="navBar">
 				<ul>
-					<li class="pageList"><a href="../user/mainPage"><i class="bi bi-person"></i>사용자 관리</a></li>
-					<li class="pageList"><a href=""><i class="bi bi-shield-check"></i>서버 관리</a></li>
-					<li class="pageList on"><a href=""><i class="bi bi-calendar-check"></i>작업 관리</a></li>
+					<li class="pageList">
+						<a href="../user/mainPage">
+							<i class="bi bi-person"></i>
+							<spring:message code="navbar.user"></spring:message>
+						</a>
+					</li>
+					<li class="pageList">
+						<a href="">
+							<i class="bi bi-shield-check"></i>
+							<spring:message code="navbar.server"></spring:message>
+						</a>
+					</li>
+					<li class="pageList on">
+						<a href="">
+							<i class="bi bi-calendar-check"></i>
+							<spring:message code="navbar.calendar"></spring:message>
+						</a>
+					</li>
 				</ul>
 			</div>
 			
 	    	<div id="box">
-	    		<button class="writeBtn" onclick="writeBtn()">등록</button>
+	    		<button class="writeBtn" onclick="writeBtn()">
+	    			<spring:message code="calendar.register"></spring:message>
+	    		</button>
 	    	<div id="calendar"></div>
 	    	</div>
 	    </div>	
@@ -680,18 +738,26 @@ function regBtn(){
 					<!-- Form 태그 시작 -->
 					<form id="regScheduleInfo" name="param">
 					<div class="top">
-						<h3 class="title">작업 등록</h3>
+						<h3 class="title">
+							<spring:message code="calendar.register"></spring:message>
+						</h3>
 						<i class="bi bi-x" onclick="delBtn()"></i>
 					</div>
 					<div class="titleBox">
-						<strong class="text">작업명<span class="star">*</span></strong>
+						<strong class="text">
+							<spring:message code="calendar.title"></spring:message>
+							<span class="star">*</span>
+						</strong>
 						<input type="text" name="title" class="textBox" autocomplete='off'>
+						<input type="hidden" name="sc_no" id="sc_no">
 					</div>
 					<div class="dateBox">
-						<strong class="text">기간설정</strong>
+						<strong class="text">
+							<spring:message code="calendar.period"></spring:message>
+						</strong>
 						<div class="radioBox">
-							<input type="radio" name="repeat_11" value="0" class="arr" autocomplete='off' checked> 반복설정
-							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> 하루설정
+							<input type="radio" name="repeat_11" value="0" class="arr" autocomplete='off' checked> <spring:message code="calendar.repeat"></spring:message>
+							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> <spring:message code="calendar.day"></spring:message>
 							<br>
 		            	    <div id="radioBoxRepeat">
 		                	    
@@ -704,21 +770,27 @@ function regBtn(){
 		                    </div>   
 		                    <div id="radioBoxCheck">
 
-		                    	<input type="checkbox" class="limitless" autocomplete='off'> 무기한
+		                    	<input type="checkbox" class="limitless" autocomplete='off'> <spring:message code="calendar.unlimit"></spring:message>
 		                    </div>
 						</div>
 					</div>
 		
 					<div class="timeBox">
-						<strong class="text">반복설정</strong>
+						<strong class="text"><spring:message code="calendar.repeat.category"></spring:message>
+						</strong>
 						<div class="radioBox">
 						<div class="Boxxx">
-							<input type="radio" name="repeat_cat" value="1" autocomplete='off' checked> 매일
-							<input type="radio" name="repeat_cat" value="2" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_week" class="dayBox" autocomplete='off'>째주
-							<input type="radio" name="repeat_cat" value="3" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_day" class="dayBox" autocomplete='off'>일
+							<input type="radio" name="repeat_cat" value="1" autocomplete='off' checked> <spring:message code="calendar.repeat.everyday"></spring:message>
+							<input type="radio" name="repeat_cat" value="2" autocomplete='off' class="day"> <spring:message code="calendar.repeat.month"></spring:message> 
+								<input type="text" name="repeat_week" class="dayBox" autocomplete='off'> <spring:message code="calendar.repeat.week"></spring:message> 
+							<input type="radio" name="repeat_cat" value="3" autocomplete='off' class="day"> <spring:message code="calendar.repeat.month"></spring:message> 
+								<input type="text" name="repeat_day" class="dayBox" autocomplete='off'> <spring:message code="calendar.repeat.day"></spring:message> 
 							<br>
 		                   	<div id="dayBox">
-								<input type="checkbox" name="checkboxAll" value="" class="checkboxAll" autocomplete='off'><span class="checkAll">전체</span> 
+								<input type="checkbox" name="checkboxAll" value="" class="checkboxAll" autocomplete='off'>
+									<span class="checkAll">
+										<spring:message code="calendar.repeat.all"></spring:message>
+									</span> 
 		                   		<button type="button" value="sun" name="sun" class="btnDay">SUN</button>
 		                   		<button type="button" value="mon" name="mon" class="btnDay">MON</button>
 		                   		<button type="button" value="the" name="the" class="btnDay">TUE</button>

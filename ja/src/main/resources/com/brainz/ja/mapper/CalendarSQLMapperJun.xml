@@ -85,7 +85,20 @@
 	</delete>
 	
 	<update id="updateSchedule">
-		update bp_schedule set end_date = #{end_date }, start_time = #{start_time }, end_time = #{end_time }
+		update bp_schedule set 
+			end_date = #{end_date }, 
+			start_time = #{start_time }, 
+			end_time = #{end_time },
+			repeat_cat = #{repeat_cat },
+			repeat_day = #{repeat_day },
+			repeat_week = #{repeat_week },
+			mon = #{mon },
+			the = #{the },
+			wed = #{wed },
+			thu = #{thu },
+			fri = #{fri },
+			sat = #{sat },
+			sun = #{sun }
 		where sc_no = #{sc_no }
 	</update>
 	
