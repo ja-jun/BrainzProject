@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brainz.ja.mapper.UserSQLMapper">
+	<select id="selectUser" resultType="com.brainz.ja.vo.UserVo">
+		select * from bp_user where user_id = #{user_id}
+	</select>
+	
+	<select id="getAuthList" resultType="String">
+		select authority from bp_user where user_id = #{user_id}
+	</select>
+	
+	<insert id="registerUser">
+		insert into bp_user values (
+			nextval('bp_user_seq'),
+			#{user_id},
+			#{user_pw},
+			#{name},
+			#{authority},
+			#{phone},
+			#{email},
+			#{dsc},
+			now()
+		)
+	</insert>
+	
+	<select id="getUserList" resultType="map">
+		select * from bp_user
+	<if test="searchWord !=null">
+		WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+		<!-- WHERE name LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') OR ip LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') -->	
+	</if>
+		order by user_no desc	
+ 		<!-- WHERE name LIKE CONCAT('%',#{searchWord},'%') OR ip LIKE CONCAT('%',#{searchWord},'%') -->
+ 	</select>
+
+
+	<select id="getUser" resultType="com.brainz.ja.vo.UserVo">
+		select * from bp_user
+		where user_no=#{user_no}
+	</select>
+	
+	
+	
+	
+</mapper>
