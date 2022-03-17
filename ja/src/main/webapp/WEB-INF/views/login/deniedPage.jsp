@@ -4,12 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Denied-Page</title>
 </head>
 <body>
 	<script type="text/javascript">
-		alert("사용자 등록을 하였습니다.");
-		window.location.href = "./jbWork";
+		alert("${msg}");
+		window.location.href = "${nextPage}";
 	</script>
 </body>
 </html>

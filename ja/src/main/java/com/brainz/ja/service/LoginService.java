@@ -6,24 +6,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.brainz.ja.mapper.jbUserSQLMapper;
-import com.brainz.ja.vo.jbUserDetailsVo;
-import com.brainz.ja.vo.jbUserVo;
+import com.brainz.ja.mapper.UserSQLMapper;
+import com.brainz.ja.vo.UserDetailsVo;
+import com.brainz.ja.vo.UserVo;
 
 @Service("loginService")
-public class jbLoginService implements UserDetailsService {
+public class LoginService implements UserDetailsService {
 
 	@Autowired
-	private jbUserSQLMapper userSQLMapper;
+	private UserSQLMapper userSQLMapper;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException  {
 		
 		// 최종적으로 리턴해야할 객체
-		jbUserDetailsVo userDetails = new jbUserDetailsVo();
+		UserDetailsVo userDetails = new UserDetailsVo();
 
 		// 사용자 정보 select
-		jbUserVo userVo = userSQLMapper.selectUser(username);
+		UserVo userVo = userSQLMapper.selectUser(username);
 
 		// 사용자 정보 없으면 null 처리
 		if (userVo == null) {

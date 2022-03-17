@@ -18,10 +18,15 @@
 		)
 	</insert>
 
-	<select id="getServerList" resultType="hashmap">
-		SELECT * FROM BP_server
-		WHERE name LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') OR ip LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'')
-	</select>
+	<select id="getServerList" resultType="map">
+		SELECT bps.* FROM BP_server bps
+		<if test="searchWord !=null">
+			WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+<!-- 			WHERE name LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') OR ip LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'')	
+ -->	</if>
+		order by server_no desc	
+<!-- 		WHERE name LIKE CONCAT('%',#{searchWord},'%') OR ip LIKE CONCAT('%',#{searchWord},'%') -->	
+ 	</select>
 
 	<select id="getServer" resultType="com.brainz.ja.vo.ServerVo">
 		SELECT * FROM BP_SERVER
