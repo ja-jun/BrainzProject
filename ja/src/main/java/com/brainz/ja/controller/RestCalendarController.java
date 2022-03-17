@@ -36,6 +36,7 @@ public class RestCalendarController {
 		
 		data.put("scheduleInfo", service.getScheduleInfo(sc_no));
 		data.put("serverList", service.getServerList(sc_no));
+		data.put("serverListNo", service.getServerListNoServer(sc_no));
 		
 		return data;
 	}

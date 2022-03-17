@@ -108,4 +108,10 @@
 	 		 bp_mgmt_server bms
 		where bms.sc_no = #{sc_no }
 	</select>
+	
+	<select id="selectServerBySc_no2" resultType="com.brainz.ja.vo.ServerVo">
+		select bs.name, bs.ip, bs.os, bs.mac, bs.control_num, bs.dsc
+		from bp_server bs inner JOIN bp_mgmt_server bms on bs.server_no = bms.server_no
+		where bms.sc_no = #{sc_no }
+	</select>
 </mapper>
