@@ -42,6 +42,11 @@ public class CalendarService {
 		}
 	}
 	
+	// 일정 수정 프로세스
+	public void modSchedule(SetScheduleVo ssVo) {
+		sqlMapper.updateSchedule(ssVo);
+	}
+	
 	public ArrayList<HashMap<String, Object>> getScheduleList(int year,int month){
 		ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String, Object>>();
 		
@@ -139,6 +144,10 @@ public class CalendarService {
 	
 	public ArrayList<MgmtVo> getServerList(int sc_no){
 		return sqlMapper.selectServerBySc_no(sc_no);
+	}
+	
+	public ArrayList<MgmtVo> getServerListNoServer(int sc_no){
+		return sqlMapper.selectServerBySc_no2(sc_no);
 	}
 	
 	// del_cat = 0 인 경우 해당 스케줄을 과거 미래 내역 모두 삭제

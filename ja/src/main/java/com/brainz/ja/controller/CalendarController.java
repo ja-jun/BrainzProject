@@ -50,5 +50,5 @@ public class CalendarController {
 		System.out.println("MAP -> JSON 테스트 : " + jsonStr);
 		
 		return gsonObj;
-		}
+	}
 }

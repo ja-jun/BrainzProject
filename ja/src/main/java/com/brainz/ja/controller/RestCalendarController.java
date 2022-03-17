@@ -36,6 +36,7 @@ public class RestCalendarController {
 		
 		data.put("scheduleInfo", service.getScheduleInfo(sc_no));
 		data.put("serverList", service.getServerList(sc_no));
+		data.put("serverListNo", service.getServerListNoServer(sc_no));
 		
 		return data;
 	}
@@ -93,6 +94,18 @@ public class RestCalendarController {
 		} else {
 			data.put("result", 1);
 		}
+		
+		return data;
+	}
+	
+	@RequestMapping("modSchedule")
+	public HashMap<String, Object> modSchedule(SetScheduleVo ssVo){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(ssVo));
+		
+		service.modSchedule(ssVo);
 		
 		return data;
 	}

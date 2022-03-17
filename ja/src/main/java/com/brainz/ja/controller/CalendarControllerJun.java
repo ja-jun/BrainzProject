@@ -26,4 +26,9 @@ public class CalendarControllerJun {
 	public String jqGridPage() {
 		return "calendar/jqGridPage";
 	}
+	
+	@RequestMapping("calendarPageTest")
+	public String calendarPageTest() {
+		return "calendar/calendarListPageTest";
+	}
 }
