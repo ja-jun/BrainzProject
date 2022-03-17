@@ -92,7 +92,7 @@ function molBtn() {
 	input.setAttribute("checked","checked");
 	var span = document.createElement("span");
 	span.setAttribute("class","sapnRadio");
-	span.innerText="이 일정";
+	span.innerText="모든 일정";
 	
 	var radioBoxList2 = document.createElement("li");
 	radioBoxList2.setAttribute("class","radioBoxList");
@@ -103,7 +103,7 @@ function molBtn() {
 	input2.setAttribute("value","1");
 	var span2 = document.createElement("span");
 	span2.setAttribute("class","sapnRadio");
-	span2.innerText="이 일정 및 향후 일정";
+	span2.innerText="선택한 일정";
 	
 	var radioBoxList3 = document.createElement("li");
 	radioBoxList3.setAttribute("class","radioBoxList");
@@ -114,7 +114,7 @@ function molBtn() {
 	input3.setAttribute("value","2");
 	var span3 = document.createElement("span");
 	span3.setAttribute("class","sapnRadio");
-	span3.innerText="모든 일정";
+	span3.innerText="이 후 모든 일정";
 	
 	var btnBox2 = document.createElement("div");
 	btnBox2.setAttribute("class","btnBox2");
@@ -122,7 +122,7 @@ function molBtn() {
 	button.setAttribute("type","button");
 	button.setAttribute("value","삭제");
 	button.setAttribute("class","btnBoxbtn2");
-	button.setAttribute("onclick","");
+	button.setAttribute("onclick","delSchedule()");
 	var button2 = document.createElement("input");
 	button2.setAttribute("type","button");
 	button2.setAttribute("value","취소");
@@ -176,7 +176,7 @@ function getCalendarList(){
 			        },
 				events : events,
 				locale: 'ko',
-				contentHeight: 'auto',
+				height: 1000,
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
 					$.ajax({
@@ -186,7 +186,14 @@ function getCalendarList(){
 				        success: function(data) {
 				            writeBtn();
 				            var sc_info = data.scheduleInfo;
-				            var sc_server = data.serverListNo;
+				            var sc_server = data.serverList;
+				            
+				            var sc_no_input = document.createElement('input');
+				            sc_no_input.setAttribute('type','hidden');
+				            sc_no_input.setAttribute('name','sc_no');
+				            sc_no_input.setAttribute('value',sc_info.sc_no);
+				            $('.textBox').append(sc_no_input);
+				            
 				            $('.textBox').val(sc_info.title);
 				            $('input[name=start_date]').val(sc_info.start_date);
 				            if(sc_info.end_date == ''){
@@ -199,14 +206,27 @@ function getCalendarList(){
 				            	$('.noneBox2 .datepicker').val(sc_info.end_date);
 				            }
 				            
+				            $('#datetimepicker1').val(sc_info.start_time);
+				            $('#datetimepicker2').val(sc_info.end_time);
+				            
 				            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
 				            $(repeat_cat).attr('checked','checked');
+				            if($(repeat_cat).val() == 2){
+				            	$('input[name=repeat_week]').val(sc_info.repeat_week);
+				            } else if($(repeat_cat).val() == 3){
+				            	$('input[name=repeat_day]').val(sc_info.repeat_day);
+				            }
 				            
 				            var days = [sc_info.sun, sc_info.mon, sc_info.the, sc_info.wed, sc_info.thu, sc_info.fri, sc_info.sat];
 				            for(var i = 0; i < 7; i++){
 				            	if(days[i] == 'y'){
 				            		var day = $('.btnDay').get(i);
 				            		$(day).addClass('active');
+				            		var input =document.createElement("input");
+				            		input.setAttribute("type","hidden");
+				            		input.setAttribute("name",$(day).val());
+				            		input.setAttribute("value","y");
+				         		    $(day).append(input);
 				            	}
 				            }
 				            
@@ -287,14 +307,28 @@ function getCalendarList(){
 				            btn1.setAttribute("value","수정");
 				            btn1.setAttribute("class","btnBoxbtn");
 				            btn1.setAttribute("id","btnBoxbtn1");
-				            btn1.setAttribute("onclick","regBtn()");
+				            btn1.setAttribute("onclick","modBtn()");
 				            
 				            var btn2 = document.getElementById('btnBoxbtn2');
 				            btn2.innerHTML="";
 				            btn2.setAttribute("value","삭제");
 				            btn2.setAttribute("class","btnBoxbtn");
 				            btn2.setAttribute("id","btnBoxbtn2");
-				            btn2.setAttribute("onclick","regBtn()");
+				            btn2.setAttribute("onclick","molBtn()");
+				            
+				            var input_date = document.createElement('input');
+				            var event_date = info.event.start;
+				            var month = "";
+				            
+				            if((event_date.getMonth() + 1) >= 1 || (event_date.getMonth() + 1) < 10){
+				            	month = "0" + (event_date.getMonth() + 1);	
+				            }
+				            
+				            cur_date = event_date.getFullYear() + "-" + month + "-" + event_date.getDate();
+				            input_date.setAttribute("name","cur_date");
+				            input_date.setAttribute("type","hidden");
+				            input_date.setAttribute("value", cur_date);
+				            $('#regScheduleInfo').append(input_date);
 				        },
 				        error: function() {
 				        	alert("잘못된 접근입니다.");
@@ -607,7 +641,7 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
 		$(function(){
 			$('.datepicker').datepicker({
-		    	dateFormat: 'yy.mm.dd'
+		    	dateFormat: 'yy-mm-dd'
 				});
 			})
 		 
@@ -708,7 +742,7 @@ function regBtn(){
 		return;
 	} else {
 		if($('.limitless').is(':checked')){
-			formData.set('end_date','9999.12.31');
+			formData.set('end_date','9999-12-31');
 		}
 	    $.ajax({
 	        url: 'http://localhost:8080/ja/schedule/regSchedule',
@@ -723,6 +757,49 @@ function regBtn(){
 	        }
 	    });
 	}	
+}
+
+/* 수정 기능 */
+function modBtn(){
+	
+	var formData = new FormData(document.getElementById('regScheduleInfo'));
+	
+	if(validationCheck(formData) == 0){
+		return;
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date','9999-12-31');
+		}
+		$.ajax({
+			url: 'http://localhost:8080/ja/schedule/modSchedule',
+			data: formData,
+			processData: false,
+			contentType: false,
+			type: 'POST',
+			success: function(data){
+				alert("수정에 성공했습니다.");
+				delBtn();
+				location.reload();
+			}
+		});
+	}
+}
+
+/* 삭제 기능 */
+function delSchedule(){
+	var formData = new FormData(document.getElementById('regScheduleInfo'));
+
+	$.ajax({
+		url: 'http://localhost:8080/ja/schedule/delSchedule',
+		data: formData,
+		processData: false,
+		contentType: false,
+		type: 'POST',
+		success: function(data){
+			alert("삭제에 성공했습니다.");
+			location.reload();
+		}
+	});
 }
 </script>
 
@@ -836,6 +913,7 @@ function regBtn(){
 						<input type="button" value="등록" class="btnBoxbtn" id="btnBoxbtn1" onclick="regBtn()" autocomplete='off'>
 						<input type="button" value="닫기" class="btnBoxbtn" id="btnBoxbtn2" onclick="delBtn()" autocomplete='off'>
 					</div>
+					<div id="deleteRadio"></div>
 					</form>
 					<!-- Form 태그 종료 -->
 				</div>
@@ -856,7 +934,7 @@ function regBtn(){
 			</div>
 			
 			
-		<div id="deleteRadio"></div>
+		
 		
 	</div>
 </body>
