@@ -77,7 +77,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalDate getStart_date() {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return LocalDate.parse(this.start_date, dateFormat);
 	}
 	public void setStart_date(String start_date) {
@@ -85,7 +85,7 @@ public class SetScheduleVo {
 	}
 
 	public LocalDate getEnd_date() {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return LocalDate.parse(this.end_date, dateFormat);
 	}
 	public void setEnd_date(String end_date) {

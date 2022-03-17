@@ -79,16 +79,21 @@ public class RestCalendarController {
 //	2 - 선택된 날짜 이후만 삭제
 	
 	@RequestMapping("delSchedule")
-	public HashMap<String, Object> delSchedule(Integer del_cat, SetScheduleVo ssVo, String cur_date){
+	public HashMap<String, Object> delSchedule(Integer delete_radio, SetScheduleVo ssVo, String cur_date){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		if(del_cat == 0) {
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(ssVo));
+		System.out.println(delete_radio);
+		System.out.println(cur_date);
+		
+		if(delete_radio == 0) {
 			service.delCat0(ssVo.getSc_no());
 			data.put("result", 0);
-		} else if(del_cat == 1) {
+		} else if(delete_radio == 1) {
 			service.delCat1(ssVo, cur_date);
 			data.put("result", 0);
-		} else if(del_cat == 2) {
+		} else if(delete_radio == 2) {
 			service.delCat2(ssVo, cur_date);
 			data.put("result", 0);
 		} else {
@@ -99,11 +104,12 @@ public class RestCalendarController {
 	}
 	
 	@RequestMapping("modSchedule")
-	public HashMap<String, Object> modSchedule(SetScheduleVo ssVo){
+	public HashMap<String, Object> modSchedule(SetScheduleVo ssVo, String cur_date){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(ssVo));
+		System.out.println(cur_date);
 		
 		service.modSchedule(ssVo);
 		

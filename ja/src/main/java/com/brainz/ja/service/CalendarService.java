@@ -157,21 +157,28 @@ public class CalendarService {
 	
 	// del_cat = 1 인 경우 해당 날짜의 스케줄만 삭제
 	public void delCat1(SetScheduleVo ssVo, String cur_date) {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate current_date = LocalDate.parse(cur_date, dateFormat);
 		
 		LocalDate pre_date = current_date.minusDays(1);
 		LocalDate aft_date = current_date.plusDays(1);
 		
+		LocalDate start_date = ssVo.getStart_date();
+		LocalDate end_date = ssVo.getEnd_date();
+		
 		// 기존 schedule을 해당 날짜 -1 일 까지로 end_date를 업데이트
 		SetScheduleVo pre_ssVo = ssVo;
+		pre_ssVo.setStart_date(start_date.format(dateFormat));
 		pre_ssVo.setEnd_date(pre_date.format(dateFormat));
 		sqlMapper.updateSchedule(pre_ssVo);
 		
 		// 해당 날짜 다음 날 부터 시작되는 새로운 스케줄을 등록
 		SetScheduleVo aft_ssVo = ssVo;
-		aft_ssVo.setSc_no(sqlMapper.selectNextScNo());
+		
+		int aft_sc_no = sqlMapper.selectNextScNo();
+		aft_ssVo.setSc_no(aft_sc_no);
 		aft_ssVo.setStart_date(aft_date.format(dateFormat));
+		aft_ssVo.setEnd_date(end_date.format(dateFormat));
 		
 		if(aft_ssVo.getServer_no() != null) {
 			for(String server_no : ssVo.getServer_no()) {
@@ -182,11 +189,13 @@ public class CalendarService {
 				sqlMapper.insertMgmtServer(mVo);
 			}
 		}
+		
+		sqlMapper.insertSchedule(aft_ssVo);
 	}
 	
 	// del_cat = 2 인 경우 해당 날짜 이후만 삭제
 	public void delCat2(SetScheduleVo ssVo, String cur_date) {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate current_date = LocalDate.parse(cur_date, dateFormat);
 		
 		LocalDate pre_date = current_date.minusDays(1);
