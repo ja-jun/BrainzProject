@@ -27,8 +27,8 @@ public class UserLoginAuthenticationProvider implements AuthenticationProvider {
 		String userPw = (String) authentication.getCredentials();
 		
 		/* DB에서 가져온 정보 */
-		UserDetailsVo userDetails = (UserDetailsVo) loginService.loadUserByUsername(userId);		
-
+		UserDetailsVo userDetails = (UserDetailsVo) loginService.loadUserByUsername(userId);
+		
 		
 		/* 인증 진행 */
 		// DB에 정보가 없는 경우 예외 발생 (아이디/패스워드 잘못됐을 때와 동일한 것이 좋음)

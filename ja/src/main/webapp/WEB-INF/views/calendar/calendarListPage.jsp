@@ -179,7 +179,7 @@ function getCalendarList(){
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
 					$.ajax({
-				        url: 'http://localhost:8080/ja/schedule/getScheduleInfo',
+				        url: 'http://localhost:8181/ja/schedule/getScheduleInfo',
 				        data: "sc_no=" + info.event.id,
 				        type: 'POST',
 				        success: function(data) {
@@ -354,11 +354,43 @@ function getCalendarList(){
 			});
 			calendar.render();
 				
+<<<<<<< HEAD
+				var prev = document.getElementsByClassName('fc-prev-button fc-button fc-button-primary');
+				prev[0].onclick = function(){
+					var date = calendar.getDate();
+					// 등록된 모든 이벤트들을 삭제한다.
+					calendar.removeAllEvents();
+					
+					// 새로운 이벤트들을 등록한다.
+					var reXhr = new XMLHttpRequest();
+					reXhr.onreadystatechange = function(){
+						if(reXhr.readyState == 4 && reXhr.status == 200){
+							var reData = JSON.parse(reXhr.responseText);
+							
+							var newEvents = reData.scheduleList.map(function(item){
+								return {
+									title : item.title,
+									start : item.event_date + "T" + item.start_time,
+									end : item.event_date + "T" + item.end_time,
+									id : item.sc_no
+								}
+							});
+							
+							calendar.addEventSource(newEvents);
+						}
+					}
+					
+					reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
+					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
+				};
+=======
 			var prev = document.getElementsByClassName('fc-prev-button fc-button fc-button-primary');
 			prev[0].onclick = function(){
 				var date = calendar.getDate();
 				// 등록된 모든 이벤트들을 삭제한다.
 				calendar.removeAllEvents();
+>>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 				
 				// 새로운 이벤트들을 등록한다.
 				var reXhr = new XMLHttpRequest();
@@ -378,6 +410,15 @@ function getCalendarList(){
 						
 						calendar.addEventSource(newEvents);
 					}
+<<<<<<< HEAD
+					
+					reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
+					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
+				};
+			}
+		};
+=======
 				}
 				
 				reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
@@ -416,12 +457,21 @@ function getCalendarList(){
 			};
 		}
 	};
+>>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 		
+<<<<<<< HEAD
+		var today = new Date();
+		
+		xhr.open("post" , "http://localhost:8181/ja/schedule/getList", true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
+=======
 	var today = new Date();
 	
 	xhr.open("post" , "http://localhost:8080/ja/schedule/getList", true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
+>>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 }
 
 function getServerList(){
@@ -526,7 +576,7 @@ function getServerList(){
 		}
 	};
 	
-	xhr.open("post" , "http://localhost:8080/ja/schedule/getServerList" , true);
+	xhr.open("post" , "http://localhost:8181/ja/schedule/getServerList" , true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
@@ -761,7 +811,7 @@ function regBtn(){
 		return;
 	} else {
 	    $.ajax({
-	        url: 'http://localhost:8080/ja/schedule/regSchedule',
+	        url: 'http://localhost:8181/ja/schedule/regSchedule',
 	        data: formData,
 	        processData: false,
 	        contentType: false,
@@ -787,7 +837,7 @@ function modBtn(){
 			formData.set('end_date','9999-12-31');
 		}
 		$.ajax({
-			url: 'http://localhost:8080/ja/schedule/modSchedule',
+			url: 'http://localhost:8181/ja/schedule/modSchedule',
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -806,7 +856,7 @@ function delSchedule(){
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 
 	$.ajax({
-		url: 'http://localhost:8080/ja/schedule/delSchedule',
+		url: 'http://localhost:8181/ja/schedule/delSchedule',
 		data: formData,
 		processData: false,
 		contentType: false,

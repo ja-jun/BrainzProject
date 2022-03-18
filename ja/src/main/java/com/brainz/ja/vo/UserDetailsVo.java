@@ -9,11 +9,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserDetailsVo implements UserDetails {
 
+	private int user_no;
 	private String user_id;
 	private String user_pw;
 	private ArrayList<GrantedAuthority> authority;
 
 	
+	public int getUser_no() {
+		return user_no;
+	}
+
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
+	}
+
 	public String getUser_id() {
 		return user_id;
 	}
