@@ -176,7 +176,6 @@ function getCalendarList(){
 			        },
 				events : events,
 				locale: 'ko',
-				height: 1000,
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
 					$.ajax({
@@ -188,13 +187,14 @@ function getCalendarList(){
 				            var sc_info = data.scheduleInfo;
 				            var sc_server = data.serverList;
 				            
+				            $('.textBox').val(sc_info.title);
+				            
 				            var sc_no_input = document.createElement('input');
 				            sc_no_input.setAttribute('type','hidden');
 				            sc_no_input.setAttribute('name','sc_no');
 				            sc_no_input.setAttribute('value',sc_info.sc_no);
 				            $('.textBox').append(sc_no_input);
 				            
-				            $('.textBox').val(sc_info.title);
 				            $('input[name=start_date]').val(sc_info.start_date);
 				            if(sc_info.end_date == ''){
 				            	$('.timearr').addClass('active');
@@ -319,12 +319,17 @@ function getCalendarList(){
 				            var input_date = document.createElement('input');
 				            var event_date = info.event.start;
 				            var month = "";
+				            var day = "";
 				            
 				            if((event_date.getMonth() + 1) >= 1 || (event_date.getMonth() + 1) < 10){
 				            	month = "0" + (event_date.getMonth() + 1);	
 				            }
 				            
-				            cur_date = event_date.getFullYear() + "-" + month + "-" + event_date.getDate();
+				            if(event_date.getDate() >= 1 || event_date.getDate() < 10){
+				            	day = "0" + event_date.getDate();
+				            }
+				            cur_date = event_date.getFullYear() + "-" + month + "-" + day;
+				            
 				            input_date.setAttribute("name","cur_date");
 				            input_date.setAttribute("type","hidden");
 				            input_date.setAttribute("value", cur_date);
@@ -338,6 +343,7 @@ function getCalendarList(){
 			});
 			calendar.render();
 				
+<<<<<<< HEAD
 				var prev = document.getElementsByClassName('fc-prev-button fc-button fc-button-primary');
 				prev[0].onclick = function(){
 					var date = calendar.getDate();
@@ -367,31 +373,33 @@ function getCalendarList(){
 					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 				};
+=======
+			var prev = document.getElementsByClassName('fc-prev-button fc-button fc-button-primary');
+			prev[0].onclick = function(){
+				var date = calendar.getDate();
+				// 등록된 모든 이벤트들을 삭제한다.
+				calendar.removeAllEvents();
+>>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 				
-				var next = document.getElementsByClassName('fc-next-button fc-button fc-button-primary');
-				next[0].onclick = function(){
-					var date = calendar.getDate();
-					// 등록된 모든 이벤트들을 삭제한다.
-					calendar.removeAllEvents();
-					
-					// 새로운 이벤트들을 등록한다.
-					var reXhr = new XMLHttpRequest();
-					reXhr.onreadystatechange = function(){
-						if(reXhr.readyState == 4 && reXhr.status == 200){
-							var reData = JSON.parse(reXhr.responseText);
-							
-							var newEvents = reData.scheduleList.map(function(item){
-								return {
-									title : item.title,
-									start : item.event_date + "T" + item.start_time,
-									end : item.event_date + "T" + item.end_time,
-									id : item.sc_no
-								}
-							});
-							
-							calendar.addEventSource(newEvents);
-						}
+				// 새로운 이벤트들을 등록한다.
+				var reXhr = new XMLHttpRequest();
+				reXhr.onreadystatechange = function(){
+					if(reXhr.readyState == 4 && reXhr.status == 200){
+						var reData = JSON.parse(reXhr.responseText);
+						
+						var newEvents = reData.scheduleList.map(function(item){
+							if(new Date(item.event_date))
+							return {
+								title : item.title,
+								start : item.event_date + "T" + item.start_time,
+								end : item.event_date + "T" + item.end_time,
+								id : item.sc_no
+							}
+						});
+						
+						calendar.addEventSource(newEvents);
 					}
+<<<<<<< HEAD
 					
 					reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
 					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -399,12 +407,60 @@ function getCalendarList(){
 				};
 			}
 		};
+=======
+				}
+				
+				reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+				reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
+			};
+				
+			var next = document.getElementsByClassName('fc-next-button fc-button fc-button-primary');
+			next[0].onclick = function(){
+				var date = calendar.getDate();
+				// 등록된 모든 이벤트들을 삭제한다.
+				calendar.removeAllEvents();
+				
+				// 새로운 이벤트들을 등록한다.
+				var reXhr = new XMLHttpRequest();
+				reXhr.onreadystatechange = function(){
+					if(reXhr.readyState == 4 && reXhr.status == 200){
+						var reData = JSON.parse(reXhr.responseText);
+						
+						var newEvents = reData.scheduleList.map(function(item){
+							return {
+								title : item.title,
+								start : item.event_date + "T" + item.start_time,
+								end : item.event_date + "T" + item.end_time,
+								id : item.sc_no
+							}
+						});
+						
+						calendar.addEventSource(newEvents);
+					}
+				}
+				
+				reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+				reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
+			};
+		}
+	};
+>>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 		
+<<<<<<< HEAD
 		var today = new Date();
 		
 		xhr.open("post" , "http://localhost:8181/ja/schedule/getList", true);
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
+=======
+	var today = new Date();
+	
+	xhr.open("post" , "http://localhost:8080/ja/schedule/getList", true);
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
+>>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 }
 
 function getServerList(){
@@ -426,88 +482,86 @@ function getServerList(){
 			}
 			
 			
-				$("#list").jqGrid({
-					datatype: "local",
-					data: jsonArr,
-					rowNum: 10,
-					rowList:[10,20,30],
-					width:700,
-					 colModel: [	
-							{name: 'name', label : '서버명', align:'left'},
-					        {name: 'ip', label : 'IP', align:'left'},
-					        {name: 'os', label : 'OS분류', align:'center'},
-					        {name: 'server_no', hidden: true}
-							],
-				    pager: '#pager',
-				    multiselect: true
+			$("#list").jqGrid({
+				datatype: "local",
+				data: jsonArr,
+				rowNum: 10,
+				rowList:[10,20,30],
+				width:700,
+				 colModel: [	
+						{name: 'name', label : '서버명', align:'left'},
+				        {name: 'ip', label : 'IP', align:'left'},
+				        {name: 'os', label : 'OS분류', align:'center'},
+				        {name: 'server_no', hidden: true}
+						],
+			    pager: '#pager',
+			    multiselect: true
+			
+			});
+			
+			
+			$('.btnBoxbtn2').click(function(){
+				var params = new Array(); 
+				var a = $("#list").jqGrid('getGridParam', 'selarrrow');
 				
-				});
 				
+				for (var i = 0; i < a.length; i++) { //row id수만큼 실행          
+				    if($("input:checkbox[id='jqg_list_"+a[i]+"']").is(":checked")){ //checkbox checked 여부 판단
+				    var rowdata = $("#list").getRowData(a[i]);
+				    params.push(rowdata);
+				    console.log(params);
+				    
+				    }
 				
+				}
 				
+				console.log(params);
+		    	
+		    	const serverModal = document.getElementById("serverModal"); 
+		        serverModal.setAttribute("style","display: none");
+		        
+		        var theadList = document.getElementById("theadList");
+		        
+		    	var serverModal2 = document.getElementById("serverListM");
+		    	serverModal2.innerHTML = "";
 				
-				$('.btnBoxbtn2').click(function(){
-					var params = new Array(); 
-					var a = $("#list").jqGrid('getGridParam', 'selarrrow');
-					
-					
-					for (var i = 0; i < a.length; i++) { //row id수만큼 실행          
-					    if($("input:checkbox[id='jqg_list_"+a[i]+"']").is(":checked")){ //checkbox checked 여부 판단
-					    var rowdata = $("#list").getRowData(a[i]);
-					    params.push(rowdata);
-					    console.log(params);
-					    
-					    }
-					
-					}
-					
-					console.log(params);
-			    	
-			    	const serverModal = document.getElementById("serverModal"); 
-			        serverModal.setAttribute("style","display: none");
-			        
-			        var theadList = document.getElementById("theadList");
-			        
-			    	var serverModal2 = document.getElementById("serverListM");
-			    	serverModal2.innerHTML = "";
-					
-			    	var tbody = document.createElement("tbody");
-			    	
-			    
-  					for(var i = 0; i < params.length; i++){
-						var tr6 = document.createElement("tr");
-						tr6.setAttribute("class","serverContent");
-						tbody.appendChild(tr6);
-						var th7 = document.createElement("th");
-						th7.setAttribute("class","serverContentText");
-						tr6.appendChild(th7);
-						var th8 = document.createElement("input");
-						th8.setAttribute("type","checkbox");
-						th7.appendChild(th8);
-						var th9 = document.createElement("th");
-						th9.setAttribute("class","serverContentText");
-						th9.innerText=params[i].name;
-						tr6.appendChild(th9);
-						var th10 = document.createElement("th");
-						th10.setAttribute("class","serverContentText");
-						th10.innerText=params[i].ip;
-						tr6.appendChild(th10);
-						var th11 = document.createElement("th");
-						th11.setAttribute("class","serverContentText");
-						th11.innerText=params[i].os;
-						tr6.appendChild(th11);
-						var th12 = document.createElement("input");
-						th12.setAttribute("type","hidden");
-						th12.setAttribute("name","server_no");
-						th12.setAttribute("value",params[i].server_no);
-						tr6.appendChild(th12);
- 					}  
-			    	
-  					tbody.appendChild(tr6);
-  					serverModal2.appendChild(theadList);
-  					serverModal2.appendChild(tbody);
-			    	
-				});
+		    	var tbody = document.createElement("tbody");
+		    	
+		    
+ 					for(var i = 0; i < params.length; i++){
+					var tr6 = document.createElement("tr");
+					tr6.setAttribute("class","serverContent");
+					tbody.appendChild(tr6);
+					var th7 = document.createElement("th");
+					th7.setAttribute("class","serverContentText");
+					tr6.appendChild(th7);
+					var th8 = document.createElement("input");
+					th8.setAttribute("type","checkbox");
+					th7.appendChild(th8);
+					var th9 = document.createElement("th");
+					th9.setAttribute("class","serverContentText");
+					th9.innerText=params[i].name;
+					tr6.appendChild(th9);
+					var th10 = document.createElement("th");
+					th10.setAttribute("class","serverContentText");
+					th10.innerText=params[i].ip;
+					tr6.appendChild(th10);
+					var th11 = document.createElement("th");
+					th11.setAttribute("class","serverContentText");
+					th11.innerText=params[i].os;
+					tr6.appendChild(th11);
+					var th12 = document.createElement("input");
+					th12.setAttribute("type","hidden");
+					th12.setAttribute("name","server_no");
+					th12.setAttribute("value",params[i].server_no);
+					tr6.appendChild(th12);
+					}  
+		    	
+ 					tbody.appendChild(tr6);
+ 					serverModal2.appendChild(theadList);
+ 					serverModal2.appendChild(tbody);
+		    	
+			});
 		}
 	};
 	
@@ -518,10 +572,10 @@ function getServerList(){
 
 window.addEventListener("DOMContentLoaded" , function(){
 	
-	
 	$(window).resize(function() {
 		$("#list").setGridWidth($(this).width() * .100);
 	});
+	
 	
 	/* 요일선택 했을시  */ 
 	$('.btnDay').click(function(){
@@ -547,7 +601,7 @@ window.addEventListener("DOMContentLoaded" , function(){
 		}
 	}); 
 
-	
+
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
         const btnDay = document.querySelectorAll('.btnDay'); 
@@ -572,9 +626,6 @@ window.addEventListener("DOMContentLoaded" , function(){
 	});
 	
 	
-    
-    
-    
     /* 매월, 매일 */
     $("input[name='repeat_cat']").change(function() {
  		if($("input[name='repeat_cat']:checked").val() == "3") {
@@ -638,28 +689,27 @@ window.addEventListener("DOMContentLoaded" , function(){
  		}
  	});
  	
- 	
-		$(function(){
-			$('.datepicker').datepicker({
-		    	dateFormat: 'yy-mm-dd'
-				});
-			})
-		 
-	    $(function(){
-	    	$('#datetimepicker1').datetimepicker({
-	    		datepicker:false,
-	    		format:'H:i',
-	    		step: 1
-	    	});
-	  	})
-	  	
-	  	$(function(){
-	    	$('#datetimepicker2').datetimepicker({
-	    		datepicker:false,
-	    		format:'H:i',
-	    		step: 1
-	    	});
-	  	})
+	$(function(){
+		$('.datepicker').datepicker({
+	    	dateFormat: 'yy-mm-dd'
+			});
+		})
+	 
+    $(function(){
+    	$('#datetimepicker1').datetimepicker({
+    		datepicker:false,
+    		format:'H:i',
+    		step: 1
+    	});
+  	})
+  	
+  	$(function(){
+    	$('#datetimepicker2').datetimepicker({
+    		datepicker:false,
+    		format:'H:i',
+    		step: 1
+    	});
+  	})
 		 
 	/* page load후 바로 실행 되는 함수들 */  	
 	getCalendarList();
@@ -821,23 +871,28 @@ function delSchedule(){
 			
 	    	<div id="box">
 	    		<button class="writeBtn" onclick="writeBtn()">등록</button>
-	    	<div id="calendar"></div>
+	    		<div id="calendar"></div>
 	    	</div>
 	    </div>	
 		
+		<!-- modal 창 -->
 		<div id="modal" class="modal-overlay">
 			<div class="window">
 				<div class="modalBox">
+				
 					<!-- Form 태그 시작 -->
 					<form id="regScheduleInfo" name="param">
+					
 					<div class="top">
 						<h3 class="title">작업 등록</h3>
 						<i class="bi bi-x" onclick="delBtn()"></i>
 					</div>
+					
 					<div class="titleBox">
 						<strong class="text">작업명<span class="star">*</span></strong>
 						<input type="text" name="title" class="textBox" autocomplete='off'>
 					</div>
+					
 					<div class="dateBox">
 						<strong class="text">기간설정</strong>
 						<div class="radioBox">
@@ -854,7 +909,6 @@ function delSchedule(){
 		                    <div class="imgBox"><img src="../resources/img/calendar.svg"></div>
 		                    </div>   
 		                    <div id="radioBoxCheck">
-
 		                    	<input type="checkbox" class="limitless" autocomplete='off'> 무기한
 		                    </div>
 						</div>
@@ -881,8 +935,6 @@ function delSchedule(){
 		                   	</div>
 		                   	
 		                   	<div id="timepickerBox">
-
-		                   	
 		                   	<input id="datetimepicker1" type="text" name="start_time" autocomplete='off'>
 		                   	<span class="ing">~</span>
 		                   	<input id="datetimepicker2" type="text" name="end_time" autocomplete='off'>
@@ -898,6 +950,7 @@ function delSchedule(){
 							<input type="button" value="삭제" class="btn1" autocomplete='off'>
 						</div>
 					</div>
+					
 					<table class="serverList" id="serverListM">
 						<thead id="theadList">
 							<tr class="serverHeader">
@@ -918,24 +971,19 @@ function delSchedule(){
 					<!-- Form 태그 종료 -->
 				</div>
 			</div>
-			
-			
 		</div>
 		
+		<!-- server 등록 modal 창 -->
 		<div id="serverModal">
 		<div id="serverModalBox">
-				<table id="list"></table>
-				<div class="btnBox2">
-					<input type="button" value="등록" class="btnBoxbtn2" autocomplete='off'>
-					<input type="button" value="닫기" class="btnBoxbtn3" autocomplete='off'>
-				</div>
-				<div id="pager"></div> 
+			<table id="list"></table>
+			<div class="btnBox2">
+				<input type="button" value="등록" class="btnBoxbtn2" autocomplete='off'>
+				<input type="button" value="닫기" class="btnBoxbtn3" autocomplete='off'>
 			</div>
-			</div>
-			
-			
-		
-		
+			<div id="pager"></div> 
+		</div>
+		</div>
 	</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

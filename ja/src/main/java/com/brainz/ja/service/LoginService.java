@@ -31,6 +31,7 @@ public class LoginService implements UserDetailsService {
 
 		// 사용자 정보 있을 경우 로직 전개 (userDetails에 데이터 넣기)
 		} else {
+			userDetails.setUser_no(userVo.getUser_no());
 			userDetails.setUser_id(userVo.getUser_id());
 			userDetails.setUser_pw(userVo.getUser_pw());
 

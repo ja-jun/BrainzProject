@@ -2,6 +2,8 @@ package com.brainz.ja.vo;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class UserVo {
 	
 	private int user_no;
@@ -12,6 +14,7 @@ public class UserVo {
 	private String phone;
 	private String email;
 	private String dsc;
+	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
 	private Date write_date;
 	
 	private UserVo() {
