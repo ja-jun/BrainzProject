@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>작업일정</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -196,8 +196,18 @@ function getCalendarList(){
 				            $('.textBox').append(sc_no_input);
 				            
 				            $('input[name=start_date]').val(sc_info.start_date);
-				            if(sc_info.end_date == ''){
-				            	$('.timearr').addClass('active');
+				            $('input[name=end_date]').val(sc_info.end_date);
+				            
+				            if(sc_info.end_date == sc_info.start_date){
+				            	$('.timearr').attr('checked','checked');
+				            	const timeBox = document.querySelector('.Boxxx');
+				    			timeBox.setAttribute("style","display: none");
+				    			const radioBoxCheck = document.getElementById("radioBoxCheck");
+				    			radioBoxCheck.setAttribute("style","display: none");
+				    			const noneBox2 = document.querySelector('.noneBox2');
+				    			noneBox2.setAttribute("style","display: none");
+				    			const timepickerBox = document.getElementById("timepickerBox");
+				    			timepickerBox.setAttribute("style","display: flex");
 				            } else if(sc_info.end_date == '9999-12-31'){
 				            	$('.limitless').attr('checked','checked');
 				            	const noneBox = document.querySelector('.noneBox2');
@@ -318,16 +328,17 @@ function getCalendarList(){
 				            
 				            var input_date = document.createElement('input');
 				            var event_date = info.event.start;
-				            var month = "";
-				            var day = "";
+				            var month = event_date.getMonth() + 1;
+				            var day = event_date.getDate();
 				            
-				            if((event_date.getMonth() + 1) >= 1 || (event_date.getMonth() + 1) < 10){
-				            	month = "0" + (event_date.getMonth() + 1);	
+				            if(month >= 1 && month < 10){
+				            	month = "0" + month;
 				            }
 				            
-				            if(event_date.getDate() >= 1 || event_date.getDate() < 10){
-				            	day = "0" + event_date.getDate();
+				            if(day >= 1 && day < 10){
+				            	day = "0" + day;
 				            }
+				            
 				            cur_date = event_date.getFullYear() + "-" + month + "-" + day;
 				            
 				            input_date.setAttribute("name","cur_date");
@@ -649,7 +660,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     	$('#datetimepicker1').datetimepicker({
     		datepicker:false,
     		format:'H:i',
-    		step: 1
+    		step: 10
     	});
   	})
   	
@@ -657,7 +668,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     	$('#datetimepicker2').datetimepicker({
     		datepicker:false,
     		format:'H:i',
-    		step: 1
+    		step: 10
     	});
   	})
 		 
@@ -695,7 +706,7 @@ function validationCheck(target){
 		*/
 		alert('작업 시간을 입력해주세요.');
 		result = 0;
-	} else if(target.getAll('repeat_cat') == '1'){
+	} else if(target.getAll('repeat_cat') == '1' && !$('.timearr').has('active')){
 		/*	5. 매일 이라는 반복 유형 선택 시 특정 요일을 선택 했는지 확인 */
 		if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
 			result = 1;
@@ -703,7 +714,7 @@ function validationCheck(target){
 			alert('작업을 원하는 요일을 선택해주세요.');
 			result = 0;
 		}
-	} else if(target.getAll('repeat_cat') == '2'){
+	} else if(target.getAll('repeat_cat') == '2' && !$('.timearr').has('active')){
 		/*	6. 매 달 특정 주차가 선택이 되었는지 확인 */
 		if(target.getAll('repeat_week') < 1 || target.getAll('repeat_week') > 4){
 			alert('매 달 1주차 부터 4주차 까지만 선택 가능합니다.');
@@ -720,7 +731,7 @@ function validationCheck(target){
 				result = 0;
 			}
 		}
-	} else if(target.getAll('repeat_cat') == '3'){
+	} else if(target.getAll('repeat_cat') == '3' && !$('.timearr').has('active')){
 		/*	8. 매 달 특정 요일이 선택되어 있는지 그리고 정확한 값인지 확인 */
 		if(!target.has('repeat_day')){
 			alert('작업을 원하는 매 월 특정 요일을 입력해주세요.');
@@ -738,12 +749,17 @@ function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
+	if($('.timearr').is(':checked')){
+		formData.set('end_date',formData.getAll('start_date'));
+		formData.set('repeat_cat', 0);
+		console.log('체크되었습니다.');
+	} else if($('.limitless').is(':checked')){
+		formData.set('end_date','9999-12-31');
+	}
+	
 	if(validationCheck(formData) == 0){
 		return;
 	} else {
-		if($('.limitless').is(':checked')){
-			formData.set('end_date','9999-12-31');
-		}
 	    $.ajax({
 	        url: 'http://localhost:8080/ja/schedule/regSchedule',
 	        data: formData,
