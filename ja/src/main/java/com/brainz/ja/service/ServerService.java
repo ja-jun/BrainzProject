@@ -34,12 +34,26 @@ public class ServerService {
 		return serverVo;
 	}
 	
-	public void deleteServer(int server_no) {
-		serverSQLMapper.deleteServer(server_no);
+	public void deleteServer(String [] server_no) {
+		
+		for(String no  : server_no) {
+			serverSQLMapper.deleteServer(Integer.parseInt(no.trim()));
+		}
+		
 	}
 	
 	public void updateServer(ServerVo vo) {
 		serverSQLMapper.updateServer(vo);	
+	}
+
+	//mac 중복확인
+	public boolean isExistMac(String mac) {
+		int count = serverSQLMapper.getCountByMac(mac);
+		if(count>0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 		

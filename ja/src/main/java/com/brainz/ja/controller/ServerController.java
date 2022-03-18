@@ -33,53 +33,17 @@ public class ServerController {
 		return "/server/mainPage";
 	}
 
-	@RequestMapping("insertServerProcess")
-	public String insertServerProcess(ServerVo param, HttpSession session) {
-		//로그인 했을때 session에 user정보를 담았다고 가정
-		//			UserVo session = (UserVo) session.getattribute("sessionUser");
-		//			int userNo = sessionUser.getUser_no();
-		//			param.setUser_no(userNo);
+	
 
-		serverService.insertServer(param);
-
-		return "redirect:./mainPage" ;
-	}
-
-	@RequestMapping("insertServerPage")
-	public String insertServerPage() {
-
-		return "/server/insertServerPage";	
-	}
-
-	@RequestMapping("updateServerPage")
-	public String updateServerPage(int server_no, Model model) {
-		ServerVo serverVo = serverService.getServer(server_no);
-
-		model.addAttribute("serverVo",serverVo);
-
-		return"/server/updateServerPage";
-	}
-
-		@RequestMapping("deleteServerProcess")
-	public String deleteServerProcess(int server_no) {
-		serverService.deleteServer(server_no);
-
-		return "redirect:./mainPage";
-	}
-
-	@RequestMapping("updateServerProcess")
-	public String updateServerProcess(ServerVo param) {
-		serverService.updateServer(param);
-
-		return "redirect:./mainPage";
-	}
-
+	
+	
+	
+	
 	@RequestMapping("jqgrid_test")
 	public String jqgrid() {
 	
 		return "/server/jqgrid_test";
 	}
-
 	
 	@RequestMapping("css")
 	public String css() {
@@ -87,9 +51,14 @@ public class ServerController {
 		return "/server/css";
 	}
 
-@RequestMapping("test1")
+@RequestMapping("test2")
 public String test() {
-	return "/test1";
+	return "server/test2";
+}
+
+@RequestMapping("modalTest")
+public String modalTest() {
+	return "server/modalTest";
 }
 
 

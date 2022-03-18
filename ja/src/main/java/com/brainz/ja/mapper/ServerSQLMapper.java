@@ -12,7 +12,7 @@ public interface ServerSQLMapper {
 	public void insertServer(ServerVo vo);
 	public void deleteServer(int server_no);
 	public void updateServer(ServerVo vo);
-	
+	public int getCountByMac(String mac);
 	
 	
 }

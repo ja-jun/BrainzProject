@@ -48,6 +48,10 @@
 		INSERT INTO test VALUES(1)
 	</insert>
 
+	<select id="getCountByMac" resultType="int">
+		SELECT count(*) from BP_SERVER 
+		WHERE mac = #{mac}
+	</select>
 
 
 
