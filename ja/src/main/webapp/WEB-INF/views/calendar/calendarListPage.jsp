@@ -180,7 +180,7 @@ function getCalendarList(){
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
 					$.ajax({
-				        url: 'http://localhost:8080/ja/schedule/getScheduleInfo',
+				        url: 'http://localhost:8181/ja/schedule/getScheduleInfo',
 				        data: "sc_no=" + info.event.id,
 				        type: 'POST',
 				        success: function(data) {
@@ -363,7 +363,7 @@ function getCalendarList(){
 						}
 					}
 					
-					reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+					reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
 					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 				};
@@ -393,7 +393,7 @@ function getCalendarList(){
 						}
 					}
 					
-					reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
+					reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
 					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 				};
@@ -402,7 +402,7 @@ function getCalendarList(){
 		
 		var today = new Date();
 		
-		xhr.open("post" , "http://localhost:8080/ja/schedule/getList", true);
+		xhr.open("post" , "http://localhost:8181/ja/schedule/getList", true);
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
@@ -511,7 +511,7 @@ function getServerList(){
 		}
 	};
 	
-	xhr.open("post" , "http://localhost:8080/ja/schedule/getServerList" , true);
+	xhr.open("post" , "http://localhost:8181/ja/schedule/getServerList" , true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
@@ -745,7 +745,7 @@ function regBtn(){
 			formData.set('end_date','9999-12-31');
 		}
 	    $.ajax({
-	        url: 'http://localhost:8080/ja/schedule/regSchedule',
+	        url: 'http://localhost:8181/ja/schedule/regSchedule',
 	        data: formData,
 	        processData: false,
 	        contentType: false,
@@ -771,7 +771,7 @@ function modBtn(){
 			formData.set('end_date','9999-12-31');
 		}
 		$.ajax({
-			url: 'http://localhost:8080/ja/schedule/modSchedule',
+			url: 'http://localhost:8181/ja/schedule/modSchedule',
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -790,7 +790,7 @@ function delSchedule(){
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 
 	$.ajax({
-		url: 'http://localhost:8080/ja/schedule/delSchedule',
+		url: 'http://localhost:8181/ja/schedule/delSchedule',
 		data: formData,
 		processData: false,
 		contentType: false,
