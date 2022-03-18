@@ -457,21 +457,11 @@ function getCalendarList(){
 			};
 		}
 	};
->>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
-		
-<<<<<<< HEAD
-		var today = new Date();
-		
-		xhr.open("post" , "http://localhost:8181/ja/schedule/getList", true);
-		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
-=======
 	var today = new Date();
 	
 	xhr.open("post" , "http://localhost:8080/ja/schedule/getList", true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
->>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 }
 
 function getServerList(){
