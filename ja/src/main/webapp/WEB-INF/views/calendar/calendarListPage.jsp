@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>작업일정</title>
+<title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -33,16 +33,12 @@
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
 <script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
-
-
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
 	const modal = document.getElementById("modal");
 	modal.setAttribute("style","display:none");
 	document.getElementById("regScheduleInfo").reset();
 }
-
-
 /* 등록 클릭시 */
 function writeBtn() {
 	var modal = document.getElementById("modal");
@@ -69,8 +65,6 @@ function writeBtn() {
      btn2.setAttribute("id","btnBoxbtn2");
      btn2.setAttribute("onclick","delBtn()");
 }
-
-
 /* 삭제 버튼 클릭시 */
 function molBtn() {
 	const deleteRadio = document.getElementById("deleteRadio");
@@ -144,13 +138,11 @@ function molBtn() {
 	radioBoxList3.appendChild(input3);
 	radioBoxList3.appendChild(span3);
 }
-
 /* 삭제 취소 버튼 클릭시 */
 function delBox() {
 	const deleteRadio = document.getElementById("deleteRadio");
 	deleteRadio.setAttribute("style","display:none");
 }
-
 function getCalendarList(){
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
@@ -179,7 +171,7 @@ function getCalendarList(){
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
 					$.ajax({
-				        url: 'http://localhost:8181/ja/schedule/getScheduleInfo',
+				        url: 'http://localhost:8080/ja/schedule/getScheduleInfo',
 				        data: "sc_no=" + info.event.id,
 				        type: 'POST',
 				        success: function(data) {
@@ -196,18 +188,8 @@ function getCalendarList(){
 				            $('.textBox').append(sc_no_input);
 				            
 				            $('input[name=start_date]').val(sc_info.start_date);
-				            $('input[name=end_date]').val(sc_info.end_date);
-				            
-				            if(sc_info.end_date == sc_info.start_date){
-				            	$('.timearr').attr('checked','checked');
-				            	const timeBox = document.querySelector('.Boxxx');
-				    			timeBox.setAttribute("style","display: none");
-				    			const radioBoxCheck = document.getElementById("radioBoxCheck");
-				    			radioBoxCheck.setAttribute("style","display: none");
-				    			const noneBox2 = document.querySelector('.noneBox2');
-				    			noneBox2.setAttribute("style","display: none");
-				    			const timepickerBox = document.getElementById("timepickerBox");
-				    			timepickerBox.setAttribute("style","display: flex");
+				            if(sc_info.end_date == ''){
+				            	$('.timearr').addClass('active');
 				            } else if(sc_info.end_date == '9999-12-31'){
 				            	$('.limitless').attr('checked','checked');
 				            	const noneBox = document.querySelector('.noneBox2');
@@ -328,17 +310,16 @@ function getCalendarList(){
 				            
 				            var input_date = document.createElement('input');
 				            var event_date = info.event.start;
-				            var month = event_date.getMonth() + 1;
-				            var day = event_date.getDate();
+				            var month = "";
+				            var day = "";
 				            
-				            if(month >= 1 && month < 10){
-				            	month = "0" + month;
+				            if((event_date.getMonth() + 1) >= 1 || (event_date.getMonth() + 1) < 10){
+				            	month = "0" + (event_date.getMonth() + 1);	
 				            }
 				            
-				            if(day >= 1 && day < 10){
-				            	day = "0" + day;
+				            if(event_date.getDate() >= 1 || event_date.getDate() < 10){
+				            	day = "0" + event_date.getDate();
 				            }
-				            
 				            cur_date = event_date.getFullYear() + "-" + month + "-" + day;
 				            
 				            input_date.setAttribute("name","cur_date");
@@ -354,43 +335,11 @@ function getCalendarList(){
 			});
 			calendar.render();
 				
-<<<<<<< HEAD
-				var prev = document.getElementsByClassName('fc-prev-button fc-button fc-button-primary');
-				prev[0].onclick = function(){
-					var date = calendar.getDate();
-					// 등록된 모든 이벤트들을 삭제한다.
-					calendar.removeAllEvents();
-					
-					// 새로운 이벤트들을 등록한다.
-					var reXhr = new XMLHttpRequest();
-					reXhr.onreadystatechange = function(){
-						if(reXhr.readyState == 4 && reXhr.status == 200){
-							var reData = JSON.parse(reXhr.responseText);
-							
-							var newEvents = reData.scheduleList.map(function(item){
-								return {
-									title : item.title,
-									start : item.event_date + "T" + item.start_time,
-									end : item.event_date + "T" + item.end_time,
-									id : item.sc_no
-								}
-							});
-							
-							calendar.addEventSource(newEvents);
-						}
-					}
-					
-					reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
-					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
-				};
-=======
 			var prev = document.getElementsByClassName('fc-prev-button fc-button fc-button-primary');
 			prev[0].onclick = function(){
 				var date = calendar.getDate();
 				// 등록된 모든 이벤트들을 삭제한다.
 				calendar.removeAllEvents();
->>>>>>> branch 'master' of https://github.com/ja-jun/BrainzProject.git
 				
 				// 새로운 이벤트들을 등록한다.
 				var reXhr = new XMLHttpRequest();
@@ -410,15 +359,6 @@ function getCalendarList(){
 						
 						calendar.addEventSource(newEvents);
 					}
-<<<<<<< HEAD
-					
-					reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
-					reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-					reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
-				};
-			}
-		};
-=======
 				}
 				
 				reXhr.open("post", "http://localhost:8080/ja/schedule/getList", true);
@@ -457,13 +397,13 @@ function getCalendarList(){
 			};
 		}
 	};
+		
 	var today = new Date();
 	
 	xhr.open("post" , "http://localhost:8080/ja/schedule/getList", true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
-
 function getServerList(){
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function(){
@@ -566,11 +506,10 @@ function getServerList(){
 		}
 	};
 	
-	xhr.open("post" , "http://localhost:8181/ja/schedule/getServerList" , true);
+	xhr.open("post" , "http://localhost:8080/ja/schedule/getServerList" , true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
-
 window.addEventListener("DOMContentLoaded" , function(){
 	
 	$(window).resize(function() {
@@ -594,19 +533,15 @@ window.addEventListener("DOMContentLoaded" , function(){
   		}
   		var total = $('.btnDay').length;
 		var checked = $('.btnDay.active').length;
-
 		if(total != checked){
 			$('.checkboxAll').prop("checked", false);
 		}else{
 			$('.checkboxAll').prop("checked", true); 
 		}
 	}); 
-
-
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
         const btnDay = document.querySelectorAll('.btnDay'); 
-
 		var a = $('.checkboxAll').is(':checked');
         
         if(a == true){
@@ -653,7 +588,6 @@ window.addEventListener("DOMContentLoaded" , function(){
    		}
 	}); 
     
-
     $('#btn1').click(function(){
          const serverModal = document.getElementById("serverModal"); 
          serverModal.setAttribute("style","display: block"); 
@@ -700,7 +634,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     	$('#datetimepicker1').datetimepicker({
     		datepicker:false,
     		format:'H:i',
-    		step: 10
+    		step: 1
     	});
   	})
   	
@@ -708,7 +642,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     	$('#datetimepicker2').datetimepicker({
     		datepicker:false,
     		format:'H:i',
-    		step: 10
+    		step: 1
     	});
   	})
 		 
@@ -718,7 +652,6 @@ window.addEventListener("DOMContentLoaded" , function(){
 	getServerList();
 	delBtn();
 });
-
 function validationCheck(target){
 	var result = 1;
 	
@@ -746,7 +679,7 @@ function validationCheck(target){
 		*/
 		alert('작업 시간을 입력해주세요.');
 		result = 0;
-	} else if(target.getAll('repeat_cat') == '1' && !$('.timearr').has('active')){
+	} else if(target.getAll('repeat_cat') == '1'){
 		/*	5. 매일 이라는 반복 유형 선택 시 특정 요일을 선택 했는지 확인 */
 		if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
 			result = 1;
@@ -754,7 +687,7 @@ function validationCheck(target){
 			alert('작업을 원하는 요일을 선택해주세요.');
 			result = 0;
 		}
-	} else if(target.getAll('repeat_cat') == '2' && !$('.timearr').has('active')){
+	} else if(target.getAll('repeat_cat') == '2'){
 		/*	6. 매 달 특정 주차가 선택이 되었는지 확인 */
 		if(target.getAll('repeat_week') < 1 || target.getAll('repeat_week') > 4){
 			alert('매 달 1주차 부터 4주차 까지만 선택 가능합니다.');
@@ -771,7 +704,7 @@ function validationCheck(target){
 				result = 0;
 			}
 		}
-	} else if(target.getAll('repeat_cat') == '3' && !$('.timearr').has('active')){
+	} else if(target.getAll('repeat_cat') == '3'){
 		/*	8. 매 달 특정 요일이 선택되어 있는지 그리고 정확한 값인지 확인 */
 		if(!target.has('repeat_day')){
 			alert('작업을 원하는 매 월 특정 요일을 입력해주세요.');
@@ -784,24 +717,18 @@ function validationCheck(target){
 	
 	return result;
 }
-
 function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
-	if($('.timearr').is(':checked')){
-		formData.set('end_date',formData.getAll('start_date'));
-		formData.set('repeat_cat', 0);
-		console.log('체크되었습니다.');
-	} else if($('.limitless').is(':checked')){
-		formData.set('end_date','9999-12-31');
-	}
-	
 	if(validationCheck(formData) == 0){
 		return;
 	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date','9999-12-31');
+		}
 	    $.ajax({
-	        url: 'http://localhost:8181/ja/schedule/regSchedule',
+	        url: 'http://localhost:8080/ja/schedule/regSchedule',
 	        data: formData,
 	        processData: false,
 	        contentType: false,
@@ -814,7 +741,6 @@ function regBtn(){
 	    });
 	}	
 }
-
 /* 수정 기능 */
 function modBtn(){
 	
@@ -827,7 +753,7 @@ function modBtn(){
 			formData.set('end_date','9999-12-31');
 		}
 		$.ajax({
-			url: 'http://localhost:8181/ja/schedule/modSchedule',
+			url: 'http://localhost:8080/ja/schedule/modSchedule',
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -840,13 +766,11 @@ function modBtn(){
 		});
 	}
 }
-
 /* 삭제 기능 */
 function delSchedule(){
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
-
 	$.ajax({
-		url: 'http://localhost:8181/ja/schedule/delSchedule',
+		url: 'http://localhost:8080/ja/schedule/delSchedule',
 		data: formData,
 		processData: false,
 		contentType: false,
