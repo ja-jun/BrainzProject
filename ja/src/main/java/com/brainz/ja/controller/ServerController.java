@@ -38,12 +38,6 @@ public class ServerController {
 	
 		return "/server/jqgrid_test";
 	}
-	
-	@RequestMapping("css")
-	public String css() {
-
-		return "/server/css";
-	}
 
 @RequestMapping("test2")
 public String test() {
@@ -59,5 +53,12 @@ public String modalTest() {
 public String test3() {
 	return "server/test3";
 }
+
+@RequestMapping("grid_update")
+public String grid_update() {
+	return "server/grid_update";
+}
+
+
 
 }

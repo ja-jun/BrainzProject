@@ -37,10 +37,10 @@ public class RestServerController {
 	@RequestMapping("insertServer")
 	public HashMap<String, Object> insertServer(ServerVo param) {
 		HashMap<String, Object>data = new HashMap<String, Object>();
-		System.out.println();
-		
-		serverService.insertServer(param);
 
+		param.setUser_no('1'); 
+		serverService.insertServer(param);
+		
 		data.put("result","success");
 		
 		return data;

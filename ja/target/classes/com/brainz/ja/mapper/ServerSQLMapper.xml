@@ -18,7 +18,7 @@
 		)
 	</insert>
 
-	<select id="getServerList" resultType="map">
+	<select id="getServerList" resultType="com.brainz.ja.vo.ServerVo">
 		SELECT bps.* FROM BP_server bps
 		<if test="searchWord !=null">
 			WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
@@ -43,10 +43,6 @@
 		DELETE FROM BP_server
 		WHERE server_no=#{server_no}
 	</delete>
-
-	<insert id="test">
-		INSERT INTO test VALUES(1)
-	</insert>
 
 	<select id="getCountByMac" resultType="int">
 		SELECT count(*) from BP_SERVER 

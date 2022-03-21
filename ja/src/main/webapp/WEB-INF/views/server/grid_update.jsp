@@ -11,11 +11,17 @@
 
 <link href='../resources/css/server.css' rel='stylesheet' />
 <link href='../resources/css/reset.css' rel='stylesheet' />
+<link href="../resources/css/jquery-ui.css" rel="stylesheet"/>
+<link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
+<link href="../resources/css/jquery-ui.structure.css" rel="stylesheet"/>
+<link href="../resources/css/jquery-ui.theme.css" rel="stylesheet"/>
 
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
+<script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
+<script src="../resources/js/jquery-ui.min.js"></script>
 
 
 
@@ -28,7 +34,7 @@ function createAndInitGrid(){
         data: [],
         rowNum: 10,
         rowList: [10,30,50],
-        height: 500,
+        height: 'auto',
         autowidth:true,
         pager: '#pager',
          colModel: [   
@@ -40,8 +46,8 @@ function createAndInitGrid(){
               {name: 'MAC', label : 'MAC', align:'center'},
               {name: '관리번호', label : '관리번호', align:'left'},
               {name: '설명', label : '설명', align:'left'},     
-              {name: '등록일', label : '등록일', align:'center'},     
-              {name:'서버번호',label:'서버번호' }
+              {name: '등록일', label : '등록일', align:'center', formatter : 'datetime', formatoptions: {srcformat: "U/1000", newformat: 'Y/m/d H:i:s'} },
+              {name:'서버번호',label:'서버번호', hidden:true}
               ],
               
          multiselect: true
@@ -52,14 +58,7 @@ function createAndInitGrid(){
 	function renderGridByDatas(datas){
 	      
         var jsonArr = [];
-        for (var i = 0; i < datas.length; i++) {
-			//숫자를 날짜로
-			var serverInsertDate = new Date(datas[i].write_date);  
-			//날짜를 문자로 
-			write_date = serverInsertDate.getFullYear() + "."
-								+ (serverInsertDate.getMonth() + 1) + "."
-								+ serverInsertDate.getDate(); 
-        	
+        for (var i = 0; i < datas.length; i++) {	
             jsonArr.push({
                '서버명': datas[i].name,               
                'IP':datas[i].ip,
@@ -69,14 +68,15 @@ function createAndInitGrid(){
                'MAC':datas[i].mac,
                '관리번호':datas[i].control_num,
                '설명':datas[i].dsc,
-               '등록일':write_date
+               '등록일':datas[i].write_date,
+               '서버번호':datas[i].server_no
             });
         }
 		         $('#list').jqGrid('clearGridData');
 		         $('#list').jqGrid('setGridParam', {data: jsonArr}).trigger('reloadGrid');
-		};
-
- 
+	}
+		
+	 
 
 //서버리스트 가져와서 집어넣기
 function getList(){
@@ -115,16 +115,19 @@ function search(){
 
 //입력값 db에 등록하기
 function insertServer(){
-	var name = $("#name");
-	var ip = $("ip");
-	var os = $("os");
-	var loc = $("loc");
-	var mac = $("mac");
-	var  control_num= $("control_num");
-	var dsc = $("dsc");
+	var name = $("#name").val();
+	var ip = $("#ip").val();
+	var os = $("#os").val();
+	var loc = $("#loc").val();
+	var mac = $("#mac").val();
+	var  control_num= $("#control_num").val();
+	var dsc = $("#dsc").val();
 	
-	if(name.val() ==""){
+	if(name ==""){
 		//필수 입력 했는지 확인...
+	}
+	if(isConfirmed ==false ){
+		
 	}
 	
 	
@@ -133,11 +136,10 @@ function insertServer(){
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){ 
 			var data = JSON.parse(xhr.responseText); 
-			
+
 			modalOff();
-			$("#regServerInfo").value = ""; //입력 누르면 칸이 비워짐
+
 			getList();
-			
 		}
 	};
 	
@@ -162,16 +164,18 @@ function confirmMac(){
 		if(xhr.readyState == 4 && xhr.status == 200){ 
 			var data = JSON.parse(xhr.responseText); 
 		
-			var confirmAlertBox = $("#confirmAlertBox");	
+			var confirmAlertBox = document.getElementById("confirmAlertBox");
 			if(data.result == true){
 				isConfirmed = false; 
 				confirmAlertBox.innerText = "이미 존재하는 MAC 입니다.";
-				confirmAlertBox.style.color = "red";
+				confirmAlertBox.setAttribute("style","color:red");
 			} else{
 				isConfirmed = true; 
 				confirmAlertBox.innerText = "사용 가능한 MAC 입니다.";
-				confirmAlertBox.style.color = "green";
+				confirmAlertBox.setAttribute("style","color:green");
 			}
+			return false;
+			
 		}
 	};
 	
@@ -197,18 +201,19 @@ function confirmMac(){
             return false;
         }
  */
- //배열로 넘길수 있는지?! 삭제시 select 풀기
+ //삭제 -  삭제시 select 풀기 추가하기
 function deleteServer(){ 
 	var serverNos = [];
 	var rowids = $("#list").getGridParam("selarrrow");
 	
 	for (let i = 0; i < rowids.length; i++) {
         const rowid = rowids[i];
-		console.log(rowid);
         var rowData = $("#list").getRowData(rowid);
 		serverNos.push(rowData.서버번호);
-		console.log(rowData);
     }
+	
+	
+	
 	var xhr = new XMLHttpRequest();
 		
 		xhr.onreadystatechange = function(){
@@ -216,7 +221,8 @@ function deleteServer(){
 				var data = JSON.parse(xhr.responseText);
 				
 				alert("삭제되었습니다.");
-				getServerList();
+				getList();
+				
 			}
 		};
 		
@@ -224,10 +230,17 @@ function deleteServer(){
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send("serverNos="+ serverNos);	
 }
+ 
 	
  //유효한 ip인지 확인하는 함수
 	
-	
+
+ 
+ 
+ 
+ 
+ 
+ 
 	
 //모달창 함수	
 function modalOn() {
@@ -239,7 +252,14 @@ function isModalOn() {
 function modalOff() {
     modal.style.display = "none";
 	document.getElementById("regServerInfo").reset();  //입력했던 값 지우기
+	document.getElementById("confirmAlertBox").innerText=""; 	//MAC 중복 메세지 지우기
 }
+
+//모달창 열렸을 때 ESC누르면 닫힘
+window.addEventListener("keyup", e => {
+    if(isModalOn() && e.key === "Escape") { modalOff(); }
+})
+
 
 
 
@@ -250,28 +270,21 @@ window.addEventListener("DOMContentLoaded", function(){
 		createAndInitGrid();
 		getList();
 	
-	//해결할 문제 : html이 로드 되기 전에 자바스크립트에서 html을 참조했기 때문에 인식 못함. 전부 window.addEventListener("DOMContentLoaded", function또는 window.onload 여기에 담아야 하는지
-	//script를 다 body밑으로 옮겨야 하는지.... 다른 방법이 있는지...
-	//코드양이 적어서 여기에 넣어도 될것같음..
 	const modal = document.getElementById("modal")
-	//모달창 외 부분 클릭하면 모달창 닫힘
+	
+	//모달창 외 부분 클릭하면 모달창 닫힘 : 불편함... 없애는게 나을거 같음
 	modal.addEventListener("click", e => {
 	    const evTarget = e.target;
-	    if(evTarget.classList.contains("modal-overlay")) { modalOff(); }
+   		if(evTarget.classList.contains("modal-overlay")) { modalOff(); }
 	})
-	//모달창 열렸을 때 ESC누르면 닫힘
-	window.addEventListener("keyup", e => {
-	    if(isModalOn() && e.key === "Escape") { modalOff(); }
-	})
-	
 	
 });
 
 
 
 </script>
-
 </head>
+
 <body>
 
 
@@ -330,16 +343,16 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
 					<div class="titleBox">
 						<strong class="text">서버명<span class="star">*</span></strong>
-						<input type="text" name="name" class="textBox" >
+						<input type="text" id="name" class="textBox" >
 					</div>
 					<div class="titleBox">
 						<strong class="text">IP<span class="star">*</span></strong>
-						<input type="text" name="ip" class="textBox">
+						<input type="text" id="ip" class="textBox">
 					</div>
 					<div class="titleBox">
 						<strong class="text">OS분류<span class="star">*</span></strong>
-						<select form="regServerInfo" name="os" class="selectBox" >
-								<option value="aix">AIX</option>
+						<select form="regServerInfo" id="os" class="selectBox" >
+								<option value="AIX">AIX</option>
 								<option value="Windows">Windows</option>
 								<option value="Linux">Linux</option>							
 								<option value="Linux">Linux</option>							
@@ -348,21 +361,21 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
 					<div class="titleBox">
 						<strong class="text">위치</strong>
-						<input type="text" name="loc" class="textBox">
+						<input type="text" id="loc" class="textBox">
 					</div>
 					<div class="titleBox">
 						<strong class="text">MAC<span class="star">*</span></strong>
-						<input type="text" name="mac"  id="mac" class="textBox" onblur="confirmMac()">
-						<div id="confirmAlertBox">ㅠㅠㅠㅠㅠ 메세지...</div>
+						<input type="text" id="mac"  id="mac" class="textBox" onblur="confirmMac()">
+						<div id="confirmAlertBox"></div> 
 					</div>
 					
 					<div class="titleBox">
 						<strong class="text">관리번호</strong>
-						<input type="text" name="control_num" class="textBox">
+						<input type="text" id="control_num" class="textBox">
 					</div>
 					<div class="titleBox">
 						<strong class="text">설명</strong>
-						<input type="text" name="dsc" class="textBox">
+						<input type="text" id="dsc" class="textBox">
 					</div>
 					<div class="btnBox">
 						<input type="button" name="" value="등록" class="btnBoxbtn" onclick="insertServer()">
