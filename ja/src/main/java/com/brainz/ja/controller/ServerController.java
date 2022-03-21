@@ -1,18 +1,12 @@
 package com.brainz.ja.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.brainz.ja.service.ServerService;
-import com.brainz.ja.vo.ServerVo;
 
 @Controller
 @RequestMapping("/server/*")
@@ -61,5 +55,9 @@ public String modalTest() {
 	return "server/modalTest";
 }
 
+@RequestMapping("test3")
+public String test3() {
+	return "server/test3";
+}
 
 }
