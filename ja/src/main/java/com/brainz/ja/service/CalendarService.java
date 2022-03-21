@@ -335,4 +335,17 @@ public class CalendarService {
 		
 		return result;
 	}
+	
+	// 작업명 중복체크
+	public boolean isExistTitle(String title) {
+			
+		int count = sqlMapper.getCountByTitle(title);
+			
+		if(count > 0) {
+			return true;
+		}else {
+			return false;
+		}
+			
+	}
 }
