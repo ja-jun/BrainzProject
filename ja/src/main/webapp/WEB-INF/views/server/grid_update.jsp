@@ -138,7 +138,6 @@ function insertServer(){
 			var data = JSON.parse(xhr.responseText); 
 
 			modalOff();
-
 			getList();
 		}
 	};
