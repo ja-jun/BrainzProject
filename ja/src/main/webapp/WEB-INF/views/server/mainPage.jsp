@@ -243,6 +243,8 @@
 	 <div id="box">
 	   	<button class="writeBtn" id="writeBtn" onclick="insertServer()">등록</button>
 		<button class="deleteBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
+		<a href="./getExcelServerList"><button  class="writeBtn" id="excelBtn">내보내기</button></a>
+		
 	</div>
 	
 	<br>
