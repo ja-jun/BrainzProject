@@ -25,7 +25,6 @@
 			/>	
 		<security:intercept-url pattern="/login/loginPage" access="isAnonymous()"/>
 		<security:intercept-url pattern="/user/mainPage" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')" />
-		<security:intercept-url pattern="/user/registerUser" access="hasRole('ROLE_ADMIN')" />
 		<security:access-denied-handler ref="webAccessDeniedHandler" />
 	</security:http>
 		

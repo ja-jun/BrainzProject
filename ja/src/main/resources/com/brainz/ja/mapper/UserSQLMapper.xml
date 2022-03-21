@@ -25,19 +25,33 @@
 	</insert>
 	
 	<select id="getUserList" resultType="map">
-		select * from bp_user
+		select bpu.* from bp_user bpu
 	<if test="searchWord !=null">
-		WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
-		<!-- WHERE name LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') OR ip LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') -->	
+		where user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
 	</if>
 		order by user_no desc	
- 		<!-- WHERE name LIKE CONCAT('%',#{searchWord},'%') OR ip LIKE CONCAT('%',#{searchWord},'%') -->
  	</select>
 
 
 	<select id="getUser" resultType="com.brainz.ja.vo.UserVo">
 		select * from bp_user
+		where user_no = #{user_no}
+	</select>
+	
+	<delete id="deleteUser">
+		delete from bp_user
 		where user_no=#{user_no}
+	</delete>
+	
+	<update id="updateUser">
+		update bp_user 
+		set user_id=#{user_id}, name=#{name}, authority=#{authority}, phone=#{phone}, 
+			email=#{email}, dsc=#{dsc}
+	</update>
+	
+	<select id="getCountById" resultType="int">
+		select count(*) from bp_user 
+		where user_id = #{user_id}
 	</select>
 	
 	
