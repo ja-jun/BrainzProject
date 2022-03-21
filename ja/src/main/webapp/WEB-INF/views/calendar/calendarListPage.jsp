@@ -188,8 +188,10 @@ function getCalendarList(){
 				            $('.textBox').append(sc_no_input);
 				            
 				            $('input[name=start_date]').val(sc_info.start_date);
-				            if(sc_info.end_date == ''){
-				            	$('.timearr').addClass('active');
+				            $('input[name=end_date]').val(sc_info.end_date);
+				            
+				            if(sc_info.end_date == sc_info.start_date){
+				            	$('.timearr').attr('checked','checked');
 				            } else if(sc_info.end_date == '9999-12-31'){
 				            	$('.limitless').attr('checked','checked');
 				            	const noneBox = document.querySelector('.noneBox2');
@@ -626,7 +628,8 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
 	$(function(){
 		$('.datepicker').datepicker({
-	    	dateFormat: 'yy-mm-dd'
+	    	dateFormat: 'yy-mm-dd',
+	    	minDate: 0
 			});
 		})
 	 
@@ -634,7 +637,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     	$('#datetimepicker1').datetimepicker({
     		datepicker:false,
     		format:'H:i',
-    		step: 1
+    		step: 10
     	});
   	})
   	
@@ -642,7 +645,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     	$('#datetimepicker2').datetimepicker({
     		datepicker:false,
     		format:'H:i',
-    		step: 1
+    		step: 10
     	});
   	})
 		 
@@ -713,6 +716,9 @@ function validationCheck(target){
 			alert('특정 요일은 1일 부터 28일 까지만 선택 가능합니다.');
 			result = 0;
 		}
+	} else if(!target.has('server_no')){
+		alert('작업할 서버를 등록해 주세요.');
+		result = 0;
 	}
 	
 	return result;
@@ -721,22 +727,33 @@ function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
+	if($('.timearr').is(':checked')){
+		formData.set('end_date',formData.getAll('start_date'));
+		formData.set('repeat_cat',0);
+	} else if($('.limitless').is(':checked')){
+		formData.set('end_date','9999-12-31');
+	}
+	
 	if(validationCheck(formData) == 0){
 		return;
 	} else {
-		if($('.limitless').is(':checked')){
-			formData.set('end_date','9999-12-31');
-		}
 	    $.ajax({
 	        url: 'http://localhost:8080/ja/schedule/regSchedule',
 	        data: formData,
 	        processData: false,
 	        contentType: false,
 	        type: 'POST',
-	        success: function ( data ) {
-	            alert("등록에 성공했습니다.");
-	            delBtn();
-	            location.reload();
+	        success: function (data) {
+	        	if(data.result == 0){
+	        		alert("등록에 성공했습니다.");
+		            delBtn();
+		            location.reload();
+	        	} else {
+	        		alert(data.result);
+	        	}
+	        },
+	        error: function (data){
+	        	alert("등록에 실패하였습니다. 관리자에게 문의해주시기 바랍니다.");
 	        }
 	    });
 	}	
@@ -746,12 +763,16 @@ function modBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
+	if($('.timearr').is(':checked')){
+		formData.set('end_date',formData.getAll('start_date'));
+		formData.set('repeat_cat',0);
+	} else if($('.limitless').is(':checked')){
+		formData.set('end_date','9999-12-31')
+	}
+	
 	if(validationCheck(formData) == 0){
 		return;
 	} else {
-		if($('.limitless').is(':checked')){
-			formData.set('end_date','9999-12-31');
-		}
 		$.ajax({
 			url: 'http://localhost:8080/ja/schedule/modSchedule',
 			data: formData,

@@ -51,24 +51,52 @@ public class RestCalendarController {
 	}
 	
 	@RequestMapping("regSchedule")
-	public HashMap<String, Object> regSchedule(HttpServletRequest param, SetScheduleVo ssVo){
+	public HashMap<String, Object> regSchedule(HttpServletRequest param, 
+											   SetScheduleVo ssVo, 
+											   String start_date, 
+											   String end_date,
+											   String start_time,
+											   String end_time){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(ssVo));
 		
-		HashMap<String, Object> data = new HashMap<String, Object>();
-		if(ssVo.getRepeat_cat() == null) {
-			ssVo.setRepeat_cat(0);
-		}
-		
-		if(ssVo.getTitle() == null) {
-			data.put("result", 1);
-		} else if(ssVo.getStart_date() == null || ssVo.getEnd_date() == null) {
-			data.put("result", 2);
-		} else if(ssVo.getStart_time() == null || ssVo.getEnd_time() == null) {
-			data.put("result", 3);
+		// 작업명은 입력되었는지 확인
+		if(!ssVo.getTitle().equals("")) {
+			// 시작 날짜는 정상적인지 확인
+			if(service.validateDate(start_date).get("result").equals("0")) {
+				// 종료 날짜는 정상적인지 확인
+				if(service.validateDate(end_date).get("result").equals("0")) {
+					//시작 시간은 정상적인지 확인
+					if(service.validationTime(start_time).get("result").equals("0")) {
+						//종료 시간은 정상적인지 확인
+						if(service.validationTime(end_time).get("result").equals("0")) {
+							if(ssVo.getServer_no()!= null) {
+								String result = service.validationSchedule(ssVo).get("result");
+								if(result.equals("0")) {
+									service.regSchedule(ssVo);
+									data.put("result", 0);									
+								} else {
+									data.put("result", result);
+								}
+							} else {
+								data.put("result", "작업하실 서버를 선택해주세요.");
+							}
+						} else {
+							data.put("result", "입력하신 종료 시간은 " + service.validationTime(end_time).get("result"));
+						}
+					} else {
+						data.put("result", "입력하신 시작 시간은 " + service.validationTime(start_time).get("result"));
+					}
+				} else {
+					data.put("result", "입력하신 종료 날짜는 " + service.validateDate(end_date).get("result"));
+				}
+			} else {
+				data.put("result", "입력하신 시작 날짜는 " + service.validateDate(start_date).get("result"));
+			}
 		} else {
-			service.regSchedule(ssVo);
-			data.put("result", 0);
+			data.put("result", "유효하지 않은 작업명입니다.");
 		}
 		
 		return data;
@@ -77,7 +105,6 @@ public class RestCalendarController {
 //	0 - 선택된 날짜 이전 이후 모두 삭제
 //	1 - 선택된 날짜만 삭제
 //	2 - 선택된 날짜 이후만 삭제
-	
 	@RequestMapping("delSchedule")
 	public HashMap<String, Object> delSchedule(Integer delete_radio, SetScheduleVo ssVo, String cur_date){
 		HashMap<String, Object> data = new HashMap<String, Object>();

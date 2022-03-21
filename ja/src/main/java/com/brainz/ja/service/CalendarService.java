@@ -8,6 +8,8 @@ import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -204,5 +206,133 @@ public class CalendarService {
 		SetScheduleVo pre_ssVo = ssVo;
 		pre_ssVo.setEnd_date(pre_date.format(dateFormat));
 		sqlMapper.updateSchedule(pre_ssVo);
+	}
+	
+	// 입력한 날짜 유효성 체크
+	public HashMap<String, String> validateDate(String date) {
+		HashMap<String, String> result = new HashMap<String, String>();
+		Pattern datePattern = Pattern.compile("^(\\d{4}[-]\\d{2}[-]\\d{2})$");
+		
+		Matcher match = datePattern.matcher(date);
+		
+		if(match.find()) {
+			String month = date.substring(5,7);
+			String days = date.substring(8,10);
+			
+			int mon = Integer.parseInt(month);
+			int day = Integer.parseInt(days);
+			
+			if(mon < 1 || mon > 12) {
+				// 월이 1~12 사이값이 아닌 경우
+				result.put("result", "존재하지 않는 월 입니다.");
+			} else if(day < 1 || day > 31) {
+				// 일이 1~31 사이값이 아닌 경우
+				result.put("result", "형식에 맞지 않는 일 입니다.");
+			} else {
+				// 입력된 값을 Date로 변환했을 때 없는 값이면 오류를 반환하도록 설계
+				// 즉, 입력된 값이 존재하는 날짜인지 체크
+				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				LocalDate valDate = LocalDate.parse(date, dateFormat);
+				
+				if(valDate.toString().equals(date)) {
+					result.put("result", "0");					
+				} else {
+					result.put("result", "존재하지 않는 날짜 입니다.");					
+				}
+			}
+		} else {
+			// dddd-dd-dd 형식에 맞지 않음
+			result.put("result","형식에 맞지 않는 날짜입니다.");
+		}
+		
+		return result;
+	}
+	
+	// 입력한 시간 유효성 체크
+	public HashMap<String, String> validationTime(String time){
+		HashMap<String, String> result = new HashMap<String, String>();
+		Pattern timePattern = Pattern.compile("^(\\d{2}[:]\\d{2})$");
+		
+		Matcher match = timePattern.matcher(time);
+		
+		if(match.find()) {
+			String hours = time.substring(0,2);
+			String minutes = time.substring(3,5);
+			
+			int hour = Integer.parseInt(hours);
+			int minute = Integer.parseInt(minutes);
+			
+			if(hour < 0 || hour > 23) {
+				result.put("result", "형식에 맞지 않는 시간 입니다.");
+			} else if(minute < 0 || minute > 60) {
+				result.put("result", "형식에 맞지 않는 분 입니다.");
+			} else {
+				result.put("result", "0");
+			}
+		} else {
+			// HH:mm 형식에 맞지 않음
+			result.put("result","형식에 맞지 않는 시간입니다.(HH:mm)");
+		}
+		
+		return result;
+	}
+	
+	// 입력한 시간에 한 번도 등록되지 않는 경우
+	public HashMap<String, String> validationSchedule(SetScheduleVo ssVo){
+		HashMap<String, String> result = new HashMap<String, String>();
+		
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate start_date = ssVo.getStart_date();
+		LocalDate end_date = ssVo.getEnd_date();
+		
+		if(end_date.equals(LocalDate.parse("9999-12-31",dateFormat))) {
+			end_date = start_date.plusYears(1);
+		}
+		
+		if(!(ssVo.getRepeat_cat() == 0)) {
+			if(start_date.isBefore(end_date)) {
+				LocalDate cur_date = start_date;
+				int count = 0;
+				
+				while((cur_date.isBefore(end_date) || cur_date.equals(end_date)) && count == 0) {
+					String[] dayCheck = {ssVo.getMon(), ssVo.getThe(), ssVo.getWed(), ssVo.getThu(), ssVo.getFri(), ssVo.getSat(), ssVo.getSun()};
+					int day = cur_date.getDayOfWeek().getValue() - 1;
+					
+					if(ssVo.getRepeat_cat() == 1) {
+						if(dayCheck[day].equals("y")) {
+							count += 1;
+						}
+					} else if(ssVo.getRepeat_cat() == 2) {
+						WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
+						TemporalField weekOfMonth = weekFields.weekOfMonth();
+						int wom = cur_date.get(weekOfMonth);
+						
+						if(wom == ssVo.getRepeat_week() && dayCheck[day].equals("y")) {
+							count += 1;
+						}
+					} else if(ssVo.getRepeat_cat() == 3){
+						int mod = cur_date.getDayOfMonth();
+						
+						if(mod == ssVo.getRepeat_day()) {
+							count += 1;
+						}
+					}
+					cur_date = cur_date.plusDays(1);
+				}
+				
+				if(count != 0) {
+					result.put("result", "0");
+				} else {
+					result.put("result", "입력하신 일정으로 등록되는 작업이 한 건도 없습니다. 다시 입력해 주세요.");
+				}
+				
+			} else {
+				result.put("result", "시작날짜는 종료날짜보다 이 전 날짜만 가능합니다.");
+			}
+		} else {
+			result.put("result", "0");
+		}
+		
+		return result;
 	}
 }

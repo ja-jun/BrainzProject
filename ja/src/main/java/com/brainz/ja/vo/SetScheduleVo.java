@@ -3,6 +3,7 @@ package com.brainz.ja.vo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class SetScheduleVo {
 	private Integer sc_no;
@@ -23,7 +24,7 @@ public class SetScheduleVo {
 	private String sat;
 	private String sun;
 	private String delete_date;
-	private String[] server_no;
+	private ArrayList<String> server_no;
 	
 	public SetScheduleVo() {
 		super();
@@ -32,7 +33,7 @@ public class SetScheduleVo {
 	public SetScheduleVo(Integer sc_no, Integer user_no, String title, String start_date, String end_date,
 			String start_time, String end_time, Integer repeat_cat, Integer repeat_day, Integer repeat_week, String mon,
 			String the, String wed, String thu, String fri, String sat, String sun, String delete_date,
-			String[] server_no) {
+			ArrayList<String> server_no) {
 		super();
 		this.sc_no = sc_no;
 		this.user_no = user_no;
@@ -185,10 +186,10 @@ public class SetScheduleVo {
 		this.delete_date = delete_date;
 	}
 
-	public String[] getServer_no() {
+	public ArrayList<String> getServer_no() {
 		return server_no;
 	}
-	public void setServer_no(String[] server_no) {
+	public void setServer_no(ArrayList<String> server_no) {
 		this.server_no = server_no;
 	}
 }
