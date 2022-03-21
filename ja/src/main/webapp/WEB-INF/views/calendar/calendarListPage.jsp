@@ -244,6 +244,8 @@ function getCalendarList(){
 							tr.appendChild(th1);
 							var th2 = document.createElement("input");
 							th2.setAttribute("type","checkbox");
+							th2.setAttribute("name","allCheck");
+							th2.setAttribute("id","allCheck");
 							th1.appendChild(th2);
 							var th3 = document.createElement("th");
 							th3.setAttribute("class","serverHeaderText");
@@ -273,6 +275,7 @@ function getCalendarList(){
 								tr6.appendChild(th7);
 								var th8 = document.createElement("input");
 								th8.setAttribute("type","checkbox");
+								th8.setAttribute("name","rowCheck");
 								th7.appendChild(th8);
 								var th9 = document.createElement("th");
 								th9.setAttribute("class","serverContentText");
@@ -480,6 +483,7 @@ function getServerList(){
 					tr6.appendChild(th7);
 					var th8 = document.createElement("input");
 					th8.setAttribute("type","checkbox");
+					th8.setAttribute("name","rowCheck");
 					th7.appendChild(th8);
 					var th9 = document.createElement("th");
 					th9.setAttribute("class","serverContentText");
@@ -626,6 +630,16 @@ window.addEventListener("DOMContentLoaded" , function(){
  		}
  	});
  	
+ 	$("#allCheck").click(function() {
+		var checked = $("#allCheck").is(':checked');
+		if(checked){
+			$("input[name='rowCheck']").prop('checked',true);
+		} else {
+			$("input[name='rowCheck']").prop('checked',false);
+		}
+			
+	});
+ 	
 	$(function(){
 		$('.datepicker').datepicker({
 	    	dateFormat: 'yy-mm-dd',
@@ -655,6 +669,52 @@ window.addEventListener("DOMContentLoaded" , function(){
 	getServerList();
 	delBtn();
 });
+function confirmTitle(){
+
+	var title = document.querySelector('input[name="title"]').value;
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){
+			var data = JSON.parse(xhr.responseText);
+			
+			var confirmAlertBox = document.getElementById("confirmAlertBox");
+			confirmAlertBox.style.display = "block";
+			if(data.result == true){
+				confirmAlertBox.innerText = "이미 존재 하는 작업명 입니다.";
+				confirmAlertBox.style.color = "red";
+			}else if(title == ""){
+				confirmAlertBox.innerText = "작업명은 필수항목 입니다.";
+				confirmAlertBox.style.color = "red";
+			} else {
+				confirmAlertBox.innerText = "사용 가능한 작업명 입니다.";
+				confirmAlertBox.style.color = "green";
+			}
+		}
+	};
+	
+	
+	xhr.open("get" , "http://localhost:8080/ja/schedule/isExistTitle?title=" + title , true); 
+	xhr.send();
+	
+};
+
+function deleteServer(){
+	
+	if ($("input[name='rowCheck']:checked").length == 0) {
+		alert("선택된 상품이 없습니다.");
+	} else {
+		var chk = confirm("정말 삭제하시겠습니까?");
+		if(chk == true){
+			for(var i=$("input[name='rowCheck']:checked").length-1; i>-1; i--){
+				﻿		$("input[name='rowCheck']:checked").eq(i).closest("tr").remove();
+			}﻿ 
+		}else{
+			return;
+		}
+	}
+}
 function validationCheck(target){
 	var result = 1;
 	
@@ -841,7 +901,8 @@ function delSchedule(){
 					
 					<div class="titleBox">
 						<strong class="text">작업명<span class="star">*</span></strong>
-						<input type="text" name="title" class="textBox" autocomplete='off'>
+						<input type="text" name="title" class="textBox" onblur="confirmTitle()" autocomplete='off'>
+						<div id="confirmAlertBox"></div>
 					</div>
 					
 					<div class="dateBox">
@@ -898,14 +959,14 @@ function delSchedule(){
 						<strong class="text">작업대상<span class="star">*</span></strong>
 						<div class="btnList">
 							<input type="button" value="추가" class="btn1" id="btn1" autocomplete='off'>
-							<input type="button" value="삭제" class="btn1" autocomplete='off'>
+							<input type="button" value="삭제" class="btn1" onclick="deleteServer()" autocomplete='off'>
 						</div>
 					</div>
 					
 					<table class="serverList" id="serverListM">
 						<thead id="theadList">
 							<tr class="serverHeader">
-								<th class="serverHeaderText"><input type="checkbox" autocomplete='off'></th>
+								<th class="serverHeaderText"><input type="checkbox" id="allCheck" autocomplete='off' name="allCheck"></th>
 								<th class="serverHeaderText">서버명</th>
 								<th class="serverHeaderText">IP</th>
 								<th class="serverHeaderText">OS분류</th>

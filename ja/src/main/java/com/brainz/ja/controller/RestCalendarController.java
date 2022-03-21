@@ -142,4 +142,16 @@ public class RestCalendarController {
 		
 		return data;
 	}
+	
+	@RequestMapping("isExistTitle")
+	public HashMap<String, Object> isExistTitle(String title){
+		
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		boolean result = service.isExistTitle(title);
+		
+		data.put("result", result);		
+		
+		return data;
+	}
 }
