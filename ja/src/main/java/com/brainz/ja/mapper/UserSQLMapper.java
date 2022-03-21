@@ -16,6 +16,12 @@ public interface UserSQLMapper {
 	public ArrayList<HashMap<String, Object>> getUserList(String searchWord);
 	
 	public UserVo getUser(int user_no);
+	
+	public void deleteUser(int user_no);
+	
+	public void updateUser(UserVo vo);
+	
+	public int getCountById(String id);
 		
 	
 }

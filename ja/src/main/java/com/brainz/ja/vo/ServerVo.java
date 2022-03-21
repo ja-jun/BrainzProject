@@ -17,11 +17,11 @@ public class ServerVo {
 	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
 	private LocalDateTime write_date;
 	
-	private ServerVo() {
+	public ServerVo() {
 		super();
 	}
 
-	private ServerVo(int server_no, int user_no, String name, String ip, String os, String loc, String mac,
+	public ServerVo(int server_no, int user_no, String name, String ip, String os, String loc, String mac,
 			String control_num, String dsc, LocalDateTime write_date) {
 		super();
 		this.server_no = server_no;

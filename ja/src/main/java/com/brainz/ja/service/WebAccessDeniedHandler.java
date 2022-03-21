@@ -17,7 +17,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Service;
 
 import com.brainz.ja.vo.UserDetailsVo;
-import com.brainz.ja.vo.UserVo;
 
 @Service("webAccessDeniedHandler")
 public class WebAccessDeniedHandler implements AccessDeniedHandler {
@@ -29,11 +28,11 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
 			throws IOException, ServletException {
 		res.setStatus(HttpStatus.FORBIDDEN.value());
 		
-		String requestUri = req.getRequestURI();
+		// String requestUri = req.getRequestURI();
 		
 		if(ade instanceof AccessDeniedException) {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			if (authentication != null && requestUri.equals("/ja/user/registerUser") &&
+			if (authentication != null &&
 					((UserDetailsVo) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) 
 			{
 				req.setAttribute("msg", "접근권한 없는 사용자입니다.");
