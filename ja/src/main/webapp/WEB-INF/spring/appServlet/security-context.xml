@@ -24,7 +24,7 @@
 				delete-cookies="true"
 			/>	
 		<security:intercept-url pattern="/login/loginPage" access="isAnonymous()"/>
-		<security:intercept-url pattern="/user/mainPage" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')" />
+		<!-- <security:intercept-url pattern="/user/mainPage" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')" /> -->
 		<security:access-denied-handler ref="webAccessDeniedHandler" />
 	</security:http>
 		

@@ -443,9 +443,9 @@ function getServerList(){
 				data: jsonArr,
 				rowNum: 10,
 				rowList:[10,20,30],
-				height:300,
-				width:1200,
-				 colModel: [	
+				height:500,
+				width:1400,
+				colModel: [	
 						{name: 'name', label : '서버명', align:'left'},
 				        {name: 'ip', label : 'IP', align:'left'},
 				        {name: 'os', label : 'OS분류', align:'center'},
@@ -528,11 +528,6 @@ function getServerList(){
 	xhr.send();	
 }
 window.addEventListener("DOMContentLoaded" , function(){
-	
-	$(window).resize(function() {
-		$("#list").setGridWidth($(this).width() * .100);
-	});
-	
 	
 	/* 요일선택 했을시  */ 
 	$('.btnDay').click(function(){
@@ -651,6 +646,10 @@ window.addEventListener("DOMContentLoaded" , function(){
 		}
 			
 	});
+ 	
+ 	$("#ulList").on("click", "li", function() {
+ 	    $(this).addClass("on");
+ 	});
  	
 	$(function(){
 		$('.datepicker').datepicker({
