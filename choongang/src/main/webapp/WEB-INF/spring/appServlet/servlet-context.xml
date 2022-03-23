@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
+						https://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://www.springframework.org/schema/context 
+						https://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/beans
+						https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven />
+	
+	<!-- Handles HTTP GET 요청 중 static 방식으로 되어 ${webappRoot}/resources 로 요청된 내용들은 허용 -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	
+	<!-- Resolves views : @Controller로 부터 받은 return 값에 .jsp 확장자를 붙이고, /WEB-INF/views 경로를 추가 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<!-- controller 스캐너 -->
+	<context:component-scan base-package="com.choongang.bcentral.*.controller"/>
+	
+	<!-- vo 스캐너 -->
+	<context:component-scan base-package="com.choongang.bcentral.vo"/>
+	
+	<!-- Multipart Data-Type 전송을 위한 설정 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="100000000" />
+		<property name="defaultEncoding" value="EUC-KR" />
+	</bean>	
+	
+	<!-- 다국어 설정을 위한 intercepter -->
+	<mvc:interceptors>
+		<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang"/>
+		</bean>
+	</mvc:interceptors>
+
+</beans>
