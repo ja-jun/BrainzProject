@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+
+
+.fc .fc-daygrid-day.fc-day-today{background:#f2f3f4}
+.bi{
+    font-size: px;
+    margin-right: 8px;
+}
+#container{
+}
+#container .header{
+    height: 45px;
+    width: 100%;
+    background: #151c1f;
+    overflow: hidden;
+    color: #e69600;
+    position: fixed;
+    z-index: 99;
+}
+#container .header .headerName{
+    padding-left: 1.5vw;
+    padding-top: 15px;
+    font-size: 14px;
+}
+#container .navBar{
+    width: 200px;
+    background: #f2f3f4;
+    position: fixed;
+    height: 100%;
+    z-index: 99;
+    top: 45px;
+}
+#container .navBar ul .pageList{
+    height: 70px;
+    font-size: 13px;
+    padding-left: 1.5vw;
+    padding-top: 27px;
+}
+#container .navBar ul .on{
+    background: #d4d7da;
+}
+.writeBtn{
+    	width: 80px;
+    	height: 35px;
+    	font-size: 15px;
+    	background: none;
+    	border: 1px solid #777;
+    	border-radius: 3px;
+    	cursor: pointer;
+    	}
+    	
+#content{
+    display: flex;
+    height: 100%;
+}
+.row{
+    height: 2vw;
+    font-size: 15px;
+    line-height: 2.1;
+}
+

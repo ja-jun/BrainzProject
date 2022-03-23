@@ -28,21 +28,27 @@
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
-
-
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
 <script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
+	$('body').css("overflow-y", "auto");
 	const modal = document.getElementById("modal");
 	modal.setAttribute("style","display:none");
 	document.getElementById("regScheduleInfo").reset();
 }
 /* 등록 클릭시 */
 function writeBtn() {
+	$('body').css("overflow", "hidden");
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
+	
+	var confirmAlertBox = document.getElementById("confirmAlertBox");
+    confirmAlertBox.setAttribute("style","display:none");
+    
+    $('.confirmAlertBox').empty();
+    $('#confirmAlertBox4').empty();
 	
 	var title = document.querySelector('.title');
     title.innerText="작업 등록";
@@ -171,7 +177,7 @@ function getCalendarList(){
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
 					$.ajax({
-				        url: 'http://localhost:8181/ja/schedule/getScheduleInfo',
+				        url: './getScheduleInfo',
 				        data: "sc_no=" + info.event.id,
 				        type: 'POST',
 				        success: function(data) {
@@ -228,6 +234,9 @@ function getCalendarList(){
 				            	$('.checkboxAll').attr('checked','checked');
 				            }
 				            
+				            var confirmAlertBox = document.getElementById("confirmAlertBox");
+				            confirmAlertBox.innerText="";
+				            
 				            var title = document.querySelector('.title');
 				            title.innerText="작업 수정&삭제";
 				            
@@ -265,6 +274,7 @@ function getCalendarList(){
 				            
 				            
 				            var tbody = document.createElement("tbody");
+				            tbody.setAttribute("class","tbodyBox");
 				            
 				            for(x of sc_server){
 				            	var tr6 = document.createElement("tr");
@@ -366,7 +376,7 @@ function getCalendarList(){
 					}
 				}
 				
-				reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
+				reXhr.open("post", "./getList", true);
 				reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 			};
@@ -396,7 +406,7 @@ function getCalendarList(){
 					}
 				}
 				
-				reXhr.open("post", "http://localhost:8181/ja/schedule/getList", true);
+				reXhr.open("post", "./getList", true);
 				reXhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				reXhr.send("year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1));
 			};
@@ -405,7 +415,7 @@ function getCalendarList(){
 		
 	var today = new Date();
 	
-	xhr.open("post" , "http://localhost:8181/ja/schedule/getList", true);
+	xhr.open("post" , "./getList", true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
@@ -433,7 +443,8 @@ function getServerList(){
 				data: jsonArr,
 				rowNum: 10,
 				rowList:[10,20,30],
-				width:700,
+				height:300,
+				width:1200,
 				 colModel: [	
 						{name: 'name', label : '서버명', align:'left'},
 				        {name: 'ip', label : 'IP', align:'left'},
@@ -472,7 +483,7 @@ function getServerList(){
 		    	serverModal2.innerHTML = "";
 				
 		    	var tbody = document.createElement("tbody");
-		    	
+		    	tbody.setAttribute("class","tbodyBox");
 		    
  					for(var i = 0; i < params.length; i++){
 					var tr6 = document.createElement("tr");
@@ -512,7 +523,7 @@ function getServerList(){
 		}
 	};
 	
-	xhr.open("post" , "http://localhost:8181/ja/schedule/getServerList" , true);
+	xhr.open("post" , "./getServerList" , true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send();	
 }
@@ -597,6 +608,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     $('#btn1').click(function(){
          const serverModal = document.getElementById("serverModal"); 
          serverModal.setAttribute("style","display: block"); 
+         $('.cbox').prop('checked',false);
  	}); 
     
     
@@ -695,7 +707,7 @@ function confirmTitle(){
 	};
 	
 	
-	xhr.open("get" , "http://localhost:8181/ja/schedule/isExistTitle?title=" + title , true); 
+	xhr.open("get" , "./isExistTitle?title=" + title , true); 
 	xhr.send();
 	
 };
@@ -718,66 +730,35 @@ function deleteServer(){
 function validationCheck(target){
 	var result = 1;
 	
-	if(target.getAll('title') == ''){
-		/* 	1. 제목이 있는지 여부 
-			   제목에 혹시 어떠한 특수 문자가 들어갔는지 확인 해야함
-		*/
-		alert('제목을 입력해주세요.');
-		result = 0;
-	} else if(target.getAll('start_date') == ''){
+	if(target.getAll('start_date') == '' && target.getAll('end_date') == '' && !$('.limitless').is(':checked') && target.getAll('repeat_11') == '0'){
 		/* 	2. 시작 날짜가 제대로 입력 됐는지 확인
 		 	   날짜 형식이 제대로 되었는지도 확인 해야함 
 		 */
-		alert('작업 시작 날짜를 입력해주세요.');
+		var confirmAlertBox = document.getElementById("confirmAlertBox2");
+			confirmAlertBox.style.display = "block";
+			confirmAlertBox.innerText = "작업 날짜를 입력해주세요.";
+			confirmAlertBox.style.color = "red";
 		result = 0;
-	} else if(target.getAll('end_date') == '' && !$('.limitless').is(':checked') && target.getAll('repeat_11') == '0'){
-		/*	3. 종료 날짜가 제대로 입력 됐는지 확인
-			   날짜 형식이 제대로 되었는지도 확인 해야함
-		*/
-		alert('작업 종료 날짜를 입력해주세요.');
-		result = 0;
-	} else if(target.getAll('start_time') == '' || target.getAll('end_time') ==''){
+	}
+	
+	if(target.getAll('start_time') == '' || target.getAll('end_time') ==''){
 		/*	4. 시작 시간과 끝나는 시작이 입력 됐는지 확인
 			   위 날짜 처럼 추후 형식을 확인 했는지도 확인 해야함
 		*/
-		alert('작업 시간을 입력해주세요.');
+		var confirmAlertBox = document.getElementById("confirmAlertBox3");
+			confirmAlertBox.style.display = "block";
+			confirmAlertBox.innerText = "작업 시간을 입력해주세요.";
+			confirmAlertBox.style.color = "red";
 		result = 0;
-	} else if(target.getAll('repeat_cat') == '1'){
-		/*	5. 매일 이라는 반복 유형 선택 시 특정 요일을 선택 했는지 확인 */
-		if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
-			result = 1;
-		} else {
-			alert('작업을 원하는 요일을 선택해주세요.');
-			result = 0;
-		}
-	} else if(target.getAll('repeat_cat') == '2'){
-		/*	6. 매 달 특정 주차가 선택이 되었는지 확인 */
-		if(target.getAll('repeat_week') < 1 || target.getAll('repeat_week') > 4){
-			alert('매 달 1주차 부터 4주차 까지만 선택 가능합니다.');
-			result = 0;
-		} else if(target.getAll('repeat_week') == ''){
-			alert('작업을 등록할 주차를 입력해주세요.');
-			result = 0;
-		} else {
-			/* 7. 특정 주차가 선택되어 있다면 요일도 선택되어 있는지 확인 */
-			if(target.has('sun') || target.has('mon') || target.has('the') || target.has('wed') || target.has('thu') || target.has('fri') || target.has('sat')){
-				result = 1;
-			} else {
-				alert('작업을 원하는 요일을 선택해주세요.');
-				result = 0;
-			}
-		}
-	} else if(target.getAll('repeat_cat') == '3'){
-		/*	8. 매 달 특정 요일이 선택되어 있는지 그리고 정확한 값인지 확인 */
-		if(!target.has('repeat_day')){
-			alert('작업을 원하는 매 월 특정 요일을 입력해주세요.');
-			result = 0;
-		} else if(target.getAll('repeat_day') < 1 || target.getAll('repeat_day') > 28){
-			alert('특정 요일은 1일 부터 28일 까지만 선택 가능합니다.');
-			result = 0;
-		}
-	} else if(!target.has('server_no')){
-		alert('작업할 서버를 등록해 주세요.');
+	} 
+	
+	
+	if(!target.has('server_no')){
+		var confirmAlertBox = document.getElementById("confirmAlertBox4");
+			confirmAlertBox.style.display = "inline-flex";
+			confirmAlertBox.innerText = "서버선택은 필수항목입니다.";
+			confirmAlertBox.style.color = "red";
+		
 		result = 0;
 	}
 	
@@ -798,7 +779,7 @@ function regBtn(){
 		return;
 	} else {
 	    $.ajax({
-	        url: 'http://localhost:8181/ja/schedule/regSchedule',
+	        url: './regSchedule',
 	        data: formData,
 	        processData: false,
 	        contentType: false,
@@ -820,6 +801,7 @@ function regBtn(){
 }
 /* 수정 기능 */
 function modBtn(){
+	$('body').css("overflow-y", "auto");
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
@@ -834,7 +816,7 @@ function modBtn(){
 		return;
 	} else {
 		$.ajax({
-			url: 'http://localhost:8181/ja/schedule/modSchedule',
+			url: './modSchedule',
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -849,9 +831,10 @@ function modBtn(){
 }
 /* 삭제 기능 */
 function delSchedule(){
+	$('body').css("overflow-y", "auto");
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	$.ajax({
-		url: 'http://localhost:8181/ja/schedule/delSchedule',
+		url: './delSchedule',
 		data: formData,
 		processData: false,
 		contentType: false,
@@ -866,25 +849,13 @@ function delSchedule(){
 
 </head>
 <body>
-	<div id="container">
-		<div class="header">
-			<h3 class="headerName">작업 관리</h3>
-		</div>
 		
-		<div id="content">
-			<div class="navBar">
-				<ul>
-					<li class="pageList"><a href="../jbWork"><i class="bi bi-person"></i>사용자 관리</a></li>
-					<li class="pageList"><a href=""><i class="bi bi-shield-check"></i>서버 관리</a></li>
-					<li class="pageList on"><a href=""><i class="bi bi-calendar-check"></i>작업 관리</a></li>
-				</ul>
-			</div>
-			
+			<jsp:include page="../nav/nav.jsp"></jsp:include>
 	    	<div id="box">
 	    		<button class="writeBtn" onclick="writeBtn()">등록</button>
 	    		<div id="calendar"></div>
 	    	</div>
-	    </div>	
+	  
 		
 		<!-- modal 창 -->
 		<div id="modal" class="modal-overlay">
@@ -901,8 +872,11 @@ function delSchedule(){
 					
 					<div class="titleBox">
 						<strong class="text">작업명<span class="star">*</span></strong>
+					
+					<div class="titleText">
 						<input type="text" name="title" class="textBox" onblur="confirmTitle()" autocomplete='off'>
-						<div id="confirmAlertBox"></div>
+						<div id="confirmAlertBox" class="confirmAlertBox"></div>
+					</div>
 					</div>
 					
 					<div class="dateBox">
@@ -923,7 +897,9 @@ function delSchedule(){
 		                    <div id="radioBoxCheck">
 		                    	<input type="checkbox" class="limitless" autocomplete='off'> 무기한
 		                    </div>
+		                <div id="confirmAlertBox2" class="confirmAlertBox"></div> 
 						</div>
+						
 					</div>
 		
 					<div class="timeBox">
@@ -952,11 +928,12 @@ function delSchedule(){
 		                   	<input id="datetimepicker2" type="text" name="end_time" autocomplete='off'>
 		                   	<div class="imgBox"><img src="../resources/img/alarm.svg"></div>
 		                   	</div>
+		                   	<div id="confirmAlertBox3" class="confirmAlertBox"></div>
 						</div>
 					</div>
 		
 					<div class="listBox">
-						<strong class="text">작업대상<span class="star">*</span></strong>
+						<strong class="text">작업대상<span class="star">*</span><div id="confirmAlertBox4"></div> </strong>
 						<div class="btnList">
 							<input type="button" value="추가" class="btn1" id="btn1" autocomplete='off'>
 							<input type="button" value="삭제" class="btn1" onclick="deleteServer()" autocomplete='off'>
@@ -996,7 +973,7 @@ function delSchedule(){
 			<div id="pager"></div> 
 		</div>
 		</div>
-	</div>
+	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>
