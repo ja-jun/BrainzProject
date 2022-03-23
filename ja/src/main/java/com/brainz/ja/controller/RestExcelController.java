@@ -26,7 +26,7 @@ public class RestExcelController {
 	@RequestMapping("getExcelServerList")
 	public void getServerList(String searchWord , HttpServletResponse response) throws IOException {
 		
-		System.out.println("test!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("test!");
 		
 		ArrayList<ServerVo> serverList = excelService.getServerList(searchWord);
 		
