@@ -2,11 +2,13 @@ package com.brainz.ja.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.brainz.ja.mapper.ServerSQLMapper;
+import com.brainz.ja.vo.PageVo;
 import com.brainz.ja.vo.ServerVo;
 
 @Service
@@ -19,8 +21,9 @@ public class ServerService {
 		serverSQLMapper.insertServer(vo);
 	}
 	
-	public ArrayList<HashMap<String, Object>> getServerList(String searchWord) {
-		ArrayList<HashMap<String, Object>>  serverList = serverSQLMapper.getServerList(searchWord);
+	public ArrayList<ServerVo> getServerList(PageVo vo) {
+		
+		ArrayList<ServerVo> serverList = serverSQLMapper.getServerList(vo);
 		
 		//상태항목- 작업관리에서 가져와서 정상/작업중을 추가하여 
 		//arraylist<hashmap<s,o>>를 만들어 리턴할 것인지 
@@ -28,15 +31,20 @@ public class ServerService {
 		return serverList;
 		}
 	
+	public int getServerCount(PageVo vo) {
+		return serverSQLMapper.getServerCount(vo);
+	}
+	
+	
 	public ServerVo getServer(int server_no) {
 		ServerVo serverVo = serverSQLMapper.getServer(server_no);
 		
 		return serverVo;
 	}
 	
-	public void deleteServer(String [] server_no) {
+	public void deleteServer(List<String> nos) {
 		
-		for(String no  : server_no) {
+		for(String no  : nos) {
 			serverSQLMapper.deleteServer(Integer.parseInt(no.trim()));
 		}
 		
@@ -55,6 +63,8 @@ public class ServerService {
 			return false;
 		}
 	}
+	
+
 	
 		
 	

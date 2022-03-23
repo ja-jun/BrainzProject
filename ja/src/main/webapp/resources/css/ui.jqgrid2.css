@@ -1,6 +1,6 @@
 /*Grid*/
 .ui-jqgrid {position: relative;/* padding: 4vw 2vw 0vw 2vw; */overflow: hidden;width: 100%;/* margin: 4vw; */}
-.ui-jqgrid .ui-jqgrid-view {position: relative;left:0;top: 0;padding: 0;font-size: 13px;width:100% !important}
+.ui-jqgrid .ui-jqgrid-view {position: relative;left:0;top: 0;padding: 0;font-size: 13px;width:100% !important;overflow-y: auto;}
 /* caption*/
 .ui-jqgrid .ui-jqgrid-titlebar {padding: .3em .2em .2em .3em; position: relative; font-size: 12px; border-left: 0 none;border-right: 0 none; border-top: 0 none;}
 .ui-jqgrid .ui-jqgrid-caption {text-align: left;}
@@ -13,7 +13,7 @@
 .ui-jqgrid .ui-jqgrid-hbox {height: 100%;width: 100%;display: flex;border: none;}
 .ui-jqgrid .ui-jqgrid-htable {margin:0;height: 100%;width: 100% !important;border: none;}
 .ui-jqgrid .ui-jqgrid-htable th {height: 100%;padding: 0 0px 0 0px;}
-.ui-jqgrid .ui-jqgrid-htable th div {padding: 15px 0px 15px 0px;}
+.ui-jqgrid .ui-jqgrid-htable th div {padding: 20px 0px 20px 0px;font-size: 16px;font-weight: 400;}
 .ui-jqgrid .ui-jqgrid-htable th:last-child div{border:none}
 .ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {overflow: hidden;white-space: nowrap;text-align:center;border-top : 0 none;border-bottom : 0 none;height: 100%;z-index: 999;/* padding-top: 13px; *//* padding-bottom: 6px; */}
 .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
@@ -37,9 +37,9 @@
 .ui-jqgrid tr.ui-search-toolbar input {margin: 1px 0 0 0}
 .ui-jqgrid tr.ui-search-toolbar select {margin: 1px 0 0 0}
 /* body */ 
-.ui-jqgrid .ui-jqgrid-bdiv {position: relative;margin: 0;padding:0;overflow: auto;text-align:left;overflow-y: auto;display: flex;width:100% !important;}
+.ui-jqgrid .ui-jqgrid-bdiv {position: relative;margin: 0;padding:0;/* overflow: auto; */text-align:left;/* overflow-y: auto; */display: flex;width:100% !important;}
 .ui-jqgrid .ui-jqgrid-btable {table-layout:fixed;/* margin:0; */outline-style: none;/* height: 48px; */width: 100% !important;}
-.ui-jqgrid tr.jqgrow {outline-style: none;height: 50px;width: 100%;font-size: 12px;font-weight: 300;border-bottom: 1px solid #ccc;}
+.ui-jqgrid tr.jqgrow {outline-style: none;height: 55px;width: 100%;font-size: 15px;font-weight: 300;border-bottom: 1px solid #ccc;}
 .ui-jqgrid tr.jqgroup { outline-style: none; }
 .ui-jqgrid tr.jqgrow td {font-weight: normal;overflow: hidden;white-space: pre;height: 22px;padding: 18px 2px 0px 10px;}
 .ui-jqgrid tr.jqgfirstrow td {padding: 0 2px 0 2px;border-right-width: 1px; border-right-style: solid;}

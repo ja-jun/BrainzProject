@@ -1,10 +1,18 @@
 package com.brainz.ja.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.brainz.ja.service.ServerService;
 
@@ -26,12 +34,6 @@ public class ServerController {
 		 */
 		return "/server/mainPage";
 	}
-
-	
-
-	
-	
-	
 	
 	@RequestMapping("jqgrid_test")
 	public String jqgrid() {
@@ -57,6 +59,11 @@ public String test3() {
 @RequestMapping("grid_update")
 public String grid_update() {
 	return "server/grid_update";
+}
+
+@RequestMapping("testPage")
+public String testPage() {
+	return "server/testPage";
 }
 
 
