@@ -14,6 +14,7 @@
 				password-parameter="user_pw"
 				login-processing-url="/login/login_check" 
 				login-page="/login/loginPage" 
+				authentication-failure-handler-ref="loginFailHandler"
 				default-target-url="/user/mainPage"
 			/>
 			<security:logout 

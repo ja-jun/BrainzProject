@@ -25,9 +25,9 @@
 		<div id="content">
 			<div class="navBar">
 				<ul id="ulList">
-					<li class="pageList"><a href=""><i class="bi bi-person"></i>사용자 관리</a></li>
-					<li class="pageList"><a href=""><i class="bi bi-shield-check"></i>서버 관리</a></li>
-					<li class="pageList"><a href=""><i class="bi bi-calendar-check"></i>작업 관리</a></li>
+					<li class="pageList"><a href="/ja/user/mainPage"><i class="bi bi-person"></i>사용자 관리</a></li>
+					<li class="pageList"><a href="/ja/server/grid_update"><i class="bi bi-shield-check"></i>서버 관리</a></li>
+					<li class="pageList"><a href="/ja/calendar/calendarListPage"><i class="bi bi-calendar-check"></i>작업 관리</a></li>
 					<li class="pageList"><a href=""><i class="bi bi-card-list" style="font-size:25px"></i>공지 사항</a></li>
 				</ul>
 			</div>
