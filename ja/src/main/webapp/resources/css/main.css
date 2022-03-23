@@ -217,7 +217,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   .fc .fc-button-primary:not(:disabled).fc-button-active:focus {}
 .fc .fc-button .fc-icon {
     vertical-align: middle;
-    font-size: 1.5em; /* bump up the size (but don't make it bigger than line-height of button, which is 1.5em also) */
+    font-size: 2.2em; /* bump up the size (but don't make it bigger than line-height of button, which is 1.5em also) */
   }
 .fc .fc-button-group {
     position: relative;
@@ -266,7 +266,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     margin-top: 1.5em;
   }
 .fc .fc-toolbar-title {
-    font-size: 1.75em;
+    font-size: 2.5em !important;
     margin: 0;
   }
 .fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
@@ -385,6 +385,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc .fc-view-harness {
     flex-grow: 1; /* because this harness is WITHIN the .fc's flexbox */
     position: relative;
+    height: 1280px !important;
   }
 .fc {
 
@@ -734,7 +735,7 @@ A HORIZONTAL event
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
       position: relative; /* for containing abs positioned event harnesses */
       min-height: 2em; /* in addition to being a min-height during natural height, equalizes the heights a little bit */
-      font-size: 1.2em;
+      font-size: 1.8em;
     }
 .fc .fc-daygrid-body-natural { /* can coexist with -unbalanced */
   }

@@ -47,6 +47,18 @@ public class CalendarService {
 	// 일정 수정 프로세스
 	public void modSchedule(SetScheduleVo ssVo) {
 		sqlMapper.updateSchedule(ssVo);
+		
+		if(ssVo.getServer_no() != null) {
+			for(String server_no : ssVo.getServer_no()) {
+				
+				MgmtVo mVo = new MgmtVo();
+				mVo.setSc_no(ssVo.getSc_no());
+				mVo.setServer_no(Integer.parseInt(server_no));
+				int serverNo = sqlMapper.getMgmtServerNo(mVo);
+				
+				sqlMapper.updateServerNo(serverNo);
+			}
+		}
 	}
 	
 	public ArrayList<HashMap<String, Object>> getScheduleList(int year,int month){
@@ -346,6 +358,7 @@ public class CalendarService {
 		}else {
 			return false;
 		}
-			
 	}
+	
+	
 }

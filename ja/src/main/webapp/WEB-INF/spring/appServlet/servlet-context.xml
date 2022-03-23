@@ -25,6 +25,9 @@
 	<!-- controller 스캐너 -->
 	<context:component-scan base-package="com.brainz.ja.controller" />
 	
+	<!-- vo 스캐너 -->
+	<context:component-scan base-package="com.brainz.ja.vo.*"/>
+	
 	<!-- Multipart Data-Type 전송을 위한 설정 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="100000000" />
