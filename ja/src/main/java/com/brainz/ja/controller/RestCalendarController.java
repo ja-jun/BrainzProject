@@ -1,6 +1,4 @@
-
 package com.brainz.ja.controller;
-
 
 import java.util.HashMap;
 
@@ -15,7 +13,7 @@ import com.brainz.ja.vo.SetScheduleVo;
 import com.google.gson.Gson;
 
 @RestController
-@RequestMapping("/schedule/*")
+@RequestMapping("/calendar/*")
 public class RestCalendarController {
 	
 	@Autowired
@@ -62,42 +60,45 @@ public class RestCalendarController {
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(ssVo));
 		
-		// 작업명은 입력되었는지 확인
-		if(!ssVo.getTitle().equals("")) {
-			// 시작 날짜는 정상적인지 확인
-			if(service.validateDate(start_date).get("result").equals("0")) {
-				// 종료 날짜는 정상적인지 확인
-				if(service.validateDate(end_date).get("result").equals("0")) {
-					//시작 시간은 정상적인지 확인
-					if(service.validationTime(start_time).get("result").equals("0")) {
-						//종료 시간은 정상적인지 확인
-						if(service.validationTime(end_time).get("result").equals("0")) {
-							if(ssVo.getServer_no()!= null) {
-								String result = service.validationSchedule(ssVo).get("result");
-								if(result.equals("0")) {
-									service.regSchedule(ssVo);
-									data.put("result", 0);									
-								} else {
-									data.put("result", result);
-								}
-							} else {
-								data.put("result", "작업하실 서버를 선택해주세요.");
-							}
-						} else {
-							data.put("result", "입력하신 종료 시간은 " + service.validationTime(end_time).get("result"));
-						}
-					} else {
-						data.put("result", "입력하신 시작 시간은 " + service.validationTime(start_time).get("result"));
-					}
-				} else {
-					data.put("result", "입력하신 종료 날짜는 " + service.validateDate(end_date).get("result"));
-				}
-			} else {
-				data.put("result", "입력하신 시작 날짜는 " + service.validateDate(start_date).get("result"));
-			}
-		} else {
-			data.put("result", "유효하지 않은 작업명입니다.");
-		}
+		service.regSchedule(ssVo);
+		data.put("result", 0);	
+		
+//		// 작업명은 입력되었는지 확인
+//		if(!ssVo.getTitle().equals("")) {
+//			// 시작 날짜는 정상적인지 확인
+//			if(service.validateDate(start_date).get("result").equals("0")) {
+//				// 종료 날짜는 정상적인지 확인
+//				if(service.validateDate(end_date).get("result").equals("0")) {
+//					//시작 시간은 정상적인지 확인
+//					if(service.validationTime(start_time).get("result").equals("0")) {
+//						//종료 시간은 정상적인지 확인
+//						if(service.validationTime(end_time).get("result").equals("0")) {
+//							if(ssVo.getServer_no()!= null) {
+//								String result = service.validationSchedule(ssVo).get("result");
+//								if(result.equals("0")) {
+//									service.regSchedule(ssVo);
+//									data.put("result", 0);									
+//								} else {
+//									data.put("result", result);
+//								}
+//							} else {
+//								data.put("result", "작업하실 서버를 선택해주세요.");
+//							}
+//						} else {
+//							data.put("result", "입력하신 종료 시간은 " + service.validationTime(end_time).get("result"));
+//						}
+//					} else {
+//						data.put("result", "입력하신 시작 시간은 " + service.validationTime(start_time).get("result"));
+//					}
+//				} else {
+//					data.put("result", "입력하신 종료 날짜는 " + service.validateDate(end_date).get("result"));
+//				}
+//			} else {
+//				data.put("result", "입력하신 시작 날짜는 " + service.validateDate(start_date).get("result"));
+//			}
+//		} else {
+//			data.put("result", "유효하지 않은 작업명입니다.");
+//		}
 		
 		return data;
 	}
