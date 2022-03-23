@@ -2,17 +2,26 @@ package com.brainz.ja.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brainz.ja.service.ServerService;
+import com.brainz.ja.vo.PageVo;
 import com.brainz.ja.vo.ServerVo;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 @RestController
 @RequestMapping("/server/*")
@@ -22,23 +31,35 @@ public class RestServerController {
 	private ServerService serverService;
 	
 	@RequestMapping("getServerList")
-	public HashMap<String, Object> getServerList(String searchWord) {
-		HashMap<String, Object>data = new HashMap<String, Object>();
-				
-		ArrayList<HashMap<String, Object>>serverList = serverService.getServerList(searchWord);	
+	public  Map<String, Object> getServerList(PageVo param) {
+		Map<String, Object> data = new HashMap<String, Object>();
+						
+		ArrayList<ServerVo> serverList = serverService.getServerList(param);	
 		
+		int rows = param.getRows();
+		int records = serverService.getServerCount(param);
+		int total = (int) Math.ceil( (double)records / rows);
+		param.setTotal(total);
+		param.setRecords(records);
 		data.put("result","success");
-		data.put("serverList", serverList);
 		
+		data.put("rows", serverList); //데이터
+		data.put("records", records); // 데이터의 전체 개수..
+		data.put("page", param.getPage()); //현재 페이지
+		data.put("total", total); //총 페이지
+
+		//data.put("pageVo",param);
 		return data;
 	}
 	
 			
 	@RequestMapping("insertServer")
 	public HashMap<String, Object> insertServer(ServerVo param) {
+		System.out.println("1 - " + param);
+		System.out.println("2 - " + new Gson().toJson(param));
 		HashMap<String, Object>data = new HashMap<String, Object>();
-
-		param.setUser_no('1'); 
+		param.setUser_no('2'); 
+		
 		serverService.insertServer(param);
 		
 		data.put("result","success");
@@ -47,20 +68,14 @@ public class RestServerController {
 	}
 		
 	@RequestMapping("deleteServer")
-	public HashMap<String, Object> deleteServer(HttpServletRequest request) {//row id 배열??
-		HashMap<String, Object>data = new HashMap<String, Object>();
-		
-		String serverNos = request.getParameter("serverNos");
+	public  HashMap<String, Object> deleteServer(@RequestBody List<String> param) {
+		HashMap<String, Object> data = new HashMap<String, Object>();
 
-		String[] arr = serverNos.split(",");
-		serverService.deleteServer(arr);
+		serverService.deleteServer(param);
 
-
-		data.put("result","success");
-		
 		return data;
 	}
-	
+
 	@RequestMapping("updateServer")
 	public HashMap<String, Object> updateServer(ServerVo param) {
 		HashMap<String, Object>data = new HashMap<String, Object>();
@@ -87,6 +102,40 @@ public class RestServerController {
 		return data;
 	}
 	
-	
+	@RequestMapping("getData")
+	public Map<String, Object> getData(
+			@RequestParam
+			@RequestBody
+			Map<String,Object> param) {
+
+		int pageNum = Integer.parseInt((String)param.get("page"));
+		
+		
+		Map<String, Object> resMap = new HashMap<>();
+		
+		List<Map<String, Object>> list = new ArrayList<>();
+		for(int i = (pageNum-1)*10 ; i < pageNum*10 ; i++) {
+			Map<String, Object> row = new HashMap<>();
+			row.put("name", "qwer" + i);
+			row.put("invdate", "wwww"); //문자로 가야되네;;; 이런;;;
+			row.put("amount", 3);
+			row.put("tax", 7);
+			row.put("testNo", 7); 
+			row.put("id", i); //이건 의미 있음...필수...
+			list.add(row);
+		}
+		
+		resMap.put("rows", list);
+		resMap.put("records", list.size());
+		resMap.put("page", param.get("page"));
+		resMap.put("total", 20);
+		
+		System.out.println("test!!!!!!");
+		System.out.println(param);
+		
+		
+		return resMap;
+	}
+
 	
 }

@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ServerVo {
-	private int server_no;
-	private int user_no;
+	private Integer server_no;
+	private Integer user_no;
 	private String name;
 	private String ip;
 	private String os;

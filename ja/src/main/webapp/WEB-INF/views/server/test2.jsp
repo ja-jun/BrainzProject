@@ -32,16 +32,16 @@ function createAndInitGrid(){
         autowidth:true,
         pager: '#pager',
          colModel: [   
-              {name: '서버명', label : '서버명', align:'left'},
-              {name:'IP', label:'IP', align:'left'},
-              {name: 'OS분류', label : 'OS분류', align:'center'},
-              {name: '상태', label : '상태', align:'center'},              
-              {name: '위치', label : '위치', align:'left'},
-              {name: 'MAC', label : 'MAC', align:'center'},
-              {name: '관리번호', label : '관리번호', align:'left'},
-              {name: '설명', label : '설명', align:'left'},     
-              {name: '등록일', label : '등록일', align:'center'},     
-              {name:'서버번호',label:'서버번호' }
+	            {name: 'name', label : '서버명', align:'left'},
+	            {name:'ip', label:'IP', align:'left'},
+	            {name: 'os', label : 'OS분류', align:'center'},
+	            {name: 'loc', label : '상태', align:'center'},              
+	            {name: 'loc', label : '위치', align:'left'},
+	            {name: 'mac', label : 'MAC', align:'center'},
+	            {name: 'control_num', label : '관리번호', align:'left'},
+	            {name: 'dsc', label : '설명', align:'left'},     
+	            {name: 'write_date', label : '등록일', align:'center' },
+	            {name:'server_no',label:'서버번호', hidden:true}
               ],
               
          multiselect: true
@@ -123,11 +123,22 @@ function insertServer(){
 	var  control_num= $("control_num");
 	var dsc = $("dsc");
 	
-	if(name.val() ==""){
-		//필수 입력 했는지 확인...
-	}
 	
-	
+	if(name=="") {
+	      alert("서버명을 입력하지 않았습니다.")
+	        return false;
+	    }
+	   
+	   if(ip=="") {
+	      alert("IP를 입력하지 않았습니다.")
+	        return false;
+	    }	   
+	      
+	   if(mac=="") {
+	      alert("MAC을 입력하지 않았습니다.")
+	        return false;
+	    }
+
 	var xhr = new XMLHttpRequest();
 	
 	xhr.onreadystatechange = function(){
@@ -204,10 +215,8 @@ function deleteServer(){
 	
 	for (let i = 0; i < rowids.length; i++) {
         const rowid = rowids[i];
-		console.log(rowid);
         var rowData = $("#list").getRowData(rowid);
-		serverNos.push(rowData.서버번호);
-		console.log(rowData);
+		serverNos.push(rowData.server_no);
     }
 	var xhr = new XMLHttpRequest();
 		
