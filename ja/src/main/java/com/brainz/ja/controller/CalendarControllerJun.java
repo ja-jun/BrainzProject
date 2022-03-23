@@ -7,11 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/schedule/*")
 public class CalendarControllerJun {
 	
-	@RequestMapping("calendarPage")
-	public String calendarPage() {
-		return "calendar/calendarListPage";
-	}
-	
 	@RequestMapping("dateTest")
 	public String dateTest() {
 		return "sample/admin";

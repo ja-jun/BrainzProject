@@ -121,15 +121,8 @@
 		select count(*) from bp_schedule where title = #{title}
 	</select>
 	
-	<select id="updateServerNo" resultType="com.brainz.ja.vo.MgmtVo">
-		update bp_mgmt_server set 
-		server_no = 1
-		where mgmt_server_no = 3;
-	</select>
-	
-	<select id="getMgmtServerNo" resultType="com.brainz.ja.vo.MgmtVo">
-		select mgmt_server_no
-		from bp_mgmt_server
-		where sc_no = #{sc_no } AND server_no = #{server_no } 
-	</select>
+	<delete id="deleteMgmtByScNo">
+		delete from bp_mgmt_server
+		where sc_no = #{scNo }
+	</delete>
 </mapper>

@@ -49,14 +49,14 @@ public class CalendarService {
 		sqlMapper.updateSchedule(ssVo);
 		
 		if(ssVo.getServer_no() != null) {
+			sqlMapper.deleteMgmtByScNo(ssVo.getSc_no());
 			for(String server_no : ssVo.getServer_no()) {
 				
 				MgmtVo mVo = new MgmtVo();
 				mVo.setSc_no(ssVo.getSc_no());
 				mVo.setServer_no(Integer.parseInt(server_no));
-				int serverNo = sqlMapper.getMgmtServerNo(mVo);
 				
-				sqlMapper.updateServerNo(serverNo);
+				sqlMapper.insertMgmtServer(mVo);
 			}
 		}
 	}

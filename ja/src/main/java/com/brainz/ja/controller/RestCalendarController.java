@@ -148,7 +148,7 @@ public class RestCalendarController {
 	public HashMap<String, Object> isExistTitle(String title){
 		
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		
+		System.out.println(title);
 		boolean result = service.isExistTitle(title);
 		
 		data.put("result", result);		

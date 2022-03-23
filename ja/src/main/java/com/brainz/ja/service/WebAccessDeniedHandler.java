@@ -46,7 +46,7 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
 		} else {
 			logger.info(ade.getClass().getCanonicalName());			
 		}		
-		req.getRequestDispatcher("/login/deniedPage").forward(req, res);
+		req.getRequestDispatcher("/ja/login/loginPage").forward(req, res);
 	}
 
 }
