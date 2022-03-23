@@ -1,0 +1,217 @@
+@charset "UTF-8";
+
+
+
+
+.writeBtn{
+       width: 80px;
+       height: 35px;
+       font-size: 15px;
+       background: none;
+       border: 1px solid #777;
+       border-radius: 3px;
+       cursor: pointer;
+       }
+       
+#content{
+    display: flex;
+}
+#box{
+    margin: 130px 45px 10px 300px;
+    }
+.row{
+    height: 2vw;
+    font-size: 15px;
+    line-height: 2.1;
+}
+
+#modal{
+	display:none;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	/* height: 100vh; */
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 99;
+	height: 100%;
+}
+#modal .window {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  }
+#modal .modalBox{
+    background: #fff;
+    justify-content: center;
+    background-color: #ffffff;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    height: 850px;
+    align-content: center;
+    }
+#modal .modalBox .top{
+    background: #353c40;
+    height: 45px;
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 10px 0px 30px;
+}
+#modal .modalBox .top .title{
+    line-height: 3.2;
+}
+#modal .modalBox .top .bi-x{
+    font-size: 18px;
+    line-height: 2.4;
+    cursor: pointer;
+}
+
+#modal .modalBox .titleBox{
+    border-top: 1px solid #e5e5e5;
+    padding: 30px;
+}
+#modal .modalBox .titleBox .text{
+    font-size: 14px;
+    font-weight: 500;
+    width: 120px;
+    display: inline-flex;
+}
+
+.star{
+    margin-left: 10px;
+    color: red;
+    vertical-align: middle;
+}
+
+#modal .modalBox .titleBox .textBox{
+    border: 1px solid #ccc;
+    height: 33px;
+    width: 380px;
+    padding-left: 8px;
+}
+.selectBox{
+	width: 80px;
+    height: 33px;
+    border-radius: 0;
+    border: 1px solid #ccc;
+}
+
+#modal .modalBox .titleBox .input_id{
+    border: 1px solid #ccc;
+    height: 33px;
+    width: 300px;
+    padding-left: 8px;
+}
+
+.btnList{
+    margin: 0px 0px 15px 30px;
+}
+.btnList .btn1{
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 48px;
+    height: 25px;
+    font-size: 12px;
+    margin-right: 4px;
+    border-radius: 3px;
+    color: #777;
+} 
+
+.btnBox{
+    display: flex;
+    float: right;
+    margin: 0px 30px 30px 0px;
+}
+.btnBox .btnBoxbtn{
+    margin-left: 8px;
+    height: 35px;
+    width: 70px;
+    font-size: 13px;
+    background: #353c40;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+
+.btnBox2{
+    display: flex;
+    float: right;
+    margin: 10px 20px 10px 0px;
+}
+
+
+.btnBoxbtn2{
+    margin-left: 8px;
+    height: 30px;
+    width: 55px;
+    font-size: 12px;
+    background: #353c40;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+}
+
+
+.btnBoxbtn3{
+    margin-left: 8px;
+    height: 30px;
+    width: 55px;
+    font-size: 12px;
+    background: #353c40;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+}
+
+
+.ui-jqgrid .ui-jqgrid-htable{width:100%}
+
+
+.pBox{
+    display: contents;
+    vertical-align:middle;
+}
+
+
+
+#box h2 { padding:0 0 45px; text-align: center; font-size: 35px; color: #111;}
+
+#confrimMsg { padding-left: 85px;}
+
+#checkId { padding-left: 85px;}
+
+#user_id { margin-bottom: 8px;}
+
+#user_pw2 { margin-bottom: 8px;}
+
+.id_check_button { 
+    height: 33px;
+    width: 80px;
+    font-size: 1em;
+    background: #353c40;
+    border: none;
+    color: #fff;
+    outline: none;
+    margin-left: -7px;
+}
+
+#jqgridBox{
+	border:1px solid #ccc;
+	border-top:none;
+	margin-top:30px
+}
+#deleteBtn{
+	margin-left:10px
+}
