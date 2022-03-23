@@ -320,7 +320,8 @@ window.addEventListener("DOMContentLoaded", function(){
 		<div id="box">
 			<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
 			<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
-			
+			<a href="./getExcelServerList"><button  class="writeBtn" id="excelBtn">내보내기</button></a>
+						
 			<h2>서버 관리</h2>
 			<table id="list"></table>
 			<div id="pager"></div>

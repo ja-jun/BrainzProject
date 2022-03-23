@@ -13,6 +13,7 @@ public interface ServerSQLMapper {
 	public void deleteServer(int server_no);
 	public void updateServer(ServerVo vo);
 	public int getCountByMac(String mac);
-	
+	public ArrayList<ServerVo> getServerListForExcel(String searchWord);
+
 	
 }
