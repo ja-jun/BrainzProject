@@ -40,7 +40,7 @@ public class UserService {
 		userSQLMapper.registerUser(vo);
 	}
 
-	// 사용사관리에 나타날 사용자 목록 출력 및 검색
+	// 사용자관리에 나타날 사용자 목록 출력 및 검색
 	public ArrayList<UserVo> getUserList(String searchWord) {
 		ArrayList<UserVo>  userList = userSQLMapper.getUserList(searchWord);
 		
@@ -73,5 +73,9 @@ public class UserService {
 	// 사용자 최종 로그인 시간 업데이트
 	public void lastLogin(String user_id) {
 		userSQLMapper.lastLogin(user_id);
+	}
+	
+	public UserVo getUserInfo(String user_id) {
+		return userSQLMapper.selectUser(user_id);
 	}
 }

@@ -10,22 +10,21 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-<link href='../resources/css/user.css' rel='stylesheet' />
-<link href='../resources/css/reset.css' rel='stylesheet' />
-<link href="../resources/css/jquery-ui.css" rel="stylesheet"/>
-<link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
-<link href="../resources/css/jquery-ui.structure.css" rel="stylesheet"/>
-<link href="../resources/css/jquery-ui.theme.css" rel="stylesheet"/>
+<link href='/choongang/resources/css/user.css' rel='stylesheet' />
+<link href='/choongang/resources/css/reset.css' rel='stylesheet' />
+<link href="/choongang/resources/css/jquery-ui.css" rel="stylesheet"/>
+<link href="/choongang/resources/css/jquery-ui.min.css" rel="stylesheet"/>
+<link href="/choongang/resources/css/jquery-ui.structure.css" rel="stylesheet"/>
+<link href="/choongang/resources/css/jquery-ui.theme.css" rel="stylesheet"/>
 
 <!-- jqGrid -->
-<link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
-<script src="../resources/js/grid.locale-kr.js"></script>
-<script src="../resources/js/jquery.jqGrid.js"></script>
-<script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
-<script src="../resources/js/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/choongang/resources/css/ui.jqgrid2.css" />
+<script src="/choongang/resources/js/grid.locale-kr.js"></script>
+<script src="/choongang/resources/js/jquery.jqGrid.js"></script>
+<script src="/choongang/resources/js/jQuery.jqGrid.setColWidth.js"></script>
+<script src="/choongang/resources/js/jquery-ui.min.js"></script>
 
-<script> 
-            
+<script>
 //그리드 형식            
 function createAndInitGrid(){
     $("#list").jqGrid({
@@ -324,46 +323,30 @@ window.addEventListener("DOMContentLoaded", function(){
 
 </head>
 <body>
-   <div id="container">
-      <div class="header">
-         <!-- 활성화 된 페이지 이름 넣기 -->
-         <h3 class="headerName">사용자 관리</h3>
-      </div>
-      
-      <div id="content">
-         <div class="navBar">
-            <ul>
-               <!-- 네비바 페이지 이름 변경/a태그 안에 각자 만든 페이지 경로 넣기 -->
-               <!-- 활성화 된 페이지는 li class에 있는 on을 활성화 된 페이지에 복붙 -->
-               <li class="pageList on"><a href="mainPage"><i class="bi bi-person"></i>사용자 관리</a></li>
-               <li class="pageList"><a href="./css"><i class="bi bi-shield-check"></i>서버 관리</a></li>
-               <li class="pageList"><a href=""><i class="bi bi-calendar-check"></i>작업 관리</a></li>
-            </ul>
-         </div>
-               
-      
-   <div class="container">
-      <div class="row mt-3">
-         <div class="col-4">
-            <input name="searchWord" type="text" class="form-control" placeholder="아이디/이름">
-         </div>
-         <div class="col ">
-            <button class="writeBtn" onclick="search()">검색</button>
-         </div>
-      </div>
-   
-      <div id="box">
-         <button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-         <button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
-         
-         <table id="list"></table>
-         <div id="pager"></div>
-      </div>   
-   </div>
+<jsp:include page="../common/nav.jsp"></jsp:include>
+<div id="container">
+		<div class="container">
+			<div class="row mt-3">
+				<div class="col-4">
+					<input name="searchWord" type="text" class="form-control"
+						placeholder="아이디/이름">
+				</div>
+				<div class="col ">
+					<button class="writeBtn" onclick="search()">검색</button>
+				</div>
+			</div>
+
+			<div id="box">
+				<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
+				<button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
+
+				<table id="list"></table>
+				<div id="pager"></div>
+			</div>
+		</div>
+	</div>
 </div>
-   </div>
-
-
+	
 <!--등록 모달창 시작 -->
 <div id="modal" class="modal-overlay" style="display:none">
    <div class="modal-window">

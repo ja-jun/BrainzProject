@@ -1,4 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.choongang.bcentral.mapper.ScheduleSQLMapper">
+
+	<!-- Schedule 추가를 위한 Query Start -->
+	<select id="selectNextScNo" resultType="int">
+		select nextval('bp_schedule_seq')
+	</select>
+	
+	<insert id="insertSchedule">
+		insert into bp_schedule
+		values (
+			#{sc_no },
+			#{user_no },
+			#{title },
+			#{start_date },
+			#{end_date },
+			#{start_time },
+			#{end_time },
+			#{repeat_cat },
+			#{repeat_day },
+			#{repeat_week },
+			#{mon },
+			#{the },
+			#{wed },
+			#{thu },
+			#{fri },
+			#{sat },
+			#{sun },
+			now(),
+			null
+		)
+	</insert>
+	
+	<insert id="insertMgmtServer">
+		insert into bp_mgmt_server
+		values (
+			nextval('bp_mgmt_server_seq'),
+			#{server_no },
+			#{sc_no }
+		)
+	</insert>
+	<!-- Schedule 추가를 위한 Query End -->
+	
+	<!-- Server 등록을 위한 목록 조회 -->
+	<select id="selectServer" resultType="com.choongang.bcentral.server.vo.ServerVo">
+		select server_no, user_no, name, ip, os, loc, mac, control_num, dsc, write_date
+		from bp_server
+	</select>
+	
+	<!-- Schedule 조회를 위한 Query -->
+	<select id="selectScheduleByMonth" resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
+		select bs.sc_no, bs.user_no, bs.title,
+			   bs.start_date, bs.end_date,
+			   bs.start_time, bs.end_time,
+			   bs.repeat_cat, bs.repeat_day,
+			   bs.repeat_week,
+			   bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun,
+			   bs.write_date
+		from bp_schedule bs
+		<![CDATA[
+			where (to_char(bs.start_date, 'MM')::int <= #{month })
+			  and (to_char(bs.end_date, 'MM')::int >= #{month})
+			  and delete_date is null
+		]]>
+		order by bs.start_date desc
+	</select>
+	
+	<!-- 특정 이벤트 클릭 시 출력해 주기 위한 Schedule 정보 조회를 위한 Query Start -->
+	<select id="selectScheduleByNo" resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
+		select bs.sc_no, bs.user_no, bs.title,
+			   bs.start_date, bs.end_date,
+			   bs.start_time, bs.end_time,
+			   bs.repeat_cat, bs.repeat_day,
+			   bs.repeat_week,
+			   bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun,
+			   bs.write_date
+		from bp_schedule bs
+		where bs.sc_no = #{sc_no }
+	</select>
+	
+	<select id="selectServerByScNo" resultType="com.choongang.bcentral.server.vo.ServerVo">
+		select bs.server_no, bs.user_no, bs.name, bs.ip, bs.os, bs.mac, bs.control_num, bs.dsc
+		from bp_server bs,
+	 		 bp_mgmt_server bms
+		where bms.sc_no = #{sc_no } and bs.server_no = bms.server_no
+	</select>
+	<!-- 특정 이벤트 클릭 시 출력해 주기 위한 Schedule 정보 조회를 위한 Query End -->
+	
+	<!-- 이벤트 전체를 삭제시 해당 Schedule의 삭제 날짜를 입력하여 나타나지 않게하는 Query -->
+	<update id="updateDeleteDate">
+		update bp_schedule set delete_date = now()
+		where sc_no = #{sc_no }
+	</update>
+	
+	<!-- 특정 이벤트에 등록된 서버를 삭제하는 Query -->
+	<delete id="deleteMgmtByScNo">
+		delete from bp_mgmt_server
+		where sc_no = #{sc_no }
+	</delete>
+	
+	<!-- 특정 이벤트를 수정하는 Query -->
+	<update id="updateSchedule">
+		update bp_schedule set
+			   title = #{title },
+			   start_date = #{start_date },
+			   end_date = #{end_date }, 
+			   start_time = #{start_time }, 
+			   end_time = #{end_time },
+			   repeat_cat = #{repeat_cat },
+			   repeat_day = #{repeat_day },
+			   repeat_week = #{repeat_week },
+			   mon = #{mon },
+			   the = #{the },
+			   wed = #{wed },
+			   thu = #{thu },
+			   fri = #{fri },
+			   sat = #{sat },
+			   sun = #{sun }
+		where sc_no = #{sc_no }
+	</update>
+	
+	<!-- 작업명 중복검사를 위한 Query -->
+	<select id="selectCountByTitle" resultType="int">
+		select count(*)
+		from bp_schedule
+		where title = #{title }
+	</select>
 </mapper>

@@ -22,6 +22,8 @@ public class UserController {
 		// 최종 로그인 시간 입력
 		String user_id = auth.getName();
 		userService.lastLogin(user_id);
+		
+		session.setAttribute("userInfo", userService.getUserInfo(user_id));
 
 		return "user/mainPage";
 	}

@@ -1,23 +1,18 @@
 package com.choongang.bcentral.schedule.vo;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-public class ScheduleVo {
+public class SetScheduleVo {
 	private Integer sc_no;
 	private Integer user_no;
 	private String title;
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate start_date;
-	@JsonFormat(pattern = "kk:mm")
-	private LocalTime start_time;
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate end_date;
-	@JsonFormat(pattern = "kk:mm")
-	private LocalTime end_time;
+	private String start_date;
+	private String end_date;
+	private String start_time;
+	private String end_time;
 	private Integer repeat_cat;
 	private Integer repeat_day;
 	private Integer repeat_week;
@@ -28,26 +23,24 @@ public class ScheduleVo {
 	private String fri;
 	private String sat;
 	private String sun;
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm")
-	private LocalDateTime write_date;
-	@JsonFormat(pattern = "yyyy-MM-dd kk:mm")
-	private LocalDateTime delete_date;
+	private String delete_date;
+	private ArrayList<String> server_no;
 	
-	public ScheduleVo() {
+	public SetScheduleVo() {
 		super();
 	}
 	
-	public ScheduleVo(Integer sc_no, Integer user_no, String title, LocalDate start_date, LocalTime start_time,
-			LocalDate end_date, LocalTime end_time, Integer repeat_cat, Integer repeat_day, Integer repeat_week,
-			String mon, String the, String wed, String thu, String fri, String sat, String sun,
-			LocalDateTime write_date, LocalDateTime delete_date) {
+	public SetScheduleVo(Integer sc_no, Integer user_no, String title, String start_date, String end_date,
+			String start_time, String end_time, Integer repeat_cat, Integer repeat_day, Integer repeat_week, String mon,
+			String the, String wed, String thu, String fri, String sat, String sun, String delete_date,
+			ArrayList<String> server_no) {
 		super();
 		this.sc_no = sc_no;
 		this.user_no = user_no;
 		this.title = title;
 		this.start_date = start_date;
-		this.start_time = start_time;
 		this.end_date = end_date;
+		this.start_time = start_time;
 		this.end_time = end_time;
 		this.repeat_cat = repeat_cat;
 		this.repeat_day = repeat_day;
@@ -59,8 +52,8 @@ public class ScheduleVo {
 		this.fri = fri;
 		this.sat = sat;
 		this.sun = sun;
-		this.write_date = write_date;
 		this.delete_date = delete_date;
+		this.server_no = server_no;
 	}
 	
 	public Integer getSc_no() {
@@ -82,27 +75,34 @@ public class ScheduleVo {
 		this.title = title;
 	}
 	public LocalDate getStart_date() {
-		return start_date;
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(this.start_date, dateFormat);
 	}
-	public void setStart_date(LocalDate start_date) {
+	public void setStart_date(String start_date) {
 		this.start_date = start_date;
 	}
-	public LocalTime getStart_time() {
-		return start_time;
-	}
-	public void setStart_time(LocalTime start_time) {
-		this.start_time = start_time;
-	}
+
 	public LocalDate getEnd_date() {
-		return end_date;
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(this.end_date, dateFormat);
 	}
-	public void setEnd_date(LocalDate end_date) {
+	public void setEnd_date(String end_date) {
 		this.end_date = end_date;
 	}
-	public LocalTime getEnd_time() {
-		return end_time;
+
+	public LocalTime getStart_time() {
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+		return LocalTime.parse(this.start_time, timeFormat);
 	}
-	public void setEnd_time(LocalTime end_time) {
+	public void setStart_time(String start_time) {
+		this.start_time = start_time;
+	}
+
+	public LocalTime getEnd_time() {
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+		return LocalTime.parse(this.end_time, timeFormat);
+	}
+	public void setEnd_time(String end_time) {
 		this.end_time = end_time;
 	}
 	public Integer getRepeat_cat() {
@@ -165,16 +165,16 @@ public class ScheduleVo {
 	public void setSun(String sun) {
 		this.sun = sun;
 	}
-	public LocalDateTime getWrite_date() {
-		return write_date;
-	}
-	public void setWrite_date(LocalDateTime write_date) {
-		this.write_date = write_date;
-	}
-	public LocalDateTime getDelete_date() {
+	public String getDelete_date() {
 		return delete_date;
 	}
-	public void setDelete_date(LocalDateTime delete_date) {
+	public void setDelete_date(String delete_date) {
 		this.delete_date = delete_date;
+	}
+	public ArrayList<String> getServer_no() {
+		return server_no;
+	}
+	public void setServer_no(ArrayList<String> server_no) {
+		this.server_no = server_no;
 	}
 }
