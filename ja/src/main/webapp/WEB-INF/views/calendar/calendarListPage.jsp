@@ -637,15 +637,15 @@ window.addEventListener("DOMContentLoaded" , function(){
  		}
  	});
  	
- 	$("#allCheck").click(function() {
-		var checked = $("#allCheck").is(':checked');
-		if(checked){
+ 	
+ 	$(document).on("click", "#allCheck", function(){
+ 		var checked = $("#allCheck").is(':checked');
+		if(checked == true){
 			$("input[name='rowCheck']").prop('checked',true);
 		} else {
 			$("input[name='rowCheck']").prop('checked',false);
 		}
-			
-	});
+ 	});
  	
  	$("#calenderPage").addClass("on");
  		
