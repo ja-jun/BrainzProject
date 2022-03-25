@@ -18,14 +18,31 @@
 		)
 	</insert>
 
-	<select id="getServerList" resultType="com.brainz.ja.vo.ServerVo">
-		SELECT bps.* FROM BP_server bps
-		<if test="searchWord !=null">
-			WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
-<!-- 			WHERE name LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'') OR ip LIKE CONCAT('%!',#{searchWord},'% ESCAPE'!'')	
- -->	</if>
-		order by server_no desc	
-<!-- 		WHERE name LIKE CONCAT('%',#{searchWord},'%') OR ip LIKE CONCAT('%',#{searchWord},'%') -->	
+	<select id="getServerList" resultType="com.brainz.ja.vo.ServerVo">		
+		SELECT bps.* FROM BP_server bps 
+			<if test="searchWord !=null">
+		WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+			</if> 
+			<if test="sidx != null and sidx !=''"> ORDER BY	
+  				<choose>
+				    <when test="sidx eq 'name'"> NAME </when>
+				    <when test="sidx eq 'ip'"> IP </when>
+		    		<otherwise> WRITE_DATE</otherwise>
+ 				</choose> 
+				<choose>
+				    <when test="sord eq 'desc'"> DESC </when>
+				    <otherwise> ASC </otherwise>
+				</choose>
+			</if> 
+		LIMIT #{rows}   
+		OFFSET (#{page} -1) * #{rows}
+ 	</select>
+ 	
+ 	<select id="getServerCount" resultType="int">
+ 		SELECT COUNT(bps.*) FROM BP_server bps 
+			<if test="searchWord !=null">
+				WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+			</if>
  	</select>
 
 	<select id="getServer" resultType="com.brainz.ja.vo.ServerVo">
@@ -56,5 +73,6 @@
  		</if>
 		order by server_no desc	
  	</select>
-
+ 	
+ 
 </mapper>

@@ -23,6 +23,5 @@ public interface CalendarSQLMapperJun {
 	public ArrayList<MgmtVo> selectServerBySc_no(int sc_no);
 	public ArrayList<MgmtVo> selectServerBySc_no2(int sc_no);
 	public int getCountByTitle(String title);
-	public void updateServerNo(int No);
-	public int getMgmtServerNo(MgmtVo vo);
+	public void deleteMgmtByScNo(int scNo);
 }

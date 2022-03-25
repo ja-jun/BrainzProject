@@ -684,6 +684,10 @@ function confirmTitle(){
 	
 	var xhr = new XMLHttpRequest();
 	
+	//title = escape(title);
+	
+	//console.log(title);
+	
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState == 4 && xhr.status == 200){
 			var data = JSON.parse(xhr.responseText);
@@ -703,6 +707,7 @@ function confirmTitle(){
 		}
 	};
 	
+	title = encodeURIComponent(title);
 	
 	xhr.open("get" , "./isExistTitle?title=" + title , true); 
 	xhr.send();

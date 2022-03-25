@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>css 포함 서버관리</title>
+<title>서버관리</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -26,127 +26,106 @@
 
 
 <script> 
-            
-//그리드 형식            
+                        
 function createAndInitGrid(){
     $("#list").jqGrid({
-        datatype: "local",
-        data: [],
-        rowNum: 10,
-        rowList: [10,30,50],
-        height: 'auto',
-        autowidth:true,
-        pager: '#pager',
-         colModel: [   
-              {name: '서버명', label : '서버명', align:'left'},
-              {name:'IP', label:'IP', align:'left'},
-              {name: 'OS분류', label : 'OS분류', align:'center'},
-              {name: '상태', label : '상태', align:'center'},              
-              {name: '위치', label : '위치', align:'left'},
-              {name: 'MAC', label : 'MAC', align:'center'},
-              {name: '관리번호', label : '관리번호', align:'left'},
-              {name: '설명', label : '설명', align:'left'},     
-              {name: '등록일', label : '등록일', align:'center', formatter : 'datetime', formatoptions: {srcformat: "U/1000", newformat: 'Y/m/d H:i:s'} },
-              {name:'서버번호',label:'서버번호', hidden:true}
-              ],
-              
-         multiselect: true
+	        colModel: [   
+	            {name: 'name', label : '서버명', align:'left'},
+	            {name:'ip', label:'IP', align:'left'},
+	            {name: 'os', label : 'OS분류', align:'center'},
+	            {name: 'loc', label : '상태', align:'center'},              
+	            {name: 'loc', label : '위치', align:'left'},
+	            {name: 'mac', label : 'MAC', align:'center'},
+	            {name: 'control_num', label : '관리번호', align:'left'},
+	            {name: 'dsc', label : '설명', align:'left'},     
+	            {name: 'write_date', label : '등록일', align:'center' },
+	            {name:'server_no',label:'서버번호', hidden:true}
+	            ],
+            pager: '#pager',
+            rowNum: 10,
+            rowList: [10,30,50],
+            viewrecords: true,
+            multiselect: true,
+
+            //Data 연동 부분
+            url : "./getServerList",
+            datatype : "JSON", //받을 때 파싱 설정
+            postData : {}, //....
+            mtype : "POST",
+            loadtext : "로딩중...",
+	        height: 'auto',
+			autowidth:true
+ 	        ondblClickRow: function (rowid, iRow, iCol) { 
+	            var rowData = $("#list").getRowData(rowid);
+	            var serverNo = rowData.server_no;
+	            
+	            var name = document.getElementById('name');
+	            name.setAttribute("value"," " );
+		       	
+	            var request =  $.ajax({
+							    	     url: "./getServer",
+							    	     type: "post",
+							    	     processData: false,
+							    	     contentType: false,
+							    	     data: {severNo : serverNo}
+							    	  	 success: function(data){
+							    	  		
+							    	  		
+							    	  	}
+							    	 })	     
+	            modalOn();
+	            if()
+	        	var formData = new FormData(document.getElementById('regServerInfo'));
+		       	 $.ajax({
+		    	     url: "./updateServer",
+		    	     type: "post",
+		    	     processData: false,
+		    	     contentType: false,
+		    	     data: formData
+		    	 }).done(function(){
+		    			$("#list").trigger('reloadGrid');
+		    			modalOff();
+		    			alert("수정되었습니다.");
+		    	 });	 
+	        	
+	        }
+  
      });		
 }
            
- //그리드에 값 집어넣기          
-	function renderGridByDatas(datas){
-	      
-        var jsonArr = [];
-        for (var i = 0; i < datas.length; i++) {	
-            jsonArr.push({
-               '서버명': datas[i].name,               
-               'IP':datas[i].ip,
-               'OS분류':datas[i].os,
-               '상태':datas[i].loc,
-               '위치':datas[i].loc,
-               'MAC':datas[i].mac,
-               '관리번호':datas[i].control_num,
-               '설명':datas[i].dsc,
-               '등록일':datas[i].write_date,
-               '서버번호':datas[i].server_no
-            });
-        }
-		         $('#list').jqGrid('clearGridData');
-		         $('#list').jqGrid('setGridParam', {data: jsonArr}).trigger('reloadGrid');
-	}
-		
-	 
-
-//서버리스트 가져와서 집어넣기
-function getList(){
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			var data = JSON.parse(xhr.responseText); 
-			
-	         renderGridByDatas(data.serverList);
-			}
-	};
-	xhr.open("get" , "./getServerList" , true);   
-	xhr.send(); 		
-}
-
 //검색시 서버 가져와서 집어넣기
 function search(){
-	var searchWordInput = document.getElementsByName("searchWord");
-	var searchWordValue = searchWordInput[0].value;
+	var searchWord = document.getElementById("searchWord").value;	
 
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			var data = JSON.parse(xhr.responseText);
+	$("#list").jqGrid("clearGridData", true);		
+	$("#list")
+	.setGridParam({
+		url : "./getServerList",
+		mtype : "post",
+		postData : {searchWord : searchWord},
+		dataType : "json",
+	})
+	.trigger("reloadGrid");			
 
-	         renderGridByDatas(data.serverList);
-		}			
-	};
-	
-	xhr.open("get" , "./getServerList?searchWord=" + searchWordValue, true);
-	xhr.send();			
+
 }
 
 
-//입력값 db에 등록하기
 function insertServer(){
-	var name = $("#name").val();
-	var ip = $("#ip").val();
-	var os = $("#os").val();
-	var loc = $("#loc").val();
-	var mac = $("#mac").val();
-	var  control_num= $("#control_num").val();
-	var dsc = $("#dsc").val();
 	
-	if(name ==""){
-		//필수 입력 했는지 확인...
-	}
-	if(isConfirmed ==false ){
-		
-	}
-	
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){ 
-			var data = JSON.parse(xhr.responseText); 
-
+	var formData = new FormData(document.getElementById('regServerInfo'));
+	//input태그의 name과 vo변수명이 같을때 자동으로 들어간다
+	 $.ajax({
+	     url: "./insertServer",
+	     type: "post",
+	     processData: false,
+	     contentType: false,
+	     data: formData
+	 }).done(function(){
+			$("#list").trigger('reloadGrid');
 			modalOff();
-			getList();
-		}
-	};
-	
-	xhr.open("post" , "./insertServer" , true);  
-    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
-	xhr.send("name=" +  name + "&ip=" + ip + "&os=" + os + "&loc=" + loc 
-			+ "&mac=" + mac + "&control_num=" + control_num + "&dsc=" + dsc ); 
-
+			alert("등록되었습니다.");
+	 });	 
 }
 
 var isConfirmed = false; //mac 중복확인용
@@ -183,52 +162,35 @@ function confirmMac(){
 	xhr.send("mac=" + macValue); 
 }
 
-//서버 선택 삭제
-            
-/*         if(confirm("정말 삭제하시겠습니까?") == true){
-            $.ajax({
-                url: "delete action ",
-                data: params ,
-                type: "POST",
-                beforeSend:function(){
-                  console.log("삭제중입니다.");
-                }
-            }).done(function(){
-              console.log("삭제되었습니다.");
-            });
-        }else{
-            return false;
-        }
- */
- //삭제 -  삭제시 select 풀기 추가하기
+ //삭제
 function deleteServer(){ 
 	var serverNos = [];
 	var rowids = $("#list").getGridParam("selarrrow");
-	
+
 	for (let i = 0; i < rowids.length; i++) {
         const rowid = rowids[i];
         var rowData = $("#list").getRowData(rowid);
-		serverNos.push(rowData.서버번호);
-    }
+		serverNos.push(rowData.server_no);
+    }		
 	
-	
-	
-	var xhr = new XMLHttpRequest();
-		
-		xhr.onreadystatechange = function(){
-			if(xhr.readyState == 4 && xhr.status == 200){
-				var data = JSON.parse(xhr.responseText);
-				
-				alert("삭제되었습니다.");
-				getList();
-				
+		$("#list").jqGrid("clearGridData", true);		
+
+          if(confirm("정말 삭제하시겠습니까?") == true ){
+        	  var text = "";
+			 $.ajax({
+			     url: "./deleteServer",
+			     type: "post",
+			     contentType:'application/json',
+			     data: JSON.stringify(serverNos)
+			 }).done(function(){
+					$("#list").trigger('reloadGrid');
+					alert("삭제되었습니다.");
+			 });
+			}else{
+				   alert("취소합니다.");
 			}
-		};
-		
-		xhr.open("post" , "./deleteServer" , true); //get.?
-        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		xhr.send("serverNos="+ serverNos);	
-}
+
+ }
  
 	
  //유효한 ip인지 확인하는 함수
@@ -267,16 +229,9 @@ window.addEventListener("DOMContentLoaded", function(){
       $("#list").setGridWidth($(this).width() * .100);
    });    
 		createAndInitGrid();
-		getList();
 	
-	const modal = document.getElementById("modal")
-	
-	//모달창 외 부분 클릭하면 모달창 닫힘 : 불편함... 없애는게 나을거 같음
-	modal.addEventListener("click", e => {
-	    const evTarget = e.target;
-   		if(evTarget.classList.contains("modal-overlay")) { modalOff(); }
-	})
-	
+	const modal = document.getElementById("modal");
+		
 });
 
 
@@ -309,7 +264,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	<div class="container">
 		<div class="row mt-3">
 			<div class="col-4">
-				<input name="searchWord" type="text" class="form-control" placeholder="서버명/IP">
+				<input id="searchWord" type="text" class="form-control" placeholder="서버명/IP">
 			</div>
 			<div class="col ">
 				<button class="writeBtn" onclick="search()">검색</button>
@@ -343,15 +298,15 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
 					<div class="titleBox">
 						<strong class="text">서버명<span class="star">*</span></strong>
-						<input type="text" id="name" class="textBox" >
+						<input type="text" id="name" name="name" class="textBox" >
 					</div>
 					<div class="titleBox">
 						<strong class="text">IP<span class="star">*</span></strong>
-						<input type="text" id="ip" class="textBox">
+						<input type="text" id="ip" name="ip" class="textBox">
 					</div>
 					<div class="titleBox">
 						<strong class="text">OS분류<span class="star">*</span></strong>
-						<select form="regServerInfo" id="os" class="selectBox" >
+						<select form="regServerInfo" id="os" name="os" class="selectBox" >
 								<option value="AIX">AIX</option>
 								<option value="Windows">Windows</option>
 								<option value="Linux">Linux</option>							
@@ -361,21 +316,21 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
 					<div class="titleBox">
 						<strong class="text">위치</strong>
-						<input type="text" id="loc" class="textBox">
+						<input type="text" id="loc" name="loc" class="textBox">
 					</div>
 					<div class="titleBox">
 						<strong class="text">MAC<span class="star">*</span></strong>
-						<input type="text" id="mac"  id="mac" class="textBox" onblur="confirmMac()">
+						<input type="text" id="mac"  name="mac" class="textBox" onblur="confirmMac()">
 						<div id="confirmAlertBox"></div> 
 					</div>
 					
 					<div class="titleBox">
 						<strong class="text">관리번호</strong>
-						<input type="text" id="control_num" class="textBox">
+						<input type="text" id="control_num" name="control_num" class="textBox">
 					</div>
 					<div class="titleBox">
 						<strong class="text">설명</strong>
-						<input type="text" id="dsc" class="textBox">
+						<input type="text" id="dsc" name="dsc" class="textBox">
 					</div>
 					<div class="btnBox">
 						<input type="button" name="" value="등록" class="btnBoxbtn" onclick="insertServer()">

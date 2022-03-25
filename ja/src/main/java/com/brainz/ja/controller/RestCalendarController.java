@@ -34,7 +34,6 @@ public class RestCalendarController {
 		
 		data.put("scheduleInfo", service.getScheduleInfo(sc_no));
 		data.put("serverList", service.getServerList(sc_no));
-		data.put("serverListNo", service.getServerListNoServer(sc_no));
 		
 		return data;
 	}
@@ -148,7 +147,7 @@ public class RestCalendarController {
 	public HashMap<String, Object> isExistTitle(String title){
 		
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		
+		System.out.println(title);
 		boolean result = service.isExistTitle(title);
 		
 		data.put("result", result);		

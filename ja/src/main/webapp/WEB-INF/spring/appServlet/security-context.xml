@@ -14,20 +14,24 @@
 				password-parameter="user_pw"
 				login-processing-url="/login/login_check" 
 				login-page="/login/loginPage" 
-				default-target-url="/user/mainPage"
 				authentication-failure-handler-ref="loginFailHandler"
+				default-target-url="/user/mainPage"
 			/>
 			<security:logout 
 				logout-url="/security_logout"
 				logout-success-url="/login/loginPage"
 				invalidate-session="true"
 				delete-cookies="true"
-			/>	
+			/>
+		<security:intercept-url pattern="/resources/**" access="permitAll" />
 		<security:intercept-url pattern="/login/loginPage" access="isAnonymous()"/>
+		<security:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')"/>
 		<!-- <security:intercept-url pattern="/user/mainPage" access="hasAnyRole('ROLE_ADMIN, ROLE_USER')" /> -->
-		<security:access-denied-handler ref="webAccessDeniedHandler" />
+		<!-- <security:access-denied-handler ref="webAccessDeniedHandler" /> -->
+		<security:access-denied-handler error-page="/login/loginPage"/>
 	</security:http>
-		
+	
+	
 	<security:authentication-manager>
 		<security:authentication-provider ref="userLoginAuthenticationProvider"/>
 	</security:authentication-manager>	
