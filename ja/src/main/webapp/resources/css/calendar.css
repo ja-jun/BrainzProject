@@ -52,9 +52,10 @@
     background-color: #ffffff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
-    height: 910px;
+    height: 900px;
     align-content: center;
     width: 850px;
+    padding-bottom: 100px;
     }
 #modal .modalBox .top{
     background: #353c40;
@@ -219,9 +220,9 @@
 .btnList .btn1{
     background: #fff;
     border: 1px solid #ccc;
-    width: 80px;
-    height: 40px;
-    font-size: 15px;
+    width: 60px;
+    height: 35px;
+    font-size: 14px;
     margin-right: 4px;
     border-radius: 5px;
     color: #777;
@@ -234,62 +235,75 @@
 }
 
 .serverList{
-    margin-top: 15px;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     display: grid;
+    /* height: 300px; */
+    overflow-y: auto;
 }
 .serverList .serverHeader{
     display: flex;
-    padding-left: 30px;
-    padding-bottom: 15px;
+    font-size: 17px;
+    font-weight: 500;
     text-align: center;
-    font-size: 13px;
 }
-.serverList .serverHeader .serverHeaderText:nth-child(1){/* width: 10%; */}
+.serverList .serverHeader .serverHeaderText{
+	border-right: 1px solid #ccc;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+}
+.serverList .serverHeader .serverHeaderText:nth-child(1){
+    width: 7%;
+}
 .serverList .serverHeader .serverHeaderText:nth-child(2){
-    width: 30%;
+    width: 33.3%;
 }
 .serverList .serverHeader .serverHeaderText:nth-child(3){
-    width: 25%;
+    width: 33.3%;
 }
 .serverList .serverHeader .serverHeaderText:nth-child(4){
-    width: 30%;
+    width: 33.3%;
+    border-right: none;
 }
 .serverList .serverContent{
-    padding: 15px 0px 0px 30px;
     text-align: left;
     display: flex;
-    border-top: 1px solid #ccc;
-    height: 45px;
+    border-bottom: 1px solid #ccc;
+    height: 50px;
     font-weight: 300;
-    font-size: 12px;
+    font-size: 16px;
 }
 
-.serverList .serverContent .serverContentText:nth-child(1){width:5%}
+.serverList .serverContent .serverContentText:nth-child(1){width: 7%;text-align: center;}
 .serverList .serverContent .serverContentText:nth-child(2){
-    width: 30%;
+    width: 33.3%;
+    padding-left: 15px;
 }
 .serverList .serverContent .serverContentText:nth-child(3){
-    width: 25%;
+    width: 33.3%;
+    padding-left: 15px;
 }
 .serverList .serverContent .serverContentText:nth-child(4){
-   width:25%;
-	text-align: center;
+   width: 33.3%;
+   text-align: center;
+   border: none;
 }
 
 
-.serverList .serverContent .serverContentText{}
+.serverList .serverContent .serverContentText{
+    border-right: 1px solid #ccc;
+    padding-top: 14px;
+}
 .btnBox{
     display: flex;
     float: right;
     margin-right: 30px;
-    margin-bottom: 30px;
 }
 .btnBox .btnBoxbtn{
     margin-left: 8px;
-    height: 50px;
-    width: 100px;
-    font-size: 18px;
+    height: 47px;
+    width: 90px;
+    font-size: 17px;
     background: #353c40;
     border-radius: 6px;
     border: none;
@@ -454,8 +468,15 @@
     margin-left: 4px;
 }
 
-.tbodyBox{
-	height:150px;
-	overflow-y: auto;
-}
+.tbodyBox{height: 300px;}
 .fc .fc-daygrid-day.fc-day-today{background:#f2f3f4}
+
+.box{
+	height: 70px;
+	width: 100%;
+	/* color:#fff; */
+	text-align: center;
+	padding-top: 24px;
+	font-size: 23px;
+	font-weight: 500;
+}

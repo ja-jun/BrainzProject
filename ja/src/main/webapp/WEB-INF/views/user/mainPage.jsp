@@ -311,9 +311,9 @@ window.addEventListener("keyup", e => {
 
 
 window.addEventListener("DOMContentLoaded", function(){
-      $(window).resize(function() {
-   $("#list").setGridWidth($(this).width() * .100);
-});    
+	
+	$("#userPage").addClass("on");
+	
       createAndInitGrid();
       getList();
    

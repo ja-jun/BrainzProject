@@ -444,7 +444,7 @@ function getServerList(){
 				rowNum: 10,
 				rowList:[10,20,30],
 				height:500,
-				width:1400,
+				width:1000,
 				colModel: [	
 						{name: 'name', label : '서버명', align:'left'},
 				        {name: 'ip', label : 'IP', align:'left'},
@@ -647,16 +647,14 @@ window.addEventListener("DOMContentLoaded" , function(){
 			
 	});
  	
- 	$("#ulList").on("click", "li", function() {
- 	    $(this).addClass("on");
- 	});
- 	
+ 	$("#calenderPage").addClass("on");
+ 		
 	$(function(){
 		$('.datepicker').datepicker({
 	    	dateFormat: 'yy-mm-dd',
 	    	minDate: 0
 			});
-		})
+	})
 	 
     $(function(){
     	$('#datetimepicker1').datetimepicker({
@@ -964,6 +962,7 @@ function delSchedule(){
 		<!-- server 등록 modal 창 -->
 		<div id="serverModal">
 		<div id="serverModalBox">
+		<div class="box">서버리스트</div>
 			<table id="list"></table>
 			<div class="btnBox2">
 				<input type="button" value="등록" class="btnBoxbtn2" autocomplete='off'>
