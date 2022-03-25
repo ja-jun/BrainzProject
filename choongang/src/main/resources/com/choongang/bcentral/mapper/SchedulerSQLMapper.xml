@@ -94,7 +94,7 @@
 	</update>
 	
 	<!-- 특정 이벤트에 등록된 서버를 삭제하는 Query -->
-	<delete id="deleteMgmtByScNo">
+	<delete id="deleteMgmtScNo">
 		delete from bp_mgmt_server
 		where sc_no = #{sc_no }
 	</delete>

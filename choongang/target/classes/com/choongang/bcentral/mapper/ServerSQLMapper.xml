@@ -1,4 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.choongang.bcentral.mapper.ServerSQLMapper">
+	<insert id="insertServer">
+		INSERT into BP_server values(
+			nextval('BP_server_seq'),
+			#{user_no},
+			#{name},
+			#{ip},
+			#{os},
+			#{loc},
+			#{mac},
+			#{control_num},
+			#{dsc},
+			now()
+		)
+	</insert>
+	
+	<select id="getServerList" resultType="com.choongang.bcentral.server.vo.ServerVo">		
+		SELECT bps.* FROM BP_server bps 
+			<if test="searchWord !=null">
+		WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+			</if> 
+			<if test="sidx != null and sidx !=''"> ORDER BY	
+  				<choose>
+				    <when test="sidx eq 'name'"> NAME </when>
+				    <when test="sidx eq 'ip'"> IP </when>
+		    		<otherwise> WRITE_DATE</otherwise>
+ 				</choose> 
+				<choose>
+				    <when test="sord eq 'desc'"> DESC </when>
+				    <otherwise> ASC </otherwise>
+				</choose>
+			</if> 
+		LIMIT #{rows}   
+		OFFSET (#{page} -1) * #{rows}
+ 	</select>
+ 	
+ 	<select id="getServerCount" resultType="int">
+ 		SELECT COUNT(bps.*) FROM BP_server bps 
+			<if test="searchWord !=null">
+				WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+			</if>
+ 	</select>
+
+	<select id="getServer" resultType="com.choongang.bcentral.server.vo.ServerVo">
+		SELECT * FROM BP_SERVER
+		WHERE server_no=#{server_no}
+	</select>
+
+	<update id="updateServer">
+		UPDATE BP_server 
+		SET name=#{name}, ip=#{ip}, os=#{os}, loc=#{loc}, 
+			mac=#{mac}, control_no=#{control_no}, dsc=#{dsc}
+	</update>
+
+	<delete id="deleteServer">
+		DELETE FROM BP_server
+		WHERE server_no=#{server_no}
+	</delete>
+
+	<select id="getCountByMac" resultType="int">
+		SELECT count(*) from BP_SERVER 
+		WHERE mac = #{mac}
+	</select>
+
+	<select id="getServerListForExcel" resultType="com.choongang.bcentral.server.vo.ServerVo">
+		SELECT bps.* FROM BP_server bps
+		<if test="searchWord !=null">
+			WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+ 		</if>
+		order by server_no desc	
+ 	</select>
 </mapper>
