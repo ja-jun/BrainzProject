@@ -49,6 +49,22 @@ function writeBtn() {
     
     $('.confirmAlertBox').empty();
     $('#confirmAlertBox4').empty();
+    
+    const noneBox = document.querySelector('.noneBox2');
+	noneBox.setAttribute("style","display: block");  
+	
+	$('.arr').prop('checked',true);
+	const timepickerBox = document.getElementById("radioBoxRepeat");
+	timepickerBox.setAttribute("style","display: flex");
+	const radioBoxCheck = document.getElementById("radioBoxCheck");
+	radioBoxCheck.setAttribute("style","display: block");
+	const radioBoxRepeat2 = document.getElementById("radioBoxRepeat2");
+	radioBoxRepeat2.setAttribute("style","display: none");
+	var timeBox = document.querySelector('.timeBox');
+	timeBox.setAttribute("style","display: flex");
+	
+    $('.checkboxAll').prop('checked',false);
+    $('.limitless').prop('checked',false);
 	
 	var title = document.querySelector('.title');
     title.innerText="작업 등록";
@@ -165,7 +181,8 @@ function getCalendarList(){
 					id : item.sc_no
 				}
 			}); 
-				
+			
+		
 			var calendar = new FullCalendar.Calendar(calendarEl, {
 				 headerToolbar: {
 			            left: 'prev',
@@ -182,6 +199,7 @@ function getCalendarList(){
 				        type: 'POST',
 				        success: function(data) {
 				            writeBtn();
+				            
 				            var sc_info = data.scheduleInfo;
 				            var sc_server = data.serverList;
 				            
@@ -199,7 +217,7 @@ function getCalendarList(){
 				            if(sc_info.end_date == sc_info.start_date){
 				            	$('.timearr').attr('checked','checked');
 				            } else if(sc_info.end_date == '9999-12-31'){
-				            	$('.limitless').attr('checked','checked');
+				            	$('.limitless').prop('checked',true);
 				            	const noneBox = document.querySelector('.noneBox2');
 				                noneBox.setAttribute("style","display: none");
 				            } else {
@@ -231,7 +249,7 @@ function getCalendarList(){
 				            }
 				            
 				            if($('button.active').length == 7){
-				            	$('.checkboxAll').attr('checked','checked');
+				            	$('.checkboxAll').prop('checked',true);
 				            }
 				            
 				            var confirmAlertBox = document.getElementById("confirmAlertBox");
@@ -373,6 +391,9 @@ function getCalendarList(){
 						});
 						
 						calendar.addEventSource(newEvents);
+						$(function(){
+							$('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
+					  	})
 					}
 				}
 				
@@ -403,6 +424,9 @@ function getCalendarList(){
 						});
 						
 						calendar.addEventSource(newEvents);
+						$(function(){
+							$('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
+					  	})
 					}
 				}
 				
@@ -619,22 +643,24 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
  	$("input[name='repeat_11']").change(function() {
  		if($("input[name='repeat_11']:checked").val() == "0") {
-			const timeBox = document.querySelector('.Boxxx');
-			timeBox.setAttribute("style","display: block");
 			const limitless = document.getElementById("radioBoxCheck");
 			limitless.setAttribute("style","display: block");
-			const noneBox2 = document.querySelector('.noneBox2');
-			noneBox2.setAttribute("style","display: block");
- 		} else if($("input[name='repeat_11']:checked").val() == "1") {
-            const timeBox = document.querySelector('.Boxxx');
-			timeBox.setAttribute("style","display: none");
-			const radioBoxCheck = document.getElementById("radioBoxCheck");
-			radioBoxCheck.setAttribute("style","display: none");
-			const noneBox2 = document.querySelector('.noneBox2');
-			noneBox2.setAttribute("style","display: none");
-			const timepickerBox = document.getElementById("timepickerBox");
+			const timeBox = document.querySelector('.timeBox');
+ 			timeBox.setAttribute("style","display: flex");
+ 			const timepickerBox = document.getElementById("radioBoxRepeat");
 			timepickerBox.setAttribute("style","display: flex");
- 		}
+ 			const radioBoxRepeat2 = document.getElementById("radioBoxRepeat2");
+ 			radioBoxRepeat2.setAttribute("style","display: none");
+ 		}  else if($("input[name='repeat_11']:checked").val() == "1") {
+ 			const timeBox = document.querySelector('.timeBox');
+ 			timeBox.setAttribute("style","display: none");
+ 			const limitless = document.getElementById("radioBoxCheck");
+			limitless.setAttribute("style","display: none");
+			const timepickerBox = document.getElementById("radioBoxRepeat");
+			timepickerBox.setAttribute("style","display: none");
+			const radioBoxRepeat2 = document.getElementById("radioBoxRepeat2");
+			radioBoxRepeat2.setAttribute("style","display: grid");
+ 		} 
  	});
  	
  	
@@ -648,7 +674,10 @@ window.addEventListener("DOMContentLoaded" , function(){
  	});
  	
  	$("#calenderPage").addClass("on");
- 		
+ 	$(document).ready(function(){
+ 		  $('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
+ 		})
+ 	
 	$(function(){
 		$('.datepicker').datepicker({
 	    	dateFormat: 'yy-mm-dd',
@@ -666,6 +695,22 @@ window.addEventListener("DOMContentLoaded" , function(){
   	
   	$(function(){
     	$('#datetimepicker2').datetimepicker({
+    		datepicker:false,
+    		format:'H:i',
+    		step: 10
+    	});
+  	})
+  	
+  	$(function(){
+    	$('#datetimepicker3').datetimepicker({
+    		datepicker:false,
+    		format:'H:i',
+    		step: 10
+    	});
+  	})
+  	
+   $(function(){
+    	$('#datetimepicker4').datetimepicker({
     		datepicker:false,
     		format:'H:i',
     		step: 10
@@ -741,7 +786,11 @@ function validationCheck(target){
 			confirmAlertBox.innerText = "작업 날짜를 입력해주세요.";
 			confirmAlertBox.style.color = "red";
 		result = 0;
-	}
+	} else if(target.getAll('start_date') != '' || target.getAll('end_date') == '') {
+		var confirmAlertBox = document.getElementById("confirmAlertBox2");
+			confirmAlertBox.style.display = "none";
+		result = 1;
+	};
 	
 	if(target.getAll('start_time') == '' || target.getAll('end_time') ==''){
 		/*	4. 시작 시간과 끝나는 시작이 입력 됐는지 확인
@@ -752,7 +801,11 @@ function validationCheck(target){
 			confirmAlertBox.innerText = "작업 시간을 입력해주세요.";
 			confirmAlertBox.style.color = "red";
 		result = 0;
-	} 
+	} else if(target.getAll('start_time') != '' || target.getAll('end_time') =='') {
+		var confirmAlertBox = document.getElementById("confirmAlertBox2");
+			confirmAlertBox.style.display = "none";
+			result = 1;
+	};
 	
 	
 	if(!target.has('server_no')){
@@ -762,10 +815,11 @@ function validationCheck(target){
 			confirmAlertBox.style.color = "red";
 		
 		result = 0;
-	}
+	} 
 	
 	return result;
 }
+
 function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
@@ -885,24 +939,35 @@ function delSchedule(){
 						<strong class="text">기간설정</strong>
 						<div class="radioBox">
 							<input type="radio" name="repeat_11" value="0" class="arr" autocomplete='off' checked> 반복설정
-							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> 하루설정
+							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> 기간설정
 							<br>
+							
 		            	    <div id="radioBoxRepeat">
-		                	    
 		                        <input type="text" class="datepicker start_date" name="start_date" autocomplete='off'>
 		                        <div class="noneBox2">
 		                        	<span class="ing">~</span>
 		                           	<input type="text" class="datepicker end_date" name="end_date" autocomplete='off'>
 								</div>
-		                    <div class="imgBox"><img src="../resources/img/calendar.svg"></div>
-		                    </div>   
+		                    </div>
+		                    
+		                    <div id="radioBoxRepeat2">
+		                    <div class="start">
+		                        <input type="text" class="datepicker start_date" name="start_date" autocomplete='off'>
+		                        <input id="datetimepicker3" class="datetimepicker" type="text" name="start_time" autocomplete='off'>
+		                    </div>
+		                    <div class="end">
+		                        <input type="text" class="datepicker end_date" name="end_date" autocomplete='off'>
+		                        <input id="datetimepicker4" class="datetimepicker" type="text" name="start_time" autocomplete='off'>
+		                    </div>
+		                    </div> 
+		                    
 		                    <div id="radioBoxCheck">
 		                    	<input type="checkbox" class="limitless" autocomplete='off'> 무기한
 		                    </div>
 		                <div id="confirmAlertBox2" class="confirmAlertBox"></div> 
 						</div>
-						
 					</div>
+					
 		
 					<div class="timeBox">
 						<strong class="text">반복설정</strong>
@@ -925,10 +990,9 @@ function delSchedule(){
 		                   	</div>
 		                   	
 		                   	<div id="timepickerBox">
-		                   	<input id="datetimepicker1" type="text" name="start_time" autocomplete='off'>
+		                   	<input id="datetimepicker1" class="datetimepicker" type="text" name="start_time" autocomplete='off'>
 		                   	<span class="ing">~</span>
-		                   	<input id="datetimepicker2" type="text" name="end_time" autocomplete='off'>
-		                   	<div class="imgBox"><img src="../resources/img/alarm.svg"></div>
+		                   	<input id="datetimepicker2" class="datetimepicker" type="text" name="end_time" autocomplete='off'>
 		                   	</div>
 		                   	<div id="confirmAlertBox3" class="confirmAlertBox"></div>
 						</div>

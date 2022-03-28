@@ -51,36 +51,36 @@
     justify-content: center;
     background-color: #ffffff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
-    overflow-y: auto;
-    height: 900px;
+    overflow: hidden;
     align-content: center;
     width: 850px;
-    padding-bottom: 100px;
+    height: 900px;
+    /* padding-bottom: 810px; */
+    /* height: 850px; */
     }
 #modal .modalBox .top{
     background: #353c40;
-    height: 60px;
+    height: 50px;
     color: #fff;
-    font-size: 18px;
+    font-size: 17px;
     display: flex;
     justify-content: space-between;
-    padding: 0px 10px 0px 30px;
+    padding: 15px 0px 0px 20px;
 }
 #modal .modalBox .top .title{
-    line-height: 3.2;
 }
 #modal .modalBox .top .bi-x{
     font-size: 24px;
-    line-height: 2.4;
     cursor: pointer;
+    margin-top: -4px;
 }
 
 #modal .modalBox .titleBox{
     border-top: 1px solid #e5e5e5;
-    padding: 40px;
+    padding: 20px 0px 20px 20px;
 }
 #modal .modalBox .titleBox .text{
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
     width: 105px;
     display: inline-flex;
@@ -92,16 +92,16 @@
 }
 #modal .modalBox .titleBox .textBox{
     border: 1px solid #ccc;
-    height: 45px;
+    height: 35px;
     width: 500px;
     padding-left: 10px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 300;
 }
 
 .confirmAlertBox{
 	display:none;
-	margin-top:10px;
+	margin-top: 6px;
 	font-weight:300;
 	font-size: 15px;
 }
@@ -115,12 +115,12 @@
 
 #modal .modalBox .dateBox{
     border-bottom: 1px solid #e5e5e5;
-    padding: 40px;
+    padding: 20px 0px 20px 20px;
     display: flex;
     align-items: center;
     border-top: 1px solid #e5e5e5;
     }
-#modal .modalBox .dateBox .text{font-size: 18px;font-weight: 500;}
+#modal .modalBox .dateBox .text{font-size: 17px;font-weight: 500;}
 #modal .modalBox .dateBox .radioBox{
     margin-left: 45px;
     color: #222;
@@ -128,20 +128,24 @@
     font-size: 16px;
 }
 #modal .modalBox .dateBox .radioBox .datepicker{
-    height: 45px;
-    border: 1px solid #ccc;
+    height: 35px;
+    border: 1px solid #999;
     width: 150px;
-    padding-left: 8px;
-    font-size: 18px;
+    padding: 8px;
+    font-size: 17px;
     font-weight: 300;
+    background-image: url('../img/calendar.svg');
+    background-repeat: no-repeat;
+    background-position: 95% 50%;
+    opacity: 0.5;
 }
 .ing{
-    margin: 15px;
+    margin: 6px 20px 0px 20px;
     font-size: 18px;
 }
 .timearr{
     margin-left: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 .all{
     margin-top: 0.6vw;
@@ -157,12 +161,12 @@
 .checkAll{margin-right:20px;margin-left: 3px;}
 
 #modal .modalBox .timeBox{
-    padding: 40px;
+    padding: 20px 0px 20px 20px;
     display: flex;
     align-items: center;
     }
 #modal .modalBox .timeBox .text{
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
 }
 #modal .modalBox .timeBox .radioBox{
@@ -172,17 +176,19 @@
     font-size: 16px;
 }
 #modal .modalBox .timeBox .dayBox{
-    height: 35px;
-    width: 60px;
+    height: 25px;
+    width: 40px;
     margin: 0px 3px 0px 3px;
     border: 1px solid #ccc;
     padding-left: 5px;
+    font-size: 16px;
+    font-weight: 300;
 }
 #modal .modalBox .timeBox .btnDay:first-child{margin-right:20px}
 #modal .modalBox .timeBox .btnDay{
-    margin-top: 15px;
-    height: 35px;
-    width: 70px;
+    margin-top: 10px;
+    height: 30px;
+    width: 60px;
     margin-left: 3px;
     background: none;
     border: 1px solid #ccc;
@@ -204,28 +210,32 @@
 
 #modal .modalBox .listBox{
     background: #f3f3f3;
-    display: grid;
+    display: flex;
+    justify-content: space-between;
+    align-content: stretch;
+    padding: 15px 20px 15px 20px;
+    vertical-align: middle;
 }
 #modal .modalBox .listBox .text{
-    padding: 22px 0px 20px 40px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
+    margin-top: 5px;
 }
 
 .btnList{
-    margin: 0px 0px 20px 40px;
+ display: flex;
 }
 .btnList .btn1{
     background: #fff;
     border: 1px solid #ccc;
-    width: 60px;
-    height: 35px;
+    width: 55px;
+    height: 30px;
     font-size: 14px;
     margin-right: 4px;
     border-radius: 5px;
     color: #777;
+    display: grid;
+    align-content: center;
 }
 .ui-datepicker-trigger{
     width: 23px;
@@ -235,9 +245,8 @@
 }
 
 .serverList{
-    margin-bottom: 50px;
     display: grid;
-    /* height: 300px; */
+    /* height: 400px; */
     overflow-y: auto;
 }
 .serverList .serverHeader{
@@ -248,8 +257,8 @@
 }
 .serverList .serverHeader .serverHeaderText{
 	border-right: 1px solid #ccc;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 13px;
+	padding-bottom: 18px;
 	border-bottom: 1px solid #ccc;
 }
 .serverList .serverHeader .serverHeaderText:nth-child(1){
@@ -269,7 +278,7 @@
     text-align: left;
     display: flex;
     border-bottom: 1px solid #ccc;
-    height: 50px;
+    height: 45px;
     font-weight: 300;
     font-size: 16px;
 }
@@ -292,12 +301,15 @@
 
 .serverList .serverContent .serverContentText{
     border-right: 1px solid #ccc;
-    padding-top: 14px;
+    padding-top: 12px;
 }
 .btnBox{
-    display: flex;
+    width: 850px;
+    position: fixed;
+    margin-top: 20px;
     float: right;
-    margin-right: 30px;
+    padding-right: 20px;
+    bottom: 50px;
 }
 .btnBox .btnBoxbtn{
     margin-left: 8px;
@@ -308,6 +320,8 @@
     border-radius: 6px;
     border: none;
     color: #fff;
+    float: right;
+    float: right;
 }
 
 #radioBox3 .timepicker{
@@ -319,7 +333,7 @@
 
 
 
-#timepickerBox{display: flex;margin-top: 15px;}
+#timepickerBox{display: flex;margin-top: 10px;}
 
 #timepicker-selectbox{
 }
@@ -345,9 +359,9 @@
 }
 .imgBox img{width: 100%;}
 
-#timepickerBox .ing{margin: 14px 20px;}
+#timepickerBox .ing{margin: 7px 12px;}
 
-#timepickerBox2{display:none}
+#timepickerBox2{display: none;margin-top: 10px;}
 
 .noneBox{display:none}
 
@@ -422,18 +436,25 @@
 
 
 
-#datetimepicker1{
-    border: 1px solid #ccc;
-    height: 45px;
-    width: 140px;
-    padding-left: 8px;
+.datetimepicker{
+    border: 1px solid #999;
+    height: 35px;
+    width: 150px;
+    padding: 8px;
+    font-size: 18px;
+    font-weight: 300;
+    background-image: url('../img/alarm.svg');
+    background-position: 95% 50%;
+    background-repeat: no-repeat;
+    opacity: 0.5;
 }
 
 #datetimepicker2{
-    border: 1px solid #ccc;
-    height: 45px;
-    width: 140px;
+    height: 35px;
+    width: 150px;
     padding-left: 8px;
+    font-size: 18px;
+    font-weight: 300;
 }
 
 #deleteRadio{
@@ -468,7 +489,9 @@
     margin-left: 4px;
 }
 
-.tbodyBox{height: 300px;}
+.tbodyBox{
+    height: 250px;
+}
 .fc .fc-daygrid-day.fc-day-today{background:#f2f3f4}
 
 .box{
@@ -481,4 +504,16 @@
 	font-weight: 400;
 	background: #353c40;
 	padding-left: 30px;
+}
+#radioBoxRepeat2{
+	display:none
+}
+.start{
+	margin-bottom: 5px;
+}
+#datetimepicker3{
+	margin-left:5px
+}
+#datetimepicker4{
+	margin-left:5px
 }
