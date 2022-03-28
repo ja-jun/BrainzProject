@@ -1,5 +1,5 @@
 /*Grid*/
-.ui-jqgrid {position: relative;/* padding: 4vw 2vw 0vw 2vw; */overflow: hidden;width: 100%;/* margin: 4vw; */}
+.ui-jqgrid {position: relative;/* padding: 4vw 2vw 0vw 2vw; */overflow: hidden;width: 100% !important;/* margin: 4vw; */}
 .ui-jqgrid .ui-jqgrid-view {position: relative;left:0;top: 0;padding: 0;font-size: 13px;width:100% !important;overflow-y: auto;}
 /* caption*/
 .ui-jqgrid .ui-jqgrid-titlebar {padding: .3em .2em .2em .3em; position: relative; font-size: 12px; border-left: 0 none;border-right: 0 none; border-top: 0 none;}
@@ -46,7 +46,7 @@
 .ui-jqgrid tr.jqgroup td {font-weight: normal; overflow: hidden; white-space: pre; height: 22px;padding: 0 2px 0 2px;border-bottom-width: 1px; border-bottom-color: inherit; border-bottom-style: solid;}
 .ui-jqgrid tr.jqfoot td {font-weight: bold; overflow: hidden; white-space: pre; height: 22px;padding: 0 2px 0 2px;border-bottom-width: 1px; border-bottom-color: inherit; border-bottom-style: solid;}
 .ui-jqgrid tr.ui-row-ltr td {border-left: 1px solid #ccc;}
-.ui-jqgrid tr.ui-row-ltr td:first-child{padding:0px}
+.ui-jqgrid tr.ui-row-ltr td:first-child{padding:0px; border:none}
 .ui-jqgrid tr.ui-row-rtl td {text-align:right;border-left-width: 1px; border-left-color: inherit; border-left-style: solid;}
 .ui-jqgrid td.jqgrid-rownum { padding: 0 2px 0 2px; margin: 0; border: 0 none;}
 .ui-jqgrid .ui-jqgrid-resize-mark {width:2px;left:0;background-color:#777;cursor: e-resize;cursor: col-resize;position:absolute;top:0;height:100px;overflow:hidden;display:none;border:0 none;z-index: 99999;}
