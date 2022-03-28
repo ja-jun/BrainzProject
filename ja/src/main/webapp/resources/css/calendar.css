@@ -400,8 +400,8 @@
 
 .btnBoxbtn2{
     margin-left: 8px;
-    height: 47px;
-    width: 90px;
+    height: 43px;
+    width: 73px;
     font-size: 17px;
     background: #353c40;
     border-radius: 5px;
@@ -412,8 +412,8 @@
 
 .btnBoxbtn3{
     margin-left: 8px;
-    height: 47px;
-    width: 90px;
+    height: 43px;
+    width: 73px;
     font-size: 17px;
     background: #353c40;
     border-radius: 5px;
@@ -478,11 +478,19 @@
 }
 #deleteRadio .radioBox .radioBoxList{
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    font-size: 18px;
+    align-content: center;
+    vertical-align: middle;
+    height: 10px;
 }
+#deleteRadio .radioBox .radioBoxList:first-child{margin-top:20px}
+#deleteRadio .radioBox .radioBoxList:last-child{margin-top:20px}
 #deleteRadio .radioBox .radioBoxList .sapnRadio{
     display: grid;
     margin-left: 4px;
+    vertical-align: middle;
+    align-content: center;
 }
 
 .tbodyBox{

@@ -31,7 +31,7 @@ function createAndInitGrid(){
         data: [],
         rowNum: 10,
         rowList: [10,30,50],
-        height: 600,
+        height: 800,
         width:1573,
         pager: '#pager',
          colModel: [   
@@ -346,7 +346,7 @@ window.addEventListener("DOMContentLoaded", function(){
          <button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
          <button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
          <div id="jqgridBox">
-         <table id="list"></table>
+         <table id="list" style="width:100%"></table>
          <div id="pager"></div>
          </div>
       </div>   
