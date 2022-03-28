@@ -214,18 +214,24 @@ function getCalendarList(){
 				            $('input[name=start_date]').val(sc_info.start_date);
 				            $('input[name=end_date]').val(sc_info.end_date);
 				            
-				            if(sc_info.end_date == sc_info.start_date){
+				            if(sc_info.repeat_cat == 0){
 				            	$('.timearr').attr('checked','checked');
-				            } else if(sc_info.end_date == '9999-12-31'){
-				            	$('.limitless').prop('checked',true);
-				            	const noneBox = document.querySelector('.noneBox2');
-				                noneBox.setAttribute("style","display: none");
-				            } else {
-				            	$('.noneBox2 .datepicker').val(sc_info.end_date);
-				            }
-				            
-				            $('#datetimepicker1').val(sc_info.start_time);
-				            $('#datetimepicker2').val(sc_info.end_time);
+				            	$('input[name=start_date_2]').val(sc_info.start_date);
+					            $('input[name=end_date_2]').val(sc_info.end_date);
+					            $('input[name=start_time_2]').val(sc_info.start_time);
+					            $('input[name=end_time_2]').val(sc_info.end_time);
+				            } else{
+				            	$('input[name=start_date_1]').val(sc_info.start_date);
+					            $('input[name=end_date_1]').val(sc_info.end_date);
+					            $('input[name=start_time_1]').val(sc_info.start_time);
+				            	if(sc_info.end_date == '9999-12-31'){
+					            	$('.limitless').prop('checked',true);
+					            	const noneBox = document.querySelector('.noneBox2');
+					                noneBox.setAttribute("style","display: none");
+				            	} else {				            		
+					            	$('input[name=end_time_1]').val(sc_info.end_time);
+				            	}
+				            }				            
 				            
 				            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
 				            $(repeat_cat).attr('checked','checked');
@@ -673,7 +679,7 @@ window.addEventListener("DOMContentLoaded" , function(){
 		}
  	});
  	
- 	$("#calenderPage").addClass("on");
+ 	$("#calendarPage").addClass("on");
  	$(document).ready(function(){
  		  $('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
  		})
@@ -762,7 +768,7 @@ function confirmTitle(){
 function deleteServer(){
 	
 	if ($("input[name='rowCheck']:checked").length == 0) {
-		alert("선택된 상품이 없습니다.");
+		alert("선택된 서버가 없습니다.");
 	} else {
 		var chk = confirm("정말 삭제하시겠습니까?");
 		if(chk == true){
@@ -825,10 +831,21 @@ function regBtn(){
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
 	if($('.timearr').is(':checked')){
-		formData.set('end_date',formData.getAll('start_date'));
-		formData.set('repeat_cat',0);
-	} else if($('.limitless').is(':checked')){
-		formData.set('end_date','9999-12-31');
+		formData.set('repeat_cat', 0);
+		formData.set('start_date', formData.getAll('start_date_2'));
+		formData.set('end_date', formData.getAll('end_date_2'));
+		formData.set('start_time', formData.getAll('start_time_2'));
+		formData.set('end_time', formData.getAll('end_time_2'));
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date', '9999-12-31');
+		} else {
+			formData.set('end_date', formData.getAll('end_date_1'));
+		}
+		
+		formData.set('start_date', formData.getAll('start_date_1'));
+		formData.set('start_time', formData.getAll('start_time_1'));
+		formData.set('end_time', formData.getAll('end_time_1'));
 	}
 	
 	if(validationCheck(formData) == 0){
@@ -862,10 +879,21 @@ function modBtn(){
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
 	if($('.timearr').is(':checked')){
-		formData.set('end_date',formData.getAll('start_date'));
-		formData.set('repeat_cat',0);
-	} else if($('.limitless').is(':checked')){
-		formData.set('end_date','9999-12-31')
+		formData.set('repeat_cat', 0);
+		formData.set('start_date', formData.getAll('start_date_2'));
+		formData.set('end_date', formData.getAll('end_date_2'));
+		formData.set('start_time', formData.getAll('start_time_2'));
+		formData.set('end_time', formData.getAll('end_time_2'));
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date', '9999-12-31');
+		} else {
+			formData.set('end_date', formData.getAll('end_date_1'));
+		}
+		
+		formData.set('start_date', formData.getAll('start_date_1'));
+		formData.set('start_time', formData.getAll('start_time_1'));
+		formData.set('end_time', formData.getAll('end_time_1'));
 	}
 	
 	if(validationCheck(formData) == 0){
@@ -943,21 +971,21 @@ function delSchedule(){
 							<br>
 							
 		            	    <div id="radioBoxRepeat">
-		                        <input type="text" class="datepicker start_date" name="start_date" autocomplete='off'>
+		                        <input type="text" class="datepicker start_date" name="start_date_1" autocomplete='off'>
 		                        <div class="noneBox2">
 		                        	<span class="ing">~</span>
-		                           	<input type="text" class="datepicker end_date" name="end_date" autocomplete='off'>
+		                           	<input type="text" class="datepicker end_date" name="end_date_1" autocomplete='off'>
 								</div>
 		                    </div>
 		                    
 		                    <div id="radioBoxRepeat2">
 		                    <div class="start">
-		                        <input type="text" class="datepicker start_date" name="start_date" autocomplete='off'>
-		                        <input id="datetimepicker3" class="datetimepicker" type="text" name="start_time" autocomplete='off'>
+		                        <input type="text" class="datepicker start_date" name="start_date_2" autocomplete='off'>
+		                        <input id="datetimepicker3" class="datetimepicker" type="text" name="start_time_2" autocomplete='off'>
 		                    </div>
 		                    <div class="end">
-		                        <input type="text" class="datepicker end_date" name="end_date" autocomplete='off'>
-		                        <input id="datetimepicker4" class="datetimepicker" type="text" name="start_time" autocomplete='off'>
+		                        <input type="text" class="datepicker end_date" name="end_date_2" autocomplete='off'>
+		                        <input id="datetimepicker4" class="datetimepicker" type="text" name="end_time_2" autocomplete='off'>
 		                    </div>
 		                    </div> 
 		                    
@@ -990,9 +1018,9 @@ function delSchedule(){
 		                   	</div>
 		                   	
 		                   	<div id="timepickerBox">
-		                   	<input id="datetimepicker1" class="datetimepicker" type="text" name="start_time" autocomplete='off'>
+		                   	<input id="datetimepicker1" class="datetimepicker" type="text" name="start_time_1" autocomplete='off'>
 		                   	<span class="ing">~</span>
-		                   	<input id="datetimepicker2" class="datetimepicker" type="text" name="end_time" autocomplete='off'>
+		                   	<input id="datetimepicker2" class="datetimepicker" type="text" name="end_time_1" autocomplete='off'>
 		                   	</div>
 		                   	<div id="confirmAlertBox3" class="confirmAlertBox"></div>
 						</div>
