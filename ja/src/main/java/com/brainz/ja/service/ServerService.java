@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.brainz.ja.mapper.ServerSQLMapper;
 import com.brainz.ja.vo.PageVo;
 import com.brainz.ja.vo.ServerVo;
+import com.google.gson.Gson;
 
 @Service
 public class ServerService {
@@ -37,9 +38,7 @@ public class ServerService {
 	
 	
 	public ServerVo getServer(int server_no) {
-		ServerVo serverVo = serverSQLMapper.getServer(server_no);
-		
-		return serverVo;
+		return serverSQLMapper.getServer(server_no);
 	}
 	
 	public void deleteServer(List<String> nos) {

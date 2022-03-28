@@ -46,7 +46,8 @@ function createAndInitGrid(){
             rowList: [10,30,50],
             viewrecords: true,
             multiselect: true,
-
+            //등록시 인코드
+			autoencode : 'true',
             //Data 연동 부분
             url : "./getServerList",
             datatype : "JSON", //받을 때 파싱 설정
@@ -54,43 +55,75 @@ function createAndInitGrid(){
             mtype : "POST",
             loadtext : "로딩중...",
 	        height: 'auto',
-			autowidth:true
- 	        ondblClickRow: function (rowid, iRow, iCol) { 
-	            var rowData = $("#list").getRowData(rowid);
-	            var serverNo = rowData.server_no;
+			autowidth:true,
+			beforeSelectRow: function(rowid, e){
+				i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
+				cm = $(this).jqGrid('getGridParam','colModel');
+				return (cm[i].name === 'cb');
+			},
+			
+			// 수정 띄우기
+			ondblClickRow: function(rowId) {
+	            var rowData = $("#list").getRowData(rowId);
+	            var server_no = rowData.server_no;
 	            
-	            var name = document.getElementById('name');
-	            name.setAttribute("value"," " );
-		       	
-	            var request =  $.ajax({
-							    	     url: "./getServer",
-							    	     type: "post",
-							    	     processData: false,
-							    	     contentType: false,
-							    	     data: {severNo : serverNo}
-							    	  	 success: function(data){
-							    	  		
-							    	  		
-							    	  	}
-							    	 })	     
-	            modalOn();
-	            if()
-	        	var formData = new FormData(document.getElementById('regServerInfo'));
-		       	 $.ajax({
-		    	     url: "./updateServer",
+	            $.ajax({
+		    	     url: "./getServer",
 		    	     type: "post",
-		    	     processData: false,
-		    	     contentType: false,
-		    	     data: formData
-		    	 }).done(function(){
-		    			$("#list").trigger('reloadGrid');
-		    			modalOff();
-		    			alert("수정되었습니다.");
-		    	 });	 
-	        	
+		    	     data: {server_no : server_no},
+		    	  	 success: function(data){
+						var server = data.server;		    	  		 
+		    	  		 
+			            var title = document.querySelector('.title');
+			            title.innerText="서버 수정";
+		    	  		
+			            var server_no = document.createElement('input');
+			            server_no.setAttribute('type','hidden');
+			            server_no.setAttribute('name','server_no');
+			            server_no.setAttribute('id','server_no');
+			            server_no.setAttribute('value',server.server_no);
+			            $('#regServerInfo').append(server_no); 
+			            
+		    	  		$('input[name=name]').val(server.name);
+		    	  		$('input[name=ip]').val(server.ip);
+		    	  		$('select[name=os]').val(server.os);
+		    	  		$('input[name=loc]').val(server.loc);
+		    	  		$('input[name=mac]').val(server.mac);
+		    	  		$('input[name=control_num]').val(server.control_num);
+		    	  		$('input[name=dsc]').val(server.dsc);
+		    	  		$('input[name=write_date]').val(server.write_date);		
+		    	  		
+		    	  		var btn = document.getElementById('inputBtn');
+			            btn.setAttribute("value","수정");
+			            btn.setAttribute("onclick","updateServer()");
+		    	  		
+		    	  		modalOn();
+		    	  		
+					},
+			        error: function() {
+			        	alert("잘못된 접근입니다.");
+			        }
+				});	     
+	                     	
 	        }
   
      });		
+}
+
+//수정 서버 넘기기
+function updateServer(){	
+	var formData = new FormData(document.getElementById('regServerInfo'));
+	 $.ajax({
+	    url: "./updateServer",
+	    type: "post",
+	    processData: false,
+	    contentType: false,
+	    data: formData
+	}).done(function(){
+		$("#list").trigger('reloadGrid');
+		modalOff();
+		alert("수정되었습니다.");
+	});	
 }
            
 //검색시 서버 가져와서 집어넣기
@@ -333,7 +366,7 @@ window.addEventListener("DOMContentLoaded", function(){
 						<input type="text" id="dsc" name="dsc" class="textBox">
 					</div>
 					<div class="btnBox">
-						<input type="button" name="" value="등록" class="btnBoxbtn" onclick="insertServer()">
+						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertServer()">
 						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
 					</div>
 					</form>
