@@ -53,8 +53,12 @@
 		select count(*) from bp_user 
 		where user_id = #{user_id}
 	</select>
-	
-	
+   
+	<update id="lastLogin">
+	   update bp_user
+	   set last_login = now()
+	   where user_id = #{user_id}
+	</update>
 	
 	
 </mapper>

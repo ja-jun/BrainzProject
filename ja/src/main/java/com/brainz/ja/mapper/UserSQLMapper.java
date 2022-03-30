@@ -7,9 +7,9 @@ import com.brainz.ja.vo.UserVo;
 
 public interface UserSQLMapper {
 	
-	public UserVo selectUser(String username);
+	public UserVo selectUser(String user_id);
 	
-	public ArrayList<String> getAuthList(String username);
+	public ArrayList<String> getAuthList(String user_id);
 	
 	public void registerUser(UserVo vo);
 
@@ -23,5 +23,6 @@ public interface UserSQLMapper {
 	
 	public int getCountById(String id);
 		
-	
+    public void lastLogin(String user_id);
+
 }

@@ -4,15 +4,12 @@
 <mapper namespace="com.brainz.ja.mapper.NotificationSQLMapper">
 
 	<select id="getNotificationList" resultType="com.brainz.ja.vo.NotificationVo">	
-		<!-- 		
-		SELECT * FROM FP_Board , FP_Member
-		WHERE FP_Board.member_no = FP_Member.member_no
-		AND FP_Member.member_nick LIKE '%브리%'
-		ORDER BY FP_Board.board_no DESC;
- 		-->		
-		SELECT bps.* FROM BP_notification bps 
+		
+		select bn.nc_no, bn.nc_title, bn.nc_content, bn.nc_readCount, bn.nc_writeDate, bu.user_id, bu.user_no, bu.name 
+		from bp_notification bn, bp_user bu
+		where bn.user_no = bu.user_no
 			<if test="searchWord !=null">
-				WHERE nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
+				AND nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
 			</if>
  	</select>
  	
@@ -49,5 +46,12 @@
 		SET nc_readCount=nc_readCount+1
 		WHERE nc_no=#{nc_no} 	 
  	</update> 	
+
+	<select id="getNotificationCount" resultType="int">
+ 		SELECT COUNT(bps.*) FROM BP_notification bps 
+			<if test="searchWord !=null">
+				WHERE nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
+			</if>
+ 	</select>
 
 </mapper>

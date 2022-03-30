@@ -74,9 +74,15 @@ public class UserService {
 		} else {
 			return true;
 		}
-	}
+	}	
 	
-	
-	
+	// 사용자 최종 로그인 시간 업데이트
+	   public void lastLogin(String user_id) {
+	      userSQLMapper.lastLogin(user_id);
+	   }
+	   
+	   public UserVo getUserInfo(String user_id) {
+	      return userSQLMapper.selectUser(user_id);
+	   }
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.brainz.ja.mapper.NotificationSQLMapper;
 import com.brainz.ja.vo.NotificationVo;
+import com.brainz.ja.vo.PageVo;
 import com.brainz.ja.vo.ServerVo;
 
 @Service
@@ -17,9 +18,9 @@ public class NotificationService {
 	@Autowired
 	private NotificationSQLMapper notificationSQLMapper;
 		
-	public ArrayList<NotificationVo> getNotificationList(String searchWord) {
+	public ArrayList<NotificationVo> getNotificationList(PageVo vo) {
 	
-		ArrayList<NotificationVo> getNotificationList = notificationSQLMapper.getNotificationList(searchWord);
+		ArrayList<NotificationVo> getNotificationList = notificationSQLMapper.getNotificationList(vo);
 
 		
 		return getNotificationList;
@@ -49,4 +50,8 @@ public class NotificationService {
 		notificationSQLMapper.increaseReadCount(nc_no);
 	}
 	
+	public int getNotificationCount(PageVo vo){
+		return notificationSQLMapper.getNotificationCount(vo);
+		 
+	}
 }

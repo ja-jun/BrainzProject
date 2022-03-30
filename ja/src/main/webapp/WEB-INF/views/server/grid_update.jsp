@@ -273,26 +273,9 @@ window.addEventListener("DOMContentLoaded", function(){
 </head>
 
 <body>
+	<jsp:include page="../nav/nav.jsp"></jsp:include>
 
-
-
-	<div id="container">
-		<div class="header">
-			<!-- 활성화 된 페이지 이름 넣기 -->
-			<h3 class="headerName">서버 관리</h3>
-		</div>
-		
-		<div id="content">
-			<div class="navBar">
-				<ul>
-					<!-- 네비바 페이지 이름 변경/a태그 안에 각자 만든 페이지 경로 넣기 -->
-					<!-- 활성화 된 페이지는 li class에 있는 on을 활성화 된 페이지에 복붙 -->
-					<li class="pageList"><a href=""><i class="bi bi-person"></i>사용자 관리</a></li>
-					<li class="pageList on"><a href="./css"><i class="bi bi-shield-check"></i>서버 관리</a></li>
-					<li class="pageList"><a href=""><i class="bi bi-calendar-check"></i>작업 관리</a></li>
-				</ul>
-			</div>
-					
+	
 		
 	<div class="container">
 		<div class="row mt-3">
@@ -313,8 +296,6 @@ window.addEventListener("DOMContentLoaded", function(){
 			<table id="list"></table>
 			<div id="pager"></div>
 		</div>	
-	</div>
-</div>
 	</div>
 
 

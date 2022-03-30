@@ -28,13 +28,13 @@
 function createAndInitGrid(){
     $("#list").jqGrid({
          colModel: [   
-	            {name: 'nc_no', label : '번호', align:'left'},
-	            {name:'nc_title', label:'제목', align:'left'},
-	            {name: 'nc_content', label : '내용', align:'center'},
-	            {name: 'nc_file', label : '파일', align:'center'},
-	            {name: 'nc_writeDate', label : '등록일시', align:'center'},              
-	            {name: 'name', label : '등록자', align:'left'},
-	            {name: 'nc_readCount', label : '조회수', align:'center'},
+	            {name: 'nc_no', label : '번호', align:'center', width:15},
+	            {name:'nc_title', label:'제목', align:'center', width:45},
+	            {name: 'nc_content', label : '내용', align:'center', width:100},
+	            {name: 'nc_file', label : '파일', align:'center', width:15},
+	            {name: 'nc_writeDate', label : '등록일시', align:'center', width:30},              
+	            {name: 'name', label : '등록자', align:'center', width:30},
+	            {name: 'nc_readCount', label : '조회수', align:'center', width:15},
 	         /*    {name:'server_no',label:'서버번호', hidden:true} */
               ],
               pager: '#pager',
@@ -43,23 +43,23 @@ function createAndInitGrid(){
               viewrecords: true,
               multiselect: true,
               //등록시 인코드
-  			autoencode : 'true',
+  			  autoencode : 'true',
               //Data 연동 부분
               url : "./getNotificationList",
               datatype : "JSON", //받을 때 파싱 설정
               postData : {}, //....
               mtype : "POST",
               loadtext : "로딩중...",
-  	        height: 'auto',
-  			autowidth:true,
-  			/* beforeSelectRow: function(rowid, e){
-  				i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
-  				cm = $(this).jqGrid('getGridParam','colModel');
-  				return (cm[i].name === 'cb');
-  			}, */
+  	          height: 'auto',
+  			  autowidth:true,
+  				/* beforeSelectRow: function(rowid, e){
+  					i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
+  					cm = $(this).jqGrid('getGridParam','colModel');
+  					return (cm[i].name === 'cb');
+  					}, */
   			
   			// 클릭후 상세보기 띄우기
-  			onCellSelect: function(rowId) {
+  			ondblClickRow: function(rowId) {
   				
   				
   	            var rowData = $("#list").getRowData(rowId);
@@ -83,20 +83,23 @@ function createAndInitGrid(){
   			            $('#regNotificationInfo').append(nc_no); 
   			            
   		    	  		$('input[name=nc_title]').val(notification.nc_title);
-  		    	  		$('select[name=nc_content]').val(notification.nc_content);
+  		    	  		$('textarea[name=nc_content]').val(notification.nc_content);
   		    	  		
   		    	  		var btn = document.getElementById('inputBtn');
   			            btn.setAttribute("value","수정");
   			            btn.setAttribute("onclick","updateNotification()");
   		    	  		
-  			            /* 삭제 버튼 */
-						/* document.getElementById('btn');*/  			            var btn2 = document.createElement('input');
+  			            var btn2 = document.getElementById('deleteBtn3');
+			            btn2.setAttribute("style","display:block");
+			              			            
+  			            /* 삭제 버튼 						            
+						var btn2 = document.createElement('input');
   			            btn2.setAttribute('type','button');
   			            btn2.setAttribute('class','btnBoxbtn');
   			            btn2.setAttribute('value','삭제');
-  			            btn2.setAttribute('id','btn');
+  			            btn2.setAttribute('id','deleteBtn2');
   			            btn2.setAttribute('onclick','deleteNotification()');	            
-  			            $('.btnBox').append(btn2); 
+  			            $('.btnBox').append(btn2); */
   			            
   		    	  		modalOn();
   		    	  		
@@ -110,8 +113,6 @@ function createAndInitGrid(){
     
        });		
   }
-
-
 
 //검색시 서버 가져와서 집어넣기
 function search(){
@@ -187,11 +188,37 @@ function deleteNotification(){
 			     data: JSON.stringify(notificationNos)
 			 }).done(function(){
 					$("#list").trigger('reloadGrid');
+					modalOff();
 					alert("삭제되었습니다.");
 			 });
 		 }else{
 				   alert("취소합니다.");
 		 }
+}
+
+function deleteModal() {
+		
+	var notificationNos = [];
+	
+	var nc_no = $("#nc_no").val();
+    notificationNos.push(nc_no);
+
+	if(confirm("정말 삭제하시겠습니까?") == true ){
+     	 var text = "";
+		
+		 $.ajax({
+		     url: "./deleteNotification",
+		     type: "post",
+		     contentType:'application/json',
+		     data: JSON.stringify(notificationNos)
+		 }).done(function(){
+				$("#list").trigger('reloadGrid');
+				modalOff();
+				alert("삭제되었습니다.");
+		 });
+	 	}else{
+			   alert("취소합니다.");
+	 	}	
 }
 
 //모달창 함수	
@@ -204,6 +231,8 @@ function isModalOn() {
 function modalOff() {
     modal.style.display = "none";
 	document.getElementById("regNotificationInfo").reset();  //입력했던 값 지우기
+	$('#nc_no').remove();
+	$('#deleteBtn2').remove();
 }
 
 //모달창 열렸을 때 ESC누르면 닫힘
@@ -236,7 +265,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	<jsp:include page="../nav/nav.jsp"></jsp:include>
 	
 	<div class="container">
-		<div class="row mt-3">
+		<div class="row mt-3" style="position: relative;top: 100px;z-index: 999;left: 700px;">
 			<div class="col-4">
 				<input id="searchWord" type="text" class="form-control" placeholder="제목/내용">
 			</div>
@@ -247,7 +276,6 @@ window.addEventListener("DOMContentLoaded", function(){
 	
 		<div id="box">
 			<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-			<button class="writeBtn" id="updateBtn" onclick="modalOn()">수정</button>			
 			<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()">삭제</button>
 						
 			<h2>공지사항</h2>
@@ -271,77 +299,26 @@ window.addEventListener("DOMContentLoaded", function(){
 						<strong class="text">제목<span class="star">*</span></strong>
 						<input type="text" id="nc_title" name="nc_title" class="textBox" >
 					</div>
-					<div class="titleBox">
+					<div class="titleBox" style="display: flex;">
 						<strong class="text">내용<span class="star">*</span></strong>
-						<textarea id="nc_content" name="nc_content" class="textBox"></textarea>
+						<textarea id="nc_content" name="nc_content" class="textBox" style="height: 150px;"></textarea>
 					</div>
 					<div class="titleBox">
 						<strong class="text">파일<span class="star">*</span></strong>
 						<input type="file" id="file_no" name="file_no">						
 					</div>
-					<div class="btnBox">
+					<div class="btnBox">					
 						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertNotification()">
+						<input type="button" id="deleteBtn3" value="삭제" class="btnBoxbtn" onclick="deleteModal()" style="display:none">						
 						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >					
 					</div>
-					</form>
+					</form>					
+					<!-- Form 태그 종료 -->
 					
-				<!-- Form 태그 종료 -->
 				</div>
 			</div>
 		</div>
-	
-		<!--상세보기 모달창 시작 -->
-		<div id="modal2" class="modal-overlay" style="display:none">
-			<div class="modal-window">
-				<div class="modalBox">	
-				
-					<div class="top">
-						<h3 class="title">공지사항 보기</h3>
-						<i class="bi bi-x" onclick="modalOff2()"></i>
-					</div>
-					<div class="titleBox">
-						<strong class="text">제목</strong>
-						<strong type="text" id="nc_title" name="nc_title" class="textBox"></strong>
-						
-					</div>
-					<div class="titleBox">
-						<strong class="text">내용</strong>
-						<strong id="nc_content" name="nc_content" class="textBox"></strong>
-						
-					</div>						
-					<div class="titleBox">
-						<strong class="text" >파일</strong>		
-						<strong type="file" id="file_no" name="file_no"></strong>
-									
-					</div>
-					<div class="titleBox">
-						<strong class="text">등록일시</strong>
-						<strong id="nc_writeDate" name="nc_writeDate" class="textBox"></strong>
-						
-					</div>
-					<div class="titleBox">
-						<strong class="text">등록자</strong>
-						<strong id="name" name="name" class="textBox"></strong>
-						
-					</div>
-					<div class="titleBox">
-						<strong class="text">조회수</strong>
-						<strong id="nc_readCount" name="nc_readCount" class="textBox"></strong>
-					</div>
-					<div class="btnBox">
-						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertNotification()">
-						<input type="button" id="inputBtn" value="수정" class="btnBoxbtn" onclick="updateNotification()">						
-						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff2()" >					
-					</div>
-					</form>
-					
-				<!-- Form 태그 종료 -->
-				</div>
-			</div>
-		</div>
-	
-	
-	
+			
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>

@@ -12,13 +12,15 @@ public class NotificationVo {
 	private Integer nc_readCount;
 	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
 	private LocalDateTime nc_writeDate;
+	private String user_id;
+	private String name;
 	
 	public NotificationVo() {
 		super();
 	}
 
 	public NotificationVo(Integer nc_no, Integer user_no, String nc_title, String nc_content, Integer nc_readCount,
-			LocalDateTime nc_writeDate) {
+			LocalDateTime nc_writeDate, String user_id, String name) {
 		super();
 		this.nc_no = nc_no;
 		this.user_no = user_no;
@@ -26,6 +28,8 @@ public class NotificationVo {
 		this.nc_content = nc_content;
 		this.nc_readCount = nc_readCount;
 		this.nc_writeDate = nc_writeDate;
+		this.user_id = user_id;
+		this.name = name;
 	}
 
 	public Integer getNc_no() {
@@ -76,6 +80,20 @@ public class NotificationVo {
 		this.nc_writeDate = nc_writeDate;
 	}
 
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}	
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}	
 	
 }
