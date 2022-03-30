@@ -46,6 +46,7 @@
 		OFFSET (#{page} -1) * #{rows}
  	</select>
  	
+ 	
  	<select id="getServerCount" resultType="int">
  		SELECT COUNT(bps.*) FROM BP_server bps 
 			<if test="searchWord !=null">
@@ -75,5 +76,12 @@
 		WHERE mac = #{mac}
 	</select>
 
+	<select id="getServerListForExcel" resultType="com.brainz.ja.vo.ServerVo">
+		SELECT bps.* FROM BP_server bps
+		<if test="searchWord !=null">
+			WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+ 		</if>
+		order by server_no desc	
+ 	</select>
  
 </mapper>

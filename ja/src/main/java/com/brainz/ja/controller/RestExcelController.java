@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.brainz.ja.service.ExcelService;
 import com.brainz.ja.service.ServerService;
+import com.brainz.ja.vo.PageVo;
 import com.brainz.ja.vo.ServerVo;
 
 @RestController
@@ -24,15 +25,18 @@ public class RestExcelController {
 	private ExcelService excelService;
 	
 	@RequestMapping("getExcelServerList")
-	public void getServerList(String searchWord , HttpServletResponse response) throws IOException {
+	public void getServerListForExcel(PageVo vo, HttpServletResponse response) throws IOException {
 		
-		System.out.println("test!");
+		System.out.println("test!" + vo);
 		
-		ArrayList<ServerVo> serverList = excelService.getServerList(searchWord);
+		ArrayList<ServerVo> serverList = excelService.getServerListForExcel(vo);
+
 		
+		System.out.println("test2222 : " + serverList.size());
+
 		
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_hhmmss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 		String strDate = sdf.format(date);
 		
 		String fileName = "server_list_" + strDate + ".xls";

@@ -29,8 +29,8 @@ function createAndInitGrid(){
     $("#list").jqGrid({
          colModel: [   
 	            {name: 'nc_no', label : '번호', align:'center', width:15},
-	            {name:'nc_title', label:'제목', align:'center', width:45},
-	            {name: 'nc_content', label : '내용', align:'center', width:100},
+	            {name:'nc_title', label:'제목', align:'left', width:45},
+	            {name: 'nc_content', label : '내용', align:'left', width:100},
 	            {name: 'nc_file', label : '파일', align:'center', width:15},
 	            {name: 'nc_writeDate', label : '등록일시', align:'center', width:30},              
 	            {name: 'name', label : '등록자', align:'center', width:30},
@@ -221,6 +221,19 @@ function deleteModal() {
 	 	}	
 }
 
+function registerNotification(){
+		var btn = document.getElementById('inputBtn');
+        btn.setAttribute("value","등록");
+		btn.setAttribute("onclick","insertNotification()");
+	  		
+        var btn2 = document.getElementById('deleteBtn3');
+        btn2.setAttribute("style","display:none");	
+	
+	
+		modalOn();
+}
+
+
 //모달창 함수	
 function modalOn() {
     modal.style.display = "flex";
@@ -275,7 +288,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		</div>
 	
 		<div id="box">
-			<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
+			<button class="writeBtn" id="insertBtn" onclick="registerNotification()">등록</button>
 			<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()">삭제</button>
 						
 			<h2>공지사항</h2>

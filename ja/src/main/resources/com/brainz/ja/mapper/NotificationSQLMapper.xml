@@ -11,6 +11,9 @@
 			<if test="searchWord !=null">
 				AND nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
 			</if>
+		ORDER BY bn.nc_no desc
+		LIMIT #{rows}   
+		OFFSET (#{page} -1) * #{rows}			
  	</select>
  	
  	<insert id="insertNotification">

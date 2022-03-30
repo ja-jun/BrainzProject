@@ -139,8 +139,17 @@ function search(){
 		dataType : "json",
 	})
 	.trigger("reloadGrid");			
-
-
+	
+	
+    //김자준...
+    var exportAnchor = document.getElementById("exportAnchor");
+    var qIndex = exportAnchor.href.lastIndexOf('?');
+    
+    if(qIndex >= 0){
+   	 exportAnchor.href = exportAnchor.href.substring(0,qIndex) + "?searchWord=" + searchWord; 
+    }else{
+        exportAnchor.href += "?searchWord=" + searchWord;
+    }    
 }
 
 
@@ -278,11 +287,11 @@ window.addEventListener("DOMContentLoaded", function(){
 	
 		
 	<div class="container">
-		<div class="row mt-3">
+		<div class="row mt-3" style="position: relative;top: 100px;z-index: 999;left: 700px;">
 			<div class="col-4">
 				<input id="searchWord" type="text" class="form-control" placeholder="서버명/IP">
 			</div>
-			<div class="col ">
+			<div class="col">
 				<button class="writeBtn" onclick="search()">검색</button>
 			</div>
 		</div>
@@ -290,7 +299,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		<div id="box">
 			<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
 			<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
-			<a href="./getExcelServerList"><button  class="writeBtn" id="excelBtn">내보내기</button></a>
+			<a href="./getExcelServerList" id="exportAnchor"><button  class="writeBtn" id="excelBtn">내보내기</button></a>
 						
 			<h2>서버 관리</h2>
 			<table id="list"></table>
