@@ -1,19 +1,21 @@
 package com.brainz.ja.mapper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+import com.brainz.ja.vo.PageVo;
 import com.brainz.ja.vo.UserVo;
 
 public interface UserSQLMapper {
 	
-	public UserVo selectUser(String user_id);
+	public UserVo selectUser(String username);
 	
-	public ArrayList<String> getAuthList(String user_id);
+	public ArrayList<String> getAuthList(String username);
 	
 	public void registerUser(UserVo vo);
 
-	public ArrayList<HashMap<String, Object>> getUserList(String searchWord);
+	public ArrayList<UserVo> getUserList(PageVo vo);
+	
+	public int getUserCount(PageVo vo);
 	
 	public UserVo getUser(int user_no);
 	
@@ -22,7 +24,6 @@ public interface UserSQLMapper {
 	public void updateUser(UserVo vo);
 	
 	public int getCountById(String id);
-		
-    public void lastLogin(String user_id);
-
+	
+	public void lastLogin(String user_id);
 }

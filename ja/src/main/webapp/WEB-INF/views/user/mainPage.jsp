@@ -14,6 +14,8 @@
 <link href='../resources/css/reset.css' rel='stylesheet' />
 <link href="../resources/css/jquery-ui.css" rel="stylesheet"/>
 <link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
+<link href="../resources/css/jquery-ui.structure.css" rel="stylesheet"/>
+<link href="../resources/css/jquery-ui.theme.css" rel="stylesheet"/>
 
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
@@ -22,156 +24,296 @@
 <script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
 <script src="../resources/js/jquery-ui.min.js"></script>
 
+
 <script> 
-            
-//그리드 형식            
+                        
 function createAndInitGrid(){
     $("#list").jqGrid({
-        datatype: "local",
-        data: [],
-        rowNum: 10,
-        rowList: [10,30,50],
-        height: 800,
-        width:1573,
-        pager: '#pager',
-         colModel: [   
-            {name: 'user_id', label : '아이디', align:'left'},
-             {name: 'name', label:'이름', align:'left'},
-             {name: 'authority', label : '권한', align:'center'},
-             {name: 'dsc', label : '설명', align:'left'},
-             {name: 'write_date간', label : '최종 로그인 시간', align:'center'},
-             {name: 'user_no', label : '사용자번호', hidden:true}
-              ],
-              
-         multiselect: true,
-     });
+	        colModel: [   
+       			{name: 'user_id', label : '아이디', align:'left'},
+	            {name: 'name', label:'이름', align:'left'},
+	            {name: 'authority', label : '권한', align:'center'},
+	            {name: 'dsc', label : '설명', align:'left'},
+	            {name: 'last_login', label : '최종 로그인 시간', align:'center', formatter:dateFormatter},
+	            {name: 'user_no', label : '사용자번호', hidden:true}
+	            ],
+            pager: '#pager',
+            rowNum: 10,
+            rowList: [10,30,50],
+            viewrecords: true,
+            multiselect: true,
+            //등록시 인코드
+			autoencode : 'true',
+            //Data 연동 부분
+            url : "./getUserList",
+            datatype : "JSON", //받을 때 파싱 설정
+            postData : {}, //....
+            mtype : "POST",
+            loadtext : "로딩중...",
+	        height: 'auto',
+			autowidth:true,
+			beforeSelectRow: function(rowid, e){
+				i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
+				cm = $(this).jqGrid('getGridParam','colModel');
+				return (cm[i].name === 'cb');
+			},
+			
+			
+			// 수정 띄우기
+			ondblClickRow: function(rowId) {
+	            var rowData = $("#list").getRowData(rowId);
+	            var user_no = rowData.user_no;
+	            
+	            $.ajax({
+		    	     url: "./getUser",
+		    	     type: "post",
+		    	     data: {user_no : user_no},
+		    	  	 success: function(data){
+						var user = data.user;		    	  		 
+		    	  		 
+			            var title = document.querySelector('.title');
+			            title.innerText="사용자 수정";
+		    	  		
+			            var user_no = document.createElement('input');
+			            user_no.setAttribute('type','hidden');
+			            user_no.setAttribute('name','user_no');
+			            user_no.setAttribute('id','user_no');
+			            user_no.setAttribute('value',user.user_no);
+			            $('#regUserInfo').append(user_no); 
+			            
+			            $('#user_id').val(user.user_id);
+			            $('#user_id').attr("disabled", "disabled");
+			            $('#id_check_button').attr("disabled", "disabled");
+			            $('#user_pw').val();
+			            $('#user_pw').attr("placeholder", "비밀번호 미입력시 기존 비밀번호로 등록됩니다.");
+			            $('#user_pw2').val();
+			            $('#user_pw2').attr("placeholder", "비밀번호 미입력시 기존 비밀번호로 등록됩니다.");
+			            $('#name').val(user.name);
+		    	  		$('#authority').val(user.authority);
+		    	  		$('#phone').val(user.phone);
+		    	  		$('#email').val(user.email);
+		    	  		$('#dsc').val(user.dsc);
+		    	  		
+		    	  		
+		    	  		var btn = document.getElementById('inputBtn');
+			            btn.setAttribute("value","수정");
+			            btn.setAttribute("onclick","updateUser()"); 
+		    	  		
+		    	  		modalOn();
+		    	  		
+					},
+			        error: function() {
+			        	alert("잘못된 접근입니다.");
+			        }
+				});	     
+	                     	
+	        }
+  
+     });		
+}
+	
+	
+var dateFormatter = function(cellvalue, options, rowObject) {
+	
+	 var new_format_value='';
+	 
+	 var date = new Date(cellvalue);
+	  	 
+		if(date== "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)") {
+			
+			new_format_value= "접속기록 없음"
+			
+		} else {
+			
+			new_format_value = date.getFullYear() + "."
+			+ (date.getMonth() + 1).toString().padStart(2,'0') + "."
+			+ date.getDate().toString().padStart(2,'0') + "  ("
+			+ (date.getHours() + 9).toString().padStart(2,'0') + ":"
+			+ date.getMinutes().toString().padStart(2,'0') + ")";  
+		} 
+	      
+	      return new_format_value;
+}	
+	
+
+// 수정 유효성 체크
+function updCheck(target){
+	
+	var result = 1;
+	
+	if(target.getAll('name') == ''){
+		$('#checkName_Msg').html('이름을 입력해주세요.');
+        $('#checkName_Msg').attr('color', '#ff0000');
+		result = 0;
+	} 
+	
+	
+	if(target.getAll('phone') == ''){
+		$('#checkPhone_Msg').html('연락처를 입력해주세요.');
+        $('#checkPhone_Msg').attr('color', '#ff0000');
+		result = 0;
+	} else {
+		
+		var checkPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+        
+		if (!checkPhone.test(target.getAll('phone'))) {
+        	$('#checkPhone_Msg').html('전화번호 형식이 올바르지 않습니다.');
+            $('#checkPhone_Msg').attr('color', '#ff0000');
+    		result = 0;	
+		}
+	}		
+	
+	
+	if(target.getAll('email') == ''){
+		$('#checkEmail_Msg').html('이메일을 입력해주세요.');
+        $('#checkEmail_Msg').attr('color', '#ff0000');
+		result = 0;
+	} else {
+
+		var checkEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+		
+        if (!checkEmail.test(target.getAll('email'))) {
+        	$('#checkEmail_Msg').html('이메일 형식이 올바르지 않습니다.');
+            $('#checkEmail_Msg').attr('color', '#ff0000');
+    		result = 0;	
+		} 
+	}
+	
+	return result;
+}
+
+
+//수정 서버 넘기기
+function updateUser(){	
+	var formData = new FormData(document.getElementById('regUserInfo'));
+	
+	if(updCheck(formData) == 0){
+		return;
+	} else {
+		
+		 $.ajax({
+		    url: "./updateUser",
+		    type: "post",
+		    processData: false,
+		    contentType: false,
+		    data: formData
+		}).done(function(){
+			$("#list").trigger('reloadGrid');
+			modalOff();
+			alert("수정되었습니다.");
+		});	
+	}
+	
 }
            
-    //그리드에 값 집어넣기          
-   function renderGridByDatas(datas){
-         
-        var jsonArr = [];
-        for (var i = 0; i < datas.length; i++) {
-         //숫자를 날짜로
-         var userInsertDate = new Date(datas[i].write_date);  
-         //날짜를 문자로 
-         write_date = userInsertDate.getFullYear() + "."
-                        + (userInsertDate.getMonth() + 1) + "."
-                        + userInsertDate.getDate(); 
-           
-            jsonArr.push({
-               'user_id':datas[i].user_id,
-                'name':datas[i].name,
-                'authority':datas[i].authority,
-                'dsc':datas[i].dsc,
-                'write_date':datas[i].write_date,
-                'user_no':datas[i].user_no
-            });
-        }
-               $('#list').jqGrid('clearGridData');
-               $('#list').jqGrid('setGridParam', {data: jsonArr}).trigger('reloadGrid');
-      };
-
- 
-
-//사용자 리스트 가져와서 집어넣기
-function getList(){
-   var xhr = new XMLHttpRequest();
-   
-   xhr.onreadystatechange = function(){
-      if(xhr.readyState == 4 && xhr.status == 200){
-         var data = JSON.parse(xhr.responseText); 
-         
-            renderGridByDatas(data.userList);
-         }
-   };
-   xhr.open("get" , "./getUserList" , true);   
-   xhr.send();       
-}
-
 //검색시 서버 가져와서 집어넣기
 function search(){
-   var searchWordInput = document.getElementsByName("searchWord");
-   var searchWordValue = searchWordInput[0].value;
+	var searchWord = document.getElementById("searchWord").value;	
 
-   var xhr = new XMLHttpRequest();
-   
-   xhr.onreadystatechange = function(){
-      if(xhr.readyState == 4 && xhr.status == 200){
-         var data = JSON.parse(xhr.responseText);
+	$("#list").jqGrid("clearGridData", true);		
+	$("#list")
+	.setGridParam({
+		url : "./getUserList",
+		mtype : "post",
+		postData : {searchWord : searchWord},
+		dataType : "json",
+	})
+	.trigger("reloadGrid");			
 
-            renderGridByDatas(data.userList);
-      }         
-   };
-   
-   xhr.open("get" , "./getUserList?searchWord=" + searchWordValue, true);
-   xhr.send();         
+
 }
 
 
-//입력값 db에 등록하기
+// 사용자 등록 유효성 체크
+function regCheck(target){
+	
+	var result = 1;
+	
+	if(target.getAll('user_id') == ''){
+		$('#checkId_Msg').html('아이디를 입력해주세요.');
+        $('#checkId_Msg').attr('color', '#ff0000');
+        result = 0;
+	} 
+	
+	if(target.getAll('user_pw') == ''){
+		$('#checkPw_Msg').html('비밀번호를 입력해주세요.');
+        $('#checkPw_Msg').attr('color', '#ff0000');
+		result = 0;
+	} 
+	
+	if($('#user_pw2').val() == ''){
+		$('#checkPw_Msg2').html('비밀번호 확인을 입력해주세요.');
+        $('#checkPw_Msg2').attr('color', '#ff0000');
+		result = 0;
+	} 
+	
+	if(target.getAll('name') == ''){
+		$('#checkName_Msg').html('이름을 입력해주세요.');
+        $('#checkName_Msg').attr('color', '#ff0000');
+		result = 0;
+	} 
+	
+	
+	if(target.getAll('phone') == ''){
+		$('#checkPhone_Msg').html('연락처를 입력해주세요.');
+        $('#checkPhone_Msg').attr('color', '#ff0000');
+		result = 0;
+	} else {
+		
+		var checkPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+        
+		if (!checkPhone.test(target.getAll('phone'))) {
+        	$('#checkPhone_Msg').html('전화번호 형식이 올바르지 않습니다.');
+            $('#checkPhone_Msg').attr('color', '#ff0000');
+    		result = 0;	
+		}
+	}		
+	
+	
+	if(target.getAll('email') == ''){
+		$('#checkEmail_Msg').html('이메일을 입력해주세요.');
+        $('#checkEmail_Msg').attr('color', '#ff0000');
+		result = 0;
+	} else {
+
+		var checkEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+		
+        if (!checkEmail.test(target.getAll('email'))) {
+        	$('#checkEmail_Msg').html('이메일 형식이 올바르지 않습니다.');
+            $('#checkEmail_Msg').attr('color', '#ff0000');
+    		result = 0;	
+		} 
+	}
+	
+	return result;
+}
+
+	
+// 사용자 등록
 function registerUser(){
-   var user_id = $("#user_id").val();
-   var user_pw = $("#user_pw").val();
-   var user_pw2 = $("#user_pw2").val();
-   var name = $("#name").val();
-   var authority = $("#authority").val();
-   var phone = $("#phone").val();
-   var email= $("#email").val();
-   var dsc = $("#dsc").val();
-      
-   if(user_id=="") {
-      alert("아이디를 입력하지 않았습니다.")
-        return false;
-    }
-   
-   if(user_pw=="") {
-      alert("비밀번호를 입력하지 않았습니다.")
-        return false;
-    }
-   
-   if(user_pw2=="") {
-      alert("비밀번호 확인을 입력하지 않았습니다.")
-        return false;
-    }
-   
-   if(name=="") {
-      alert("이름을 입력하지 않았습니다.")
-        return false;
-    }
-      
-   if(phone=="") {
-      alert("전화번호를 입력하지 않았습니다.")
-        return false;
-    }
-   
-   if(email=="") {
-      alert("이메일을 입력하지 않았습니다.")
-        return false;
-    }
-      
-   
-   var xhr = new XMLHttpRequest();
-   
-   xhr.onreadystatechange = function(){
-      if(xhr.readyState == 4 && xhr.status == 200){ 
-         var data = JSON.parse(xhr.responseText); 
-
-         modalOff();
-         
-
-         getList();
-      }
-   };
-   
-   xhr.open("post" , "./registerUser" , true);  
-    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
-   xhr.send("user_id=" +  user_id + "&user_pw=" + user_pw + "&name=" + name + "&authority=" + authority 
-         + "&phone=" + phone + "&email=" + email + "&dsc=" + dsc ); 
-
+	var formData = new FormData(document.getElementById('regUserInfo'));
+	console.log(formData.getAll('user_pw'));
+	console.log(formData.getAll('dsc'));
+	
+	//input태그의 name과 vo변수명이 같을때 자동으로 들어간다
+	if(regCheck(formData) == 0){
+		return;
+	} else {
+		
+		 $.ajax({
+		     url: "./registerUser",
+		     type: "post",
+		     processData: false,
+		     contentType: false,
+		     data: formData
+		 }).done(function(){
+				$("#list").trigger('reloadGrid');
+				modalOff();
+				alert("등록되었습니다.");
+		 });	 
+		
+	}
 }
-
-
 
 //id 중복확인
 function id_check() {
@@ -196,12 +338,12 @@ function id_check() {
      datatype: 'json',
      success: function (data) {
        if (data.result == false) {
-         $('#checkId').html('이미 존재하는 아이디 입니다.');
-         $('#checkId').attr('color', '#ff0000');
+         $('#checkId_Msg').html('이미 존재하는 아이디 입니다.');
+         $('#checkId_Msg').attr('color', '#ff0000');
          return;
        } else {
-         $('#checkId').html('사용가능한 아이디 입니다.');
-         $('#checkId').attr('color', '#0000FF');
+         $('#checkId_Msg').html('사용가능한 아이디 입니다.');
+         $('#checkId_Msg').attr('color', '#0000FF');
          $('.input_id').attr("check_result", "success");
          $('#check_sucess_icon').show();
          $('.id_check_button').hide();
@@ -211,21 +353,53 @@ function id_check() {
    });
  }
 
-
-// 비밀번호 확인 메세지
+//비밀번호 확인 메세지
 $(function(){
-    $('#user_pw').keyup(function(){
-      $('#confrimMsg ').html('');
+	
+	$('#user_id').keyup(function(){
+	     $('#checkId_Msg ').html('');
+	   });
+	
+	$('#user_pw').keyup(function(){
+	     $('#checkPw_Msg ').html('');
+	   });
+	
+	$('#user_pw2').keyup(function(){
+	     $('#checkPw_Msg2 ').html('');
+	   });
+	 	
+	$('#name').keyup(function(){
+      $('#checkName_Msg ').html('');
+    });
+	
+	$('#phone').keyup(function(){
+      $('#checkPhone_Msg ').html('');
+    });
+	
+	$('#email').keyup(function(){
+      $('#checkEmail_Msg ').html('');
     });
 
     $('#user_pw2').keyup(function(){
 
         if($('#user_pw').val() != $('#user_pw2').val()){
-          $('#confrimMsg').html('비밀번호가 일치하지 않습니다.');
-          $('#confrimMsg').attr('color', '#ff0000');
+          $('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
+          $('#checkPw_Msg2').attr('color', '#ff0000');
         } else{
-          $('#confrimMsg').html('비밀번호 일치합니다.');
-          $('#confrimMsg').attr('color', '#0000FF');
+          $('#checkPw_Msg2').html('비밀번호 일치합니다.');
+          $('#checkPw_Msg2').attr('color', '#0000FF');
+        }
+
+    });
+    
+    $('#user_pw').keyup(function(){
+
+        if($('#user_pw').val() != $('#user_pw2').val()){
+          $('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
+          $('#checkPw_Msg2').attr('color', '#ff0000');
+        } else{
+          $('#checkPw_Msg2').html('비밀번호 일치합니다.');
+          $('#checkPw_Msg2').attr('color', '#0000FF');
         }
 
     });
@@ -233,65 +407,39 @@ $(function(){
 
 
 
-
-//서버 선택 삭제
-            
-/*         if(confirm("정말 삭제하시겠습니까?") == true){
-            $.ajax({
-                url: "delete action ",
-                data: params ,
-                type: "POST",
-                beforeSend:function(){
-                  console.log("삭제중입니다.");
-                }
-            }).done(function(){
-              console.log("삭제되었습니다.");
-            });
-        }else{
-            return false;
-        }
- */
- //배열로 넘길수 있는지?! 삭제시 select 풀기
+ //삭제
 function deleteUser(){ 
-   var userNos = [];
-   var rowids = $("#list").getGridParam("selarrrow");
-   
-   for (let i = 0; i < rowids.length; i++) {
+	var userNos = [];
+	var rowids = $("#list").getGridParam("selarrrow");
+
+	for (let i = 0; i < rowids.length; i++) {
         const rowid = rowids[i];
-      console.log(rowid);
         var rowData = $("#list").getRowData(rowid);
-      userNos.push(rowData.사용자번호);
-      console.log(rowData);
-    }
-   var xhr = new XMLHttpRequest();
-      
-      xhr.onreadystatechange = function(){
-         if(xhr.readyState == 4 && xhr.status == 200){
-            var data = JSON.parse(xhr.responseText);
-            
-            alert("삭제되었습니다.");
-            getList();
-            
-         }
-      };
-      
-      xhr.open("post" , "./deleteUser" , true); //get.?
-        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-      xhr.send("userNos="+ userNos);   
-}
- 
-   
- //유효한 ip인지 확인하는 함수
-   
+		userNos.push(rowData.user_no);
+    }		
+	
+		$("#list").jqGrid("clearGridData", true);		
+
+          if(confirm("정말 삭제하시겠습니까?") == true ){
+        	  var text = "";
+			 $.ajax({
+			     url: "./deleteUser",
+			     type: "post",
+			     contentType:'application/json',
+			     data: JSON.stringify(userNos)
+			 }).done(function(){
+					$("#list").trigger('reloadGrid');
+					alert("삭제되었습니다.");
+			 });
+			}else{
+				   alert("취소합니다.");
+			}
+
+ }
 
  
- 
- 
- 
- 
- 
-   
-//모달창 함수   
+	
+//모달창 함수	
 function modalOn() {
     modal.style.display = "flex";
 }
@@ -300,8 +448,24 @@ function isModalOn() {
 }
 function modalOff() {
     modal.style.display = "none";
-   document.getElementById("regUserInfo").reset();  //입력했던 값 지우기
-   document.getElementById("confirmAlertBox").innerText="";    //id 중복 메세지 지우기
+	document.getElementById("regUserInfo").reset();  //입력했던 값 지우기
+	document.getElementById("checkId_Msg").innerText="";
+	document.getElementById("checkPw_Msg").innerText="";
+	document.getElementById("checkPw_Msg2").innerText="";
+	document.getElementById("checkName_Msg").innerText="";
+	document.getElementById("checkPhone_Msg").innerText="";
+	document.getElementById("checkEmail_Msg").innerText="";
+	
+	var btn = document.getElementById('inputBtn');
+    btn.setAttribute("value","등록");
+    btn.setAttribute("onclick","registerUser()");
+    
+    $('#user_id').attr("disabled",false);
+    $('#id_check_button').attr("disabled",false);
+    $('#user_pw').removeAttr('placeholder');
+    $('#user_pw2').removeAttr('placeholder');
+    var title = document.querySelector('.title');
+    title.innerText="사용자 등록";
 }
 
 //모달창 열렸을 때 ESC누르면 닫힘
@@ -311,111 +475,112 @@ window.addEventListener("keyup", e => {
 
 
 window.addEventListener("DOMContentLoaded", function(){
+	   $(window).resize(function() {
+      $("#list").setGridWidth($(this).width() * .100);
+   });    
+		createAndInitGrid();
 	
-	$("#userPage").addClass("on");
-	
-      createAndInitGrid();
-      getList();
-   
-   const modal = document.getElementById("modal")
-   
-   //모달창 외 부분 클릭하면 모달창 닫힘 : 불편함... 없애는게 나을거 같음
-   modal.addEventListener("click", e => {
-       const evTarget = e.target;
-      if(evTarget.classList.contains("modal-overlay")) { modalOff(); }
-   })
-   
+	const modal = document.getElementById("modal");
+		
 });
 
 
-</script>
 
+</script>
 </head>
+
 <body>
-      <jsp:include page="../nav/nav.jsp"></jsp:include>
-<!--       <div class="row mt-3">
-         <div class="col-4">
-            <input name="searchWord" type="text" class="form-control" placeholder="아이디/이름">
-         </div>
-         <div class="col ">
-            <button class="writeBtn" onclick="search()">검색</button>
-         </div>
-      </div> -->
-   
-      <div id="box">
-         <button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-         <button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
-         <div id="jqgridBox">
-         <table id="list" style="width:100%"></table>
-         <div id="pager"></div>
-         </div>
-      </div>   
+	<jsp:include page="../nav/nav.jsp"></jsp:include>
+		
+	<div class="container">
+		<div class="row mt-3" style="position: relative;top: 100px;z-index: 999;left: 700px;">
+			<div class="col-4">
+				<input id="searchWord" type="text" class="form-control" placeholder="아이디/이름">
+			</div>
+			<div class="col ">
+				<button class="writeBtn" onclick="search()">검색</button>
+			</div>
+		</div>
+	
+		<div id="box">
+			<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
+			<button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
+						
+			<table id="list"></table>
+			<div id="pager"></div>
+		</div>	
+	</div>
+</div>
+	</div>
+
 
 
 <!--등록 모달창 시작 -->
 <div id="modal" class="modal-overlay" style="display:none">
-   <div class="modal-window">
-      <div class="modalBox">
-      
-         <!-- Form 태그 시작 -->
-         <form id="regUserInfo">
-         <div class="top">
-            <h3 class="title">사용자 등록</h3>
-            <i class="bi bi-x" onclick="modalOff()"></i>
-         </div>
-         <div class="titleBox">
-            <strong class="text">아이디<span class="star">*</span></strong>
-            <input type="text" id="user_id" class="input_id" check_result="fail" required />
-            <button type="button" class="id_check_button" onclick="id_check()">중복검사</button>
-            <i class="fa-solid fa-check" id="check_sucess_icon" style="display: none;font-size: 20px;padding-left: 10px"></i><br>
-            <font id="checkId" size="2"></font>
-         </div>
-         <div class="titleBox">
-            <strong class="text">비밀번호<span class="star">*</span></strong>
-            <input type="password" id="user_pw" class="textBox">
-         </div>
-         <div class="titleBox">
-            <strong class="text">비밀번호 확인<span class="star">*</span></strong>
-            <input type="password" id="user_pw2" class="textBox"><br>
-            <font id="confrimMsg" size="2"></font>
-         </div>
-         <div class="titleBox">
-            <strong class="text">이름<span class="star">*</span></strong>
-            <input type="text" id="name" class="textBox">
-         </div>
-         <div class="titleBox">
-            <strong class="text">권한<span class="star">*</span></strong>
-            <select form="regUserInfo" id="authority" class="selectBox" >
-               <option value="ROLE_ADMIN">관리자</option>
-               <option value="ROLE_USER">사용자</option>
-            </select>
-         </div>
-         <div class="titleBox">
-            <strong class="text">연락처<span class="star">*</span></strong>
-            <input type="text" id="phone" class="textBox" >
-            <div id="confirmAlertBox"></div>
-         </div>
-         
-         <div class="titleBox">
-            <strong class="text">이메일<span class="star">*</span></strong>
-            <input type="text" id="email" class="textBox">
-         </div>
-         <div class="titleBox">
-            <strong class="text">설명</strong>
-            <input type="text" id="dsc" class="textBox">
-         </div>
-         <div class="btnBox">
-            <input type="button" name="" value="등록" class="btnBoxbtn" onclick="registerUser()" >
-            <input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
-         </div>
-         </form>
+	<div class="modal-window">
+		<div class="modalBox">
+		
+			<!-- Form 태그 시작 -->
+			<form id="regUserInfo">
+			<div class="top">
+				<h3 class="title">사용자 등록</h3>
+				<i class="bi bi-x" onclick="modalOff()"></i>
+			</div>
+			<div class="titleBox">
+				<strong class="text">아이디<span class="star">*</span></strong>
+				<input type="text" id="user_id" name="user_id" class="input_id" check_result="fail" required />
+				<button type="button" id="id_check_button" class="id_check_button" onclick="id_check()">중복검사</button>
+				<i class="fa-solid fa-check" id="check_sucess_icon" style="display: none;font-size: 20px;padding-left: 10px"></i><br>
+				<font id="checkId_Msg" size="2"></font>
+			</div>
+			<div class="titleBox">
+				<strong class="text">비밀번호<span class="star">*</span></strong>
+				<input type="password" id="user_pw" name="user_pw" class="textBox"><br>
+				<font id="checkPw_Msg" size="2"></font>
+			</div>
+			<div class="titleBox">
+				<strong class="text">비밀번호 확인<span class="star">*</span></strong>
+				<input type="password" id="user_pw2" class="textBox"><br>
+				<font id="checkPw_Msg2" size="2"></font>
+			</div>
+			<div class="titleBox">
+				<strong class="text">이름<span class="star">*</span></strong>
+				<input type="text" id="name" name="name" class="textBox"><br>
+				<font id="checkName_Msg" size="2"></font>
+			</div>
+			<div class="titleBox">
+				<strong class="text">권한<span class="star">*</span></strong>
+				<select form="regUserInfo" id="authority" name="authority" class="selectBox" >
+					<option value="ROLE_ADMIN">관리자</option>
+					<option value="ROLE_USER">사용자</option>
+				</select>
+			</div>
+			<div class="titleBox">
+				<strong class="text">연락처<span class="star">*</span></strong>
+				<input type="text" id="phone" name="phone" class="textBox" ><br>
+				<font id="checkPhone_Msg" size="2"></font>
+			</div>
+			
+			<div class="titleBox">
+				<strong class="text">이메일<span class="star">*</span></strong>
+				<input type="text" id="email" name="email" class="textBox"><br>
+				<font id="checkEmail_Msg" size="2"></font>
+			</div>
+			<div class="titleBox">
+				<strong class="text">설명</strong>
+				<input type="text" id="dsc" name="dsc" class="textBox">
+			</div>
+			<div class="btnBox">
+				<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="registerUser()" >
+				<input type="button" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
+			</div>
+			</form>
 
-      <!-- Form 태그 종료 -->
-   </div>
+		<!-- Form 태그 종료 -->
+		</div>
+	</div>
 </div>
-</div>
-
-   
+	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>

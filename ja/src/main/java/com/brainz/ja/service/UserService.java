@@ -1,12 +1,13 @@
 package com.brainz.ja.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.brainz.ja.mapper.UserSQLMapper;
+import com.brainz.ja.vo.PageVo;
 import com.brainz.ja.vo.UserVo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -39,30 +40,54 @@ public class UserService {
 		userSQLMapper.registerUser(vo);
 	}
 
-	public ArrayList<HashMap<String, Object>> getUserList(String searchWord) {
-		ArrayList<HashMap<String, Object>>  userList = userSQLMapper.getUserList(searchWord);
+	
+	public ArrayList<UserVo> getUserList(PageVo vo) {
+		
+		
+		
+		ArrayList<UserVo> userList = userSQLMapper.getUserList(vo);
 		
 		//상태항목- 작업관리에서 가져와서 정상/작업중을 추가하여 
 		//arraylist<hashmap<s,o>>를 만들어 리턴할 것인지 
 				
 		return userList;
-		}
-	
-	public UserVo getUser(int user_no) {
-		UserVo userVo = userSQLMapper.getUser(user_no);
-		
-		return userVo;
 	}
 	
-	public void deleteUser(String [] user_no) {
+	public int getUserCount(PageVo vo) {
+		return userSQLMapper.getUserCount(vo);
+	}
+	
+	
+	public UserVo getUser(int user_no) {
+				
+		return userSQLMapper.getUser(user_no);
+	}
+
+	
+	public void deleteUser(List<String> nos) {
 		
-		for(String no  : user_no) {
+		for(String no  : nos) {
 			userSQLMapper.deleteUser(Integer.parseInt(no.trim()));
 		}
 		
 	}
 	
-	public void updateUser(UserVo vo) {
+	public void updateUser(UserVo vo) throws Exception {
+		
+		// 비밀번호 단방향 암호화
+		if(!vo.getUser_pw().equals("")) {
+			String encodedPW = bCryptPasswordEncoder.encode(vo.getUser_pw());
+			vo.setUser_pw(encodedPW);
+		}
+		
+		// 개인정보 양방향 암호화
+		String encryptphone = aes.encrypt(vo.getPhone());
+		vo.setPhone(encryptphone);
+		
+		String encryptemail = aes.encrypt(vo.getEmail());
+		vo.setEmail(encryptemail);
+		
+		
 		userSQLMapper.updateUser(vo);	
 	}
 	
@@ -74,15 +99,12 @@ public class UserService {
 		} else {
 			return true;
 		}
-	}	
+	}
 	
-	// 사용자 최종 로그인 시간 업데이트
-	   public void lastLogin(String user_id) {
-	      userSQLMapper.lastLogin(user_id);
-	   }
-	   
-	   public UserVo getUserInfo(String user_id) {
-	      return userSQLMapper.selectUser(user_id);
-	   }
+	public void lastLogin(String user_id) {
+		userSQLMapper.lastLogin(user_id);
+	}
+	
+	
 	
 }

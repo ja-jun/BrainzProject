@@ -16,13 +16,15 @@ public class UserVo {
 	private String dsc;
 	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
 	private Date write_date;
+	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
+	private Date last_login;
 	
 	private UserVo() {
 		super();
 	}
 
 	private UserVo(int user_no, String user_id, String user_pw, String name, String authority, String phone,
-			String email, String dsc, Date write_date) {
+			String email, String dsc, Date write_date, Date last_login) {
 		super();
 		this.user_no = user_no;
 		this.user_id = user_id;
@@ -33,6 +35,7 @@ public class UserVo {
 		this.email = email;
 		this.dsc = dsc;
 		this.write_date = write_date;
+		this.last_login = last_login;
 	}
 
 	public int getUser_no() {
@@ -107,4 +110,13 @@ public class UserVo {
 		this.write_date = write_date;
 	}
 
+	public Date getLast_login() {
+		return last_login;
+	}
+
+	public void setLast_login(Date last_login) {
+		this.last_login = last_login;
+	}
+
+	
 }

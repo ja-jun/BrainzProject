@@ -9,25 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.brainz.ja.service.UserService;
 
-
 @Controller
 @RequestMapping("/user/*")
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
 	
 	@RequestMapping("mainPage")
 	public String mainPage(HttpSession session, Authentication auth) {
-
-	      // 최종 로그인 시간 입력
-	      String user_id = auth.getName();
-	      userService.lastLogin(user_id);
-	      
-	      session.setAttribute("userInfo", userService.getUserInfo(user_id));
-
-	      return "user/mainPage";
-	   }
+		
+		// 최종 로그인 시간 입력
+		String user_id = auth.getName();
+		userService.lastLogin(user_id);
+		
+		return "user/mainPage";
+	}
 	
 	
 	@RequestMapping("test")
@@ -35,11 +32,11 @@ public class UserController {
 		return "user/test";
 	}
 	
+	
 	@RequestMapping("test2")
 	public String test2() {
 		return "user/test2";
 	}
-	
 	
 
 }
