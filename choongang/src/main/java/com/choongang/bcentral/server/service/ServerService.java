@@ -21,7 +21,8 @@ public class ServerService {
 	}
 	
 	public ArrayList<ServerVo> getServerList(PageVo pVo){
-		return svSQLMapper.getServerList(pVo);
+		ArrayList<ServerVo> serverList = svSQLMapper.getServerList(pVo);
+		return serverList;
 	}
 	
 	public int getServerCount(PageVo pVo) {

@@ -24,12 +24,38 @@
 		)
 	</insert>
 	
-	<select id="getUserList" resultType="com.choongang.bcentral.user.vo.UserVo">
-		select bpu.* from bp_user bpu
-	<if test="searchWord !=null">
-		where user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
-	</if>
-		order by user_no desc	
+	<select id="getUserList" resultType="com.choongang.bcentral.user.vo.UserVo">		
+		select * from bp_user
+			<if test="searchWord !=null">
+				WHERE user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
+			</if> 
+			<choose>
+				<when test="sidx != null and sidx !='' "> order by	
+	  				<choose>
+					    <when test="sidx eq 'user_id'"> user_id </when>
+					    <when test="sidx eq 'name'"> name </when>
+					    <when test="sidx eq 'authority'"> authority </when>
+					    <when test="sidx eq 'last_login' "> last_login </when>
+			    		<otherwise>user_no</otherwise>
+	 				</choose> 
+					<choose>
+					    <when test="sord eq 'desc'"> desc </when>
+					    <otherwise> asc </otherwise>
+					</choose>
+				</when>
+				<when test="sidx == '' ">
+					order by user_no desc
+				</when>
+			</choose> 
+		LIMIT #{rows}   
+		OFFSET (#{page} -1) * #{rows}
+ 	</select>
+ 	
+	<select id="getUserCount" resultType="int">
+ 		select count(*) from bp_user
+			<if test="searchWord !=null">
+				where user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
+			</if>
  	</select>
 
 	<select id="getUser" resultType="com.choongang.bcentral.user.vo.UserVo">
@@ -37,15 +63,28 @@
 		where user_no = #{user_no}
 	</select>
 	
+	<select id="getUserInfo" resultType="com.choongang.bcentral.user.vo.UserVo">
+		select * from bp_user
+		where user_id = #{user_id}
+	</select>
+	
 	<delete id="deleteUser">
 		delete from bp_user
-		where user_no=#{user_no}
+		where user_no = #{user_no}
 	</delete>
 	
 	<update id="updateUser">
 		update bp_user 
-		set user_id=#{user_id}, name=#{name}, authority=#{authority}, phone=#{phone}, 
-			email=#{email}, dsc=#{dsc}
+		set	
+			name=#{name}, 
+		    authority=#{authority}, 
+		    phone=#{phone}, 
+			email=#{email}, 
+			dsc=#{dsc}
+			<if test="user_pw != ''">
+				, user_pw=#{user_pw}
+			</if> 
+		where user_no=#{user_no}	
 	</update>
 	
 	<select id="getCountById" resultType="int">
@@ -54,8 +93,8 @@
 	</select>
 	
 	<update id="lastLogin">
-		update bp_user
-		set last_login = now()
-		where user_id = #{user_id}
+		update bp_user 
+		set last_login = now() 
+		where user_id = #{user_id} 
 	</update>
 </mapper>

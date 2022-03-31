@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.bcentral.mapper.InfoSQLMapper">
+	<select id="selectTodaySchedule" resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
+		select bs.sc_no, bs.user_no, bs.title, bs.start_date, bs.end_date,
+			   bs.start_time, bs.end_time, bs.repeat_cat, bs.repeat_day, bs.repeat_week,
+			   bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun, bs.write_date
+		from bp_schedule bs
+		where now() between bs.start_date and bs.end_date
+			  and bs.delete_date is null
+	</select>
+	
+	<select id="selectServerVoByScNo" resultType="com.choongang.bcentral.server.vo.ServerVo">
+		select bs.server_no, bs.user_no, bs.name, bs.ip, bs.os, bs.mac, bs.control_num, bs.dsc
+		from bp_server bs,
+	 		 bp_mgmt_server bms
+		where bms.sc_no = #{sc_no } and bs.server_no = bms.server_no
+	</select>
+	
+	<select id="selectServer" resultType="com.choongang.bcentral.server.vo.ServerVo">
+		select bs.server_no, bs.user_no, bs.name, bs.ip, bs.os, bs.loc, bs.mac, bs.control_num, bs.dsc, bs.write_date
+		from bp_server bs
+		order by bs.server_no asc
+	</select>
+</mapper>

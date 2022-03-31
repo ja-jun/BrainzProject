@@ -1,4 +1,8 @@
 
+
+
+.fc-scrollgrid-sync-table tbody tr:nth-child(n+4) .fc-day-other {display:none}
+
 /* classes attached to <body> */
 /* TODO: make fc-event selector work when calender in shadow DOM */
 .fc-not-allowed,

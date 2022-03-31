@@ -3,6 +3,7 @@ package com.choongang.bcentral.mapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.user.vo.UserVo;
 
 
@@ -17,18 +18,23 @@ public interface UserSQLMapper {
 	// User 등록
 	public void registerUser(UserVo vo);
 	
-	// 사용자 검색
-	public ArrayList<UserVo> getUserList(String searchWord);
+	// 사용자 검색 getUserCount >> 검색 했을 때 총 몇건의 row가 있는지 확인
+	public ArrayList<UserVo> getUserList(PageVo vo);
+	public int getUserCount(PageVo vo);
 	
-	// 사용자 삭제
+	// 사용자 정보 가져오기
+	public UserVo getUser(int user_no);
+	public UserVo getUserInfo(String user_id);
+	
+	// 사용자 정보 삭제하기
 	public void deleteUser(int user_no);
 	
-	// 사용자 수정
+	// 사용자 정보 수정하기
 	public void updateUser(UserVo vo);
 	
 	// 사용자 ID 중복검사
-	public int getCountById(String user_id);
+	public int getCountById(String id);
 	
-	// 최종 로그인 시간 업데이터
+	// 마지막 로그인 시간 업데이트
 	public void lastLogin(String user_id);
 }

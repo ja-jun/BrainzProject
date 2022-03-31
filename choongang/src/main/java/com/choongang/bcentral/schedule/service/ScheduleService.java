@@ -77,25 +77,46 @@ public class ScheduleService {
 			while(cur_date.getMonthValue() == month) {
 				if((start_date.isBefore(cur_date) || start_date.equals(cur_date)) && (end_date.isAfter(cur_date) || end_date.equals(cur_date))) {
 					HashMap<String, Object> event = new HashMap<String, Object>();
-					
-					String[] dayCheck = {vo.getMon(), vo.getThe(), vo.getWed(), vo.getThu(), vo.getFri(), vo.getSat(), vo.getSun()};
+
+					int sc_no = vo.getSc_no();
 					
 					LocalTime start_time = vo.getStart_time();
 					LocalTime end_time = vo.getEnd_time();
 					
 					String title = vo.getTitle();
 					
-					int sc_no = vo.getSc_no();
+					String[] dayCheck = {vo.getMon(), vo.getThe(), vo.getWed(), vo.getThu(), vo.getFri(), vo.getSat(), vo.getSun()};
 					int day = cur_date.getDayOfWeek().getValue() - 1;
 					
 					switch(vo.getRepeat_cat()) {
 					case 0:
-						// 특정 하루만 선택하는 경우
-						event.put("sc_no", sc_no);
-						event.put("title", title);
-						event.put("event_date", cur_date.toString());
-						event.put("start_time", start_time.toString());
-						event.put("end_time", end_time.toString());
+						// 기간 설정하는 경우
+						if(start_date.equals(cur_date)) {
+							// cur_date가 시작 날짜인 경우 시작 시간은 작업대로 설정하고 24시 까지 설정
+							event.put("sc_no", sc_no);
+							event.put("title", title);
+							event.put("start_date", cur_date.toString());
+							event.put("end_date", cur_date.toString());
+							event.put("start_time", start_time.toString());
+							event.put("end_time", "24:00");
+						} else if (end_date.equals(cur_date)) {
+							// cur_date가 종료 날짜인 경우 시작 시간을 00시로 설정하고 종료 시간을 작업대로 설정
+							event.put("sc_no", sc_no);
+							event.put("title", title);
+							event.put("start_date", cur_date.toString());
+							event.put("end_date", cur_date.toString());
+							event.put("start_time", "00:00");
+							event.put("end_time", end_time.toString());
+						} else {
+							// cur_date가 시작 또는 종료 날짜가 아닌 경우 하루 종일을 차지하도록
+							// 00시 부터 24시 까지로 설정
+							event.put("sc_no", sc_no);
+							event.put("title", title);
+							event.put("start_date", cur_date.toString());
+							event.put("end_date", cur_date.toString());
+							event.put("start_time", "00:00");
+							event.put("end_time", "24:00");
+						}
 						
 						scheduleList.add(event);
 						break;
@@ -104,7 +125,8 @@ public class ScheduleService {
 						if(dayCheck[day] != null) {
 							event.put("sc_no", sc_no);
 							event.put("title", title);
-							event.put("event_date", cur_date.toString());
+							event.put("start_date", cur_date.toString());
+							event.put("end_date", cur_date.toString());
 							event.put("start_time", start_time.toString());
 							event.put("end_time", end_time.toString());
 							
@@ -120,7 +142,8 @@ public class ScheduleService {
 						if(wom == vo.getRepeat_week() && dayCheck[day] != null) {
 							event.put("sc_no", sc_no);
 							event.put("title", title);
-							event.put("event_date", cur_date.toString());
+							event.put("start_date", cur_date.toString());
+							event.put("end_date", cur_date.toString());
 							event.put("start_time", start_time.toString());
 							event.put("end_time", end_time.toString());
 							
@@ -132,7 +155,8 @@ public class ScheduleService {
 						if(cur_date.getDayOfMonth() == vo.getRepeat_day()) {
 							event.put("sc_no", sc_no);
 							event.put("title", title);
-							event.put("event_date", cur_date.toString());
+							event.put("start_date", cur_date.toString());
+							event.put("end_date", cur_date.toString());
 							event.put("start_time", start_time.toString());
 							event.put("end_time", end_time.toString());
 							

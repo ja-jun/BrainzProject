@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,15 +24,12 @@
 <script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
 <script src="../resources/js/jquery-ui.min.js"></script>
 
-
-
-<script> 
-                        
+<script>
 function createAndInitGrid(){
     $("#list").jqGrid({
 	        colModel: [   
 	            {name: 'name', label : '서버명', align:'left'},
-	            {name:'ip', label:'IP', align:'left'},
+	            {name: 'ip', label:'IP', align:'left'},
 	            {name: 'os', label : 'OS분류', align:'center'},
 	            {name: 'loc', label : '상태', align:'center'},              
 	            {name: 'loc', label : '위치', align:'left'},
@@ -39,59 +37,91 @@ function createAndInitGrid(){
 	            {name: 'control_num', label : '관리번호', align:'left'},
 	            {name: 'dsc', label : '설명', align:'left'},     
 	            {name: 'write_date', label : '등록일', align:'center' },
-	            {name:'server_no',label:'서버번호', hidden:true}
+	            {name: 'server_no',label:'서버번호', hidden:true}
 	            ],
             pager: '#pager',
             rowNum: 10,
             rowList: [10,30,50],
             viewrecords: true,
             multiselect: true,
-
+			autoencode: true,
             //Data 연동 부분
             url : "./getServerList",
             datatype : "JSON", //받을 때 파싱 설정
-            postData : {}, //....
+            postData : {},
             mtype : "POST",
             loadtext : "로딩중...",
 	        height: 'auto',
 			autowidth:true,
- 	        ondblClickRow: function (rowid, iRow, iCol) { 
-	            var rowData = $("#list").getRowData(rowid);
+			beforSelectRow: function(rowid, e){
+				i = $.jqgrid.getCellIndex($(e.target).closest('td')[0]);
+				cm = $(this).jqGrid('getGridParam','colModel');
+				return cm[i].name === 'cb';
+			},
+			
+			// 수정 모달 창 띄우기
+ 	        ondblClickRow: function (rowId) { 
+	            var rowData = $("#list").getRowData(rowId);
 	            var serverNo = rowData.server_no;
-	            
-	            var name = document.getElementById('name');
-	            name.setAttribute("value"," " );
 		       	
-	            var request =  $.ajax({
-							    	     url: "./getServer",
-							    	     type: "post",
-							    	     processData: false,
-							    	     contentType: false,
-							    	     data: {severNo : serverNo},
-							    	  	 success: function(data){
-							    	  		
-							    	  		
-							    	  	}
-							    	 })	     
-	            modalOn();
-	        	var formData = new FormData(document.getElementById('regServerInfo'));
-		       	 $.ajax({
-		    	     url: "./updateServer",
+	            $.ajax({
+		    	     url: "./getServer",
 		    	     type: "post",
-		    	     processData: false,
-		    	     contentType: false,
-		    	     data: formData
-		    	 }).done(function(){
-		    			$("#list").trigger('reloadGrid');
-		    			modalOff();
-		    			alert("수정되었습니다.");
-		    	 });	 
-	        	
+		    	     data: {server_no : server_no},
+		    	  	 success: function(data){
+						var server = data.server;		    	  		 
+		    	  		 
+			            var title = document.querySelector('.title');
+			            title.innerText="서버 수정";
+		    	  		
+			            var server_no = document.createElement('input');
+			            server_no.setAttribute('type','hidden');
+			            server_no.setAttribute('name','server_no');
+			            server_no.setAttribute('id','server_no');
+			            server_no.setAttribute('value',server.server_no);
+			            $('#regServerInfo').append(server_no); 
+			            
+		    	  		$('input[name=name]').val(server.name);
+		    	  		$('input[name=ip]').val(server.ip);
+		    	  		$('select[name=os]').val(server.os);
+		    	  		$('input[name=loc]').val(server.loc);
+		    	  		$('input[name=mac]').val(server.mac);
+		    	  		$('input[name=control_num]').val(server.control_num);
+		    	  		$('input[name=dsc]').val(server.dsc);
+		    	  		$('input[name=write_date]').val(server.write_date);		
+		    	  		
+		    	  		var btn = document.getElementById('inputBtn');
+			            btn.setAttribute("value","수정");
+			            btn.setAttribute("onclick","updateServer()");
+		    	  		
+		    	  		modalOn();
+		    	  		
+					},
+			        error: function() {
+			        	alert("잘못된 접근입니다.");
+			        }
+				});
 	        }
   
      });		
 }
-           
+
+//수정 서버 넘기기
+function updateServer(){	
+	var formData = new FormData(document.getElementById('regServerInfo'));
+	 $.ajax({
+	    url: "./updateServer",
+	    type: "post",
+	    processData: false,
+	    contentType: false,
+	    data: formData
+	}).done(function(){
+		$("#list").trigger('reloadGrid');
+		modalOff();
+		alert("수정되었습니다.");
+	});	
+}
+
 //검색시 서버 가져와서 집어넣기
 function search(){
 	var searchWord = document.getElementById("searchWord").value;	
@@ -104,9 +134,17 @@ function search(){
 		postData : {searchWord : searchWord},
 		dataType : "json",
 	})
-	.trigger("reloadGrid");			
-
-
+	.trigger("reloadGrid");
+	
+	// 내보내기 기능을 위한 검색어 전송
+	var exportAnchor = document.getElementById("exportAnchor");
+	var qIndex = exportAnchor.href.lastIndexOf("?");
+	
+	if(qIndex >= 0){
+		exportAnchor.href = exportAnchor.href.substring(0, qIndex) + "?searchWord=" + searchWord;
+	} else {
+		exportAnhcor.href += "?searchWord=" + searchWord;
+	}
 }
 
 
@@ -215,39 +253,31 @@ function modalOff() {
 	document.getElementById("confirmAlertBox").innerText=""; 	//MAC 중복 메세지 지우기
 }
 
+
 //모달창 열렸을 때 ESC누르면 닫힘
 window.addEventListener("keyup", e => {
     if(isModalOn() && e.key === "Escape") { modalOff(); }
 })
 
-
-
-
 window.addEventListener("DOMContentLoaded", function(){
-	   $(window).resize(function() {
-      $("#list").setGridWidth($(this).width() * .100);
-   });    
-		createAndInitGrid();
+	$(window).resize(function() {
+		$("#list").setGridWidth($(this).width() * .100);
+	});
+	
+	createAndInitGrid();
 	
 	const modal = document.getElementById("modal");
-		
+	
+	$("#serverPage").addClass("on");
 });
-
-
-
 </script>
 </head>
 
 <body>
-
-
-
-	<div id="container">
 	<jsp:include page="../common/nav.jsp"></jsp:include>
-
+	
+	<div id="container">
 		<div id="container">
-
-
 			<div class="container">
 				<div class="row mt-3">
 					<div class="col-4">
@@ -262,8 +292,7 @@ window.addEventListener("DOMContentLoaded", function(){
 				<div id="box">
 					<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
 					<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
-					<a href="./getExcelServerList"><button class="writeBtn"
-							id="excelBtn">내보내기</button></a>
+					<a href="./getExcelServerList" id="exportAnchor"><button  class="writeBtn" id="excelBtn">내보내기</button></a>
 
 					<h2>서버 관리</h2>
 					<table id="list"></table>

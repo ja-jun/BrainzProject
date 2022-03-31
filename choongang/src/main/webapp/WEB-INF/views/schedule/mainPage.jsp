@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>작업관리</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -31,12 +32,40 @@
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
 <script src="../resources/js/jquery.datetimepicker.js"></script>
 <script>
+const language = '<spring:message code="language"/>';
+const lang_regSc = '<spring:message code="schedule.register"/>';
+const lang_regBtn = '<spring:message code="schedule.registbtn"/>';
+const lang_clsBtn = '<spring:message code="schedule.closebtn"/>';
+const lang_del = '<spring:message code="schedule.delete"/>';
+const lang_delWhl = '<spring:message code="schedule.deletewhole"/>';
+const lang_delaft = '<spring:message code="schedule.deleteaft"/>';
+const lang_cancle = '<spring:message code="schedule.canclebtn"/>';
+const lang_moddel = '<spring:message code="schedule.modify"/>';
+const lang_mod = '<spring:message code="schedule.modifybtn"/>';
+const lang_svname = '<spring:message code="schedule.servername"/>';
+const lang_val_title1 = '<spring:message code="schedule.validation.title1"/>';
+const lang_val_title2 = '<spring:message code="schedule.validation.title2"/>';
+const lang_val_title3 = '<spring:message code="schedule.validation.title3"/>';
+const lang_val_title4 = '<spring:message code="schedule.validation.title4"/>';
+const lang_val_server1 = '<spring:message code="schedule.validation.server1"/>';
+const lang_val_server2 = '<spring:message code="schedule.validation.server2"/>';
+const lang_val_server3 = '<spring:message code="schedule.validation.server3"/>';
+const lang_val_date1 = '<spring:message code="schedule.validation.date1"/>';
+const lang_val_time1 = '<spring:message code="schedule.validation.time1"/>';
+const lang_val_login = '<spring:message code="shceulde.validation.login"/>';
+const lang_reg_success = '<spring:message code="schedule.register.success"/>';
+const lang_reg_fail = '<spring:message code="schedule.register.fail"/>';
+const lang_mod_success = '<spring:message code="schedule.modify.success"/>';
+const lang_del_success = '<spring:message code="schedule.delete.success"/>';
+
+
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
 	$('body').css("overflow-y", "auto");
 	const modal = document.getElementById("modal");
 	modal.setAttribute("style","display:none");
 	document.getElementById("regScheduleInfo").reset();
+	$('input[name=pre_title]').remove();
 }
 /* 등록 클릭시 */
 function writeBtn() {
@@ -49,9 +78,25 @@ function writeBtn() {
     
     $('.confirmAlertBox').empty();
     $('#confirmAlertBox4').empty();
+    
+    const noneBox = document.querySelector('.noneBox2');
+	noneBox.setAttribute("style","display: block");  
+	
+	$('.arr').prop('checked',true);
+	const timepickerBox = document.getElementById("radioBoxRepeat");
+	timepickerBox.setAttribute("style","display: flex");
+	const radioBoxCheck = document.getElementById("radioBoxCheck");
+	radioBoxCheck.setAttribute("style","display: block");
+	const radioBoxRepeat2 = document.getElementById("radioBoxRepeat2");
+	radioBoxRepeat2.setAttribute("style","display: none");
+	var timeBox = document.querySelector('.timeBox');
+	timeBox.setAttribute("style","display: flex");
+	
+    $('.checkboxAll').prop('checked',false);
+    $('.limitless').prop('checked',false);
 	
 	var title = document.querySelector('.title');
-    title.innerText="작업 등록";
+    title.innerText = lang_regSc;
     
     $('.serverContent').remove();
     $('.btnDay').removeClass("active");
@@ -59,14 +104,14 @@ function writeBtn() {
     
 	 var btn1 = document.getElementById('btnBoxbtn1');
      btn1.innerHTML="";
-     btn1.setAttribute("value","등록");
+     btn1.setAttribute("value",lang_regBtn);
      btn1.setAttribute("class","btnBoxbtn");
      btn1.setAttribute("id","btnBoxbtn1");
      btn1.setAttribute("onclick","regBtn()");
      
      var btn2 = document.getElementById('btnBoxbtn2');
      btn2.innerHTML="";
-     btn2.setAttribute("value","닫기");
+     btn2.setAttribute("value",lang_clsBtn);
      btn2.setAttribute("class","btnBoxbtn");
      btn2.setAttribute("id","btnBoxbtn2");
      btn2.setAttribute("onclick","delBtn()");
@@ -92,18 +137,7 @@ function molBtn() {
 	input.setAttribute("checked","checked");
 	var span = document.createElement("span");
 	span.setAttribute("class","sapnRadio");
-	span.innerText="모든 일정";
-	
-	var radioBoxList2 = document.createElement("li");
-	radioBoxList2.setAttribute("class","radioBoxList");
-	
-	var input2 = document.createElement("input");
-	input2.setAttribute("type","radio");
-	input2.setAttribute("name","delete_radio");
-	input2.setAttribute("value","1");
-	var span2 = document.createElement("span");
-	span2.setAttribute("class","sapnRadio");
-	span2.innerText="선택한 일정";
+	span.innerText=lang_delWhl;
 	
 	var radioBoxList3 = document.createElement("li");
 	radioBoxList3.setAttribute("class","radioBoxList");
@@ -114,18 +148,18 @@ function molBtn() {
 	input3.setAttribute("value","2");
 	var span3 = document.createElement("span");
 	span3.setAttribute("class","sapnRadio");
-	span3.innerText="이 후 모든 일정";
+	span3.innerText=lang_delaft;
 	
 	var btnBox2 = document.createElement("div");
 	btnBox2.setAttribute("class","btnBox2");
 	var button = document.createElement("input");
 	button.setAttribute("type","button");
-	button.setAttribute("value","삭제");
+	button.setAttribute("value",lang_del);
 	button.setAttribute("class","btnBoxbtn2");
 	button.setAttribute("onclick","delSchedule()");
 	var button2 = document.createElement("input");
 	button2.setAttribute("type","button");
-	button2.setAttribute("value","취소");
+	button2.setAttribute("value",lang_cancle);
 	button2.setAttribute("class","btnBoxbtn3");
 	button2.setAttribute("onclick","delBox()");
 	
@@ -135,11 +169,9 @@ function molBtn() {
 	btnBox2.appendChild(button);
 	btnBox2.appendChild(button2);
 	ul.appendChild(radioBoxList);
-	ul.appendChild(radioBoxList2);
 	ul.appendChild(radioBoxList3);
 	radioBoxList.appendChild(input);
 	radioBoxList.appendChild(span);
-	radioBoxList2.appendChild(input2);
 	radioBoxList2.appendChild(span2);
 	radioBoxList3.appendChild(input3);
 	radioBoxList3.appendChild(span3);
@@ -160,12 +192,13 @@ function getCalendarList(){
 				var events = list.map(function(item) {
 				return {
 					title : item.title,
-					start : item.event_date + "T" + item.start_time,
-					end : item.event_date + "T" + item.end_time,
+					start : item.start_date + "T" + item.start_time,
+					end : item.end_date + "T" + item.end_time,
 					id : item.sc_no
 				}
 			}); 
-				
+			
+		
 			var calendar = new FullCalendar.Calendar(calendarEl, {
 				 headerToolbar: {
 			            left: 'prev',
@@ -173,7 +206,7 @@ function getCalendarList(){
 			            right: 'next'
 			        },
 				events : events,
-				locale: 'ko',
+				locale: language,
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
 					$.ajax({
@@ -182,10 +215,17 @@ function getCalendarList(){
 				        type: 'POST',
 				        success: function(data) {
 				            writeBtn();
+				            
 				            var sc_info = data.scheduleInfo;
 				            var sc_server = data.serverList;
 				            
 				            $('.textBox').val(sc_info.title);
+				            
+				            var pre_title = document.createElement('input');
+				            pre_title.setAttribute('type', 'hidden');
+				            pre_title.setAttribute('name', 'pre_title');
+				            pre_title.setAttribute('value', sc_info.title);
+				            $('.textBox').append(pre_title);
 				            
 				            var sc_no_input = document.createElement('input');
 				            sc_no_input.setAttribute('type','hidden');
@@ -196,49 +236,66 @@ function getCalendarList(){
 				            $('input[name=start_date]').val(sc_info.start_date);
 				            $('input[name=end_date]').val(sc_info.end_date);
 				            
-				            if(sc_info.end_date == sc_info.start_date){
+				            if(sc_info.repeat_cat == 0){
+				            	$('.arr').attr('checked',false);
 				            	$('.timearr').attr('checked','checked');
-				            } else if(sc_info.end_date == '9999-12-31'){
-				            	$('.limitless').attr('checked','checked');
-				            	const noneBox = document.querySelector('.noneBox2');
-				                noneBox.setAttribute("style","display: none");
-				            } else {
-				            	$('.noneBox2 .datepicker').val(sc_info.end_date);
-				            }
-				            
-				            $('#datetimepicker1').val(sc_info.start_time);
-				            $('#datetimepicker2').val(sc_info.end_time);
-				            
-				            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
-				            $(repeat_cat).attr('checked','checked');
-				            if($(repeat_cat).val() == 2){
-				            	$('input[name=repeat_week]').val(sc_info.repeat_week);
-				            } else if($(repeat_cat).val() == 3){
-				            	$('input[name=repeat_day]').val(sc_info.repeat_day);
-				            }
-				            
-				            var days = [sc_info.sun, sc_info.mon, sc_info.the, sc_info.wed, sc_info.thu, sc_info.fri, sc_info.sat];
-				            for(var i = 0; i < 7; i++){
-				            	if(days[i] == 'y'){
-				            		var day = $('.btnDay').get(i);
-				            		$(day).addClass('active');
-				            		var input =document.createElement("input");
-				            		input.setAttribute("type","hidden");
-				            		input.setAttribute("name",$(day).val());
-				            		input.setAttribute("value","y");
-				         		    $(day).append(input);
+				            	$('input[name=start_date_2]').val(sc_info.start_date);
+					            $('input[name=end_date_2]').val(sc_info.end_date);
+					            $('input[name=start_time_2]').val(sc_info.start_time);
+					            $('input[name=end_time_2]').val(sc_info.end_time);
+					            
+					            const timeBox = document.querySelector('.timeBox');
+					 			timeBox.setAttribute("style","display: none");
+					 			const limitless = document.getElementById("radioBoxCheck");
+								limitless.setAttribute("style","display: none");
+								const timepickerBox = document.getElementById("radioBoxRepeat");
+								timepickerBox.setAttribute("style","display: none");
+								const radioBoxRepeat2 = document.getElementById("radioBoxRepeat2");
+								radioBoxRepeat2.setAttribute("style","display: grid");
+				            } else{
+				            	$('input[name=start_date_1]').val(sc_info.start_date);
+					            $('input[name=end_date_1]').val(sc_info.end_date);
+					            $('input[name=start_time_1]').val(sc_info.start_time);
+				            	if(sc_info.end_date == '9999-12-31'){
+					            	$('.limitless').prop('checked',true);
+					            	const noneBox = document.querySelector('.noneBox2');
+					                noneBox.setAttribute("style","display: none");
+				            	} else {				            		
+					            	$('input[name=end_time_1]').val(sc_info.end_time);
 				            	}
-				            }
+				            	
+					            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
+					            $(repeat_cat).attr('checked','checked');
+					            if($(repeat_cat).val() == 2){
+					            	$('input[name=repeat_week]').val(sc_info.repeat_week);
+					            } else if($(repeat_cat).val() == 3){
+					            	$('input[name=repeat_day]').val(sc_info.repeat_day);
+					            }
+					            
+					            var days = [sc_info.sun, sc_info.mon, sc_info.the, sc_info.wed, sc_info.thu, sc_info.fri, sc_info.sat];
+					            for(var i = 0; i < 7; i++){
+					            	if(days[i] == 'y'){
+					            		var day = $('.btnDay').get(i);
+					            		$(day).addClass('active');
+					            		var input =document.createElement("input");
+					            		input.setAttribute("type","hidden");
+					            		input.setAttribute("name",$(day).val());
+					            		input.setAttribute("value","y");
+					         		    $(day).append(input);
+					            	}
+					            }
+					            
+					            if($('button.active').length == 7){
+					            	$('.checkboxAll').prop('checked',true);
+					            }
+				            }				            
 				            
-				            if($('button.active').length == 7){
-				            	$('.checkboxAll').attr('checked','checked');
-				            }
 				            
 				            var confirmAlertBox = document.getElementById("confirmAlertBox");
 				            confirmAlertBox.innerText="";
 				            
 				            var title = document.querySelector('.title');
-				            title.innerText="작업 수정&삭제";
+				            title.innerText=lang_moddel;
 				            
 					    	var serverList = document.getElementById("serverListM");
 					    	serverList.innerHTML = "";
@@ -258,7 +315,7 @@ function getCalendarList(){
 							th1.appendChild(th2);
 							var th3 = document.createElement("th");
 							th3.setAttribute("class","serverHeaderText");
-							th3.innerText="서버명";
+							th3.innerText=lang_svname;
 							tr.appendChild(th3);
 							var th4 = document.createElement("th");
 							th4.setAttribute("class","serverHeaderText");
@@ -311,14 +368,14 @@ function getCalendarList(){
 				        
 				            var btn1 = document.getElementById('btnBoxbtn1');
 				            btn1.innerHTML="";
-				            btn1.setAttribute("value","수정");
+				            btn1.setAttribute("value",lang_mod);
 				            btn1.setAttribute("class","btnBoxbtn");
 				            btn1.setAttribute("id","btnBoxbtn1");
 				            btn1.setAttribute("onclick","modBtn()");
 				            
 				            var btn2 = document.getElementById('btnBoxbtn2');
 				            btn2.innerHTML="";
-				            btn2.setAttribute("value","삭제");
+				            btn2.setAttribute("value",lang_del);
 				            btn2.setAttribute("class","btnBoxbtn");
 				            btn2.setAttribute("id","btnBoxbtn2");
 				            btn2.setAttribute("onclick","molBtn()");
@@ -366,13 +423,16 @@ function getCalendarList(){
 							if(new Date(item.event_date))
 							return {
 								title : item.title,
-								start : item.event_date + "T" + item.start_time,
-								end : item.event_date + "T" + item.end_time,
+								start : item.start_date + "T" + item.start_time,
+								end : item.end_date + "T" + item.end_time,
 								id : item.sc_no
 							}
 						});
 						
 						calendar.addEventSource(newEvents);
+						$(function(){
+							$('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
+					  	})
 					}
 				}
 				
@@ -396,13 +456,16 @@ function getCalendarList(){
 						var newEvents = reData.scheduleList.map(function(item){
 							return {
 								title : item.title,
-								start : item.event_date + "T" + item.start_time,
-								end : item.event_date + "T" + item.end_time,
+								start : item.start_date + "T" + item.start_time,
+								end : item.end_date + "T" + item.end_time,
 								id : item.sc_no
 							}
 						});
 						
 						calendar.addEventSource(newEvents);
+						$(function(){
+							$('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
+					  	})
 					}
 				}
 				
@@ -444,11 +507,11 @@ function getServerList(){
 				rowNum: 10,
 				rowList:[10,20,30],
 				height:500,
-				width:1400,
+				width:1000,
 				colModel: [	
-						{name: 'name', label : '서버명', align:'left'},
+						{name: 'name', label : lang_svname, align:'left'},
 				        {name: 'ip', label : 'IP', align:'left'},
-				        {name: 'os', label : 'OS분류', align:'center'},
+				        {name: 'os', label : 'OS', align:'center'},
 				        {name: 'server_no', hidden: true}
 						],
 			    pager: '#pager',
@@ -619,44 +682,47 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
  	$("input[name='repeat_11']").change(function() {
  		if($("input[name='repeat_11']:checked").val() == "0") {
-			const timeBox = document.querySelector('.Boxxx');
-			timeBox.setAttribute("style","display: block");
 			const limitless = document.getElementById("radioBoxCheck");
 			limitless.setAttribute("style","display: block");
-			const noneBox2 = document.querySelector('.noneBox2');
-			noneBox2.setAttribute("style","display: block");
- 		} else if($("input[name='repeat_11']:checked").val() == "1") {
-            const timeBox = document.querySelector('.Boxxx');
-			timeBox.setAttribute("style","display: none");
-			const radioBoxCheck = document.getElementById("radioBoxCheck");
-			radioBoxCheck.setAttribute("style","display: none");
-			const noneBox2 = document.querySelector('.noneBox2');
-			noneBox2.setAttribute("style","display: none");
-			const timepickerBox = document.getElementById("timepickerBox");
+			const timeBox = document.querySelector('.timeBox');
+ 			timeBox.setAttribute("style","display: flex");
+ 			const timepickerBox = document.getElementById("radioBoxRepeat");
 			timepickerBox.setAttribute("style","display: flex");
- 		}
+ 			const radioBoxRepeat2 = document.getElementById("radioBoxRepeat2");
+ 			radioBoxRepeat2.setAttribute("style","display: none");
+ 		}  else if($("input[name='repeat_11']:checked").val() == "1") {
+ 			const timeBox = document.querySelector('.timeBox');
+ 			timeBox.setAttribute("style","display: none");
+ 			const limitless = document.getElementById("radioBoxCheck");
+			limitless.setAttribute("style","display: none");
+			const timepickerBox = document.getElementById("radioBoxRepeat");
+			timepickerBox.setAttribute("style","display: none");
+			const radioBoxRepeat2 = document.getElementById("radioBoxRepeat2");
+			radioBoxRepeat2.setAttribute("style","display: grid");
+ 		} 
  	});
  	
- 	$("#allCheck").click(function() {
-		var checked = $("#allCheck").is(':checked');
-		if(checked){
+ 	
+ 	$(document).on("click", "#allCheck", function(){
+ 		var checked = $("#allCheck").is(':checked');
+		if(checked == true){
 			$("input[name='rowCheck']").prop('checked',true);
 		} else {
 			$("input[name='rowCheck']").prop('checked',false);
 		}
-			
-	});
- 	
- 	$("#ulList").on("click", "li", function() {
- 	    $(this).addClass("on");
  	});
+ 	
+ 	$("#schedulePage").addClass("on");
+ 	$(document).ready(function(){
+ 		  $('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
+ 		})
  	
 	$(function(){
 		$('.datepicker').datepicker({
 	    	dateFormat: 'yy-mm-dd',
 	    	minDate: 0
 			});
-		})
+	})
 	 
     $(function(){
     	$('#datetimepicker1').datetimepicker({
@@ -673,6 +739,22 @@ window.addEventListener("DOMContentLoaded" , function(){
     		step: 10
     	});
   	})
+  	
+  	$(function(){
+    	$('#datetimepicker3').datetimepicker({
+    		datepicker:false,
+    		format:'H:i',
+    		step: 10
+    	});
+  	})
+  	
+   $(function(){
+    	$('#datetimepicker4').datetimepicker({
+    		datepicker:false,
+    		format:'H:i',
+    		step: 10
+    	});
+  	})
 		 
 	/* page load후 바로 실행 되는 함수들 */  	
 	getCalendarList();
@@ -681,47 +763,53 @@ window.addEventListener("DOMContentLoaded" , function(){
 	delBtn();
 });
 function confirmTitle(){
-
+	
 	var title = document.querySelector('input[name="title"]').value;
 	
-	var xhr = new XMLHttpRequest();
+	var confirmAlertBox = document.getElementById("confirmAlertBox");
+	confirmAlertBox.style.display = "block";
 	
-	//title = escape(title);
-	
-	//console.log(title);
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			var data = JSON.parse(xhr.responseText);
-			
-			var confirmAlertBox = document.getElementById("confirmAlertBox");
-			confirmAlertBox.style.display = "block";
-			if(data.result == true){
-				confirmAlertBox.innerText = "이미 존재 하는 작업명 입니다.";
-				confirmAlertBox.style.color = "red";
-			}else if(title == ""){
-				confirmAlertBox.innerText = "작업명은 필수항목 입니다.";
-				confirmAlertBox.style.color = "red";
-			} else {
-				confirmAlertBox.innerText = "사용 가능한 작업명 입니다.";
-				confirmAlertBox.style.color = "green";
+	if($('input[name=pre_title]').length && title == $('input[name=pre_title]').val()){
+		confirmAlertBox.innerText = lang_val_title4;
+		confirmAlertBox.style.color = "blue";
+		return 1;
+	} else {
+		var xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				var data = JSON.parse(xhr.responseText);
+				
+				if(data.result == true){
+					confirmAlertBox.innerText = lang_val_title1;
+					confirmAlertBox.style.color = "red";
+					return 1;
+				}else if(title == ""){
+					confirmAlertBox.innerText = lang_val_title2;
+					confirmAlertBox.style.color = "red";
+					return 1;
+				} else {
+					confirmAlertBox.innerText = lang_val_title3;
+					confirmAlertBox.style.color = "green";
+					return 0;
+				}
 			}
-		}
-	};
-	
-	title = encodeURIComponent(title);
-	
-	xhr.open("get" , "./isExistTitle?title=" + title , true); 
-	xhr.send();
+		};
+		
+		title = encodeURIComponent(title);
+		
+		xhr.open("get" , "./isExistTitle?title=" + title , true); 
+		xhr.send();
+	}
 	
 };
 
 function deleteServer(){
 	
 	if ($("input[name='rowCheck']:checked").length == 0) {
-		alert("선택된 상품이 없습니다.");
+		alert(lang_val_server1);
 	} else {
-		var chk = confirm("정말 삭제하시겠습니까?");
+		var chk = confirm(lang_val_server2);
 		if(chk == true){
 			for(var i=$("input[name='rowCheck']:checked").length-1; i>-1; i--){
 				﻿		$("input[name='rowCheck']:checked").eq(i).closest("tr").remove();
@@ -740,50 +828,80 @@ function validationCheck(target){
 		 */
 		var confirmAlertBox = document.getElementById("confirmAlertBox2");
 			confirmAlertBox.style.display = "block";
-			confirmAlertBox.innerText = "작업 날짜를 입력해주세요.";
+			confirmAlertBox.innerText = lang_val_date1;
 			confirmAlertBox.style.color = "red";
 		result = 0;
-	}
+	} else if(target.getAll('start_date') != '' || target.getAll('end_date') == '') {
+		var confirmAlertBox = document.getElementById("confirmAlertBox2");
+			confirmAlertBox.style.display = "none";
+		result = 1;
+	};
 	
-	if(target.getAll('start_time') == '' || target.getAll('end_time') ==''){
+	if(target.getAll('start_time') == '' || target.getAll('end_time') == ''){
 		/*	4. 시작 시간과 끝나는 시작이 입력 됐는지 확인
 			   위 날짜 처럼 추후 형식을 확인 했는지도 확인 해야함
 		*/
 		var confirmAlertBox = document.getElementById("confirmAlertBox3");
 			confirmAlertBox.style.display = "block";
-			confirmAlertBox.innerText = "작업 시간을 입력해주세요.";
+			confirmAlertBox.innerText = lang_val_time1;
 			confirmAlertBox.style.color = "red";
 		result = 0;
-	} 
+	} else if(target.getAll('start_time') != '' || target.getAll('end_time') =='') {
+		var confirmAlertBox = document.getElementById("confirmAlertBox3");
+			confirmAlertBox.style.display = "none";
+			result = 1;
+	};
 	
 	
 	if(!target.has('server_no')){
 		var confirmAlertBox = document.getElementById("confirmAlertBox4");
 			confirmAlertBox.style.display = "inline-flex";
-			confirmAlertBox.innerText = "서버선택은 필수항목입니다.";
+			confirmAlertBox.innerText = lang_val_server3;
 			confirmAlertBox.style.color = "red";
 		
 		result = 0;
 	}
 	
+	result = confirmTitle();
+	
 	return result;
 }
+
 function regBtn(){
 	
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
-	formData.set('user_no', ${userInfo.user_no });
-	console.log('${userInfo.user_no}');
-	
 	if($('.timearr').is(':checked')){
-		formData.set('end_date',formData.getAll('start_date'));
-		formData.set('repeat_cat',0);
-	} else if($('.limitless').is(':checked')){
-		formData.set('end_date','9999-12-31');
+		formData.set('repeat_cat', 0);
+		formData.set('start_date', formData.getAll('start_date_2'));
+		formData.set('end_date', formData.getAll('end_date_2'));
+		formData.set('start_time', formData.getAll('start_time_2'));
+		formData.set('end_time', formData.getAll('end_time_2'));
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date', '9999-12-31');
+		} else {
+			formData.set('end_date', formData.getAll('end_date_1'));
+		}
+		
+		formData.set('start_date', formData.getAll('start_date_1'));
+		formData.set('start_time', formData.getAll('start_time_1'));
+		formData.set('end_time', formData.getAll('end_time_1'));
 	}
+	
+	var userInfo = '<%=(String)session.getAttribute("userInfo")%>';
+	
+	console.log(userInfo);
 	
 	if(validationCheck(formData) == 0){
 		return;
+	} else if (userInfo == 'null'){
+		var login = confirm(lang_val_login);
+		if(login){
+			document.location.href = "../login/loginPage";			
+		} else {
+			return;
+		}
 	} else {
 	    $.ajax({
 	        url: './regSchedule',
@@ -793,7 +911,7 @@ function regBtn(){
 	        type: 'POST',
 	        success: function (data) {
 	        	if(data.result == 0){
-	        		alert("등록에 성공했습니다.");
+	        		alert(lang_reg_success);
 		            delBtn();
 		            location.reload();
 	        	} else {
@@ -801,7 +919,7 @@ function regBtn(){
 	        	}
 	        },
 	        error: function (data){
-	        	alert("등록에 실패하였습니다. 관리자에게 문의해주시기 바랍니다.");
+	        	alert(lang_reg_fail);
 	        }
 	    });
 	}	
@@ -813,10 +931,21 @@ function modBtn(){
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
 	
 	if($('.timearr').is(':checked')){
-		formData.set('end_date',formData.getAll('start_date'));
-		formData.set('repeat_cat',0);
-	} else if($('.limitless').is(':checked')){
-		formData.set('end_date','9999-12-31')
+		formData.set('repeat_cat', 0);
+		formData.set('start_date', formData.getAll('start_date_2'));
+		formData.set('end_date', formData.getAll('end_date_2'));
+		formData.set('start_time', formData.getAll('start_time_2'));
+		formData.set('end_time', formData.getAll('end_time_2'));
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date', '9999-12-31');
+		} else {
+			formData.set('end_date', formData.getAll('end_date_1'));
+		}
+		
+		formData.set('start_date', formData.getAll('start_date_1'));
+		formData.set('start_time', formData.getAll('start_time_1'));
+		formData.set('end_time', formData.getAll('end_time_1'));
 	}
 	
 	if(validationCheck(formData) == 0){
@@ -829,7 +958,7 @@ function modBtn(){
 			contentType: false,
 			type: 'POST',
 			success: function(data){
-				alert("수정에 성공했습니다.");
+				alert(lang_mod_success);
 				delBtn();
 				location.reload();
 			}
@@ -847,7 +976,7 @@ function delSchedule(){
 		contentType: false,
 		type: 'POST',
 		success: function(data){
-			alert("삭제에 성공했습니다.");
+			alert(lang_del_success);
 			location.reload();
 		}
 	});
@@ -859,7 +988,9 @@ function delSchedule(){
 		
 			<jsp:include page="../common/nav.jsp"></jsp:include>
 	    	<div id="box">
-	    		<button class="writeBtn" onclick="writeBtn()">등록</button>
+	    		<button class="writeBtn" onclick="writeBtn()">
+	    			<spring:message code="schedule.registbtn"/>
+				</button>
 	    		<div id="calendar"></div>
 	    	</div>
 	  
@@ -873,12 +1004,16 @@ function delSchedule(){
 					<form id="regScheduleInfo" name="param">
 					
 					<div class="top">
-						<h3 class="title">작업 등록</h3>
+						<h3 class="title">
+							<spring:message code="schedule.register"/>
+						</h3>
 						<i class="bi bi-x" onclick="delBtn()"></i>
 					</div>
 					
 					<div class="titleBox">
-						<strong class="text">작업명<span class="star">*</span></strong>
+						<strong class="text">
+							<spring:message code="schedule.title"/>
+						<span class="star">*</span></strong>
 					
 					<div class="titleText">
 						<input type="text" name="title" class="textBox" onblur="confirmTitle()" autocomplete='off'>
@@ -887,63 +1022,75 @@ function delSchedule(){
 					</div>
 					
 					<div class="dateBox">
-						<strong class="text">기간설정</strong>
+						<strong class="text"><spring:message code="schedule.period"/></strong>
 						<div class="radioBox">
-							<input type="radio" name="repeat_11" value="0" class="arr" autocomplete='off' checked> 반복설정
-							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> 하루설정
+							<input type="radio" name="repeat_11" value="0" class="arr" autocomplete='off' checked> <spring:message code="schedule.repeat"/>
+							<input type="radio" name="repeat_11" value="1" class="timearr" autocomplete='off'> <spring:message code="schedule.period"/>
 							<br>
+							
 		            	    <div id="radioBoxRepeat">
-		                	    
-		                        <input type="text" class="datepicker start_date" name="start_date" autocomplete='off'>
+		                        <input type="text" class="datepicker start_date" name="start_date_1" autocomplete='off'>
 		                        <div class="noneBox2">
 		                        	<span class="ing">~</span>
-		                           	<input type="text" class="datepicker end_date" name="end_date" autocomplete='off'>
+		                           	<input type="text" class="datepicker end_date" name="end_date_1" autocomplete='off'>
 								</div>
-		                    <div class="imgBox"><img src="../resources/img/calendar.svg"></div>
-		                    </div>   
+		                    </div>
+		                    
+		                    <div id="radioBoxRepeat2">
+		                    <div class="start">
+		                        <input type="text" class="datepicker start_date" name="start_date_2" autocomplete='off'>
+		                        <input id="datetimepicker3" class="datetimepicker" type="text" name="start_time_2" autocomplete='off'>
+		                    </div>
+		                    <div class="end">
+		                        <input type="text" class="datepicker end_date" name="end_date_2" autocomplete='off'>
+		                        <input id="datetimepicker4" class="datetimepicker" type="text" name="end_time_2" autocomplete='off'>
+		                    </div>
+		                    </div> 
+		                    
 		                    <div id="radioBoxCheck">
-		                    	<input type="checkbox" class="limitless" autocomplete='off'> 무기한
+		                    	<input type="checkbox" class="limitless" autocomplete='off'> <spring:message code="schedule.indefinitely"/>
 		                    </div>
 		                <div id="confirmAlertBox2" class="confirmAlertBox"></div> 
 						</div>
-						
 					</div>
+					
 		
 					<div class="timeBox">
-						<strong class="text">반복설정</strong>
+						<strong class="text">
+							<spring:message code="schedule.repeat"/>
+						</strong>
 						<div class="radioBox">
 						<div class="Boxxx">
-							<input type="radio" name="repeat_cat" value="1" autocomplete='off' checked> 매일
-							<input type="radio" name="repeat_cat" value="2" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_week" class="dayBox" autocomplete='off'>째주
-							<input type="radio" name="repeat_cat" value="3" autocomplete='off' class="day"> 매월 <input type="text" name="repeat_day" class="dayBox" autocomplete='off'>일
+							<input type="radio" name="repeat_cat" value="1" autocomplete='off' checked> <spring:message code="schedule.days"/>
+							<input type="radio" name="repeat_cat" value="2" autocomplete='off' class="day"> <spring:message code="schedule.month"/> <input type="text" name="repeat_week" class="dayBox" autocomplete='off'><spring:message code="schedule.weeks"/> 
+							<input type="radio" name="repeat_cat" value="3" autocomplete='off' class="day"> <spring:message code="schedule.month"/> <input type="text" name="repeat_day" class="dayBox" autocomplete='off'><spring:message code="schedule.dayofmonth"/> 
 							<br>
 		                   	<div id="dayBox">
-								<input type="checkbox" name="checkboxAll" value="" class="checkboxAll" autocomplete='off'><span class="checkAll">전체</span> 
-		                   		<button type="button" value="sun" name="sun" class="btnDay">SUN</button>
-		                   		<button type="button" value="mon" name="mon" class="btnDay">MON</button>
-		                   		<button type="button" value="the" name="the" class="btnDay">TUE</button>
-		                   		<button type="button" value="wed" name="wed" class="btnDay">WED</button>
-		                   		<button type="button" value="thu" name="thu" class="btnDay">THU</button>
-		                   		<button type="button" value="fri" name="fri" class="btnDay">FRI</button>
-		                   		<button type="button" value="sat" name="sat" class="btnDay">SAT</button>
+								<input type="checkbox" name="checkboxAll" value="" class="checkboxAll" autocomplete='off'><span class="checkAll"><spring:message code="schedule.all"/> </span> 
+		                   		<button type="button" value="sun" name="sun" class="btnDay"><spring:message code="schedule.sun"/></button>
+		                   		<button type="button" value="mon" name="mon" class="btnDay"><spring:message code="schedule.mon"/></button>
+		                   		<button type="button" value="the" name="the" class="btnDay"><spring:message code="schedule.the"/></button>
+		                   		<button type="button" value="wed" name="wed" class="btnDay"><spring:message code="schedule.wed"/></button>
+		                   		<button type="button" value="thu" name="thu" class="btnDay"><spring:message code="schedule.thu"/></button>
+		                   		<button type="button" value="fri" name="fri" class="btnDay"><spring:message code="schedule.fri"/></button>
+		                   		<button type="button" value="sat" name="sat" class="btnDay"><spring:message code="schedule.sat"/></button>
 		                   	</div>
 		                   	</div>
 		                   	
 		                   	<div id="timepickerBox">
-		                   	<input id="datetimepicker1" type="text" name="start_time" autocomplete='off'>
+		                   	<input id="datetimepicker1" class="datetimepicker" type="text" name="start_time_1" autocomplete='off'>
 		                   	<span class="ing">~</span>
-		                   	<input id="datetimepicker2" type="text" name="end_time" autocomplete='off'>
-		                   	<div class="imgBox"><img src="../resources/img/alarm.svg"></div>
+		                   	<input id="datetimepicker2" class="datetimepicker" type="text" name="end_time_1" autocomplete='off'>
 		                   	</div>
 		                   	<div id="confirmAlertBox3" class="confirmAlertBox"></div>
 						</div>
 					</div>
 		
 					<div class="listBox">
-						<strong class="text">작업대상<span class="star">*</span><div id="confirmAlertBox4"></div> </strong>
+						<strong class="text">SERVER<span class="star">*</span><div id="confirmAlertBox4"></div> </strong>
 						<div class="btnList">
-							<input type="button" value="추가" class="btn1" id="btn1" autocomplete='off'>
-							<input type="button" value="삭제" class="btn1" onclick="deleteServer()" autocomplete='off'>
+							<input type="button" value="<spring:message code='schedule.add'/>" class="btn1" id="btn1" autocomplete='off'>
+							<input type="button" value="<spring:message code='schedule.del'/>" class="btn1" onclick="deleteServer()" autocomplete='off'>
 						</div>
 					</div>
 					
@@ -951,16 +1098,16 @@ function delSchedule(){
 						<thead id="theadList">
 							<tr class="serverHeader">
 								<th class="serverHeaderText"><input type="checkbox" id="allCheck" autocomplete='off' name="allCheck"></th>
-								<th class="serverHeaderText">서버명</th>
+								<th class="serverHeaderText"><spring:message code="schedule.servername"/> </th>
 								<th class="serverHeaderText">IP</th>
-								<th class="serverHeaderText">OS분류</th>
+								<th class="serverHeaderText">OS</th>
 							</tr>
 						</thead>
 					</table>
 					
 					<div class="btnBox">
-						<input type="button" value="등록" class="btnBoxbtn" id="btnBoxbtn1" onclick="regBtn()" autocomplete='off'>
-						<input type="button" value="닫기" class="btnBoxbtn" id="btnBoxbtn2" onclick="delBtn()" autocomplete='off'>
+						<input type="button" value="<spring:message code='schedule.registbtn'/>" class="btnBoxbtn" id="btnBoxbtn1" onclick="regBtn()" autocomplete='off'>
+						<input type="button" value="<spring:message code='schedule.closebtn'/>" class="btnBoxbtn" id="btnBoxbtn2" onclick="delBtn()" autocomplete='off'>
 					</div>
 					<div id="deleteRadio"></div>
 					</form>
@@ -972,10 +1119,11 @@ function delSchedule(){
 		<!-- server 등록 modal 창 -->
 		<div id="serverModal">
 		<div id="serverModalBox">
+		<div class="box">SERVER LIST</div>
 			<table id="list"></table>
 			<div class="btnBox2">
-				<input type="button" value="등록" class="btnBoxbtn2" autocomplete='off'>
-				<input type="button" value="닫기" class="btnBoxbtn3" autocomplete='off'>
+				<input type="button" value="<spring:message code='schedule.add'/>" class="btnBoxbtn2" autocomplete='off'>
+				<input type="button" value="<spring:message code='schedule.closebtn'/>" class="btnBoxbtn3" autocomplete='off'>
 			</div>
 			<div id="pager"></div> 
 		</div>

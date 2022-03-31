@@ -22,7 +22,7 @@
 	<!-- JDBC PostgreSQL -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver"></property>
-		<property name="url" value="jdbc:postgresql://3.34.136.153:5432/brainz"></property>
+		<property name="url" value="jdbc:postgresql://54.180.107.214:5432/brainz"></property>
 		<property name="username" value="brainz"></property>
 		<property name="password" value="brainz"></property>
 	</bean>

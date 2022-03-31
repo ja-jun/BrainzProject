@@ -19,19 +19,27 @@
 	<select id="getServerList" resultType="com.choongang.bcentral.server.vo.ServerVo">		
 		SELECT bps.* FROM BP_server bps 
 			<if test="searchWord !=null">
-		WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+				WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
 			</if> 
-			<if test="sidx != null and sidx !=''"> ORDER BY	
-  				<choose>
-				    <when test="sidx eq 'name'"> NAME </when>
-				    <when test="sidx eq 'ip'"> IP </when>
-		    		<otherwise> WRITE_DATE</otherwise>
- 				</choose> 
-				<choose>
-				    <when test="sord eq 'desc'"> DESC </when>
-				    <otherwise> ASC </otherwise>
-				</choose>
-			</if> 
+			<choose>
+				<when test="sidx != null and sidx !='' "> ORDER BY	
+	  				<choose>
+					    <when test="sidx eq 'name'"> NAME </when>
+					    <when test="sidx eq 'ip'"> IP </when>
+					    <when test="sidx eq 'os'"> OS </when>
+					    <when test="sidx eq 'control_num'"> CONTROL_NUM </when>
+					    <when test="sidx eq 'write_date' "> WRITE_DATE </when>
+			    		<otherwise>SERVER_NO</otherwise>
+	 				</choose> 
+					<choose>
+					    <when test="sord eq 'desc'"> DESC </when>
+					    <otherwise> ASC </otherwise>
+					</choose>
+				</when>
+				<when test="sidx == '' ">
+					ORDER BY SERVER_NO
+				</when>
+			</choose> 
 		LIMIT #{rows}   
 		OFFSET (#{page} -1) * #{rows}
  	</select>
@@ -51,7 +59,8 @@
 	<update id="updateServer">
 		UPDATE BP_server 
 		SET name=#{name}, ip=#{ip}, os=#{os}, loc=#{loc}, 
-			mac=#{mac}, control_no=#{control_no}, dsc=#{dsc}
+			mac=#{mac}, control_num=#{control_num}, dsc=#{dsc}
+		WHERE server_no=#{server_no}
 	</update>
 
 	<delete id="deleteServer">

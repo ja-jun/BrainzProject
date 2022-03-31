@@ -3,6 +3,7 @@ package com.choongang.bcentral.schedule.controller;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.schedule.service.ScheduleService;
 import com.choongang.bcentral.schedule.vo.SetScheduleVo;
+import com.choongang.bcentral.user.vo.UserVo;
 import com.google.gson.Gson;
 
 // [작업관리] 비동기 식 Controller
@@ -50,12 +52,17 @@ public class RestScheduleController {
 	
 	@RequestMapping("regSchedule")
 	public HashMap<String, Object> regSchedule(HttpServletRequest param, 
+											   HttpSession session,
 											   SetScheduleVo ssVo, 
 											   String start_date, 
 											   String end_date,
 											   String start_time,
 											   String end_time){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		
+		ssVo.setUser_no(userVo.getUser_no());
 		
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(ssVo));
