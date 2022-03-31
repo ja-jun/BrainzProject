@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.choongang.bcentral.schedule.service.CheckValidationService;
 import com.choongang.bcentral.schedule.service.ScheduleService;
 import com.choongang.bcentral.schedule.vo.SetScheduleVo;
 import com.choongang.bcentral.user.vo.UserVo;
@@ -21,6 +22,9 @@ public class RestScheduleController {
 	
 	@Autowired
 	private ScheduleService scheduleService;
+	
+	@Autowired
+	private CheckValidationService ckService;
 	
 	@RequestMapping("getList")
 	public HashMap<String, Object> getList(Integer year, Integer month){
@@ -64,11 +68,15 @@ public class RestScheduleController {
 		
 		ssVo.setUser_no(userVo.getUser_no());
 		
-		Gson gson = new Gson();
-		System.out.println(gson.toJson(ssVo));
+		System.out.println(new Gson().toJson(ssVo));
 		
-		scheduleService.regSchedule(ssVo);
-		data.put("result", 0);
+		int result = ckService.validateScheduleDate(ssVo);
+		
+		if(result == 0) {
+			scheduleService.regSchedule(ssVo);
+		}
+		
+		data.put("result", result);
 		
 		return data;
 	}

@@ -55,9 +55,12 @@ const lang_val_time1 = '<spring:message code="schedule.validation.time1"/>';
 const lang_val_login = '<spring:message code="validation.login"/>';
 const lang_reg_success = '<spring:message code="schedule.register.success"/>';
 const lang_reg_fail = '<spring:message code="schedule.register.fail"/>';
+const lang_reg_fail1 = '<spring:message code="schedule.register.fail1"/>';
+const lang_reg_fail2 = '<spring:message code="schedule.register.fail2"/>';
 const lang_mod_success = '<spring:message code="schedule.modify.success"/>';
 const lang_del_success = '<spring:message code="schedule.delete.success"/>';
 
+var userInfo1 = '<%=session.getAttribute("userInfo")%>';
 
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
@@ -69,6 +72,16 @@ function delBtn() {
 }
 /* 등록 클릭시 */
 function writeBtn() {
+	var userInfo2 = '<%=session.getAttribute("userInfo")%>';
+	if (userInfo2 == 'null'){
+		var login = confirm(lang_val_login);
+		if(login){
+			document.location.href = "../login/loginPage";			
+		} else {
+			return;
+		}
+	}
+	
 	$('body').css("overflow", "hidden");
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
@@ -755,7 +768,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     		step: 10
     	});
   	})
-		 
+  	
 	/* page load후 바로 실행 되는 함수들 */  	
 	getCalendarList();
 	writeBtn();
@@ -885,13 +898,11 @@ function regBtn(){
 		formData.set('end_time', formData.getAll('end_time_1'));
 	}
 	
-	var userInfo = '<%=session.getAttribute("userInfo")%>';
-	
-	console.log(userInfo);
+	userInfo3 = '<%=session.getAttribute("userInfo")%>';
 	
 	if(validationCheck(formData) == 0){
 		return;
-	} else if (userInfo == 'null'){
+	} else if (userInfo3 == 'null'){
 		var login = confirm(lang_val_login);
 		if(login){
 			document.location.href = "../login/loginPage";			
@@ -910,8 +921,10 @@ function regBtn(){
 	        		alert(lang_reg_success);
 		            delBtn();
 		            location.reload();
-	        	} else {
-	        		alert(data.result);
+	        	} else if(data.result == 1) {
+	        		alert(lang_reg_fail1);
+	        	} else if(data.result == 2){
+	        		alert(lang_reg_fail2);
 	        	}
 	        },
 	        error: function (data){
