@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.server.service.ServerService;
 import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.server.vo.ServerVo;
@@ -28,20 +29,62 @@ public class RestServerController {
 		
 		if(param.getSearchWord() != null){
 			String searchWord = param.getSearchWord();
-			System.out.println(searchWord);
-			searchWord = searchWord.replaceAll("\\\\" , "\\\\\\\\");
+			searchWord = searchWord.replaceAll("\\\\" , "\\\\\\\\").replaceAll("%" , "\\\\%").replaceAll("_", "\\\\_");			
 			param.setSearchWord(searchWord);
-			System.out.println(searchWord);
 		}
 		
 		ArrayList<ServerVo> serverList = serverService.getServerList(param);
 		
+		
+		//status 계산
+		
+		String status = "";
+		ArrayList<Integer> stateList = new ArrayList<Integer>();
+		int state = 3;
+		for(ServerVo vo : serverList) {
+			
+			int server_no = vo.getServer_no();
+			ArrayList<Integer> scNos= serverService.getScNoListByServerNo(server_no);
+
+			if(scNos == null) {
+				state = 3;
+			} else {
+				for(int no : scNos) {
+					ScheduleVo sVo= serverService.getScheduleByScNo(no);
+					int s = serverService.todaySchedule(sVo);
+					System.out.println("상태 :" +   s);
+					stateList.add(s);	
+				}
+				
+				if(stateList.contains(1)) {
+					state  = 1;
+				} else if(stateList.contains(0)) {
+					state = 0;
+				} else if(stateList.contains(2)) {
+					state = 2;
+				} else {
+					state = 3;
+				}
+			}
+			
+			
+			if(state == 0 ) {
+				status = "오늘 작업 예정";
+			} else if(state == 1) {
+				status = "현재 작업 중";
+			} else if(state == 2) {
+				status = "작업 완료";
+			} else if(state == 3) {
+				status = "오늘 작업 없음";
+			}
+			
+			vo.setStatus(status);
+		}
+	
 		int rows = param.getRows();
 		int records = serverService.getServerCount(param);
 		int total = (int) Math.ceil((double)records / rows);
-		
-		param.setTotal(total);
-		param.setRecords(records);
+
 		
 		data.put("rows", serverList); // 데이터
 		data.put("records", records); // 데이터의 전체 개수 (viewrecords 에 사용됨)

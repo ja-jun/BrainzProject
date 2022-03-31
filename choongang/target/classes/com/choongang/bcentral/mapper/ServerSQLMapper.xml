@@ -19,7 +19,7 @@
 	<select id="getServerList" resultType="com.choongang.bcentral.server.vo.ServerVo">		
 		SELECT bps.* FROM BP_server bps 
 			<if test="searchWord !=null">
-				WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+				WHERE name ilike '%' || #{searchWord} || '%' OR ip ilike '%' || #{searchWord} || '%'
 			</if> 
 			<choose>
 				<when test="sidx != null and sidx !='' "> ORDER BY	
@@ -47,12 +47,12 @@
  	<select id="getServerCount" resultType="int">
  		SELECT COUNT(bps.*) FROM BP_server bps 
 			<if test="searchWord !=null">
-				WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
+				WHERE name ilike '%' || #{searchWord} || '%' OR ip ilike '%' || #{searchWord} || '%'
 			</if>
  	</select>
 
 	<select id="getServer" resultType="com.choongang.bcentral.server.vo.ServerVo">
-		SELECT * FROM BP_SERVER
+		SELECT bps.* FROM BP_SERVER bps
 		WHERE server_no=#{server_no}
 	</select>
 
@@ -69,7 +69,7 @@
 	</delete>
 
 	<select id="getCountByMac" resultType="int">
-		SELECT count(*) from BP_SERVER 
+		SELECT count(bps.*) from BP_SERVER bps
 		WHERE mac = #{mac}
 	</select>
 
@@ -80,4 +80,29 @@
  		</if>
 		order by server_no desc	
  	</select>
+
+	<select id="selectTodaySchedule"	resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
+		SELECT bs.sc_no, bs.user_no, bs.title, bs.start_date, bs.end_date,
+		bs.start_time, bs.end_time, bs.repeat_cat, bs.repeat_day,
+		bs.repeat_week,
+		bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun, bs.write_date
+		FROM bp_schedule bs
+		WHERE now() between bs.start_date and bs.end_date
+		AND bs.delete_date is null
+	</select>
+
+	<select id="getScNoListByServerNo"	resultType="int">
+		SELECT BM.sc_no
+		FROM BP_Mgmt_server BM
+		WHERE server_no = #{server_no}
+	</select>
+
+	<select id="getScheduleByScheduleNo"  resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
+		SELECT BS.*
+		FROM BP_SCHEDULE BS
+		WHERE SC_NO = #{SC_NO} 	
+ 	</select>
+ 	
+ 	
+ 	
 </mapper>
