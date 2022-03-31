@@ -75,7 +75,7 @@
 
 	<select id="getServerListForExcel" resultType="com.choongang.bcentral.server.vo.ServerVo">
 		SELECT bps.* FROM BP_server bps
-		<if test="searchWord !=null">
+		<if test="searchWord != null">
 			WHERE name iLIKE CONCAT('%',#{searchWord},'%') OR ip iLIKE CONCAT('%',#{searchWord},'%')
  		</if>
 		order by server_no desc	

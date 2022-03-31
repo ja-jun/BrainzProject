@@ -28,7 +28,7 @@
 					<li class="pageList" id="userPage"><a href="/choongang/user/mainPage"><i class="bi bi-person"></i>사용자 관리</a></li>
 					<li class="pageList" id="serverPage"><a href="/choongang/server/mainPage"><i class="bi bi-shield-check"></i>서버 관리</a></li>
 					<li class="pageList" id="schedulePage"><a href="/choongang/schedule/mainPage"><i class="bi bi-calendar-check"></i>작업 관리</a></li>
-					<li class="pageList" id="notificationPage"><a href=""><i class="bi bi-card-list" style="font-size:25px"></i>공지 사항</a></li>
+					<li class="pageList" id="notificationPage"><a href="/choongang/notification/mainPage"><i class="bi bi-card-list" style="font-size:25px"></i>공지 사항</a></li>
 				</ul>
 			</div>
 			

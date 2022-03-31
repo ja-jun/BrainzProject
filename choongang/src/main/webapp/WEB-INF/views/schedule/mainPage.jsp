@@ -783,15 +783,15 @@ function confirmTitle(){
 				if(data.result == true){
 					confirmAlertBox.innerText = lang_val_title1;
 					confirmAlertBox.style.color = "red";
-					return 1;
+					return 0;
 				}else if(title == ""){
 					confirmAlertBox.innerText = lang_val_title2;
 					confirmAlertBox.style.color = "red";
-					return 1;
+					return 0;
 				} else {
 					confirmAlertBox.innerText = lang_val_title3;
 					confirmAlertBox.style.color = "green";
-					return 0;
+					return 1;
 				}
 			}
 		};
@@ -820,7 +820,8 @@ function deleteServer(){
 	}
 }
 function validationCheck(target){
-	var result = 1;
+	
+	var result = confirmTitle();
 	
 	if(target.getAll('start_date') == '' && target.getAll('end_date') == '' && !$('.limitless').is(':checked') && target.getAll('repeat_11') == '0'){
 		/* 	2. 시작 날짜가 제대로 입력 됐는지 확인
@@ -834,7 +835,6 @@ function validationCheck(target){
 	} else if(target.getAll('start_date') != '' || target.getAll('end_date') == '') {
 		var confirmAlertBox = document.getElementById("confirmAlertBox2");
 			confirmAlertBox.style.display = "none";
-		result = 1;
 	};
 	
 	if(target.getAll('start_time') == '' || target.getAll('end_time') == ''){
@@ -849,7 +849,6 @@ function validationCheck(target){
 	} else if(target.getAll('start_time') != '' || target.getAll('end_time') =='') {
 		var confirmAlertBox = document.getElementById("confirmAlertBox3");
 			confirmAlertBox.style.display = "none";
-			result = 1;
 	};
 	
 	
@@ -858,13 +857,10 @@ function validationCheck(target){
 			confirmAlertBox.style.display = "inline-flex";
 			confirmAlertBox.innerText = lang_val_server3;
 			confirmAlertBox.style.color = "red";
-		
-		result = 0;
+		result = 0
 	}
 	
-	result = confirmTitle();
-	
-	return result;
+	return result;	
 }
 
 function regBtn(){
@@ -889,7 +885,7 @@ function regBtn(){
 		formData.set('end_time', formData.getAll('end_time_1'));
 	}
 	
-	var userInfo = '<%=(String)session.getAttribute("userInfo")%>';
+	var userInfo = '<%=session.getAttribute("userInfo")%>';
 	
 	console.log(userInfo);
 	

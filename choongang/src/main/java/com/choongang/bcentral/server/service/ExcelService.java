@@ -191,11 +191,12 @@ public class ExcelService {
 		// 4행 리스트의 size 만큼 row를 생성 및 DB 연동
 		
 		ServerVo vo;
-		for (int rowIdx = 2; rowIdx < list.size(); rowIdx++) {
-			vo = list.get(rowIdx);
+		
+		for (int i = 0; i < list.size(); i++) {
+			vo = list.get(i);
 
 			// 행 생성
-			row = sheet.createRow(rowIdx + 1);
+			row = sheet.createRow(i + 3);
 
 			cell = row.createCell(0);
 			cell.setCellValue(vo.getName());
@@ -235,7 +236,6 @@ public class ExcelService {
 			
 			cell.setCellValue(date);
 			cell.setCellStyle(rowStyle4);
-						
 		}
 		
 		// 입력된 내용 파일로 쓰기

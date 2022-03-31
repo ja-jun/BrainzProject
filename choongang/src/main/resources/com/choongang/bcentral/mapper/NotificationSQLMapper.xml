@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.bcentral.mapper.NotificationSQLMapper">
+	<select id="getNotificationList" resultType="com.choongang.bcentral.noti.vo.NotificationVo">
+		select bn.nc_no, bn.nc_title, bn.nc_content, 
+			   bn.nc_readCount, bn.nc_writeDate, 
+			   bu.user_id, bu.user_no, bu.name 
+		from bp_notification bn, bp_user bu
+		where bn.user_no = bu.user_no
+			<if test="searchWord !=null">
+				AND nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
+			</if>
+		ORDER BY bn.nc_no desc
+		LIMIT #{rows}   
+		OFFSET (#{page} -1) * #{rows}
+	</select>
+	
+	<insert id="insertNotification">
+		INSERT into bp_notification values(
+			nextval('BP_notification_seq'),
+			#{user_no},
+			#{nc_title},
+			#{nc_content},
+			#{nc_readCount},
+			now()
+		)
+	</insert>
+	
+	<update id="updateNotification">
+		UPDATE bp_notification
+		SET nc_title=#{nc_title}, nc_content=#{nc_content}
+		WHERE nc_no=#{nc_no} 
+	</update>
+	
+	<delete id="deleteNotification">
+		DELETE FROM bp_notification
+		WHERE nc_no=#{nc_no}
+	</delete>
+	
+	<select id="getNotification" resultType="com.choongang.bcentral.noti.vo.NotificationVo">
+		SELECT * FROM bp_notification
+		WHERE nc_no=#{nc_no}
+	</select>
+	
+	<update id="increaseReadCount">
+		UPDATE bp_notification
+		SET nc_readCount=nc_readCount+1
+		WHERE nc_no=#{nc_no} 
+	</update>
+	
+	<select id="getNotificationCount" resultType="int">
+		select COUNT(bps.*) from bp_notification bps
+			<if test="searchWord !=null">
+				WHERE nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
+			</if>
+	</select>
+</mapper>
