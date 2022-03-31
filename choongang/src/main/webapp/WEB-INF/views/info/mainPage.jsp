@@ -17,264 +17,335 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<link href='../resources/css/nav.css' rel='stylesheet' />
 <link href='../resources/css/reset.css' rel='stylesheet' />
-<!-- JqGrid -->
-<link rel="stylesheet" type="text/css" href="../resources/css/jquery-ui.min.css"/>
-<link rel="stylesheet" type="text/css" href="../resources/css/ui.jqgrid.css"/>
-<link rel="stylesheet" type="text/css" href="../resources/css/ui.jqgrid2.css"/>
-<script type="text/javascript" src="../resources/js/grid.locale-kr.js"></script>
-<script type="text/javascript" src="../resources/js/jquery.jqGrid.js"></script>
-<script type="text/javascript" src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
-<script type="text/javascript" src="../resources/js/jquery-ui.min.js"></script>
-<script>
-/* 서버 현황 START */
-function getServerInfo(){
-	$.ajax({
-		url: "/choongang/info/getServerInfo",
-		method: "POST",
-		dataType: "json"
-	}).done(function(json){
-		/* Render Chart Start */
-		const stateLabels = ['작업중', '작업완료', '작업예정', '작업없음'];
-		const osLabels = ['AIX', 'Windows', 'Linux'];
-		
-		var os = [0, 0, 0];
-		
-		for(var server of json.serverInfo){
-			var sv = server['serverVo'].os;
-			console.log(sv);
-			if(sv == 'AIX'){
-				os[0]++;
-			} else if(sv == 'Windows'){
-				os[1]++;
-			} else if(sv == 'Linux'){
-				os[2]++;
-			}
-		}
-		
-		const stateData = {
-			labels : stateLabels,
-			datasets : [{
-				label : '서버 상태',
-				backgroundColor : [
-				      'rgb(255, 99, 132)',
-				      'rgb(54, 162, 235)',
-				      'rgb(255, 205, 86)',
-				      'rgb(164, 164, 164)'
-				    ],
-				data : [json.stateCount[1], 
-						json.stateCount[2], 
-						json.stateCount[0],
-						json.stateCount[3]]
-			}]
-		};
-		
-		const osData = {
-			labels : osLabels,
-			datasets : [{
-				label : '서버 종류',
-				backgroundColor : [
-					'rgb(255, 159, 64)',
-					'rgb(75, 192, 192)',
-					'rgb(153, 102, 255)'
-				],
-				data : os
-			}]
-		};
-		
-
-		const stateConfig = {
-			type : 'doughnut',
-			data : stateData,
-			options : {
-				responsive: 'false'
-			}
-		};
-		
-		const osConfig = {
-			type : 'bar',
-			data : osData,
-			options : {
-				responsive : 'false',
-				scales : {
-					y : {
-						beginAtZero : true
-					}
-				}
-			}
-		};
-		
-		// chart.js 를 render 하는 함수
-		// canvas에 id를 붙이는걸로는 불러올 수 없고
-		// aria-label 또는 role을 이용해야 불러올 수 있다.
-		const stateChart = new Chart(document.getElementById('stateChart'), stateConfig);
-		const osChart = new Chart(document.getElementById('osChart'), osConfig);
-		/* Render Chart End */
-		
-		/* Server Listing */
-		for(var server of json.serverInfo){
-			var svVo = document.createElement('li');
-			svVo.setAttribute("class","list-group-item");
-			svVo.innerText = server['serverVo'].name;
-			
-			var state = server['state'];
-			if(state == 0){
-				$('ul[name=state-pre]').append(svVo);
-			} else if(state == 1){
-				$('ul[name=state-working]').append(svVo);
-			} else if(state == 2){
-				$('ul[name=state-aft]').append(svVo);
-			} else {
-				$('ul[name=state-no]').append(svVo);
-			}
-		}
-		
-	})
-};
-/* 서버 현황 END */
-
-/* 작업 현황 START */
-function getScheduleInfo(){
-	$('#scheduleGrid').jqGrid({
-		colModel : [
-			{name : 'title', label : '작업명', align : 'left'},
-			{name : 'start_time', label : '시작시간', align : 'center'},
-			{name : 'end_time', label : '종료시간', align : 'center'},
-			{name : 'state', label : '상태', align : 'center'},
-		],
-		url : '/choongang/info/getScheduleInfo',
-		datatype : 'JSON',
-		loadtext : '로딩중',
-		height : 'auto',
-		rowNum : 50
-	});
-}
-/* 작업 현황 END */
-
-window.addEventListener('DOMContentLoaded', function(){
-	var today = new Date();
-	
-	getServerInfo();
-	getScheduleInfo();
-	
-	$('span[name=today]').text(today.toLocaleString() + '\t 기준 서버 현황');
-});
-</script>
+<link href='../resources/css/test.css' rel='stylesheet' />
+<link href='../resources/css/test2.css' rel='stylesheet' />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<!-- fullcalender -->
+<link href='../resources/css/mainCalendar.css' rel='stylesheet' />
+<link href='../resources/css/main.min.css' rel='stylesheet' />
+<script src='../resources/js/main.js'></script>
+<script src='../resources/js/main.min.js'></script>
+<script src='../resources/js/locales-all.js'></script>
+<script src='../resources/js/locales-all.min.js'></script>
+<link rel="stylesheet" href="../resources/css/jquery-ui.min.css" >
+<link rel="stylesheet" href="../resources/css/jquery-ui.css">
+<script src="../resources/js/jquery-ui.min.js"></script>
 </head>
 <body>
-	<div id="container">
-		<jsp:include page="../common/nav.jsp"></jsp:include>
-	</div>
-	<div class="row" style="padding-left: 260px; margin-top: 80px; width: 2500px;">
-		<div class="col pt-3 ps-4">
-			<div class="row">
-				<!-- 서버 현황 시작 -->
-				<div class="col-4">
-					<div class="row bg-dark border border-secondary border-4" style="height: 70px">
-						<div class="col">
-							<span style="text-color: e69600; font-size: 30px; color: #e69600; font-weight: 700;">
-								서버 현황 
-							</span>
+	
+	
+	<div id="content">
+			<div class="navBar">
+                <h3 class="headerName">Bcentral</h3>
+				<ul id="ulList">
+					<li class="pageList" id="userPage">
+						<a href="../user/mainPage">
+						<div class="navBox">
+						<img src="../resources/img/person.png" class="imgNav">
+						<span class="navTitle">사용자관리</span>
 						</div>
-					</div>
-					<div class="row mt-3">
-						<div class="col-6 p-3 border border-3 border-secondary border-end-0">
-							<canvas id="stateChart" height="330px">
-								<p>Hello Fallback World</p>
-							</canvas>
+						</a>
+					</li>
+						
+					<li class="pageList" id="serverPage">
+						<a href="">
+						<div class="navBox">
+						<img src="../resources/img/server.png" class="imgNav">
+						<span class="navTitle">서버관리</span>
 						</div>
-						<div class="col-6 pt-2 border border-3 border-secondary">
-							<canvas id="osChart" height="330px">
-								<p>Hello Fallback World</p>
-							</canvas>
+						</a>
+					</li>
+					
+					<li class="pageList" id="calenderPage">
+						<a href="../calendar/calendarListPage">
+						<div class="navBox">
+						<img src="../resources/img/calendar2.png" class="imgNav">
+						<span class="navTitle">작업관리</span>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col p-3 pt-2 border border-3 border-secondary border-top-0">
-							<div class="row">
-								<div class="col">
-									<span name="today"></span>
-								</div>
-							</div>
-							<div class="row">
-								<!-- 작업중 리스트 -->
-								<div class="col">
-									<div class="row">
-										<div class="col">
-											<i class="bi bi-server" style="color: rgb(255, 99, 132)"></i>작업중
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<ul class="list-group list-group-flush" name="state-working">
-											</ul>
-										</div>
-									</div>
-								</div>
-								<!-- 작업예정 리스트 -->
-								<div class="col">
-									<div class="row">
-										<div class="col">
-											<i class="bi bi-server" style="color: rgb(255, 205, 86)"></i>작업예정
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<ul class="list-group list-group-flush" name="state-pre">
-											</ul>
-										</div>
-									</div>
-								</div>
-								<!-- 작업완료 리스트 -->
-								<div class="col">
-									<div class="row">
-										<div class="col">
-											<i class="bi bi-server" style="color: rgb(54, 162, 235)"></i>작업완료
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<ul class="list-group list-group-flush" name="state-aft">
-											</ul>
-										</div>
-									</div>
-								</div>
-								<!-- 작업예정 리스트 -->
-								<div class="col">
-									<div class="row">
-										<div class="col">
-											<i class="bi bi-server" style="color: rgb(164, 164, 164)"></i>작업없음
-										</div>
-									</div>
-									<div class="row">
-										<div class="col">
-											<ul class="list-group list-group-flush" name="state-no">
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
+						</a>
+					</li>
+					
+					<li class="pageList" id="noticePage">
+						<a href="">
+						<div class="navBox">
+						<img src="../resources/img/notice.png" class="imgNav">
+						<span class="navTitle">공지사항</span>
 						</div>
-					</div>
-				</div>
-				<!-- 서버 현황 종료 -->
-				<div class="col-3 ms-3">
-					<div class="row bg-dark border border-secondary border-4" style="height: 70px">
-						<div class="col pe-0">
-							<span style="text-color: e69600; font-size: 30px; color: #e69600; font-weight: 700;">
-								작업 현황 
-							</span>
-						</div>
-					</div>
-					<div class="row mt-3">
-						<div class="col border border-3 border-secondary">
-							<table id="scheduleGrid"></table>
-						</div>
-					</div>
-				</div>
+						</a>
+					</li>
+				</ul>
+				
+				<ul class="language2">
+					<li class="languageBox2 onn"><span class="languageText">Ko</span></li>
+					<li class="languageBox2"><span class="languageText">En</span></li>
+					<li class="languageBox2"><span class="languageText">Cn</span></li>
+				</ul>
+				
 			</div>
+	    </div>	
+
+
+<div id="container">
+<div id="box">
+	
+	<div id="gnb">
+		<div class="iconBox">
+		<img src="../resources/img/user.png" class="profile">
+		<div class="icon">
+		<p class="iconText" >닉네임</p>
 		</div>
+		<div class="language">
+			<select name="languageBox" class="languageBox">
+   				<option value="">언어선택</option>
+   				<option value="1">한국어</option>
+   				<option value="2">영어</option>
+   				<option value="3">중국어</option>
+			</select>
+		</div>	
+	</div>
+	</div>
+	
+	<div id="first">
+	<div id="doughnut">
+	<div id="bar">
+		<div class="titleB">
+    	<h3 class="title">Server State</h3>
+    	<a href=""><p class="more">More</p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+    	</div>
+		<div class="barBox">
+		<div class="barBar">
+		<canvas id="barChart" width="600" height="400" ></canvas>
+		
+		<ul class="barUl">
+			<li class="barList"><p class="colorBox"></p><h3 class="titleBox">작업중</h3></li>
+			<li class="barList"><p class="colorBox"></p><h3 class="titleBox">작업예정</h3></li>
+			<li class="barList"><p class="colorBox"></p><h3 class="titleBox">작업완료</h3></li>
+			<li class="barList"><p class="colorBox"></p><h3 class="titleBox">작업없음</h3></li>
+		</ul>
+		</div>
+		<div class="barBar2">
+		<ul class="barUl2">
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">아주 아주 아주아주 긴 서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">아주 아주 긴 서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">아주 아주 긴 서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">아주 아주 긴 서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">아주 아주 아주아주 긴 서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">서버명입니다</h3></li>
+		</ul>
+		<ul class="barUl3">
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">아주 아주 아주아주 긴 서버명입니다</h3></li>
+			<li class="barList2"><div class="colorBox2"><p class="colorBoxRed"></p></div><h3 class="titleBox">서버명입니다</h3></li>
+		</ul>
+		</div>
+		
+	</div>
+	</div>
+	
+	</div>
+	<div id="scheduleBox">
+	<div class="titleB">
+		<h3 class="title" style="margin-bottom: 50px;">Schedule</h3>
+		<a href=""><p class="more">More</p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+		</div>
+		<div id="calendar"></div>
+		
+	</div>
+</div>
+
+
+	<div id="box2">
+	<div id="doughnutBox">
+		<div class="titleB">
+    	<h3 class="title">Server List</h3>
+    	<a href=""><p class="more">More</p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+    	</div>
+		<div class="doughnutBox2">
+		<canvas id="doughnut-chart" width="300" height="300"></canvas>
+		<ul class="doughnutUl">
+			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">Window</h3></li>
+			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">Linux</h3></li>
+			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">AIX</h3></li>
+		</ul>
+	</div>
+	</div>
+
+	<div id="noticeBox">
+	<div class="titleB">
+    	<h3 class="title" style="margin-bottom: 30px;">Notice</h3>
+    	<a href=""><p class="more">More</p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+    	</div>
+		<div class="noticeBox2">
+		<ul class="noticeUl">
+			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
+			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
+			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
+			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
+			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
+		</ul>
+	</div>
+	</div>
+	
+	
+	
+</div>
+
+</div>
+</div>
+
+
+
+
+<script>
+
+new Chart(document.getElementById("doughnut-chart"), {
+    type: 'doughnut',
+    data: {
+      labels: ["Africa", "Asia", "Europe"],
+      datasets: [
+        {
+          label: "Population (millions)",
+          backgroundColor: ["#EF87A3", "#FACC2E","#C766B9"],
+          data: [2478,5267,734],
+		  borderWidth: 0
+        }
+      ]
+    },
+    options: {
+		responsive: false,
+			legend: {
+			display:false
+			}
+    }
+});
+
+
+
+	var context = document.getElementById('barChart');
+    var myChart = new Chart(context, {
+        type: 'bar',
+        data: {
+        labels: [
+        '작업중','작업예정','작업완료','작업없음'
+         ],
+		 datasets: [{
+			backgroundColor: ["#E0272F", "#FFD25A","#01A9DB","#a4a4a4"],
+			pointBackgroundColor: 'white',
+			borderWidth: 0,
+			data: [50, 55, 80, 81]
+    }]
+                },
+                options: {
+			responsive: false,
+			legend: {
+					display:false
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						stepSize : 20,
+						fontColor : "#222",
+						fontSize : 20,
+                        fontFamily : 'Montserrat'
+					},
+					gridLines:{
+						color: '#e8e8e8',
+						lineWidth:1,
+                        drawBorder: false,
+                        margin:10
+					}
+				}],
+				xAxes: [{
+					ticks:{
+						beginAtZero: true,
+						stepSize : 30,
+						fontColor : "#222",
+						fontSize : 20,
+						fontFamily :'Noto Sans KR'
+					},
+					gridLines:{
+						display:false
+					}
+				}]
+			}
+		}
+              });
+
+	
+	
+	
+	
+	var calendarEl = document.getElementById('calendar');
+	var calendar = new FullCalendar.Calendar(calendarEl, {
+		  initialView: 'listWeek',
+		  locale: 'ko',
+		  events: [
+		    {
+		      title: '테스트입니다1111111',
+		      start: '2022-03-30T14:30:00',
+		      extendedProps: {
+		        status: 'done'
+		      }
+		    },
+		    {
+		      title: '테스트입니다222222',
+		      start: '2022-03-30T07:00:00',
+		      backgroundColor: 'green',
+		      borderColor: 'green'
+		    },
+		    {
+			      title: '테스트입니다333333',
+			      start: '2022-03-31T14:30:00',
+			      extendedProps: {
+			        status: 'done'
+			      }
+			    },{
+				      title: '테스트입니다4444444',
+				      start: '2022-03-31T18:30:00',
+				      extendedProps: {
+				        status: 'done'
+				      }
+				    },{
+					      title: '테스트입니다555555',
+					      start: '2022-03-31T14:30:00',
+					      extendedProps: {
+					        status: 'done'
+					      }
+					    },{
+						      title: '테스트입니다6666666',
+						      start: '2022-03-31T22:30:00',
+						      extendedProps: {
+						        status: 'done'
+						      }
+						    },{
+							      title: '테스트입니다7777777',
+							      start: '2022-04-01T14:30:00',
+							      extendedProps: {
+							        status: 'done'
+							      }
+							    },{
+								      title: '테스트입니다88888888',
+								      start: '2022-04-02T14:30:00',
+								      extendedProps: {
+								        status: 'done'
+								      }
+								    },{
+									      title: '테스트입니다999999',
+									      start: '2022-04-02T14:30:00',
+									      extendedProps: {
+									        status: 'done'
+									      }
+									    },
+		  ]
+		});
+	calendar.render();
+
+  </script>
+	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <!-- MDB -->
