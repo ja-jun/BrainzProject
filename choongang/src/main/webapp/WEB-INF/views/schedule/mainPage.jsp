@@ -52,7 +52,7 @@ const lang_val_server2 = '<spring:message code="schedule.validation.server2"/>';
 const lang_val_server3 = '<spring:message code="schedule.validation.server3"/>';
 const lang_val_date1 = '<spring:message code="schedule.validation.date1"/>';
 const lang_val_time1 = '<spring:message code="schedule.validation.time1"/>';
-const lang_val_login = '<spring:message code="shceulde.validation.login"/>';
+const lang_val_login = '<spring:message code="validation.login"/>';
 const lang_reg_success = '<spring:message code="schedule.register.success"/>';
 const lang_reg_fail = '<spring:message code="schedule.register.fail"/>';
 const lang_mod_success = '<spring:message code="schedule.modify.success"/>';
