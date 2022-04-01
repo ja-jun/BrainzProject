@@ -149,6 +149,110 @@ public class InfoService {
 		return serverInfo;
 	}
 	
+	public ArrayList<HashMap<String, Object>> getWeekScheduleInfo(){
+		ArrayList<HashMap<String, Object>> weekScInfo = new ArrayList<HashMap<String, Object>>();
+		
+		ArrayList<ScheduleVo> weekScVo = ifSqlMapper.selectWeekSchedule();
+		
+		LocalDate cur_date = LocalDate.now();
+		
+		while(!cur_date.equals(LocalDate.now().plusDays(7))) {
+			
+			for(ScheduleVo scVo : weekScVo) {
+				HashMap<String, Object> event = new HashMap<String, Object>();
+				int sc_no = scVo.getSc_no();
+				String title = scVo.getTitle();
+				
+				LocalDate start_date = scVo.getStart_date();
+				LocalDate end_date = scVo.getEnd_date();
+				LocalTime start_time = scVo.getStart_time();
+				LocalTime end_time = scVo.getEnd_time();
+				
+				String[] dayCheck = {scVo.getMon(), scVo.getThe(), scVo.getWed(), scVo.getThu(), scVo.getFri(), scVo.getSat(), scVo.getSun()};
+				int day = cur_date.getDayOfWeek().getValue() - 1;
+				
+				switch(scVo.getRepeat_cat()) {
+				case 0:
+					if(start_date.equals(cur_date)) {
+						// cur_date가 시작 날짜인 경우 시작 시간은 작업대로 설정하고 24시 까지 설정
+						event.put("sc_no", sc_no);
+						event.put("title", title);
+						event.put("start_date", cur_date.toString());
+						event.put("end_date", cur_date.toString());
+						event.put("start_time", start_time.toString());
+						event.put("end_time", "24:00");
+					} else if (end_date.equals(cur_date)) {
+						// cur_date가 종료 날짜인 경우 시작 시간을 00시로 설정하고 종료 시간을 작업대로 설정
+						event.put("sc_no", sc_no);
+						event.put("title", title);
+						event.put("start_date", cur_date.toString());
+						event.put("end_date", cur_date.toString());
+						event.put("start_time", "00:00");
+						event.put("end_time", end_time.toString());
+					} else {
+						// cur_date가 시작 또는 종료 날짜가 아닌 경우 하루 종일을 차지하도록
+						// 00시 부터 24시 까지로 설정
+						event.put("sc_no", sc_no);
+						event.put("title", title);
+						event.put("start_date", cur_date.toString());
+						event.put("end_date", cur_date.toString());
+						event.put("start_time", "00:00");
+						event.put("end_time", "24:00");
+					}
+					
+					weekScInfo.add(event);
+					break;
+				case 1:
+					if(dayCheck[day] != null) {
+						event.put("sc_no", sc_no);
+						event.put("title", title);
+						event.put("start_date", cur_date.toString());
+						event.put("end_date", cur_date.toString());
+						event.put("start_time", start_time.toString());
+						event.put("end_time", end_time.toString());
+						
+						weekScInfo.add(event);
+					}
+					break;
+				case 2:
+					WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
+					TemporalField weekOfMonth = weekFields.weekOfMonth();
+					int wom = cur_date.get(weekOfMonth);
+					
+					if(wom == scVo.getRepeat_week() && dayCheck[day] != null) {
+						event.put("sc_no", sc_no);
+						event.put("title", title);
+						event.put("start_date", cur_date.toString());
+						event.put("end_date", cur_date.toString());
+						event.put("start_time", start_time.toString());
+						event.put("end_time", end_time.toString());
+						
+						weekScInfo.add(event);
+					}
+					break;
+				case 3:
+					if(cur_date.getDayOfMonth() == scVo.getRepeat_day()) {
+						event.put("sc_no", sc_no);
+						event.put("title", title);
+						event.put("start_date", cur_date.toString());
+						event.put("end_date", cur_date.toString());
+						event.put("start_time", start_time.toString());
+						event.put("end_time", end_time.toString());
+						
+						weekScInfo.add(event);
+					}
+					break;
+				}
+				
+			}
+			cur_date = cur_date.plusDays(1);
+		}
+		
+		return weekScInfo;
+	}
+	
+	
+	// 테스트 용
 	public ArrayList<HashMap<String, Object>> getScheduleInfo(){
 		ArrayList<HashMap<String, Object>> scheduleInfo = new ArrayList<HashMap<String, Object>>();
 		

@@ -26,4 +26,8 @@ public interface ServerSQLMapper {
 	//스케줄번호로 스케줄vo 받아오기
 	public ScheduleVo getScheduleByScheduleNo(int sc_no);
 
+	
+	//등록된 스케줄의 서버번호리스트 받기
+	public ArrayList<Integer> getServerNosByScNo(int sc_no);
+	
 }

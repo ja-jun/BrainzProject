@@ -72,15 +72,6 @@ function delBtn() {
 }
 /* 등록 클릭시 */
 function writeBtn() {
-	var userInfo2 = '<%=session.getAttribute("userInfo")%>';
-	if (userInfo2 == 'null'){
-		var login = confirm(lang_val_login);
-		if(login){
-			document.location.href = "../login/loginPage";			
-		} else {
-			return;
-		}
-	}
 	
 	$('body').css("overflow", "hidden");
 	var modal = document.getElementById("modal");

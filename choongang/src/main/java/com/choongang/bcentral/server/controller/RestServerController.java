@@ -6,7 +6,9 @@ import java.util.HashMap;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
@@ -14,6 +16,7 @@ import com.choongang.bcentral.server.service.ServerService;
 import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 import com.choongang.bcentral.user.vo.UserVo;
+import com.google.gson.Gson;
 
 // [서버관리] 비동기 Controller
 @RestController
@@ -37,14 +40,13 @@ public class RestServerController {
 		
 		
 		//status 계산
-		
+		//.......................ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
 		String status = "";
-		ArrayList<Integer> stateList = new ArrayList<Integer>();
 		int state = 3;
 		for(ServerVo vo : serverList) {
-			
 			int server_no = vo.getServer_no();
 			ArrayList<Integer> scNos= serverService.getScNoListByServerNo(server_no);
+			ArrayList<Integer> stateList = new ArrayList<Integer>();
 
 			if(scNos == null) {
 				state = 3;
@@ -52,7 +54,7 @@ public class RestServerController {
 				for(int no : scNos) {
 					ScheduleVo sVo= serverService.getScheduleByScNo(no);
 					int s = serverService.todaySchedule(sVo);
-					System.out.println("상태 :" +   s);
+					//System.out.println(server_no + "번 서버의 "+no + "번 스케줄의 현재 작업상태 :" +   s);
 					stateList.add(s);	
 				}
 				
@@ -67,7 +69,6 @@ public class RestServerController {
 				}
 			}
 			
-			
 			if(state == 0 ) {
 				status = "오늘 작업 예정";
 			} else if(state == 1) {
@@ -77,7 +78,7 @@ public class RestServerController {
 			} else if(state == 3) {
 				status = "오늘 작업 없음";
 			}
-			
+			//System.out.println("이 서버의 작업상태 : " + status);
 			vo.setStatus(status);
 		}
 	
@@ -99,17 +100,20 @@ public class RestServerController {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
+		if(userInfo == null) { //인터셉터 존재??? delete,update...ajax에서 사용...ㅜㅜ
+			data.put("result", "error"); 
+			data.put("reason","로그인이 필요합니다."); 
+			return data; 
+		}
+		
 		param.setUser_no(userInfo.getUser_no());
-		
 		serverService.insertServer(param);
-		
 		data.put("result", "success");
-		
 		return data;
 	}
 	
 	@RequestMapping("deleteServer")
-	public HashMap<String, Object> deleteServer(ArrayList<String> param){
+	public HashMap<String, Object> deleteServer(@RequestBody ArrayList<String> param){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
 		serverService.deleteServer(param);
@@ -129,10 +133,10 @@ public class RestServerController {
 	}
 	
 	@RequestMapping("updateServer")
-	public HashMap<String, Object> updateServer(ServerVo parma){
+	public HashMap<String, Object> updateServer(ServerVo param){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		serverService.updateServer(parma);
+		serverService.updateServer(param);
 		
 		data.put("result", "success");
 		
@@ -147,4 +151,16 @@ public class RestServerController {
 		
 		return data;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

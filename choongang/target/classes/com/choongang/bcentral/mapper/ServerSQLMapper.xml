@@ -91,6 +91,9 @@
 		AND bs.delete_date is null
 	</select>
 
+
+
+
 	<select id="getScNoListByServerNo"	resultType="int">
 		SELECT BM.sc_no
 		FROM BP_Mgmt_server BM
@@ -103,6 +106,10 @@
 		WHERE SC_NO = #{SC_NO} 	
  	</select>
  	
- 	
+ 	<select id="getServerNosByScNo" resultType="int">
+ 		SELECT BM.server_no
+		FROM BP_Mgmt_server BM
+		WHERE sc_no = #{sc_no}
+ 	</select>
  	
 </mapper>
