@@ -4,6 +4,7 @@
 
 
 
+#userBox{width: 100%;background: #fff;border-radius: 20px;height: 800px;}
 #container{
     position: absolute;
     top: 0;
@@ -14,20 +15,26 @@
     overflow: hidden;
 }
 .writeBtn{
-       width: 80px;
-       height: 40px;
-       font-size: 15px;
-       background: none;
-       border: 1px solid #777;
-       border-radius: 3px;
-       cursor: pointer;
-       }
-       
+	width: 80px;
+    height: 45px;
+    font-weight: 500;
+    border: 1px solid #18244d;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #18244d;
+	background: #fff;
+	font-size: 16px;
+	transition: 0.3s;
+}
+.writeBtn:hover{
+	background: #18244d;
+    color: #fff;
+}     
 #content{
     display: flex;
 }
 #box{
-    margin: 40px 0px 100px 350px;
+    margin: 30px 0px 100px 350px;
     width: 100%;
     padding-right: 400px;
     /* height: 100%; */}
@@ -137,19 +144,18 @@
 
 #jqgridBox{
 	border-top:none;
-	margin-top:30px
-}
+	}
 #deleteBtn{
 	margin-left:10px
 }
-#top{display: flex;justify-content: space-between;}
+#top{display: flex;justify-content: space-between;padding: 30px 30px 30px 30px;}
 #search{display: flex;}
 #search .searchBox{margin-right: 10px;}
-#search .searchBox .searchForm{width: 300px;height: 40px;border: #999;padding-left: 10px;}
+#search .searchBox .searchForm{width: 300px;height: 45px;border: #ccc 1px solid;padding-left: 35px;border-radius: 30px;background-image: url(../img/search.png);background-repeat: no-repeat;background-position: 10px;background-size: 17px;font-size: 14px;color: #555;}
 #gnb{
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     padding: 0px 38px 0px 38px;
     align-items: center;
 }
@@ -158,8 +164,8 @@
     display: flex;
     align-items: center;
 }
-#gnb .icon .iconText{font-size: 16px;font-weight: 600;}
+#gnb .icon .iconText{font-size: 16px;font-weight: 500;}
 .profile{
-    width: 60px;
+    width: 45px;
     margin-right: 15px;
 }

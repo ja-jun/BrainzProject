@@ -11,15 +11,15 @@
     left: 0;
     background: #f3f3f6;
     width: 100%;
-    /* height: 100vw; */
-    overflow: hidden;
-}
+    height: 100%;
+    overflow-y: auto;
+overflow-x: hidden;}
 #box{
     margin: 30px 0px 100px 350px;
     width: 100%;
     padding-right: 380px;
     }
-#first{display: flex;height: 450px;width: 100%;}
+#first{display: grid;/* height: 100%; */width: 100%;/* row-gap: 30px; */grid-template-columns: 65% 35%;grid-template-rows: 600px;}
 
 .title{
     font-family: 'Montserrat';
@@ -52,9 +52,9 @@
     height: 9px;
     margin-right: 10px;
 }
-.doughnutUl .doughnutList:nth-child(1) .colorBox{background: #FACC2E;}
-.doughnutUl .doughnutList:nth-child(2) .colorBox{background: #EF87A3;}
-.doughnutUl .doughnutList:nth-child(3) .colorBox{background: #C766B9;}
+.doughnutUl .doughnutList:nth-child(1) .colorBox{background: #3d5fac;}
+.doughnutUl .doughnutList:nth-child(2) .colorBox{background: #e54e6d;}
+.doughnutUl .doughnutList:nth-child(3) .colorBox{background: #f8c631;}
 .doughnutUl .doughnutList .titleBox{
 color: #777;
 }
@@ -63,7 +63,7 @@ color: #777;
     padding: 40px 40px 40px 40px;
     background: #fff;
     border: 1px solid #e9e9ee;
-    width: 30%;
+    /* width: 30%; */
     border-radius: 20px;
     overflow-y: auto;
     height: 890px;
@@ -93,10 +93,10 @@ color: #777;
 
 #box2{
     display: flex;
-    margin-top: 40px;
+    /* margin-top: 40px; */
     height: 400px;
-    width: 70%;
-}
+    /* width: 70%; */
+/* position: relative; *//* bottom: 90%; */}
 #noticeBox{
     padding: 40px 40px 40px 40px;
     background: #fff;
@@ -120,9 +120,9 @@ color: #777;
 }
 #noticeBox .noticeBox2 .noticeUl .noticeList .date{font-family: 'Montserrat';color: #888;font-weight: 400;font-size: 15px;}
 #doughnut{
-    width: 70%;
-    display: flex;
-}
+    /* width: 70%; */
+    /* display: flex; */
+height: 500px;}
 .titleB{
     display: flex;
     justify-content: space-between;
@@ -217,7 +217,7 @@ color: #777;
 #gnb{
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     padding: 0px 38px 0px 38px;
     align-items: center;
 }
@@ -226,7 +226,11 @@ color: #777;
     display: flex;
     align-items: center;
 }
-#gnb .icon .iconText{font-size: 16px;font-weight: 600;}
+#gnb .icon .iconText{font-size: 16px;font-weight: 500;}
+.profile{
+    width: 45px;
+    margin-right: 15px;
+}
 
 .titleC{
     display: flex;
@@ -250,8 +254,4 @@ color: #777;
 }
 .titleE:last-child{
 	margin-top:-20px
-}
-.profile{
-    width: 50px;
-    margin-right: 15px;
 }

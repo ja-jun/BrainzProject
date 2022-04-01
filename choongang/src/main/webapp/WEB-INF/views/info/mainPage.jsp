@@ -86,17 +86,17 @@
 		
 	</div>
 	</div>
-	
 	</div>
+
+
+
 	<div id="scheduleBox">
 	<div class="titleB">
 		<h3 class="title" style="margin-bottom: 50px;">Schedule</h3>
 		<a href=""><p class="more">More</p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
 		</div>
 		<div id="calendar"></div>
-		
 	</div>
-</div>
 
 
 	<div id="box2">
@@ -129,11 +129,9 @@
 		</ul>
 	</div>
 	</div>
-	
-	
-	
 </div>
 
+</div>
 </div>
 </div>
 
@@ -141,48 +139,50 @@
 
 
 <script>
-
-new Chart(document.getElementById("doughnut-chart"), {
-    type: 'doughnut',
-    data: {
-      labels: ["Africa", "Asia", "Europe"],
-      datasets: [
-        {
-          label: "Population (millions)",
-          backgroundColor: ["#e54e6d", "#3d5fac","#f8c631"], 
-          data: [2478,5267,734],
-		  borderWidth: 0
-        }
-      ]
-    },
-    options: {
-		responsive: false,
-			legend: {
-			display:false
-			}
-    }
-});
-
-
-
-	var context = document.getElementById('barChart');
-    var myChart = new Chart(context, {
-        type: 'bar',
-        data: {
-        labels: [
-        '작업중','작업예정','작업완료','작업없음'
-         ],
-		 datasets: [{
-			 backgroundColor: ["#e04651", "#f8c631","#3d5fac","#c9c9c9"], 
+// 서버 차트 작성
+var context = document.getElementById('barChart');
+$.ajax({
+	url : '/choongang/info/getServerInfo',
+	method : 'POST',
+	dataType : 'json'
+}).done(function(json){
+	const stateLabels = ['작업중', '작업예정', '작업완료', '작업없음'];
+	const osLabels = ['AIX', 'Windows', 'Linux'];
+	
+	var os = [0, 0, 0];
+	
+	for(var server of json.serverInfo){
+		var sv = server['serverVo'].os;
+		
+		if(sv == 'AIX'){
+			os[0]++;
+		} else if(sv == 'Windows'){
+			os[1]++;
+		} else if(sv == 'Linux'){
+			os[2]++;
+		}
+	}
+	
+	// 서버 상태 Bar Chart 작성
+	var myChart = new Chart(context, {
+		type: 'bar',
+		data: {
+		labels: stateLabels,
+		datasets: [{
+			backgroundColor: ["#e04651", "#f8c631","#3d5fac","#c9c9c9"], 
 			pointBackgroundColor: 'white',
 			borderWidth: 0,
-			data: [50, 55, 80, 81]
-    }]
-                },
-                options: {
+			data: [
+				json.stateCount[1],
+				json.stateCount[0],
+				json.stateCount[2],
+				json.stateCount[3]
+			]
+	    }]},
+	    options: {
 			responsive: false,
 			legend: {
-					display:false
+				display:false
 			},
 			scales: {
 				yAxes: [{
@@ -191,13 +191,13 @@ new Chart(document.getElementById("doughnut-chart"), {
 						stepSize : 20,
 						fontColor : "#222",
 						fontSize : 20,
-                        fontFamily : 'Montserrat'
+	                       fontFamily : 'Montserrat'
 					},
 					gridLines:{
 						color: '#e8e8e8',
 						lineWidth:1,
-                        drawBorder: false,
-                        margin:10
+	                       drawBorder: false,
+	                       margin:10
 					}
 				}],
 				xAxes: [{
@@ -214,78 +214,123 @@ new Chart(document.getElementById("doughnut-chart"), {
 				}]
 			}
 		}
-              });
-
+	});
 	
+	// 서버 OS 종류별 작성
+	new Chart(document.getElementById("doughnut-chart"), {
+	    type: 'doughnut',
+	    data: {
+	      labels: osLabels,
+	      datasets: [
+	        {
+	          label: "Population (millions)",
+	          backgroundColor: ["#e54e6d", "#3d5fac","#f8c631"], 
+	          data: os,
+			  borderWidth: 0
+	        }
+	      ]
+	    },
+	    options: {
+			responsive: false,
+			legend: {
+				display:false
+			}
+	    }
+	});
 	
+	console.log(json.weekScheduleInfo.length);
 	
+	var events = json.weekScheduleInfo.map(function(item){
+		return{
+			title : item.title,
+			start : item.start_date + "T" + item.start_time,
+			end : item.end_date + "T" + item.end_date,
+			id : item.sc_no
+		}
+	});
 	
 	var calendarEl = document.getElementById('calendar');
 	var calendar = new FullCalendar.Calendar(calendarEl, {
-		  initialView: 'listWeek',
-		  locale: 'ko',
-		  events: [
-		    {
-		      title: '테스트입니다1111111',
-		      start: '2022-03-30T14:30:00',
-		      extendedProps: {
-		        status: 'done'
-		      }
-		    },
-		    {
-		      title: '테스트입니다222222',
-		      start: '2022-03-30T07:00:00',
-		      backgroundColor: 'green',
-		      borderColor: 'green'
-		    },
-		    {
-			      title: '테스트입니다333333',
-			      start: '2022-03-31T14:30:00',
-			      extendedProps: {
-			        status: 'done'
-			      }
-			    },{
-				      title: '테스트입니다4444444',
-				      start: '2022-03-31T18:30:00',
-				      extendedProps: {
-				        status: 'done'
-				      }
-				    },{
-					      title: '테스트입니다555555',
-					      start: '2022-03-31T14:30:00',
-					      extendedProps: {
-					        status: 'done'
-					      }
-					    },{
-						      title: '테스트입니다6666666',
-						      start: '2022-03-31T22:30:00',
-						      extendedProps: {
-						        status: 'done'
-						      }
-						    },{
-							      title: '테스트입니다7777777',
-							      start: '2022-04-01T14:30:00',
-							      extendedProps: {
-							        status: 'done'
-							      }
-							    },{
-								      title: '테스트입니다88888888',
-								      start: '2022-04-02T14:30:00',
-								      extendedProps: {
-								        status: 'done'
-								      }
-								    },{
-									      title: '테스트입니다999999',
-									      start: '2022-04-02T14:30:00',
-									      extendedProps: {
-									        status: 'done'
-									      }
-									    },
-		  ]
-		});
+		initialView: 'listMonth',
+		locale: 'ko',
+		events : events
+	});
+	
 	calendar.render();
+})
 
-  </script>
+/* var calendarEl = document.getElementById('calendar');
+var calendar = new FullCalendar.Calendar(calendarEl, {
+	  initialView: 'listWeek',
+	  locale: 'ko',
+	  events: [
+						{
+							    title: '언제부터시작인가',
+							    start: '2022-03-28T14:30:00',
+							    extendedProps: {
+							      status: 'done'
+								}
+							},
+							{
+							  title: '테스트입니다1111111',
+							  start: '2022-03-30T14:30:00',
+							  extendedProps: {
+							    status: 'done'
+								}
+							},
+							{
+							  title: '테스트입니다222222',
+							  start: '2022-03-30T07:00:00',
+							  backgroundColor: 'green',
+							  borderColor: 'green'
+							},
+							{
+							  title: '테스트입니다333333',
+							  start: '2022-03-31T14:30:00',
+							  extendedProps: {
+							    status: 'done'
+							  }
+							},{
+							  title: '테스트입니다4444444',
+							  start: '2022-03-31T18:30:00',
+							  extendedProps: {
+							    status: 'done'
+							  }
+							},{
+							   title: '테스트입니다555555',
+							   start: '2022-03-31T14:30:00',
+							   extendedProps: {
+							     status: 'done'
+							   }
+							},{
+							    title: '테스트입니다6666666',
+							    start: '2022-03-31T22:30:00',
+							    extendedProps: {
+							      status: 'done'
+							}
+							},{
+							     title: '테스트입니다7777777',
+							     start: '2022-04-01T14:30:00',
+							     extendedProps: {
+							       status: 'done'
+							}
+							   },{
+							    title: '테스트입니다88888888',
+							    start: '2022-04-02T14:30:00',
+								extendedProps: {
+								status: 'done'
+									}
+								},{
+									title: '테스트입니다999999',
+									start: '2022-04-02T14:30:00',
+									extendedProps: {
+										status: 'done'
+									}
+								}]
+							}); 
+calendar.render(); */
+
+ </script>
 	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

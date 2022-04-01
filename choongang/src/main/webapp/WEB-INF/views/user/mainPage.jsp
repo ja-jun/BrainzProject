@@ -473,6 +473,9 @@ window.addEventListener("keyup", e => {
 window.addEventListener("DOMContentLoaded", function(){
 	createAndInitGrid();
 	const modal = document.getElementById("modal");	
+	
+	// 엔터 누르면 검색
+	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
 });
 </script>
 
@@ -493,7 +496,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			</div>
 		</div>
 		
-		
+		<div id="userBox">
 		<div id="top">
 			<div class="btnBox">
          	<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
@@ -503,15 +506,13 @@ window.addEventListener("DOMContentLoaded", function(){
          			<div class="searchBox">
 						<input id="searchWord" type="text" class="searchForm" placeholder="아이디/이름">
 					</div>
-					<div class="searchBox2">
-						<button class="writeBtn" onclick="search()">검색</button>
-					</div>
 				</div>	
 		</div>
 			
          <div id="jqgridBox">
          	<table id="list" style="width:100%"></table>
          	<div id="pager"></div>
+         </div>
          </div>
          
       </div>

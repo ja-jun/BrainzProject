@@ -1,6 +1,6 @@
 /*Grid*/
 .ui-jqgrid {position: relative;/* padding: 4vw 2vw 0vw 2vw; */overflow: hidden;width: 100% !important;/* margin: 4vw; */font-family: 'Noto Sans KR';height: 100%;}
-.ui-jqgrid .ui-jqgrid-view {position: relative;left:0;top: 0;padding: 0;font-size: 13px;height: 600px;width:100% !important;overflow-y: auto;overflow-x: hidden;}
+.ui-jqgrid .ui-jqgrid-view {position: relative;left:0;top: 0;padding: 0;font-size: 13px;height: 620px;width:100% !important;overflow-y: auto;overflow-x: hidden;}
 /* caption*/
 .ui-jqgrid .ui-jqgrid-titlebar {padding: .3em .2em .2em .3em; position: relative; font-size: 12px; border-left: 0 none;border-right: 0 none; border-top: 0 none;}
 .ui-jqgrid .ui-jqgrid-caption {text-align: left;}
@@ -57,7 +57,7 @@ border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;}
 .ui-jqgrid tr.footrow-ltr td {text-align:left;border-right-width: 1px; border-right-color: inherit; border-right-style: solid;}
 .ui-jqgrid tr.footrow-rtl td {text-align:right;border-left-width: 1px; border-left-color: inherit; border-left-style: solid;}
 /* Pager*/
-.ui-jqgrid .ui-jqgrid-pager { width:100% !important; border-left: 0 none !important;border-right: 0 none !important; border-bottom: 0 none !important; margin: 50px 0px 50px 0px !important; padding: 0 !important; position: relative; /* height: 25px; */white-space: nowrap;overflow: hidden;font-size: 14px;}
+.ui-jqgrid .ui-jqgrid-pager { width:100% !important; border-left: 0 none !important;border-right: 0 none !important; border-bottom: 0 none !important;   position: relative; white-space: nowrap;overflow: hidden;font-size: 14px;margin-top: 15px;}
 .ui-jqgrid .ui-pager-control {position: relative;}
 .ui-jqgrid .ui-pg-table {position: relative; /* padding-bottom:2px; */ width:auto; margin: 0;}
 .ui-jqgrid .ui-pg-table td {font-weight:normal; vertical-align:middle; }
