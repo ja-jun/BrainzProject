@@ -43,10 +43,12 @@ public class RestInfoController {
 		data.put("serverInfo", serverInfo);
 		data.put("totalServer", infoService.getTotalServer());
 		data.put("stateCount", stateCount);
-		
+		data.put("weekScheduleInfo", infoService.getWeekScheduleInfo());
+				
 		return data;
 	}
 	
+	// 테스트 용
 	@RequestMapping("getScheduleInfo")
 	public HashMap<String, Object> getScheduleInfo(){
 		HashMap<String, Object> data = new HashMap<String, Object>();

@@ -22,4 +22,16 @@
 		from bp_server bs
 		order by bs.server_no asc
 	</select>
+	
+	<select id="selectWeekSchedule" resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
+		select bs.sc_no, bs.user_no, bs.title, bs.start_date, bs.end_date,
+			   bs.start_time, bs.end_time, bs.repeat_cat, bs.repeat_day, bs.repeat_week,
+			   bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun, bs.write_date
+		from bp_schedule bs
+		<![CDATA[
+		where 	bs.start_date <= now() + '7 day'
+			and bs.end_date >= now()
+			and bs.delete_date is null
+		]]>
+	</select>
 </mapper>
