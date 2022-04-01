@@ -48,6 +48,7 @@ function createAndInitGrid(){
         postData : {}, //....
         mtype : "POST",
         loadtext : "로딩중...",
+        width:1573,
         height: 'auto',
 		autowidth:true,
 		beforeSelectRow: function(rowid, e){
@@ -470,40 +471,51 @@ window.addEventListener("keyup", e => {
 })
 
 window.addEventListener("DOMContentLoaded", function(){
-	$(window).resize(function() {
-		$("#list").setGridWidth($(this).width() * .100);
-	});    
-	
 	createAndInitGrid();
-	
-	$("#userPage").addClass("on");
-	
 	const modal = document.getElementById("modal");	
 });
 </script>
 
 </head>
 <body>
-      <jsp:include page="../common/nav.jsp"></jsp:include>
+    <jsp:include page="../common/nav.jsp"></jsp:include>
 
-	<div class="container">
-		<div class="row mt-3" style="position: relative; top: 100px; z-index: 999; left: 700px;">
-			<div class="col-4">
-				<input id="searchWord" type="text" class="form-control" placeholder="아이디/이름">
-			</div>
-			<div class="col ">
-				<button class="writeBtn" onclick="search()">검색</button>
-			</div>
-		</div>
-
+	<div id="container">
 		<div id="box">
-			<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-			<button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
-			<table id="list"></table>
-			<div id="pager"></div>
+		
+		
+		<div id="gnb">
+			<div class="iconBox">
+			<img src="../resources/img/user.png" class="profile">
+				<div class="icon">
+				<p class="iconText" >닉네임</p>
+				</div>
+			</div>
 		</div>
+		
+		
+		<div id="top">
+			<div class="btnBox">
+         	<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
+         	<button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
+         	</div>
+         		<div id="search">
+         			<div class="searchBox">
+						<input id="searchWord" type="text" class="searchForm" placeholder="아이디/이름">
+					</div>
+					<div class="searchBox2">
+						<button class="writeBtn" onclick="search()">검색</button>
+					</div>
+				</div>	
+		</div>
+			
+         <div id="jqgridBox">
+         	<table id="list" style="width:100%"></table>
+         	<div id="pager"></div>
+         </div>
+         
+      </div>
 	</div>
-
 
 	<!--등록 모달창 시작 -->
 <div id="modal" class="modal-overlay" style="display:none">

@@ -18,8 +18,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link href='../resources/css/reset.css' rel='stylesheet' />
-<link href='../resources/css/test.css' rel='stylesheet' />
-<link href='../resources/css/test2.css' rel='stylesheet' />
+<link href='../resources/css/info.css' rel='stylesheet' />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <!-- fullcalender -->
@@ -35,57 +34,8 @@
 </head>
 <body>
 	
-	
-	<div id="content">
-			<div class="navBar">
-                <h3 class="headerName">Bcentral</h3>
-				<ul id="ulList">
-					<li class="pageList" id="userPage">
-						<a href="../user/mainPage">
-						<div class="navBox">
-						<img src="../resources/img/person.png" class="imgNav">
-						<span class="navTitle">사용자관리</span>
-						</div>
-						</a>
-					</li>
-						
-					<li class="pageList" id="serverPage">
-						<a href="">
-						<div class="navBox">
-						<img src="../resources/img/server.png" class="imgNav">
-						<span class="navTitle">서버관리</span>
-						</div>
-						</a>
-					</li>
-					
-					<li class="pageList" id="calenderPage">
-						<a href="../calendar/calendarListPage">
-						<div class="navBox">
-						<img src="../resources/img/calendar2.png" class="imgNav">
-						<span class="navTitle">작업관리</span>
-						</div>
-						</a>
-					</li>
-					
-					<li class="pageList" id="noticePage">
-						<a href="">
-						<div class="navBox">
-						<img src="../resources/img/notice.png" class="imgNav">
-						<span class="navTitle">공지사항</span>
-						</div>
-						</a>
-					</li>
-				</ul>
-				
-				<ul class="language2">
-					<li class="languageBox2 onn"><span class="languageText">Ko</span></li>
-					<li class="languageBox2"><span class="languageText">En</span></li>
-					<li class="languageBox2"><span class="languageText">Cn</span></li>
-				</ul>
-				
-			</div>
-	    </div>	
 
+<jsp:include page="../common/nav.jsp"></jsp:include>
 
 <div id="container">
 <div id="box">
@@ -96,14 +46,6 @@
 		<div class="icon">
 		<p class="iconText" >닉네임</p>
 		</div>
-		<div class="language">
-			<select name="languageBox" class="languageBox">
-   				<option value="">언어선택</option>
-   				<option value="1">한국어</option>
-   				<option value="2">영어</option>
-   				<option value="3">중국어</option>
-			</select>
-		</div>	
 	</div>
 	</div>
 	
@@ -116,7 +58,7 @@
     	</div>
 		<div class="barBox">
 		<div class="barBar">
-		<canvas id="barChart" width="600" height="400" ></canvas>
+		<canvas id="barChart" width="600" height="400" style="width:100%"></canvas>
 		
 		<ul class="barUl">
 			<li class="barList"><p class="colorBox"></p><h3 class="titleBox">작업중</h3></li>
@@ -164,7 +106,7 @@
     	<a href=""><p class="more">More</p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
     	</div>
 		<div class="doughnutBox2">
-		<canvas id="doughnut-chart" width="300" height="300"></canvas>
+		<canvas id="doughnut-chart" width="300" height="300" style="width:100%"></canvas>
 		<ul class="doughnutUl">
 			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">Window</h3></li>
 			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">Linux</h3></li>
@@ -180,7 +122,6 @@
     	</div>
 		<div class="noticeBox2">
 		<ul class="noticeUl">
-			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
 			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
 			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
 			<li class="noticeList"><h3 class="titleList">제목입니다.</h3><p class="date">2022.03.30</p></li>
@@ -208,7 +149,7 @@ new Chart(document.getElementById("doughnut-chart"), {
       datasets: [
         {
           label: "Population (millions)",
-          backgroundColor: ["#EF87A3", "#FACC2E","#C766B9"],
+          backgroundColor: ["#e54e6d", "#3d5fac","#f8c631"], 
           data: [2478,5267,734],
 		  borderWidth: 0
         }
@@ -232,7 +173,7 @@ new Chart(document.getElementById("doughnut-chart"), {
         '작업중','작업예정','작업완료','작업없음'
          ],
 		 datasets: [{
-			backgroundColor: ["#E0272F", "#FFD25A","#01A9DB","#a4a4a4"],
+			 backgroundColor: ["#e04651", "#f8c631","#3d5fac","#c9c9c9"], 
 			pointBackgroundColor: 'white',
 			borderWidth: 0,
 			data: [50, 55, 80, 81]
