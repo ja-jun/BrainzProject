@@ -19,7 +19,7 @@ overflow-x: hidden;}
     width: 100%;
     padding-right: 380px;
     }
-#first{display: grid;/* height: 100%; */width: 100%;/* row-gap: 30px; */grid-template-columns: 65% 35%;grid-template-rows: 600px;}
+#first{display: grid;/* height: 100%; */width: 100%;/* row-gap: 30px; */grid-template-columns: 65% 35%;grid-template-rows: 520px;}
 
 .title{
     font-family: 'Montserrat';
@@ -65,8 +65,8 @@ color: #777;
     border: 1px solid #e9e9ee;
     /* width: 30%; */
     border-radius: 20px;
-    overflow-y: auto;
-    height: 890px;
+    /* overflow-y: auto; */
+    height: 920px;
     margin-left: 30px;
 }
 #scheduleBox .scheduleUl{}

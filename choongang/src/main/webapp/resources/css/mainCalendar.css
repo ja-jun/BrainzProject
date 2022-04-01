@@ -293,10 +293,10 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-scroller-liquid {
     height: 100%;
-    height: 950px !important;
+    /* height: 10000px; */
     -ms-overflow-style: none;
-  }
-.fc .fc-scroller-liquid::-webkit-scrollbar{ display:none; }
+  /* overflow-y: hidden; */}
+
 .fc .fc-scroller-liquid-absolute {
     position: absolute;
     top: 0;
@@ -398,7 +398,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     flex-grow: 1; /* because this harness is WITHIN the .fc's flexbox */
     position: relative;
     font-size: 16px;
-  }
+  height: 800px !important;}
 .fc {
 
   /* when the harness controls the height, make the view liquid */
@@ -411,7 +411,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
     bottom: 0;
     left: 0;
     border: none;
-  }
+  overflow: hidden;}
 .fc .fc-col-header-cell-cushion {
     display: inline-block; /* x-browser for when sticky (when multi-tier header) */
     padding: 2px 4px;
