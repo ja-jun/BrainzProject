@@ -16,7 +16,7 @@
 				login-page="/login/loginPage" 
 				authentication-failure-handler-ref="loginFailHandler"
 				always-use-default-target="true"
-				default-target-url="/user/mainPage"
+				default-target-url="/info/mainPage"
 			/>
 			<security:logout 
 				logout-url="/security_logout"
