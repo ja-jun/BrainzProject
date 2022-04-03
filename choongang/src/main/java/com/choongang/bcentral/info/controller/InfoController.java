@@ -1,5 +1,8 @@
 package com.choongang.bcentral.info.controller;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,7 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class InfoController {
 
 	@RequestMapping("mainPage")
-	public String mainPage() {
+	public String mainPage(HttpSession session, Authentication auth) {
+		
+		// 최종 로그인 시간 입력
+		String user_id = auth.getName();
+		
+		
 		return "/info/mainPage";
 	}
 	
