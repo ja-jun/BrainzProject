@@ -30,7 +30,7 @@
 					</li>
 						
 					<li class="pageList" id="serverPage">
-						<a href="../user/mainPage">
+						<a href="../server/mainPage">
 						<div class="navBox">
 						<img src="../resources/img/servers.png" class="imgNav">
 						<span class="navTitle">서버관리</span>
@@ -39,7 +39,7 @@
 					</li>
 					
 					<li class="pageList" id="calenderPage">
-						<a href="../calendar/calendarListPage">
+						<a href="../schedule/mainPage">
 						<div class="navBox">
 						<img src="../resources/img/calendar2.png" class="imgNav">
 						<span class="navTitle">작업관리</span>
@@ -48,7 +48,7 @@
 					</li>
 					
 					<li class="pageList" id="noticePage">
-						<a href="../user/mainPage">
+						<a href="../notification/mainPage">
 						<div class="navBox">
 						<img src="../resources/img/notice.png" class="imgNav">
 						<span class="navTitle">공지사항</span>

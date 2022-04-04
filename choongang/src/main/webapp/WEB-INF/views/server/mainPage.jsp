@@ -14,9 +14,6 @@
 <link href='../resources/css/reset.css' rel='stylesheet' />
 <link href="../resources/css/jquery-ui.css" rel="stylesheet"/>
 <link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
-<link href="../resources/css/jquery-ui.structure.css" rel="stylesheet"/>
-<link href="../resources/css/jquery-ui.theme.css" rel="stylesheet"/>
-
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
@@ -316,58 +313,68 @@ window.addEventListener("DOMContentLoaded", function(){
 
 <body>
 	<jsp:include page="../common/nav.jsp"></jsp:include>
-
+	
+	
 	<div id="container">
-		<div id="container">
-			<div class="container">
-
-				<div id="box">
-					<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-					<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
-					<a href="./getExcelServerList" id="exportAnchor"><button
-							class="writeBtn" id="excelBtn">내보내기</button></a>
-
-					<h2>서버 관리</h2>
-					<table id="list"></table>
-					<div id="pager"></div>
+		<div id="box">
+		
+		
+		<div id="gnb">
+			<div class="iconBox">
+			<img src="../resources/img/user.png" class="profile">
+				<div class="icon">
+				<p class="iconText" >닉네임</p>
 				</div>
-				<div class="row mt-3">
-					<div class="col-4">
-						<input id="searchWord" type="text" class="form-control"
-							placeholder="서버명/IP">
-					</div>
-					<div class="col ">
-						<button class="writeBtn" onclick="search()">검색</button>
-					</div>
-				</div>
-
 			</div>
 		</div>
+		
+		<div id="userBox">
+		<div id="top">
+			<div class="btnBox">
+         	<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
+         	<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
+         	<a href="./getExcelServerList" id="exportAnchor"><button class="writeBtn" id="excelBtn">내보내기</button></a>
+         	</div>
+         		<div id="search">
+         			<div class="searchBox">
+						<input id="searchWord" type="text" class="searchForm" placeholder="서버명/IP">
+					</div>
+				</div>	
+		</div>
+			
+         <div id="jqgridBox">
+         	<table id="list" style="width:100%"></table>
+         	<div id="pager"></div>
+         </div>
+         </div>
+         
+      </div>
 	</div>
 
 
-	<!--등록 모달창 시작 -->
-		<div id="modal" class="modal-overlay" style="display:none">
-			<div class="modal-window">
-				<div class="modalBox">
+
+<!--등록 모달창 시작 -->
+	<div id="modal" class="modal-overlay" style="display:none">
+		<div class="modal-window">
+			<div class="modalBox">
 				
-					<!-- Form 태그 시작 -->
-					<form id="regServerInfo">
+				<!-- Form 태그 시작 -->
+				<form id="regServerInfo">
 					<div class="top">
 						<h3 class="title">서버 등록</h3>
 						<i class="bi bi-x" onclick="modalOff()"></i>
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">서버명<span class="star">*</span></strong>
 						<input type="text" id="name" name="name" class="textBox" >
-						<div id="nameAlertBox"></div> 
+						<div id="nameAlertBox" class="confirmAlertBox"></div> 
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">IP<span class="star">*</span></strong>
 						<input type="text" id="ip" name="ip" class="textBox">
-						<div id="ipAlertBox"></div> 						
+						<div id="ipAlertBox" class="confirmAlertBox"></div> 						
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">OS분류<span class="star">*</span></strong>
 						<select form="regServerInfo" id="os" name="os" class="selectBox" >
 								<option value="AIX">AIX</option>
@@ -377,34 +384,38 @@ window.addEventListener("DOMContentLoaded", function(){
 								<option value="Linux">Linux</option>							
 							</select>
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">위치</strong>
 						<input type="text" id="loc" name="loc" class="textBox">
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">MAC<span class="star">*</span></strong>
 						<input type="text" id="mac"  name="mac" class="textBox" onblur="confirmMac()">
-						<div id="macAlertBox"></div> 
+						<div id="macAlertBox" class="confirmAlertBox"></div> 
 					</div>
 					
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">관리번호</strong>
 						<input type="text" id="control_num" name="control_num" class="textBox">
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">설명</strong>
 						<input type="text" id="dsc" name="dsc" class="textBox">
 					</div>
 					<div class="btnBox">
-						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertServer()">
-						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
+						<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertServer()">
+						<input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >
 					</div>
 					</form>
 
 				<!-- Form 태그 종료 -->
-				</div>
-			</div>
+
 		</div>
+	</div>
+</div>
+	
+	
+	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>

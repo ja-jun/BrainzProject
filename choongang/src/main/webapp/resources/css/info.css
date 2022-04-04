@@ -13,14 +13,24 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
-overflow-x: hidden;}
+	overflow-x: hidden;
+}
 #box{
     margin: 30px 0px 100px 350px;
     width: 100%;
-    padding-right: 380px;
-    }
-#first{display: grid;/* height: 100%; */width: 100%;/* row-gap: 30px; */grid-template-columns: 65% 35%;grid-template-rows: 520px;}
-
+    padding-right: 400px;
+}
+#first{
+	display: grid;
+	width: 100%;
+	
+	
+grid-template-columns: 1fr 3fr 2fr;
+  grid-template-rows: 20px 400px 500px;
+  grid-template-areas:
+  "midTop midTop rightCol"
+  "midBottom midBottom rightCol";
+  margin-bottom: 100px;}
 .title{
     font-family: 'Montserrat';
     font-size: 22px;
@@ -35,7 +45,12 @@ overflow-x: hidden;}
     border: 1px solid #e9e9ee;
     margin-right: 30px;
 }
-.doughnutBox2{margin: auto;display: flex;justify-content: center;width: 250px;}
+.doughnutBox2{
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	width: 250px;
+}
 .doughnutUl{
     display: grid;
     margin-left: 55px;
@@ -56,19 +71,17 @@ overflow-x: hidden;}
 .doughnutUl .doughnutList:nth-child(2) .colorBox{background: #e54e6d;}
 .doughnutUl .doughnutList:nth-child(3) .colorBox{background: #f8c631;}
 .doughnutUl .doughnutList .titleBox{
-color: #777;
+	color: #777;
 }
 
 #scheduleBox{
     padding: 40px 40px 40px 40px;
     background: #fff;
     border: 1px solid #e9e9ee;
-    /* width: 30%; */
     border-radius: 20px;
-    /* overflow-y: auto; */
     height: 920px;
     margin-left: 30px;
-}
+/* grid-area: 1 / -3 / span 2 / span 2; */grid-area: rightCol;}
 #scheduleBox .scheduleUl{}
 #scheduleBox .scheduleUl .scheduleList{
     display: flex;
@@ -83,7 +96,13 @@ color: #777;
     display: block;
     margin-right: 25px;
 }
-#scheduleBox .scheduleUl .scheduleList .time{font-family: 'Montserrat';font-weight: 500;margin-right: 30px;margin-top: 2px;font-size: 1.9em;}
+#scheduleBox .scheduleUl .scheduleList .time{
+	font-family: 'Montserrat';
+	font-weight: 500;
+	margin-right: 30px;
+	margin-top: 2px;
+	font-size: 1.9em;
+}
 #scheduleBox .scheduleUl .scheduleList .text{
     font-weight: 400;
     font-size: 1.7em;
@@ -93,10 +112,8 @@ color: #777;
 
 #box2{
     display: flex;
-    /* margin-top: 40px; */
     height: 400px;
-    /* width: 70%; */
-/* position: relative; *//* bottom: 90%; */}
+grid-area: midBottom;margin-top: 500px;}
 #noticeBox{
     padding: 40px 40px 40px 40px;
     background: #fff;
@@ -120,9 +137,9 @@ color: #777;
 }
 #noticeBox .noticeBox2 .noticeUl .noticeList .date{font-family: 'Montserrat';color: #888;font-weight: 400;font-size: 15px;}
 #doughnut{
-    /* width: 70%; */
-    /* display: flex; */
-height: 500px;}
+	height: 500px;
+
+   grid-area: midTop;}
 .titleB{
     display: flex;
     justify-content: space-between;

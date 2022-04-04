@@ -15,13 +15,13 @@
     overflow: hidden;
 }
 .writeBtn{
-	width: 80px;
+	width: 85px;
     height: 45px;
     font-weight: 500;
     border: 1px solid #18244d;
     border-radius: 10px;
     cursor: pointer;
-    color: #18244d;
+    color: #222;
 	background: #fff;
 	font-size: 16px;
 	transition: 0.3s;
@@ -64,7 +64,7 @@
   font-size: 13px;
   }
 #modal .modalBox{
-    background: #fff;
+    width: 600px;background: #fff;
     justify-content: center;
     background-color: #ffffff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
@@ -73,7 +73,7 @@
     align-content: center;
     }
 #modal .modalBox .top{
-    background: #353c40;
+    background: #18244d;
     height: 45px;
     color: #fff;
     font-size: 14px;
@@ -90,11 +90,12 @@
     cursor: pointer;
 }
 
-#modal .modalBox .titleBox{
+#modal .modalBox .userInput{
     border-top: 1px solid #e5e5e5;
-    padding: 30px;
+    padding: 25px 30px 25px 30px;
 }
-#modal .modalBox .titleBox .text{
+#modal .modalBox .userInput:last-child{border:none}
+#modal .modalBox .userInput .text{
     font-size: 14px;
     font-weight: 500;
     width: 120px;
@@ -107,14 +108,14 @@
     vertical-align: middle;
 }
 
-#modal .modalBox .titleBox .textBox{
+#modal .modalBox .userInput .textBox{
     border: 1px solid #ccc;
-    height: 33px;
+    height: 35px;
     width: 380px;
     padding-left: 8px;
 }
 
-#modal .modalBox .titleBox .input_id{
+#modal .modalBox .userInput .input_id{
     border: 1px solid #ccc;
     height: 33px;
     width: 300px;
@@ -122,14 +123,6 @@
 }
 
 .ui-jqgrid .ui-jqgrid-htable{width:100%}
-
-#confrimMsg { padding-left: 85px;}
-
-#checkId { padding-left: 85px;}
-
-#user_id { margin-bottom: 8px;}
-
-#user_pw2 { margin-bottom: 8px;}
 
 .id_check_button { 
     height: 33px;
@@ -169,3 +162,33 @@
     width: 45px;
     margin-right: 15px;
 }
+#authority{
+	height: 35px;
+	width: 100px;
+	font-size: 13px;
+	padding-left: 5px;
+	border: 1px solid #ccc;
+}
+.btnBox{
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 20px;
+margin-bottom: 20px;}
+.btnBox .writeBtn2{
+	width: 80px;
+    height: 40px;
+    font-weight: 500;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+	background: #18244d;
+	font-size: 15px;
+	transition: 0.3s;
+	margin-left: 10px;
+	border: none;}
+	
+.confirmAlertBox{
+	margin-top: 5px;
+	font-weight:300;
+	font-size: 14px;
+color: red;margin-left: 120px;}

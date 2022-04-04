@@ -986,13 +986,30 @@ function delSchedule(){
 </head>
 <body>
 		
-			<jsp:include page="../common/nav.jsp"></jsp:include>
+		<jsp:include page="../common/nav.jsp"></jsp:include>
+		
+		<div id="container">
 	    	<div id="box">
-	    		<button class="writeBtn" onclick="writeBtn()">
-	    			<spring:message code="schedule.registbtn"/>
-				</button>
-	    		<div id="calendar"></div>
+	    		<div id="gnb">
+					<div class="iconBox">
+						<img src="../resources/img/user.png" class="profile">
+						<div class="icon">
+						<p class="iconText" >닉네임</p>
+						</div>
+					</div>
+				</div>
+	    			
+				<div id="scheduleBox">	
+				<div id="top">
+         				<button class="writeBtn" onclick="writeBtn()">
+	    				<spring:message code="schedule.registbtn"/>
+					</button>
+				</div>
+		
+	    		<div id="calendar" style="padding:0px 30px 30px 30px"></div>
+	    		</div>
 	    	</div>
+	    </div>
 	  
 		
 		<!-- modal 창 -->

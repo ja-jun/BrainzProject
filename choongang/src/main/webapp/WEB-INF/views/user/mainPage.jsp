@@ -529,53 +529,53 @@ window.addEventListener("DOMContentLoaded", function(){
 				<h3 class="title">사용자 등록</h3>
 				<i class="bi bi-x" onclick="modalOff()"></i>
 			</div>
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">아이디<span class="star">*</span></strong>
 				<input type="text" id="user_id" name="user_id" class="input_id" check_result="fail" required />
 				<button type="button" id="id_check_button" class="id_check_button" onclick="id_check()">중복검사</button>
 				<i class="fa-solid fa-check" id="check_sucess_icon" style="display: none;font-size: 20px;padding-left: 10px"></i><br>
-				<font id="checkId_Msg" size="2"></font>
+				<div id="checkId_Msg" class="confirmAlertBox"></div>
 			</div>
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">비밀번호<span class="star">*</span></strong>
 				<input type="password" id="user_pw" name="user_pw" class="textBox"><br>
-				<font id="checkPw_Msg" size="2"></font>
+				<div id="checkPw_Msg" class="confirmAlertBox"></div>
 			</div>
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">비밀번호 확인<span class="star">*</span></strong>
 				<input type="password" id="user_pw2" class="textBox"><br>
-				<font id="checkPw_Msg2" size="2"></font>
+				<div id="checkPw_Msg2" class="confirmAlertBox"></div>
 			</div>
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">이름<span class="star">*</span></strong>
 				<input type="text" id="name" name="name" class="textBox"><br>
-				<font id="checkName_Msg" size="2"></font>
+				<div id="checkName_Msg" class="confirmAlertBox"></div>
 			</div>
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">권한<span class="star">*</span></strong>
 				<select form="regUserInfo" id="authority" name="authority" class="selectBox" >
 					<option value="ROLE_ADMIN">관리자</option>
 					<option value="ROLE_USER">사용자</option>
 				</select>
 			</div>
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">연락처<span class="star">*</span></strong>
 				<input type="text" id="phone" name="phone" class="textBox" ><br>
-				<font id="checkPhone_Msg" size="2"></font>
+				<div id="checkPhone_Msg" class="confirmAlertBox"></div>
 			</div>
 			
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">이메일<span class="star">*</span></strong>
 				<input type="text" id="email" name="email" class="textBox"><br>
-				<font id="checkEmail_Msg" size="2"></font>
+				<div id="checkEmail_Msg" class="confirmAlertBox"></div>
 			</div>
-			<div class="titleBox">
+			<div class="userInput">
 				<strong class="text">설명</strong>
 				<input type="text" id="dsc" name="dsc" class="textBox">
 			</div>
 			<div class="btnBox">
-				<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="registerUser()" >
-				<input type="button" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
+				<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="registerUser()" >
+				<input type="button" value="닫기" class="writeBtn2" onclick="modalOff()" >
 			</div>
 			</form>
 
