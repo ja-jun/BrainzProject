@@ -135,34 +135,34 @@ function updCheck(target){
 	
 	if(target.getAll('name') == ''){
 		$('#checkName_Msg').html('이름을 입력해주세요.');
-        $('#checkName_Msg').attr('color', '#ff0000');
+        $('#checkName_Msg').attr("style", "color: red");
 		result = 0;
 	}
 	
 	if(target.getAll('phone') == ''){
 		$('#checkPhone_Msg').html('연락처를 입력해주세요.');
-        $('#checkPhone_Msg').attr('color', '#ff0000');
+        $('#checkPhone_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
 		var checkPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
         
 		if (!checkPhone.test(target.getAll('phone'))) {
         	$('#checkPhone_Msg').html('전화번호 형식이 올바르지 않습니다.');
-            $('#checkPhone_Msg').attr('color', '#ff0000');
+            $('#checkPhone_Msg').attr("style", "color: red");
     		result = 0;	
 		}
 	}		
 	
 	if(target.getAll('email') == ''){
 		$('#checkEmail_Msg').html('이메일을 입력해주세요.');
-        $('#checkEmail_Msg').attr('color', '#ff0000');
+        $('#checkEmail_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
 		var checkEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 		
         if (!checkEmail.test(target.getAll('email'))) {
         	$('#checkEmail_Msg').html('이메일 형식이 올바르지 않습니다.');
-            $('#checkEmail_Msg').attr('color', '#ff0000');
+            $('#checkEmail_Msg').attr("style", "color: red");
     		result = 0;	
 		} 
 	}
@@ -205,7 +205,6 @@ function search(){
 	})
 	.trigger("reloadGrid");			
 
-
 }
 
 // 사용자 등록 유효성 체크
@@ -215,32 +214,37 @@ function regCheck(target){
 	
 	if(target.getAll('user_id') == ''){
 		$('#checkId_Msg').html('아이디를 입력해주세요.');
-        $('#checkId_Msg').attr('color', '#ff0000');
+        $('#checkId_Msg').attr("style", "color: red");
         result = 0;
 	} 
 	
 	if(target.getAll('user_pw') == ''){
 		$('#checkPw_Msg').html('비밀번호를 입력해주세요.');
-        $('#checkPw_Msg').attr('color', '#ff0000');
+        $('#checkPw_Msg').attr("style", "color: red");
 		result = 0;
 	} 
 	
 	if($('#user_pw2').val() == ''){
 		$('#checkPw_Msg2').html('비밀번호 확인을 입력해주세요.');
-        $('#checkPw_Msg2').attr('color', '#ff0000');
+        $('#checkPw_Msg2').attr("style", "color: red");
+		result = 0;
+	} 
+	
+	if(target.getAll('user_pw') != $('#user_pw2').val()){
+		$('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
+        $('#checkPw_Msg2').attr("style", "color: red");
 		result = 0;
 	} 
 	
 	if(target.getAll('name') == ''){
 		$('#checkName_Msg').html('이름을 입력해주세요.');
-        $('#checkName_Msg').attr('color', '#ff0000');
+        $('#checkName_Msg').attr("style", "color: red");
 		result = 0;
 	} 
 	
-	
 	if(target.getAll('phone') == ''){
 		$('#checkPhone_Msg').html('연락처를 입력해주세요.');
-        $('#checkPhone_Msg').attr('color', '#ff0000');
+        $('#checkPhone_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
 		
@@ -248,7 +252,7 @@ function regCheck(target){
         
 		if (!checkPhone.test(target.getAll('phone'))) {
         	$('#checkPhone_Msg').html('전화번호 형식이 올바르지 않습니다.');
-            $('#checkPhone_Msg').attr('color', '#ff0000');
+            $('#checkPhone_Msg').attr("style", "color: red");
     		result = 0;	
 		}
 	}		
@@ -256,7 +260,7 @@ function regCheck(target){
 	
 	if(target.getAll('email') == ''){
 		$('#checkEmail_Msg').html('이메일을 입력해주세요.');
-        $('#checkEmail_Msg').attr('color', '#ff0000');
+        $('#checkEmail_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
 
@@ -264,7 +268,7 @@ function regCheck(target){
 		
         if (!checkEmail.test(target.getAll('email'))) {
         	$('#checkEmail_Msg').html('이메일 형식이 올바르지 않습니다.');
-            $('#checkEmail_Msg').attr('color', '#ff0000');
+            $('#checkEmail_Msg').attr("style", "color: red");
     		result = 0;	
 		} 
 	}
@@ -318,11 +322,11 @@ function id_check() {
 		success: function (data) {
 			if (data.result == false) {
 				$('#checkId_Msg').html('이미 존재하는 아이디 입니다.');
-				$('#checkId_Msg').attr('color', '#ff0000');
+				$('#checkId_Msg').attr("style", "color: red");
 				return;
 			} else {
 				$('#checkId_Msg').html('사용가능한 아이디 입니다.');
-				$('#checkId_Msg').attr('color', '#0000FF');
+				$('#checkId_Msg').attr("style", "color: blue");
 				$('.input_id').attr("check_result", "success");
 				$('#check_sucess_icon').show();
 				$('.id_check_button').hide();
@@ -387,20 +391,20 @@ $(function(){
     $('#user_pw2').keyup(function(){
         if($('#user_pw').val() != $('#user_pw2').val()){
           $('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
-          $('#checkPw_Msg2').attr('color', '#ff0000');
+          $('#checkPw_Msg2').attr("style", "color: red");
         } else{
           $('#checkPw_Msg2').html('비밀번호 일치합니다.');
-          $('#checkPw_Msg2').attr('color', '#0000FF');
+          $('#checkPw_Msg2').attr("style", "color: blue");
         }
     });
     
     $('#user_pw').keyup(function(){
-        if($('#user_pw').val() != $('#user_pw2').val()){
+        if($('#user_pw2').val() != $('#user_pw').val()){
           $('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
-          $('#checkPw_Msg2').attr('color', '#ff0000');
+          $('#checkPw_Msg2').attr("style", "color: red");
         } else{
           $('#checkPw_Msg2').html('비밀번호 일치합니다.');
-          $('#checkPw_Msg2').attr('color', '#0000FF');
+          $('#checkPw_Msg2').attr("style", "color: blue");
         }
     });
 });
@@ -457,8 +461,11 @@ function modalOff() {
     btn.setAttribute("value","등록");
     btn.setAttribute("onclick","registerUser()");
     
+    
     $('#user_id').attr("disabled",false);
-    $('#id_check_button').attr("disabled", "false");
+    $('#check_sucess_icon').hide();
+    $('.id_check_button').show();
+    $('#id_check_button').attr("disabled",false);
     $('#user_pw').removeAttr('placeholder');
     $('#user_pw2').removeAttr('placeholder');
     var title = document.querySelector('.title');

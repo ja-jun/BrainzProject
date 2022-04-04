@@ -31,7 +31,7 @@ public class RestUserController {
 
 		if(param.getSearchWord() != null) {
 			String searchWord = param.getSearchWord();
-			searchWord = searchWord.replaceAll("\\\\", "\\\\\\\\");
+			searchWord = searchWord.replaceAll("\\\\" , "\\\\\\\\").replaceAll("%" , "\\\\%").replaceAll("_", "\\\\_");
 			
 			param.setSearchWord(searchWord);
 		}
