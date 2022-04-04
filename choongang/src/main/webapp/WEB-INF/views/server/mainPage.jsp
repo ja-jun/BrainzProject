@@ -28,13 +28,23 @@ function createAndInitGrid(){
 	            {name: 'name', label : '서버명', align:'left'},
 	            {name: 'ip', label:'IP', align:'left'},
 	            {name: 'os', label : 'OS분류', align:'center'},
-	            {name: 'status', label : '상태', align:'center'},              
+	            {name: 'status', label : '상태', align:'center', formatter : function(cellvalue){
+		           	 switch(cellvalue){
+		        	 case "0":
+						return "오늘 작업 예정";
+		        	 case "1":
+						return "작업 중";
+		        	 case "2":
+						return "작업 완료";
+		        	 case "3":
+						return "오늘 작업 없음";
+	            }}},              
 	            {name: 'loc', label : '위치', align:'left'},
 	            {name: 'mac', label : 'MAC', align:'center'},
 	            {name: 'control_num', label : '관리번호', align:'left'},
 	            {name: 'dsc', label : '설명', align:'left'},     
 	            {name: 'write_date', label : '등록일', align:'center' },
-	            {name: 'server_no',label:'서버번호'}//, hidden:true 나중에 붙이기
+	            {name: 'server_no',label:'서버번호', hidden:true}
 	            ],
             pager: '#pager',
             rowNum: 10,
@@ -97,16 +107,17 @@ function createAndInitGrid(){
 			        error: function() {
 			        	alert("잘못된 접근입니다.");
 			        }
-				});
-	            
+				});            
 	            $("#server_no").remove();
+	           
 	        }
-  
      });		
+    
+      
 }
 
 //수정 서버 넘기기
-function updateServer(){	
+function updateServer(){			
 	
 	var formData = new FormData(document.getElementById('regServerInfo'));
 	 $.ajax({
@@ -116,7 +127,10 @@ function updateServer(){
 	    contentType: false,
 	    data: formData
 	}).done(function(){
-		$("#list").trigger('reloadGrid');
+	 	if(result != "0"){
+			validationError(result);
+			$("#list").trigger('reloadGrid');
+	 	}
 		modalOff();
 		alert("수정되었습니다.");
 	});	
@@ -175,7 +189,6 @@ function insertServer(){
 	//MAC 정규표현식
 	var regExpmac =/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
 
-
 	if(!regExpmac.test($("#mac").val())){
 		 document.getElementById("macAlertBox").innerText = "유효한 MAC 주소가 아닙니다.";
 		 document.getElementById("macAlertBox").style.color = "red";
@@ -196,15 +209,20 @@ function insertServer(){
 	     contentType: false,
 	     data: formData
 	 }).done(function(){
-			$("#list").trigger('reloadGrid');
+		 	var result= data.result;
+		 	if(result != "0"){
+				validationError(result);
+				$("#list").trigger('reloadGrid');
+		 	}
 			modalOff();
-			alert("등록되었습니다.");
+			alert("등록되었습니다.");	
 	 });	 
 }
 
-var isConfirmedMac = false; //mac 중복확인용
+//mac 중복확인용
+var isConfirmedMac = false; 
 
-//MAC 중복확인
+//MAC 중복확인 - server_no가 수정전 server_no랑 같으면 mac이 같아도 되게 만들어야함.....
 function confirmMac(){
 	
 	var mac = document.getElementById("mac");
@@ -223,11 +241,8 @@ function confirmMac(){
 				macAlertBox.setAttribute("style","color:red");
 			} else{
 				isConfirmedMac = true; 
-				macAlertBox.innerText = "사용 가능한 MAC 입니다.";
-				macAlertBox.setAttribute("style","color:green");
+				macAlertBox.innerText = "";
 			}
-			return false;
-			
 		}
 	};
 	
@@ -264,10 +279,36 @@ function deleteServer(){
 					$("#list").trigger('reloadGrid');
 				   alert("취소합니다.");
 			}
-
  }
  
 	
+
+ 
+ 
+ 
+ //서버에서 유효성 검사 결과를 alert로 보여주기
+ function validationError(result){
+	 switch(result){
+	 case "1":
+		 alert("로그인이 필요합니다.");
+	 	break;
+	 case "2":
+		 alert("서버명이 없습니다.");
+		 break;
+	 case "3":
+		 alert("유효한 IP가 아닙니다.");
+		 break;
+	 case "4":
+		 alert("유효한 MAC 주소가 아닙니다.");
+		 break;
+	 }
+ }
+ 
+ 
+ 
+ 
+ 
+ 
 
 //모달창 함수	
 function modalOn() {
@@ -291,6 +332,12 @@ function modalOff() {
     btn.setAttribute("onclick","insertServer()");	
 }
 
+function alterText(){
+    $('td[title="0"]').text('오늘 작업 예정');
+    $('td[title="1"]').text('현재 작업중');
+    $('td[title="2"]').text('오늘 작업 완료');
+    $('td[title="3"]').text('오늘 작업 없음');
+}
 
 //모달창 열렸을 때 ESC누르면 닫힘
 window.addEventListener("keyup", e => {
@@ -307,74 +354,65 @@ window.addEventListener("DOMContentLoaded", function(){
 	const modal = document.getElementById("modal");
 	
 	$("#serverPage").addClass("on");
+	alterText();
 });
 </script>
 </head>
 
 <body>
 	<jsp:include page="../common/nav.jsp"></jsp:include>
-	
-	
+
 	<div id="container">
-		<div id="box">
-		
-		
-		<div id="gnb">
-			<div class="iconBox">
-			<img src="../resources/img/user.png" class="profile">
-				<div class="icon">
-				<p class="iconText" >닉네임</p>
+		<div id="container">
+			<div class="container">
+
+				<div id="box">
+					<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
+					<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
+					<a href="./getExcelServerList" id="exportAnchor"><button
+							class="writeBtn" id="excelBtn">내보내기</button></a>
+
+					<h2>서버 관리</h2>
+					<table id="list"></table>
+					<div id="pager"></div>
 				</div>
+				<div class="row mt-3">
+					<div class="col-4">
+						<input id="searchWord" type="text" class="form-control"
+							placeholder="서버명/IP">
+					</div>
+					<div class="col ">
+						<button class="writeBtn" onclick="search()">검색</button>
+					</div>
+				</div>
+
 			</div>
 		</div>
-		
-		<div id="serverBox">
-		<div id="top">
-			<div class="btnBox">
-         	<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-         	<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
-         	<a href="./getExcelServerList" id="exportAnchor"><button class="writeBtn" id="excelBtn">내보내기</button></a>
-         	</div>
-         		<div id="search">
-         			<div class="searchBox">
-						<input id="searchWord" type="text" class="searchForm" placeholder="서버명/IP">
-					</div>
-				</div>	
-		</div>
-			
-         <div id="jqgridBox">
-         	<table id="list" style="width:100%"></table>
-         	<div id="pager"></div>
-         </div>
-         </div>
-         
-      </div>
 	</div>
 
 
-
-<!--등록 모달창 시작 -->
-	<div id="modal" class="modal-overlay" style="display:none">
-		<div class="modal-window">
-			<div class="modalBox">
+	<!--등록 모달창 시작 -->
+		<div id="modal" class="modal-overlay" style="display:none">
+			<div class="modal-window">
+				<div class="modalBox">
 				
-				<!-- Form 태그 시작 -->
-				<form id="regServerInfo">
+					<!-- Form 태그 시작 -->
+					<form id="regServerInfo">
 					<div class="top">
 						<h3 class="title">서버 등록</h3>
 						<i class="bi bi-x" onclick="modalOff()"></i>
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">서버명<span class="star">*</span></strong>
 						<input type="text" id="name" name="name" class="textBox" >
-						<div id="nameAlertBox" class="confirmAlertBox"></div> 
+						<div id="nameAlertBox"></div> 
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">IP<span class="star">*</span></strong>
 						<input type="text" id="ip" name="ip" class="textBox">
-						<div id="ipAlertBox" class="confirmAlertBox"></div> 						
+						<div id="ipAlertBox"></div> 						
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">OS분류<span class="star">*</span></strong>
 						<select form="regServerInfo" id="os" name="os" class="selectBox" >
 								<option value="AIX">AIX</option>
@@ -384,38 +422,37 @@ window.addEventListener("DOMContentLoaded", function(){
 								<option value="Linux">Linux</option>							
 							</select>
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">위치</strong>
 						<input type="text" id="loc" name="loc" class="textBox">
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">MAC<span class="star">*</span></strong>
 						<input type="text" id="mac"  name="mac" class="textBox" onblur="confirmMac()">
-						<div id="macAlertBox" class="confirmAlertBox"></div> 
+						<div id="macAlertBox"></div> 
 					</div>
 					
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">관리번호</strong>
 						<input type="text" id="control_num" name="control_num" class="textBox">
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">설명</strong>
 						<input type="text" id="dsc" name="dsc" class="textBox">
 					</div>
 					<div class="btnBox">
-						<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertServer()">
-						<input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >
+						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertServer()">
+						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
 					</div>
 					</form>
 
 				<!-- Form 태그 종료 -->
-
+				</div>
+			</div>
 		</div>
-	</div>
-</div>
-	
-	
-	
+<script>
+
+</script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>

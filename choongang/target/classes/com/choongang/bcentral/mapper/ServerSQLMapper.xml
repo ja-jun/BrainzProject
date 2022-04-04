@@ -82,15 +82,14 @@
  	</select>
 
 	<select id="selectTodaySchedule"	resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
-		SELECT bs.sc_no, bs.user_no, bs.title, bs.start_date, bs.end_date,
-		bs.start_time, bs.end_time, bs.repeat_cat, bs.repeat_day,
-		bs.repeat_week,
-		bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun, bs.write_date
-		FROM bp_schedule bs
-		WHERE now() between bs.start_date and bs.end_date
-		AND bs.delete_date is null
+		SELECT bsc.*
+		FROM bp_schedule bsc, bp_server bs, bp_mgmt_server bms
+		WHERE bsc.sc_no = bms.sc_no 
+		AND bs.server_no = bms.server_no
+		AND now() between bsc.start_date and bsc.end_date
+		AND bsc.delete_date is null
+		AND bs.server_no = #{server_no}
 	</select>
-
 
 
 
@@ -104,12 +103,13 @@
 		SELECT BS.*
 		FROM BP_SCHEDULE BS
 		WHERE SC_NO = #{SC_NO} 	
+		AND bs.delete_date is null
  	</select>
  	
  	<select id="getServerNosByScNo" resultType="int">
  		SELECT BM.server_no
 		FROM BP_Mgmt_server BM
-		WHERE sc_no = #{sc_no}
+		WHERE sc_no = #{sc_no} 
  	</select>
  	
 </mapper>

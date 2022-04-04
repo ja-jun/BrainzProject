@@ -2,6 +2,7 @@ package com.choongang.bcentral.server.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -38,47 +39,11 @@ public class RestServerController {
 		
 		ArrayList<ServerVo> serverList = serverService.getServerList(param);
 		
-		
-		//status 계산
-		//.......................ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
-		String status = "";
-		int state = 3;
 		for(ServerVo vo : serverList) {
 			int server_no = vo.getServer_no();
-			ArrayList<Integer> scNos= serverService.getScNoListByServerNo(server_no);
-			ArrayList<Integer> stateList = new ArrayList<Integer>();
-
-			if(scNos == null) {
-				state = 3;
-			} else {
-				for(int no : scNos) {
-					ScheduleVo sVo= serverService.getScheduleByScNo(no);
-					int s = serverService.todaySchedule(sVo);
-					//System.out.println(server_no + "번 서버의 "+no + "번 스케줄의 현재 작업상태 :" +   s);
-					stateList.add(s);	
-				}
-				
-				if(stateList.contains(1)) {
-					state  = 1;
-				} else if(stateList.contains(0)) {
-					state = 0;
-				} else if(stateList.contains(2)) {
-					state = 2;
-				} else {
-					state = 3;
-				}
-			}
 			
-			if(state == 0 ) {
-				status = "오늘 작업 예정";
-			} else if(state == 1) {
-				status = "현재 작업 중";
-			} else if(state == 2) {
-				status = "작업 완료";
-			} else if(state == 3) {
-				status = "오늘 작업 없음";
-			}
-			//System.out.println("이 서버의 작업상태 : " + status);
+			String status = serverService.getServerState(server_no);
+			
 			vo.setStatus(status);
 		}
 	
@@ -86,7 +51,6 @@ public class RestServerController {
 		int records = serverService.getServerCount(param);
 		int total = (int) Math.ceil((double)records / rows);
 
-		
 		data.put("rows", serverList); // 데이터
 		data.put("records", records); // 데이터의 전체 개수 (viewrecords 에 사용됨)
 		data.put("page", param.getPage()); // 현재 페이지
@@ -101,14 +65,22 @@ public class RestServerController {
 		
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { //인터셉터 존재??? delete,update...ajax에서 사용...ㅜㅜ
-			data.put("result", "error"); 
-			data.put("reason","로그인이 필요합니다."); 
+			data.put("result", "1"); 
 			return data; 
-		}
+		} else if(param.getName() == null) {
+			data.put("result", "2");
+			return data;
+		} else if(!Pattern.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$", param.getMac()) ) {
+			data.put("result", "3");
+			return data;
+		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
+			data.put("result", "4");
+			return data;
+		} //중복된 mac주소도 검사해야함
 		
 		param.setUser_no(userInfo.getUser_no());
 		serverService.insertServer(param);
-		data.put("result", "success");
+		data.put("result", "0");
 		return data;
 	}
 	
@@ -133,12 +105,27 @@ public class RestServerController {
 	}
 	
 	@RequestMapping("updateServer")
-	public HashMap<String, Object> updateServer(ServerVo param){
+	public HashMap<String, Object> updateServer(ServerVo param, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
+		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
+		if(userInfo == null) { 
+			data.put("result", "1"); 
+			return data; 
+		} else if(param.getName() == null) {
+			data.put("result", "2");
+			return data;
+		} else if(!Pattern.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$", param.getMac()) ) {
+			data.put("result", "3");
+			return data;
+		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
+			data.put("result", "4");
+			return data;
+		} //현재 서버번호와 다른 서버들의 mac과 중복되지 않는지 확인해야함
+	
 		serverService.updateServer(param);
 		
-		data.put("result", "success");
+		data.put("result", "0");
 		
 		return data;
 	}
@@ -152,9 +139,7 @@ public class RestServerController {
 		return data;
 	}
 	
-	
-	
-	
+
 	
 	
 	

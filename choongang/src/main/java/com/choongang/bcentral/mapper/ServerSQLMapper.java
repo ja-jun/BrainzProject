@@ -18,7 +18,7 @@ public interface ServerSQLMapper {
 
 
 	//등록된 기간에 오늘날짜가 포함되는 schedule의 모든 정보를 받아옴
-	public ArrayList<ScheduleVo> selectTodaySchedule();
+	public ArrayList<ScheduleVo> selectTodaySchedule(int server_no); 
 	
 	//서버번호로 작업에 등록된 스케줄번호리스트 받아오기
 	public ArrayList<Integer> getScNoListByServerNo(int server_no);
