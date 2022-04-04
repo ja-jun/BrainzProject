@@ -60,8 +60,6 @@ const lang_reg_fail2 = '<spring:message code="schedule.register.fail2"/>';
 const lang_mod_success = '<spring:message code="schedule.modify.success"/>';
 const lang_del_success = '<spring:message code="schedule.delete.success"/>';
 
-var userInfo1 = '<%=session.getAttribute("userInfo")%>';
-
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
 	$('body').css("overflow-y", "auto");
