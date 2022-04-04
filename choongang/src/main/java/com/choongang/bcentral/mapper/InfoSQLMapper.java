@@ -2,6 +2,7 @@ package com.choongang.bcentral.mapper;
 
 import java.util.ArrayList;
 
+import com.choongang.bcentral.noti.vo.NotificationVo;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 
@@ -17,4 +18,8 @@ public interface InfoSQLMapper {
 	public ArrayList<ServerVo> selectServerVoByScNo(int sc_no);
 	
 	public ArrayList<ServerVo> selectServer();
+	
+	public ArrayList<NotificationVo> selectNotification();
+	
+	public int selectCurrentServerVal();
 }

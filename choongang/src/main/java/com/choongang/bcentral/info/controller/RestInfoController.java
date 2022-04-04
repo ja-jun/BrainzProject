@@ -28,22 +28,28 @@ public class RestInfoController {
 		
 		Integer[] stateCount = {0, 0, 0, 0};
 		
+		int count = 0;
+		
 		for(HashMap<String, Object> server : serverInfo) {
-			if(server.containsKey("state")) {
-				Integer state = (Integer) server.get("state");
-				System.out.println("상태는 : " + state);
-				stateCount[state]++;
+			if(server != null) {
+				count++;
+				if(server.containsKey("state")) {
+					Integer state = (Integer) server.get("state");
+					System.out.println("상태는 : " + state);
+					stateCount[state]++;
+				}
+				ServerVo sv = (ServerVo) server.get("serverVo");
+				System.out.println(sv.getOs());
 			}
-			ServerVo sv = (ServerVo) server.get("serverVo");
-			System.out.println(sv.getOs());
 		}
 		
-		stateCount[3] = serverInfo.size() - stateCount[2] - stateCount[1] - stateCount[0];
+		stateCount[3] = count - stateCount[2] - stateCount[1] - stateCount[0];
 		
 		data.put("serverInfo", serverInfo);
 		data.put("totalServer", infoService.getTotalServer());
 		data.put("stateCount", stateCount);
 		data.put("weekScheduleInfo", infoService.getWeekScheduleInfo());
+		data.put("notificationVo", infoService.getNotification());
 				
 		return data;
 	}
