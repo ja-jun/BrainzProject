@@ -34,4 +34,19 @@
 			and bs.delete_date is null
 		]]>
 	</select>
+	
+	<select id="selectNotification" resultType="com.choongang.bcentral.noti.vo.NotificationVo">
+		select bn.nc_no, bn.user_no, bn.nc_title, bu.name, bn.nc_writedate
+		from bp_notification bn, bp_user bu
+		where bn.user_no = bu.user_no
+		order by bn.nc_writedate desc
+		limit 4
+	</select>
+	
+	<select id="selectCurrentServerVal" resultType="int">
+		select server_no
+		from bp_server
+		order by server_no desc
+		limit 1
+	</select>
 </mapper>

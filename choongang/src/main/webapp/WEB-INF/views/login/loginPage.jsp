@@ -14,7 +14,7 @@
 
 	<!-- 동영상 배경화면 -->
 	<video autoplay muted loop>
-   		<source src="../resources/video/bg1.mp4" type="video/mp4" />  <!-- bg1, bg2, bg3 중에 선택 -->
+   		<source src="../resources/video/bg2.mp4#t=4,36" type="video/mp4"/>  <!-- bg1, bg2, bg3 중에 선택 -->
 	</video>
 
 	<!-- 상단 -->

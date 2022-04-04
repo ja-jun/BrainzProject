@@ -64,6 +64,7 @@ public class ServerService {
 	}
 	
 	
+	
 	public int todaySchedule(ScheduleVo sVo){
 	      /*   result = 0 : 작업 전
 	       *   result = 1 : 작업 중
@@ -134,11 +135,35 @@ public class ServerService {
 	         }
 	         break;
 	      }
-	      System.out.println(new Gson().toJson(sVo));
-	      System.out.println(now + "현재 작업 상태는" + result);
+//	      System.out.println(new Gson().toJson(sVo));
+//	      System.out.println(now + "현재 작업 상태는" + result);
 	      return result;
 	   }
 
+	public String getServerState (int server_no){
+		ArrayList<ScheduleVo> scList = svSQLMapper.selectTodaySchedule(server_no);
+
+		String status = "3";
+		for(ScheduleVo sc : scList ) {
+			ArrayList<Integer> stateList = new ArrayList<Integer>();
+			int state = todaySchedule(sc);
+			stateList.add(state);
+			
+			if(stateList.contains(1)) {
+				status  = "1";
+			} else if(stateList.contains(0)) {
+				status = "0";
+			} else if(stateList.contains(2)) {
+				status = "2";
+			} else {
+				status = "3";
+			}			
+		}
+		return status;
+	}
+	
+	
+	
 	public ArrayList<Integer> getScNoListByServerNo(int server_no) {
 		return svSQLMapper.getScNoListByServerNo(server_no);
 	}
@@ -152,114 +177,9 @@ public class ServerService {
 		return svSQLMapper.getServerNosByScNo(sc_no);
 	}
 	
-	public ArrayList<HashMap<String, Object>> todayScheduleState(){
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>(); 
-				
-		ArrayList<ScheduleVo> todayScList= svSQLMapper.selectTodaySchedule();
- 		for(ScheduleVo sVo : todayScList) {
- 	 		HashMap<String, Object> map = new HashMap<String, Object>();
- 			int sc_no = sVo.getSc_no();
- 			int status = todaySchedule(sVo);
- 			ArrayList<Integer> serverNos = svSQLMapper.getServerNosByScNo(sc_no);
- 			 			
- 			map.put("sc_no", sc_no);
- 			map.put("status", status);
- 			map.put("serverNos", serverNos);
 
- 			int state = 3;
- 			for(int serverNo : serverNos) {
- 				ArrayList<Integer> scNos = svSQLMapper.getScNoListByServerNo(serverNo);
- 				ArrayList<Integer> stateList = new ArrayList<Integer>();
 
- 				if(scNos == null) {
- 					state = 3;
- 				} else {
- 					for(int scNo : scNos) {
- 						ScheduleVo vo= getScheduleByScNo(scNo);
- 						int s = todaySchedule(sVo);
- 						System.out.println(serverNo + "번 서버의 "+scNo + "번 스케줄의 현재 작업상태 :" +   s);
- 						stateList.add(s);	
- 					}
- 					
- 					if(stateList.contains(1)) {
- 						state  = 1;
- 					} else if(stateList.contains(0)) {
- 						state = 0;
- 					} else if(stateList.contains(2)) {
- 						state = 2;
- 					} else {
- 						state = 3;
- 					}
- 				}
- 		
- 				
- 				
- 			}
- 			
- 		}
 
-		return list;
-	}
-	
-	
-//	public 
-//	ArrayList<HashMap<String, Object>> list = todayScheduleState();
-//	
-//	for(HashMap<String, Object> map : list) {
-//		if(map.get("serverNos") != null) {
-//			ArrayList<Integer> nos = (ArrayList<Integer>) map.get("serverNos");
-//
-//		}
-//		
-//		
-//	}
-//	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public int getServerState(int server_no){
-		int state = 3;
-		ArrayList<Integer> scNos= svSQLMapper.getScNoListByServerNo(server_no);
-		ArrayList<Integer> stateList = new ArrayList<Integer>();
-
-		if(scNos == null) {
-			state = 3;
-		} else {
-			for(int no : scNos) {
-				ScheduleVo sVo= getScheduleByScNo(no);
-				int s = todaySchedule(sVo);
-				System.out.println(server_no + "번 서버의 "+ no + "번 스케줄의 현재 작업상태 :" +   s);
-				stateList.add(s);	
-			}
-
-			if(stateList.contains(1)) {
-				state  = 1;
-			} else if(stateList.contains(0)) {
-				state = 0;
-			} else if(stateList.contains(2)) {
-				state = 2;
-			} else {
-				state = 3;
-			}
-		}
-
-		return state;
-	}
-	
 	
 	
 	

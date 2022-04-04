@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.bcentral.mapper.InfoSQLMapper;
+import com.choongang.bcentral.noti.vo.NotificationVo;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 
@@ -32,7 +33,7 @@ public class InfoService {
 		return ifSqlMapper.selectServerVoByScNo(sc_no);
 	}
 	
-	// 모든 서버의 갯수를 가져옴
+	// 모든 서버의 정보를 가져옴
 	public ArrayList<ServerVo> getTotalServer() {
 		return ifSqlMapper.selectServer();
 	}
@@ -113,11 +114,17 @@ public class InfoService {
 		
 		ArrayList<HashMap<String, Object>> serverInfo = new ArrayList<HashMap<String, Object>>();
 		
+		int curServerSeq = ifSqlMapper.selectCurrentServerVal();
+		
+		for(int i = 0; i < curServerSeq; i++) {
+			serverInfo.add(null);
+		}
+		
 		for(ServerVo sv : getTotalServer()) {
 			HashMap<String, Object> serverData = new HashMap<String, Object>();
 			serverData.put("serverVo", sv);
 			serverData.put("state", 3);
-			serverInfo.add(serverData);
+			serverInfo.add(sv.getServer_no() - 1, serverData);
 		}
 		
 		for(ScheduleVo scVo : scheduleList) {
@@ -145,6 +152,8 @@ public class InfoService {
 				}
 			}
 		}
+		
+		serverInfo.remove(null);
 		
 		return serverInfo;
 	}
@@ -273,5 +282,9 @@ public class InfoService {
 		}
 		
 		return scheduleInfo;
+	}
+	
+	public ArrayList<NotificationVo> getNotification(){
+		return ifSqlMapper.selectNotification();
 	}
 }
