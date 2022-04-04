@@ -58,7 +58,7 @@
     	</div>
 		<div class="barBox">
 		<div class="barBar">
-		<canvas id="barChart" width="600" height="400" style="width:100%"></canvas>
+		<canvas id="barChart" width="400" height="300" style=""></canvas>
 		
 		<ul class="barUl">
 			<li class="barList"><p class="colorBox"></p><h3 class="titleBox">작업중</h3></li>
@@ -190,7 +190,7 @@ $.ajax({
 						beginAtZero: true,
 						stepSize : 20,
 						fontColor : "#222",
-						fontSize : 20,
+						fontSize : 16,
 	                       fontFamily : 'Montserrat'
 					},
 					gridLines:{
@@ -205,7 +205,7 @@ $.ajax({
 						beginAtZero: true,
 						stepSize : 30,
 						fontColor : "#222",
-						fontSize : 20,
+						fontSize : 16,
 						fontFamily :'Noto Sans KR'
 					},
 					gridLines:{
