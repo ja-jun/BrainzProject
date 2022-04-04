@@ -13,6 +13,8 @@ public interface NotificationSQLMapper {
 	public void deleteNotification(int nc_no);
 	public NotificationVo getNotification(int nc_no);
 	public void increaseReadCount(int nc_no);
+	public int PREBNO(int nc_no);
+	public int NEXTBNO(int nc_no);
 	public int getNotificationCount(PageVo vo);
 	public int getNextFileNo();
 	

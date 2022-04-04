@@ -1,0 +1,64 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+
+
+
+#noticeBox{width: 1520px;background: #fff;border-radius: 20px;height: 800px;padding: 50px;display: grid;align-items: baseline;grid-template-rows: 55px auto 210px;overflow: hidden;}
+#container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #f3f3f6;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+  
+#content{
+    display: flex;
+}
+#box{
+    margin: 30px 0px 100px 350px;
+    width: 100%;
+    padding-right: 400px;
+    }
+
+
+#top{display: flex;justify-content: space-between;padding: 30px 30px 30px 30px;}
+#search{display: flex;}
+#search .searchBox{margin-right: 10px;}
+#search .searchBox .searchForm{width: 300px;height: 45px;border: #ccc 1px solid;padding-left: 35px;border-radius: 30px;background-image: url(../img/search.png);background-repeat: no-repeat;background-position: 10px;background-size: 17px;font-size: 14px;color: #555;}
+#gnb{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding: 0px 38px 0px 38px;
+    align-items: center;
+}
+#gnb .icon{}
+.iconBox{
+    display: flex;
+    align-items: center;
+}
+#gnb .icon .iconText{font-size: 16px;font-weight: 500;}
+.profile{
+    width: 45px;
+    margin-right: 15px;
+}
+#noticeBox{}
+#noticeBox .titleBar{display: flex;width: 1420px;justify-content: space-between;align-items: center;border-bottom: 2px solid #222;}
+#noticeBox .titleBar .titleText{font-size: 30px;font-weight: 600;margin-bottom: 25px;}
+#noticeBox .titleBar .dateText{font-size: 17px;color: #999;font-family: Montserrat;}
+#noticeBox .titleBar .bar{}
+#noticeBox .contentBox{padding: 50px 0px 50px 0px;width: 1420px;}
+#noticeBox .contentBox .contentText{font-size: 18px;word-break: break-all;line-height: 1.5;font-weight: 300;}
+.footer{font-size: 16px;}
+.next{display: flex;height: 60px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding-left: 10px;align-items: center;}
+.next .nextTitle{margin-left: 10px;font-weight: 600;margin-right: 30px;}
+.next .nextText{}
+.prev{display: flex;height: 60px;border-bottom: 1px solid #ddd;padding-left: 10px;align-items: center;}
+.prev .prevTitle{margin-left: 10px;font-weight: 600;margin-right: 30px;}
+.prev .prevText{}
+.btnList {display: flex;justify-content: center;}
+.btnList .btn{width: 110px;height: 50px;border: 1px solid #222 !important;border-radius: 10px !important;font-size: 16px !important;font-weight: 500 !important;margin-top: 40px;}

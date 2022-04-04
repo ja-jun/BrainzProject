@@ -29,7 +29,7 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 520px 400px;}
 .title{
-    font-family: 'Montserrat';
+    
     font-size: 22px;
     font-weight: 600;
     margin-bottom: 50px;
@@ -142,7 +142,7 @@ grid-area: midBottom;/* margin-top: 500px; */}
     justify-content: space-between;
 }
 .more{
-    font-family: 'Montserrat';
+    
     font-size: 15px;
     font-weight: 500;
     color: #999;

@@ -4,7 +4,7 @@
 
 
 
-#userBox{width: 100%;background: #fff;border-radius: 20px;height: 800px;}
+#userBox{width: 100%;background: #fff;border-radius: 10px;height: 800px;border: 1px solid #e9e9ee;}
 #container{
     position: absolute;
     top: 0;
@@ -19,7 +19,7 @@
     height: 45px;
     font-weight: 500;
     border: 1px solid #18244d;
-    border-radius: 10px;
+    border-radius: 7px;
     cursor: pointer;
     color: #222;
 	background: #fff;
@@ -141,10 +141,10 @@
 #deleteBtn{
 	margin-left:10px
 }
-#top{display: flex;justify-content: space-between;padding: 30px 30px 30px 30px;}
+#top{display: flex;justify-content: space-between;padding: 30px 30px 10px 30px;}
 #search{display: flex;}
 #search .searchBox{margin-right: 10px;}
-#search .searchBox .searchForm{width: 300px;height: 45px;border: #ccc 1px solid;padding-left: 35px;border-radius: 30px;background-image: url(../img/search.png);background-repeat: no-repeat;background-position: 10px;background-size: 17px;font-size: 14px;color: #555;}
+#search .searchBox .searchForm{width: 300px;height: 45px;border: #ccc 1px solid;padding-left: 35px;border-radius: 10px;background-image: url(../img/search.png);background-repeat: no-repeat;background-position: 10px;background-size: 17px;font-size: 14px;color: #555;}
 #gnb{
     display: flex;
     justify-content: flex-end;
@@ -173,7 +173,7 @@
 	display: flex;
 	justify-content: flex-end;
 	padding-right: 20px;
-margin-bottom: 20px;}
+	margin-bottom: 20px;}
 .btnBox .writeBtn2{
 	width: 80px;
     height: 40px;
@@ -191,4 +191,6 @@ margin-bottom: 20px;}
 	margin-top: 5px;
 	font-weight:300;
 	font-size: 14px;
-color: red;margin-left: 120px;}
+	color: red;
+	margin-left: 120px;}
+.searchBtn{width: 80px;height: 45px;border: 1px solid #ccc;background: #18244d;border-radius: 7px;color: #fff;font-size: 16px;}

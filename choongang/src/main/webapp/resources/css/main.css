@@ -406,7 +406,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc .fc-col-header-cell-cushion {
     display: inline-block; /* x-browser for when sticky (when multi-tier header) */
     padding: 2px 4px;
-  }
+  font-size: 18px !important;}
 .fc .fc-bg-event,
   .fc .fc-non-business,
   .fc .fc-highlight {
@@ -717,7 +717,7 @@ A HORIZONTAL event
     position: relative;
     z-index: 4;
     padding: 4px;
-  }
+  font-size: 18px !important;}
 .fc {
 
   /* event container */
@@ -753,7 +753,7 @@ A HORIZONTAL event
 }
 .fc .fc-daygrid-event-harness {
     position: relative;
-  }
+  font-size: 19px;}
 .fc .fc-daygrid-event-harness-abs {
     position: absolute;
     top: 0; /* fallback coords for when cannot yet be computed */
@@ -895,7 +895,7 @@ A HORIZONTAL event
   border: calc(var(--fc-daygrid-event-dot-width, 8px) / 2) solid var(--fc-event-border-color, #3788d8);
   border-radius: 4px;
   border-radius: calc(var(--fc-daygrid-event-dot-width, 8px) / 2);
-}
+display: none;}
 /* --- spacing between time and title --- */
 .fc-direction-ltr .fc-daygrid-event .fc-event-time {
     margin-right: 3px;
@@ -1472,3 +1472,8 @@ A VERTICAL event
   background-color: var(--bs-gray-200);
 }
 
+.fc-day-sun .fc-col-header-cell-cushion {color:red}
+.fc-day-sun .fc-daygrid-day-number {color:red}
+
+.fc-day-sat .fc-col-header-cell-cushion {color:blue}
+.fc-day-sat .fc-daygrid-day-number {color:blue}

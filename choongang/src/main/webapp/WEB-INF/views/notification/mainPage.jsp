@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
- 
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,12 +12,10 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <link href='../resources/css/notification.css' rel='stylesheet'/>
-<link href='../resources/css/reset.css' rel='stylesheet'/>
+<link href='../resources/css/server.css' rel='stylesheet' />
+<link href='../resources/css/reset.css' rel='stylesheet' />
 <link href="../resources/css/jquery-ui.css" rel="stylesheet"/>
 <link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
-<link href="../resources/css/jquery-ui.structure.css" rel="stylesheet"/>
-<link href="../resources/css/jquery-ui.theme.css" rel="stylesheet"/>
-
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
@@ -303,25 +300,40 @@ window.addEventListener("DOMContentLoaded", function(){
 <body>
 	<jsp:include page="../common/nav.jsp"></jsp:include>
 	
-	<div class="container">
-		<div class="row mt-3" style="position: relative;top: 100px;z-index: 999;left: 700px;">
-			<div class="col-4">
-				<input id="searchWord" type="text" class="form-control" placeholder="제목/내용">
-			</div>
-			<div class="col">
-				<button class="writeBtn" onclick="search()">검색</button>
+	<div id="container">
+		<div id="box">
+		
+		
+		<div id="gnb">
+			<div class="iconBox">
+			<img src="../resources/img/user.png" class="profile">
+				<div class="icon">
+				<p class="iconText" >닉네임</p>
+				</div>
 			</div>
 		</div>
-	
-		<div id="box">
-			<button class="writeBtn" id="insertBtn" onclick="registerNotification()">등록</button>
-			<button class="writeBtn" id="updateBtn" onclick="updateModal()">수정</button>			
-			<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()">삭제</button>
-						
-			<h2>공지사항</h2>
-			<table id="list"></table>
-			<div id="pager"></div>
-		</div>	
+		
+		<div id="noticeBox">
+		<div id="top">
+			<div class="btnBox">
+         	<button class="writeBtn" id="insertBtn" onclick="registerNotification()">등록</button>
+         	<button class="writeBtn" id="updateBtn" onclick="updateModal()">수정</button>		
+         	<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()">삭제</button>
+         	</div>
+         		<div id="search">
+         			<div class="searchBox">
+						<input id="searchWord" type="text" class="searchForm" placeholder="제목/내용">
+					</div>
+				</div>	
+		</div>
+			
+         <div id="jqgridBox">
+         	<table id="list" style="width:100%"></table>
+         	<div id="pager"></div>
+         </div>
+         </div>
+         
+      </div>
 	</div>
 
 		<!--등록 모달창 시작 -->
@@ -335,16 +347,16 @@ window.addEventListener("DOMContentLoaded", function(){
 						<h3 class="title">공지사항 등록</h3>
 						<i class="bi bi-x" onclick="modalOff()"></i>
 					</div>
-					<div class="titleBox">
+					<div class="noticeInput">
 						<strong class="text">제목<span class="star">*</span></strong>
 						<input type="text" id="nc_title" name="nc_title" class="textBox" >
 					</div>
-					<div class="titleBox" style="display: flex;">
+					<div class="noticeInput" style="display: flex;">
 						<strong class="text">내용<span class="star">*</span></strong>
 						<textarea id="nc_content" name="nc_content" class="textBox" style="height: 150px;"></textarea>
 					</div>
 								
-						<div class="titleBox">
+						<div class="noticeInput">
 							<strong class="text">파일<span class="star">*</span></strong>
 							<input type="file" name="file" />
 							<div id="afile3-list" style="border:2px solid #c9c9c9;min-height:50px"></div> 

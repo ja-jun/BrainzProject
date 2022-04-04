@@ -66,4 +66,12 @@ public class NotificationService {
 		return notiSQLMapper.getNotificationCount(vo);
 	}
 	
+	public int PREBNO(int nc_no) {
+		return notiSQLMapper.PREBNO(nc_no);
+	}
+	
+	public int NEXTBNO(int nc_no) {
+		return notiSQLMapper.NEXTBNO(nc_no);
+	}
+	
 }

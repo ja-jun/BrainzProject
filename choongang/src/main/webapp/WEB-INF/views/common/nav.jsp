@@ -18,7 +18,9 @@
 	
 	<div id="content">
 			<div class="navBar">
+			<a href="../info/mainPage">
                 <h3 class="headerName">Bcentral</h3>
+            </a>
 				<ul id="ulList">
 					<li class="pageList" id="userPage">
 						<a href="../user/mainPage">

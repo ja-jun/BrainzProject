@@ -734,15 +734,18 @@ window.addEventListener("DOMContentLoaded" , function(){
 	    	dateFormat: 'yy-mm-dd',
 	    	minDate: 0
 			});
-	})
-	 
+		$('.datepicker').datepicker('setDate', 'today');
+	});
+	
     $(function(){
     	$('#datetimepicker1').datetimepicker({
     		datepicker:false,
+    		lang:'ko',
     		format:'H:i',
     		step: 10
     	});
-  	})
+    	$("#datetimepicker1").val("00:00");
+  	});
   	
   	$(function(){
     	$('#datetimepicker2').datetimepicker({
@@ -750,7 +753,8 @@ window.addEventListener("DOMContentLoaded" , function(){
     		format:'H:i',
     		step: 10
     	});
-  	})
+    	$("#datetimepicker2").val("24:00");
+  	});
   	
   	$(function(){
     	$('#datetimepicker3').datetimepicker({
@@ -758,7 +762,8 @@ window.addEventListener("DOMContentLoaded" , function(){
     		format:'H:i',
     		step: 10
     	});
-  	})
+    	$("#datetimepicker3").val("00:00");
+  	});
   	
    $(function(){
     	$('#datetimepicker4').datetimepicker({
@@ -766,7 +771,8 @@ window.addEventListener("DOMContentLoaded" , function(){
     		format:'H:i',
     		step: 10
     	});
-  	})
+    	$("#datetimepicker4").val("24:00");
+  	});
   	
 	/* page load후 바로 실행 되는 함수들 */  	
 	getCalendarList();

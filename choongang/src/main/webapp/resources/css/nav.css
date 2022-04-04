@@ -4,6 +4,8 @@
 
 
 
+
+
 .navBar ul .pageList:nth-child(1) .imgNav{width: 30px;}
 .navBar ul .pageList:nth-child(2) .imgNav{}
 .navBar ul .pageList:nth-child(3) .imgNav{}
@@ -14,28 +16,28 @@
 .navBox{
     display: flex;
     align-items: center;
-padding-left: 40px;color: #fff;}
+    color: #fff;}
 .imgNav{
     width: 25px;
 }
-
+a .headerName{color:#fff}
 .headerName{
     font-size: 28px;
     font-weight: 700;
     font-family: 'Montserrat', sans-serif;
-padding-left: 40px;}
+text-align: left;padding-left: 60px;}
 .navBar{
     width: 300px;
     background: #18244d;
     position: fixed;
     height: 100%;
     z-index: 99;
-    
     color: #fff;
     display: grid;
     grid-template-rows: 0.4fr 5fr 1fr;
-    
-    padding-top: 40px;}
+    padding-top: 40px;
+    margin: auto;
+    text-align: center;}
 
 .navBar ul .pageList:first-child{}
 .navBar ul .pageList{
@@ -45,15 +47,16 @@ padding-left: 40px;}
     font-weight: 400;
     color: #fff;
     display: flex;
-align-items: center;}
+	align-items: center;
+	padding-left: 60px;}
 .navBar ul .on{
     background: #314279;
-}
+padding-left: -100px;padding: -100px;}
 #content{
     display: flex;
     height: 100%;
 }
-.language2{padding-left: 40px;}
+.language2{}
 .language2 .languageBox2{font-size: 18px;display: inline-flex;margin-right: 40px;font-family: 'Montserrat';font-weight: 600;color: #314279;line-height: 1.5;cursor: pointer;}
 .language2 .languageBox2:last-child{margin-right:0px}
 .language2 .languageBox2 .languageText{}
