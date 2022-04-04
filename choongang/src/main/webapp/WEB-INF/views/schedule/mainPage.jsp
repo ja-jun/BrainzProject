@@ -31,6 +31,8 @@
 <script src="../resources/js/jquery.jqGrid.js"></script>
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
 <script src="../resources/js/jquery.datetimepicker.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+<script src="../resources/js/tippy-bundle.umd.min.js"></script>
 <script>
 const language = '<spring:message code="language"/>';
 const lang_regSc = '<spring:message code="schedule.register"/>';
@@ -405,7 +407,14 @@ function getCalendarList(){
 				        	alert("잘못된 접근입니다.");
 				        }
 				    });
-				}
+				},
+				
+				eventDidMount: function(info) {
+		            tippy(info.el, {
+		                content:  info.event.title
+		            });
+		        }
+				
 			});
 			calendar.render();
 				
@@ -714,7 +723,8 @@ window.addEventListener("DOMContentLoaded" , function(){
 		}
  	});
  	
- 	$("#schedulePage").addClass("on");
+ 	$("#calenderPage").addClass("on");
+ 	
  	$(document).ready(function(){
  		  $('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
  		})

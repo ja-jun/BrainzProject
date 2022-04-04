@@ -4,7 +4,7 @@
 
 
 
-.navBar ul .pageList:nth-child(1) .imgNav{}
+.navBar ul .pageList:nth-child(1) .imgNav{width: 30px;}
 .navBar ul .pageList:nth-child(2) .imgNav{}
 .navBar ul .pageList:nth-child(3) .imgNav{}
 .navBar ul .pageList:nth-child(4) .imgNav{}
@@ -14,47 +14,47 @@
 .navBox{
     display: flex;
     align-items: center;
-}
+padding-left: 40px;color: #fff;}
 .imgNav{
-    width: 24px;
+    width: 25px;
 }
 
 .headerName{
     font-size: 28px;
     font-weight: 700;
     font-family: 'Montserrat', sans-serif;
-}
+padding-left: 40px;}
 .navBar{
     width: 300px;
-    background: #fff;
+    background: #18244d;
     position: fixed;
     height: 100%;
     z-index: 99;
-    padding: 70px 35px 70px 35px;
-    color: #222;
+    
+    color: #fff;
     display: grid;
     grid-template-rows: 0.4fr 5fr 1fr;
-    justify-content: center;
-    }
+    
+    padding-top: 40px;}
 
-.navBar ul .pageList:first-child{margin-top: 70px;}
+.navBar ul .pageList:first-child{}
 .navBar ul .pageList{
-    height: 100px;
+    height: 90px;
     font-size: 18px;
     font-family: 'Noto Sans KR';
     font-weight: 400;
-    color: #222;
+    color: #fff;
     display: flex;
-}
+align-items: center;}
 .navBar ul .on{
-    background: #d4d7da;
+    background: #314279;
 }
 #content{
     display: flex;
     height: 100%;
 }
-.language2{}
-.language2 .languageBox2{font-size: 18px;display: inline-flex;margin-right: 40px;font-family: 'Montserrat';font-weight: 500;color: #999;line-height: 1.5;}
+.language2{padding-left: 40px;}
+.language2 .languageBox2{font-size: 18px;display: inline-flex;margin-right: 40px;font-family: 'Montserrat';font-weight: 600;color: #314279;line-height: 1.5;cursor: pointer;}
 .language2 .languageBox2:last-child{margin-right:0px}
 .language2 .languageBox2 .languageText{}
-.language2 .onn{border-bottom: 3px solid #222;width: 24px;color: #222;font-weight: 600;}
+.language2 .onn{border-bottom: 3px solid #fff;width: 24px;color: #fff;font-weight: 600;}

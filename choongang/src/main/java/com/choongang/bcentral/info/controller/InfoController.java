@@ -24,4 +24,9 @@ public class InfoController {
 	public String test() {
 		return "/info/test";
 	}
+	
+	@RequestMapping("loginPage2")
+	public String loginPage2() {
+		return "/info/loginPage2";
+	}
 }

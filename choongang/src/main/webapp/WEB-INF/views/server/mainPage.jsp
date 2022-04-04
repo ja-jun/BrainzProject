@@ -328,7 +328,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			</div>
 		</div>
 		
-		<div id="userBox">
+		<div id="serverBox">
 		<div id="top">
 			<div class="btnBox">
          	<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>

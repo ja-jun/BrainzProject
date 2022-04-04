@@ -23,10 +23,6 @@
 #first{
 	display: grid;
 	width: 100%;
-	
-	
-
-  
   grid-template-areas:
   "midTop midTop rightCol"
   "midBottom midBottom rightCol";

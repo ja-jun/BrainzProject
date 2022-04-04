@@ -476,6 +476,8 @@ window.addEventListener("DOMContentLoaded", function(){
 	
 	// 엔터 누르면 검색
 	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
+	
+	$("#userPage").addClass("on");
 });
 </script>
 
