@@ -15,9 +15,15 @@
 		OFFSET (#{page} -1) * #{rows}
 	</select>
 	
+	
+	<select id="getNextNotificationNo" resultType="int">
+		select nextval('BP_notification_seq')
+	</select>
+	
+	
 	<insert id="insertNotification">
 		INSERT into bp_notification values(
-			nextval('BP_notification_seq'),
+			#{nc_no},
 			#{user_no},
 			#{nc_title},
 			#{nc_content},
@@ -54,4 +60,25 @@
 				WHERE nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
 			</if>
 	</select>
+	
+	<select id="getNextFileNo" resultType="int">
+		select nextval('bp_file_seq')
+	</select>
+	
+	<insert id="insertFile">
+		INSERT into bp_file values(
+			#{file_no},
+			#{name},
+			#{nc_no},
+			#{fileName},
+			#{uploadedFileName},
+			#{fileSize},
+			#{contentType},
+			#{downlink}
+		)		
+	</insert>
+	
+	
+	
+	
 </mapper>

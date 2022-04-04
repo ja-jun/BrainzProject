@@ -1,11 +1,13 @@
 package com.choongang.bcentral.noti.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.choongang.bcentral.mapper.NotificationSQLMapper;
+import com.choongang.bcentral.noti.vo.FileVo;
 import com.choongang.bcentral.noti.vo.NotificationVo;
 import com.choongang.bcentral.server.vo.PageVo;
 
@@ -20,8 +22,26 @@ public class NotificationService {
 		return notiSQLMapper.getNotificationList(vo);
 	}
 	
-	public void insertNotification(NotificationVo vo) {
+	public void insertNotification(NotificationVo vo , List<FileVo> fileVoList) {
+		
+		int ncNo = notiSQLMapper.getNextNotificationNo();
+		vo.setNc_no(ncNo);
 		notiSQLMapper.insertNotification(vo);
+		
+		
+		for(FileVo fileVo : fileVoList) {
+			fileVo.setNc_no(ncNo);
+			
+			//test
+			fileVo.setName("사용 안함");
+			fileVo.setDownlink("사용 안함");
+						
+			int fileNo = notiSQLMapper.getNextFileNo();
+			fileVo.setFile_no(fileNo);
+			
+			notiSQLMapper.insertFile(fileVo);
+		}
+		
 	}
 	
 	public void updateNotification(NotificationVo vo) {
@@ -45,4 +65,5 @@ public class NotificationService {
 	public int getNotificationCount(PageVo vo) {
 		return notiSQLMapper.getNotificationCount(vo);
 	}
+	
 }
