@@ -1,5 +1,6 @@
 package com.choongang.bcentral.noti.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.choongang.bcentral.noti.service.NotificationService;
+import com.choongang.bcentral.noti.vo.FileVo;
 import com.choongang.bcentral.noti.vo.NotificationVo;
 
 @Controller
@@ -30,6 +32,9 @@ public class NotificationController {
 		
 		NotificationVo data = NotificationService.getNotification(nc_no);
 		model.addAttribute("data",data);
+		
+		ArrayList<FileVo> file = NotificationService.getFileVo(nc_no);
+		model.addAttribute("file",file);
 		
 		int test = NotificationService.PREBNO(nc_no);
 		NotificationVo data2 = NotificationService.getNotification(test);

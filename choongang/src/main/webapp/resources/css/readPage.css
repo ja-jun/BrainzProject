@@ -46,6 +46,14 @@ overflow-x: hidden;}
     width: 45px;
     margin-right: 15px;
 }
+#afile3-list{
+	display: flex;
+	font-size: 15px;
+	background: #f3f3f3;
+	height: 60px;
+	align-items: center;
+	padding-left: 10px;
+}
 #noticeBox{}
 #noticeBox .titleBar{display: flex;width: 1420px;justify-content: space-between;align-items: center;border-bottom: 2px solid #222;}
 #noticeBox .titleBar .titleText{font-size: 30px;font-weight: 600;margin-bottom: 25px;}

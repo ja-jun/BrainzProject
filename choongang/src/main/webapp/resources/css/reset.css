@@ -44,7 +44,7 @@ a{
     text-decoration: none;
 }
 a:hover{
-    color:#222
+    color: inherit;
 }
 blockquote, q {
 	quotes: none;

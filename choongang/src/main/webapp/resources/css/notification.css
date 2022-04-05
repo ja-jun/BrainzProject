@@ -62,12 +62,12 @@
   font-size: 13px;
   }
 #modal .modalBox{
-    width: 600px;background: #fff;
+    width: 650px;background: #fff;
     justify-content: center;
     background-color: #ffffff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
-    height: 600px;
+    height: 650px;
     align-content: center;
     }
 #modal .modalBox .top{
@@ -109,7 +109,7 @@ align-items: center;}
 #modal .modalBox .noticeInput .textBox{
     border: 1px solid #ccc;
     height: 35px;
-    width: 380px;
+    width: 468px;
     padding: 8px;
 	font-size: 15px;
 	font-weight: 300;
@@ -171,7 +171,7 @@ align-items: center;}
 	width: 80px;
     height: 40px;
     font-weight: 500;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
     color: #fff;
 	background: #18244d;
@@ -199,3 +199,35 @@ align-items: center;}
 	font-size: 15px;
 	font-weight: 300;
 }
+input[type="file"] {
+	position: absolute; 
+	width: 1px; 
+	height: 1px; 
+	padding: 0; 
+	margin: -1px; 
+	overflow: hidden; 
+	clip:rect(0,0,0,0); 
+	border: 0; 
+}
+.filename { 
+	display: inline-flex; 
+	color: #fff; 
+	cursor: pointer; 
+	width: 70px;
+	height: 35px;
+	font-size: 14px;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+	margin-left: 5px;
+	background: #555;}
+.upload-name { 
+	display: inline-block; 
+	padding: .5em .75em; /* label의 패딩값과 일치 */ 
+	font-size: 14px; 
+	line-height: normal; 
+	vertical-align: middle; 
+	background-color: #fff; 
+	border: 1px solid #ccc;
+	-webkit-appearance: none; /* 네이티브 외형 감추기 */ -moz-appearance: none; appearance: none; 
+	height: 35px;width: 200px;font-weight: 300;}

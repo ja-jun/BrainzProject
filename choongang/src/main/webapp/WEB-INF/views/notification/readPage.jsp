@@ -12,14 +12,29 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link href='../resources/css/readPage.css' rel='stylesheet' />
 <script>
+
 window.addEventListener("DOMContentLoaded", function(){
-	$("#noticePage").addClass("on");
-	var today = document.querySelector('.dateText');
+	$(function(){
+		var date = document.querySelector('.dateText').innerText;
+    	var date2 = new Date(+new Date(date) + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '');
+    	console.log(date2);
+    	document.querySelector('.dateText').innerText = date2;
+	});
 	
-	var mydate = new Date(today);
-	var a = mydate.toDateString();
-	today = a;
-	console.log(today);
+	$("#noticePage").addClass("on");
+	
+	$.ajax({
+		url: "/choongang/notification/getNotification",
+		type: 'POST',
+		data: "nc_no=" + ${data.nc_no },
+		success: function(data){
+            // 업로드 된 파일 리스트 만들기
+            $.each(data.fileVo, function(index, item){
+            	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
+            });
+                  
+		}
+	});
 	
 });   
 </script>
@@ -47,6 +62,10 @@ window.addEventListener("DOMContentLoaded", function(){
 				<h3 class="titleText">${data.nc_title }</h3>
 				<strong class="dateText">${data.nc_writeDate }</strong>
 			</div>
+			
+			<c:if test="${!empty file}">
+				<div id="afile3-list"></div>
+			</c:if>
 			
 			<div class="contentBox">
 				<p class="contentText">${data.nc_content }</p>

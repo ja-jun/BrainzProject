@@ -294,17 +294,14 @@ function modalOff() {
 	$('#afile3-list br').remove();
 }
 
+
 //모달창 열렸을 때 ESC누르면 닫힘
 window.addEventListener("keyup", e => {
     if(isModalOn() && e.key === "Escape") { modalOff(); }
 })
 
 window.addEventListener("DOMContentLoaded", function(){
-	   $(window).resize(function() {
-   $("#list").setGridWidth($(this).width() * .100);
-});    
-		createAndInitGrid();
-	
+	createAndInitGrid();
 	const modal = document.getElementById("modal");
 
 	/* 	
@@ -318,6 +315,12 @@ window.addEventListener("DOMContentLoaded", function(){
 	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
 	
 	$("#noticePage").addClass("on");
+	
+	$("#ex_filename").on('change',function(){
+		  var fileName = $("#ex_filename").val();
+		  $(".upload-name").val(fileName);
+	});
+	
 });
 
 </script>
@@ -385,7 +388,10 @@ window.addEventListener("DOMContentLoaded", function(){
 								
 						<div class="noticeInput">
 							<strong class="text">파일</strong>
-							<input type="file" name="file" />
+							<input class="upload-name" value="파일선택">
+							<label for="ex_filename" class="filename">업로드</label>
+							
+							<input type="file" name="file" id="ex_filename"/>
 							<div id="afile3-list"></div> 
 							
 						</div>
