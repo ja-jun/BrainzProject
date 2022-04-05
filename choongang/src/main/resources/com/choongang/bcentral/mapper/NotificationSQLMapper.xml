@@ -29,7 +29,7 @@
 			#{user_no},
 			#{nc_title},
 			#{nc_content},
-			#{nc_readCount},
+			0,
 			now()
 		)
 	</insert>

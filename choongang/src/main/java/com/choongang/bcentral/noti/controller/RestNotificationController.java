@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +41,17 @@ public class RestNotificationController {
 
 	@Autowired
 	private NotificationService notiService;
+	
+//	@RequestMapping("readPage")
+//	public String readContentPage(int nc_no , Model model) {
+//		
+//		notiService.increaseReadCount(nc_no);
+//		
+//		HashMap<String, Object> map = notiService.getNotification(nc_no);
+//		model.addAttribute("data" , map);
+//		
+//		return "notification/readPage";		
+//	}
 		
 	@RequestMapping("getNotificationList")
 	public HashMap<String, Object> getNotificationList(PageVo param){
