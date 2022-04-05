@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.choongang.bcentral.mapper.InfoSQLMapper;
 import com.choongang.bcentral.noti.vo.NotificationVo;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
+import com.choongang.bcentral.server.vo.ServerInfoVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 
 @Service
@@ -34,7 +35,7 @@ public class InfoService {
 	}
 	
 	// 모든 서버의 정보를 가져옴
-	public ArrayList<ServerVo> getTotalServer() {
+	public ArrayList<ServerInfoVo> getTotalServer() {
 		return ifSqlMapper.selectServer();
 	}
 	
@@ -110,50 +111,38 @@ public class InfoService {
 	}
 	
 	// ScheduleVo 를 넣어주면 연결된 Server들의 현재 상태를 포함한 HashMap을 반환함
-	public ArrayList<HashMap<String, Object>> getServerInfo(ArrayList<ScheduleVo> scheduleList){
+	public HashMap<Integer, Object> getServerInfo(ArrayList<ScheduleVo> scheduleList){
+		HashMap<Integer, Object> serverInfo = new HashMap<Integer, Object>();
 		
-		ArrayList<HashMap<String, Object>> serverInfo = new ArrayList<HashMap<String, Object>>();
+		// 모든 서버 목록들을 출력
+		ArrayList<ServerInfoVo> serverList = ifSqlMapper.selectServer();
 		
-		int curServerSeq = ifSqlMapper.selectCurrentServerVal();
-		
-		for(int i = 0; i < curServerSeq; i++) {
-			serverInfo.add(null);
-		}
-		
-		for(ServerVo sv : getTotalServer()) {
-			HashMap<String, Object> serverData = new HashMap<String, Object>();
-			serverData.put("serverVo", sv);
-			serverData.put("state", 3);
-			serverInfo.add(sv.getServer_no() - 1, serverData);
+		for(ServerInfoVo siVo : serverList) {
+			siVo.setStatus(3);
+			serverInfo.put(siVo.getServer_no(), siVo);
 		}
 		
 		for(ScheduleVo scVo : scheduleList) {
-			int state = todaySchedule(scVo);
+			int status = todaySchedule(scVo);
 			
-			ArrayList<ServerVo> serverList = ifSqlMapper.selectServerVoByScNo(scVo.getSc_no());
+			System.out.println(scVo.getTitle() + " 스케줄의 상태는 : " + status);
 			
-			for(ServerVo svVo : serverList) {
-				int server_no = svVo.getServer_no();
-				System.out.println("server 번호 : " + server_no + ", 서버 상태 : " + state);
-				HashMap<String, Object> sv = serverInfo.get(server_no - 1);
+			ArrayList<ServerVo> mgmtServer = ifSqlMapper.selectServerVoByScNo(scVo.getSc_no());
+			for(ServerVo svVo : mgmtServer) {
+				ServerInfoVo siVo = (ServerInfoVo) serverInfo.get(svVo.getServer_no()); 
 				
-				if(sv.containsKey("state")) {
-					int pre_state = (Integer) sv.get("state");
-					
-					if(state == 1) {
-						sv.put("state", state);
-					} else if (state == 0 && pre_state != 1) {
-						sv.put("state", state);
-					} else if (state == 2) {
-						sv.put("state", state);
-					}
-				} else {
-					sv.put("state", state);
+				int pre_status = siVo.getStatus();
+				
+				if(status == 1) {
+					siVo.setStatus(status);
+				} else if(status == 0 && pre_status != 1) {
+					siVo.setStatus(status);
+				} else if(status == 2) {
+					siVo.setStatus(status);
 				}
 			}
+			
 		}
-		
-		serverInfo.remove(null);
 		
 		return serverInfo;
 	}

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.info.service.InfoService;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
+import com.choongang.bcentral.server.vo.ServerInfoVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 import com.google.gson.Gson;
 
@@ -24,26 +25,15 @@ public class RestInfoController {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
 		ArrayList<ScheduleVo> scheduleList = infoService.getTodaySchedule();
-		ArrayList<HashMap<String, Object>> serverInfo = infoService.getServerInfo(scheduleList);
+		HashMap<Integer, Object> serverInfo = infoService.getServerInfo(scheduleList);
 		
 		Integer[] stateCount = {0, 0, 0, 0};
 		
-		int count = 0;
-		
-		for(HashMap<String, Object> server : serverInfo) {
-			if(server != null) {
-				count++;
-				if(server.containsKey("state")) {
-					Integer state = (Integer) server.get("state");
-					System.out.println("상태는 : " + state);
-					stateCount[state]++;
-				}
-				ServerVo sv = (ServerVo) server.get("serverVo");
-				System.out.println(sv.getOs());
-			}
+		for(Integer serverNo : serverInfo.keySet()) {
+			ServerInfoVo siVo = (ServerInfoVo) serverInfo.get(serverNo);
+			stateCount[siVo.getStatus()]++;
+			System.out.println("server_no : " + serverNo + " server_status : " + siVo.getStatus());
 		}
-		
-		stateCount[3] = count - stateCount[2] - stateCount[1] - stateCount[0];
 		
 		data.put("serverInfo", serverInfo);
 		data.put("totalServer", infoService.getTotalServer());

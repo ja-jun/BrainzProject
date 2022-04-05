@@ -146,18 +146,18 @@ var context = document.getElementById('barChart');
 $.ajax({
 	url : '/choongang/info/getServerInfo',
 	method : 'POST',
-	dataType : 'json'
+	dataType : 'JSON'
 }).done(function(json){
 	const stateLabels = [info_working, info_preworking, info_aftworking, info_noworking];
 	const osLabels = ['AIX', 'Windows', 'Linux'];
 	
 	var os = [0, 0, 0];
 	
-	for(var server of json.serverInfo){
-		if(server == null){
-			continue;
-		}
-		var sv = server['serverVo'].os;
+	var map = new Map();
+	map = json['serverInfo'];
+	
+	for(var server in map){
+		var sv = map[server]['os'];
 		
 		if(sv == 'AIX'){
 			os[0]++;
@@ -167,7 +167,7 @@ $.ajax({
 			os[2]++;
 		}
 		
-		if(server['state'] == 1 && $('.barUl2 .barList2').length < 7){
+		if(map[server]['status'] == '1' && $('.barUl2 .barList2').length < 7){
 			var list = document.createElement("li");
 			list.setAttribute("class", "barList2");
 			
@@ -181,14 +181,14 @@ $.ajax({
 			
 			var h3 = document.createElement("h3");
 			h3.setAttribute("class", "titleBox");
-			h3.innerText = server['serverVo'].name;
+			h3.innerText = map[server]['name'];
 			
 			list.append(div);
 			list.append(h3);
 			
 			$('.barUl2').append(list);
 			
-		} else if(server['state'] == 0 && $('.barUl3 .barList2').length < 7){
+		} else if(map[server]['status'] == '0' && $('.barUl3 .barList2').length < 7){
 			var list = document.createElement("li");
 			list.setAttribute("class", "barList2");
 			
@@ -202,7 +202,7 @@ $.ajax({
 			
 			var h3 = document.createElement("h3");
 			h3.setAttribute("class", "titleBox");
-			h3.innerText = server['serverVo'].name;
+			h3.innerText = map[server]['name'];
 			
 			list.append(div);
 			list.append(h3);
@@ -212,16 +212,13 @@ $.ajax({
 	}
 	
 	var totalServer = json.totalServer.length;
-	console.log(totalServer);
 	
 	var maxState = 0;
-	for(var count in json.stateCount){
+	for(var count of json.stateCount){
 		if(parseInt(maxState) < parseInt(count)){
 			maxState = count;
 		}
 	}
-	
-	console.log(maxState);
 	
 	// 서버 상태 Bar Chart 작성
 	var myChart = new Chart(context, {
@@ -263,7 +260,7 @@ $.ajax({
 	    	responsive: false,
 			scales: {
 				y: {
-					max: parseInt(maxState),
+					max: parseInt(maxState) + 2,
 					grid: {
 						display: false
 					},
@@ -288,33 +285,6 @@ $.ajax({
 						textStrokeWidth: 4
 					}
 				}
-				/* yAxes: [{
-					ticks: {
-						beginAtZero: true,
-						stepSize : 20,
-						fontColor : "#222",
-						fontSize : 16,
-	                       fontFamily : 'Montserrat'
-					},
-					gridLines:{
-						color: '#e8e8e8',
-						lineWidth:1,
-	                       drawBorder: false,
-	                       margin:10
-					}
-				}],
-				xAxes: [{
-					ticks:{
-						beginAtZero: true,
-						stepSize : 30,
-						fontColor : "#222",
-						fontSize : 16,
-						fontFamily :'Noto Sans KR'
-					},
-					gridLines:{
-						display:false
-					}
-				}] */
 			}
 		}
 	});
@@ -410,7 +380,6 @@ $.ajax({
 		p.setAttribute("class", "date");		
 		
 		var writedate = new Date(notiVo.nc_writeDate);
-		console.log(writedate);
 		p.innerText = writedate.toLocaleDateString();
 		
 		list.append(h3);

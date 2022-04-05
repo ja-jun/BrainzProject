@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.choongang.bcentral.noti.vo.NotificationVo;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
+import com.choongang.bcentral.server.vo.ServerInfoVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 
 public interface InfoSQLMapper {
@@ -17,7 +18,7 @@ public interface InfoSQLMapper {
 	// 스케줄 번호에 연결된 서버들을 출력
 	public ArrayList<ServerVo> selectServerVoByScNo(int sc_no);
 	
-	public ArrayList<ServerVo> selectServer();
+	public ArrayList<ServerInfoVo> selectServer();
 	
 	public ArrayList<NotificationVo> selectNotification();
 	
