@@ -176,7 +176,6 @@ function molBtn() {
 	ul.appendChild(radioBoxList3);
 	radioBoxList.appendChild(input);
 	radioBoxList.appendChild(span);
-	radioBoxList2.appendChild(span2);
 	radioBoxList3.appendChild(input3);
 	radioBoxList3.appendChild(span3);
 }
@@ -983,6 +982,25 @@ function modBtn(){
 function delSchedule(){
 	$('body').css("overflow-y", "auto");
 	var formData = new FormData(document.getElementById('regScheduleInfo'));
+	
+	if($('.timearr').is(':checked')){
+		formData.set('repeat_cat', 0);
+		formData.set('start_date', formData.getAll('start_date_2'));
+		formData.set('end_date', formData.getAll('end_date_2'));
+		formData.set('start_time', formData.getAll('start_time_2'));
+		formData.set('end_time', formData.getAll('end_time_2'));
+	} else {
+		if($('.limitless').is(':checked')){
+			formData.set('end_date', '9999-12-31');
+		} else {
+			formData.set('end_date', formData.getAll('end_date_1'));
+		}
+		
+		formData.set('start_date', formData.getAll('start_date_1'));
+		formData.set('start_time', formData.getAll('start_time_1'));
+		formData.set('end_time', formData.getAll('end_time_1'));
+	}
+	
 	$.ajax({
 		url: './delSchedule',
 		data: formData,

@@ -71,7 +71,7 @@ public class RestScheduleController {
 		System.out.println(new Gson().toJson(ssVo));
 		
 		int result = ckService.validateScheduleDate(ssVo);
-		
+		System.out.println("result : " + result);
 		if(result == 0) {
 			scheduleService.regSchedule(ssVo);
 		}

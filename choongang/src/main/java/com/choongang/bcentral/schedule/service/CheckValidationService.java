@@ -29,7 +29,8 @@ public class CheckValidationService {
 			return 1;
 		}
 		
-		while(cur_date.isBefore(end_date)) {
+		while(cur_date.isBefore(end_date) || cur_date.isEqual(end_date)) {
+			System.out.println("cur_date는  " + cur_date);
 			int day = cur_date.getDayOfWeek().getValue() - 1;
 			
 			switch(ssVo.getRepeat_cat()) {
@@ -44,7 +45,7 @@ public class CheckValidationService {
 				WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
 				TemporalField weekOfMonth = weekFields.weekOfMonth();
 				int wom = cur_date.get(weekOfMonth);
-				
+				System.out.println("cur_date는 " + cur_date.getMonthValue() + "월의 " + wom + "주차 입니다.");
 				if(wom == ssVo.getRepeat_week() && dayCheck[day] != null) {
 					return 0;
 				}
@@ -55,6 +56,8 @@ public class CheckValidationService {
 				}
 				break;
 			}
+			
+			cur_date = cur_date.plusDays(1);
 		}
 		
 		return 2;
