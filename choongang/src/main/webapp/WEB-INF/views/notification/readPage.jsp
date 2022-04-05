@@ -13,6 +13,7 @@
 <link href='../resources/css/readPage.css' rel='stylesheet' />
 <script>
 window.addEventListener("DOMContentLoaded", function(){
+	$("#noticePage").addClass("on");
 	var today = document.querySelector('.dateText');
 	
 	var mydate = new Date(today);
@@ -68,14 +69,25 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
             		</c:otherwise>
            </c:choose>
+           
+           
+           <c:choose>
+            		<c:when test="${empty data2.nc_no }">
+            		<div class="prev" style="display:none">
+					</div>
+            		</c:when>
+            		<c:otherwise>
+            		<div class="prev">
+					<a href="./readPage?nc_no=${data2.nc_no }" style="display: flex;">
+					<img src="https://img.icons8.com/ios-filled/50/000000/expand-arrow--v1.png" style="width:15px">
+					<span class="prevTitle">이전</span>
+					<p class="prevText">${data2.nc_title }</p>
+					</a>
+					</div>
+            		</c:otherwise>
+           </c:choose>
 			
-			<div class="prev">
-				<a href="./readPage?nc_no=${data2.nc_no }" style="display: flex;">
-				<img src="https://img.icons8.com/ios-filled/50/000000/expand-arrow--v1.png" style="width:15px">
-				<span class="prevTitle">이전</span>
-				<p class="prevText">${data2.nc_title }</p>
-				</a>
-			</div>
+			
 			<div class="btnBox">
 				<a href="./mainPage"><button class="btnList">목록보기</button></a>
 			</div>

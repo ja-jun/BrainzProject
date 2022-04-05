@@ -384,9 +384,9 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
 								
 						<div class="noticeInput">
-							<strong class="text">파일<span class="star">*</span></strong>
+							<strong class="text">파일</strong>
 							<input type="file" name="file" />
-							<div id="afile3-list" style="border:2px solid #c9c9c9;min-height:50px"></div> 
+							<div id="afile3-list"></div> 
 							
 						</div>
 					
@@ -394,9 +394,9 @@ window.addEventListener("DOMContentLoaded", function(){
 																
 						
 					<div class="btnBox">					
-						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertNotification()">
-						<input type="button" id="deleteBtn3" value="삭제" class="btnBoxbtn" onclick="deleteModal()" style="display:none">						
-						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >					
+						<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertNotification()">
+						<input type="button" id="deleteBtn3" value="삭제" class="writeBtn2" onclick="deleteModal()" style="display:none">						
+						<input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >					
 					</div>
 					</form>					
 					<!-- Form 태그 종료 -->

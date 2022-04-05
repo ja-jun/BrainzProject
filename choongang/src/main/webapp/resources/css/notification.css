@@ -37,8 +37,7 @@
     margin: 30px 0px 100px 350px;
     width: 100%;
     padding-right: 400px;
-    /* height: 100%; */}
-
+}
 #modal{
 	display:none;
 	align-items: center;
@@ -68,23 +67,23 @@
     background-color: #ffffff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
-    height: 750px;
+    height: 600px;
     align-content: center;
     }
 #modal .modalBox .top{
     background: #18244d;
-    height: 45px;
+    height: 53px;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     display: flex;
     justify-content: space-between;
-    padding: 0px 10px 0px 30px;
+    padding: 0px 30px 0px 30px;
 }
 #modal .modalBox .top .title{
     line-height: 3.2;
 }
 #modal .modalBox .top .bi-x{
-    font-size: 18px;
+    font-size: 22px;
     line-height: 2.4;
     cursor: pointer;
 }
@@ -95,11 +94,11 @@
 }
 #modal .modalBox .noticeInput:last-child{border:none}
 #modal .modalBox .noticeInput .text{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     width: 120px;
     display: inline-flex;
-}
+align-items: center;}
 
 .star{
     margin-left: 10px;
@@ -111,7 +110,9 @@
     border: 1px solid #ccc;
     height: 35px;
     width: 380px;
-    padding-left: 8px;
+    padding: 8px;
+	font-size: 15px;
+	font-weight: 300;
 }
 
 #modal .modalBox .noticeInput .input_id{
@@ -122,17 +123,6 @@
 }
 
 .ui-jqgrid .ui-jqgrid-htable{width:100%}
-
-.id_check_button { 
-    height: 33px;
-    width: 80px;
-    font-size: 1em;
-    background: #353c40;
-    border: none;
-    color: #fff;
-    outline: none;
-    margin-left: -7px;
-}
 
 #jqgridBox{
 	border-top:none;
@@ -198,3 +188,14 @@
 	margin-left: 120px;
 	}
 .searchBtn{width: 80px;height: 45px;border: 1px solid #ccc;background: #18244d;border-radius: 7px;color: #fff;font-size: 16px;}
+#afile3-list{
+	height: 100px;
+	border: 1px solid #ccc;
+	margin-top: 10px;
+}
+#afile3-list a{
+	padding: 8px;
+	display: block;
+	font-size: 15px;
+	font-weight: 300;
+}
