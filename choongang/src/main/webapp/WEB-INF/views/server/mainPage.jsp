@@ -68,7 +68,7 @@ function createAndInitGrid(){
 			
 			// 수정 모달 창 띄우기
  	        ondblClickRow: function (rowId) { 
- 	        	validationCheck();
+ 	        	validationTest();
 	            var rowData = $("#list").getRowData(rowId);
 	            var server_no = rowData.server_no;
 		       	
@@ -157,8 +157,9 @@ function insertServer(){
 
 	//IP 정규표현식
 	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-
-	if(!regExp.test($("#ip").val())){
+	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
+	
+	if(!regTest.test($("#ip").val())){
 		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
 		 document.getElementById("ipAlertBox").style.color = "red";
 		$('#ip').focus();
@@ -189,8 +190,8 @@ function insertServer(){
 	 }).done(function(data){
 		 	var result= data.result;
 		 	if(result != "0"){
-				//validationError(result);
-		 		alert("XXXXX");			 
+				validationError(result);
+//		 		alert("XXXXX");			 
 		 	} else{
 				alert("등록되었습니다.");			 		
 		 	}
@@ -286,7 +287,7 @@ function confirmMac(){
 		}
 	};
 	
-	xhr.open("post" , "./isExistMac", true);  
+	xhr.open("post" , "./validationMac", true);  
     xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
 	xhr.send("mac=" + macValue); 
 }
@@ -478,7 +479,7 @@ window.addEventListener("DOMContentLoaded", function(){
                </div>
                <div class="serverInput">
                   <strong class="text">MAC<span class="star">*</span></strong>
-                  <input type="text" id="mac"  name="mac" class="textBox" onblur="confirmMac()">
+                  <input type="text" id="mac"  name="mac" class="textBox" >
                   <div id="macAlertBox" class="confirmAlertBox"></div> 
                </div>
                

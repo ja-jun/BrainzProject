@@ -70,7 +70,8 @@ public class RestServerController {
 		} else if(param.getName() == null) {
 			data.put("result", "2");
 			return data;
-		} else if(!Pattern.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$", param.getMac()) ) {
+		} else if(!Pattern.matches("^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$", param.getMac()) ) {
+			System.out.println("ip 패턴이 안맞음....");
 			data.put("result", "3");
 			return data;
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
@@ -78,11 +79,16 @@ public class RestServerController {
 			return data;
 		} //현재 서버번호와 다른 서버들의 mac과 중복되지 않는지 확인해야함
 		
+		System.out.println(new Gson().toJson(param));
+
+		System.out.println("인서트 시작...ㅠㅠ....");
+		
 		param.setUser_no(userInfo.getUser_no());
 		serverService.insertServer(param);
 		data.put("result", "0");
 
-		System.out.println(data.get("result"));
+		System.out.println("인서트 됐나요??ㅠㅠㅠ");
+		System.out.println("인서트 결과(숫자/0:정상) : " + data.get("result"));
 		return data;
 	}
 	
@@ -128,7 +134,7 @@ public class RestServerController {
 		serverService.updateServer(param);
 		
 		data.put("result", "0");
-		System.out.println(data.get("result"));
+		System.out.println("수정 결과(숫자) :  " + data.get("result"));
 		return data;
 	}
 	
@@ -136,10 +142,11 @@ public class RestServerController {
 	public HashMap<String, Object> validationMac(String mac){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		System.out.println("mac에 대한 유효성 검사");
 		data.put("formMac", serverService.formMac(mac)); //형식에 맞지 않으면 false, 아니면 true
 		data.put("isExistMac", serverService.isExistMac(mac)); //mac이 존재하면 true,아니면 false
 		
+		System.out.println("mac유효성 (정상:(t,f)) : " +  data.get("formMac") + "," + data.get("isExistMac"));
+
 		//true,false가 되어야 insert되게 해야함
 		return data;
 	}

@@ -58,10 +58,8 @@ public class ServerService {
 		int count = svSQLMapper.getCountByMac(mac);
 		
 		if(count > 0) {
-			System.out.println("true");
 			return true; //같은 mac이 존재하면 true
 		} else {
-			System.out.println("false");
 			return false; //아니면 false
 		}
 	}
