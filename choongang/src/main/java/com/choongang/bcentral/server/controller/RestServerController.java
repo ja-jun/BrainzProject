@@ -9,10 +9,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.server.service.ServerService;
 import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.server.vo.ServerVo;
@@ -63,6 +61,8 @@ public class RestServerController {
 	public HashMap<String, Object> insertServer(ServerVo param, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
+		System.out.println(new Gson().toJson(param));
+		
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { //인터셉터 존재??? delete,update...ajax에서 사용...ㅜㅜ
 			data.put("result", "1"); 
@@ -76,11 +76,13 @@ public class RestServerController {
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
 			data.put("result", "4");
 			return data;
-		} //중복된 mac주소도 검사해야함
+		} //현재 서버번호와 다른 서버들의 mac과 중복되지 않는지 확인해야함
 		
 		param.setUser_no(userInfo.getUser_no());
 		serverService.insertServer(param);
 		data.put("result", "0");
+
+		System.out.println(data.get("result"));
 		return data;
 	}
 	
@@ -110,32 +112,35 @@ public class RestServerController {
 		
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { 
-			data.put("result", "1"); 
+			data.put("result", "1");  //로그인되지 않았을때
 			return data; 
 		} else if(param.getName() == null) {
-			data.put("result", "2");
+			data.put("result", "2"); //서버명이 없을때
 			return data;
 		} else if(!Pattern.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$", param.getMac()) ) {
-			data.put("result", "3");
+			data.put("result", "3"); //ip 형식이 안맞을때
 			return data;
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
-			data.put("result", "4");
+			data.put("result", "4"); //mac 형식이 안맞을때
 			return data;
 		} //현재 서버번호와 다른 서버들의 mac과 중복되지 않는지 확인해야함
 	
 		serverService.updateServer(param);
 		
 		data.put("result", "0");
-		
+		System.out.println(data.get("result"));
 		return data;
 	}
 	
-	@RequestMapping("isExistMac")
-	public HashMap<String, Object> isExistMac(String mac){
+	@RequestMapping("validationMac")
+	public HashMap<String, Object> validationMac(String mac){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		data.put("result", serverService.isExistMac(mac));
+		System.out.println("mac에 대한 유효성 검사");
+		data.put("formMac", serverService.formMac(mac)); //형식에 맞지 않으면 false, 아니면 true
+		data.put("isExistMac", serverService.isExistMac(mac)); //mac이 존재하면 true,아니면 false
 		
+		//true,false가 되어야 insert되게 해야함
 		return data;
 	}
 	

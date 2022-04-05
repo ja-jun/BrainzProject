@@ -8,6 +8,7 @@ import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,13 +58,21 @@ public class ServerService {
 		int count = svSQLMapper.getCountByMac(mac);
 		
 		if(count > 0) {
-			return true;
+			System.out.println("true");
+			return true; //같은 mac이 존재하면 true
 		} else {
-			return false;
+			System.out.println("false");
+			return false; //아니면 false
 		}
 	}
 	
-	
+	public boolean formMac(String mac) {
+		if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", mac) ) {
+			return false; //형식에 맞지 않으면 false
+		} else {
+			return true; //아니면 true
+		}
+	}
 	
 	public int todaySchedule(ScheduleVo sVo){
 	      /*   result = 0 : 작업 전

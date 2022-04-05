@@ -29,7 +29,7 @@
 					    <when test="sidx eq 'os'"> OS </when>
 					    <when test="sidx eq 'control_num'"> CONTROL_NUM </when>
 					    <when test="sidx eq 'write_date' "> WRITE_DATE </when>
-			    		<otherwise>SERVER_NO</otherwise>
+			    		<otherwise>name</otherwise>
 	 				</choose> 
 					<choose>
 					    <when test="sord eq 'desc'"> DESC </when>
@@ -37,7 +37,7 @@
 					</choose>
 				</when>
 				<when test="sidx == '' ">
-					ORDER BY SERVER_NO
+					ORDER BY name
 				</when>
 			</choose> 
 		LIMIT #{rows}   
