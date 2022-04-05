@@ -68,7 +68,7 @@ function createAndInitGrid(){
 			
 			// 수정 모달 창 띄우기
  	        ondblClickRow: function (rowId) { 
- 	        	validationTest();
+ 	        	
 	            var rowData = $("#list").getRowData(rowId);
 	            var server_no = rowData.server_no;
 		       	
@@ -103,7 +103,7 @@ function createAndInitGrid(){
 			            btn.setAttribute("onclick","updateServer()");
 		    	  		
 		    	  		modalOn();
-		    	  		
+		    	  		validationTest();
 					},
 			        error: function() {
 			        	alert("잘못된 접근입니다.");
@@ -177,7 +177,6 @@ function insertServer(){
 	}
 
 	console.log("인서트 시작");
-//	validationCheck();
 	
 	var formData = new FormData(document.getElementById('regServerInfo'));
 	//input태그의 name과 vo변수명이 같을때 자동으로 들어간다
@@ -323,7 +322,43 @@ function deleteServer(){
  }
  
 	
+function validationTest(){
+ 	if($("#name").val() == ""){
+		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
+		 document.getElementById("nameAlertBox").style.color = "red";
+		 $('#name').focus();
+		return;
+	} else{
+		 document.getElementById("nameAlertBox").innerText = "";
+	}
 
+	//IP 정규표현식
+	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
+	
+	if(!regTest.test($("#ip").val())){
+		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
+		 document.getElementById("ipAlertBox").style.color = "red";
+		$('#ip').focus();
+		return;
+	} else{
+		 document.getElementById("ipAlertBox").innerText = "유효한 IP 주소입니다.";
+		 document.getElementById("ipAlertBox").style.color = "green";
+	}
+
+	confirmMac();
+	
+	if(isConfirmedMac == false){
+		$('#mac').focus();
+		return;
+	}
+
+}
+ 
+ 
+ 
+ 
+ 
  
  
  
