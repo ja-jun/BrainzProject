@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,10 +13,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <link href='../resources/css/notification.css' rel='stylesheet'/>
-<link href='../resources/css/server.css' rel='stylesheet' />
-<link href='../resources/css/reset.css' rel='stylesheet' />
+<link href='../resources/css/reset.css' rel='stylesheet'/>
 <link href="../resources/css/jquery-ui.css" rel="stylesheet"/>
 <link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
+<link href="../resources/css/jquery-ui.structure.css" rel="stylesheet"/>
+<link href="../resources/css/jquery-ui.theme.css" rel="stylesheet"/>
+
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
@@ -27,41 +30,40 @@
 function createAndInitGrid(){
     $("#list").jqGrid({
          colModel: [   
-	            {name: 'nc_no', label : '번호', align:'center', width:15},
-	            {name:'nc_title', label:'제목', align:'left', width:200},
-	            {name: 'nc_file', label : '파일', align:'center', width:15},
-	            {name: 'nc_writeDate', label : '등록일시', align:'center', width:50},              
-	            {name: 'name', label : '등록자', align:'center', width:30},
-	          /*  {name: 'nc_readCount', label : '조회수', align:'center', width:15}, */
-	          /*  {name:'server_no',label:'서버번호', hidden:true} */
-              ],
-              pager: '#pager',
-              rowNum: 10,
-              rowList: [10,30,50],
-              viewrecords: true,
-              multiselect: true,
-              //등록시 인코드
-  			  autoencode : 'true',
-              //Data 연동 부분
-              url : "/choongang/notification/getNotificationList",
-              datatype : "JSON", //받을 때 파싱 설정
-              postData : {}, //....
-              mtype : "POST",
-              loadtext : "로딩중...",
-  	          height: 'auto',
-  			  autowidth:true,  			 
-  			
-  			  onCellSelect: function(rowid, iCol, e){
-  	            var rowData = $("#list").getRowData(rowid);
-  	            var nc_no = rowData.nc_no;
-  	            
-  	            if(iCol == 2){
-	  	            location.href="readPage?nc_no=" + nc_no;
-  	            } else {
-  	            	return;
-  	            }
-  	          
-  	         },  	  		    
+		            {name: 'nc_no', label : '번호', align:'center', width:15},
+		            {name:'nc_title', label:'제목', align:'left', width:200},
+		            {name: 'nc_file', label : '파일', align:'center', width:15},
+		            {name: 'nc_writeDate', label : '등록일시', align:'center', width:50},              
+		            {name: 'name', label : '등록자', align:'center', width:30},
+		            {name: 'nc_readCount', label : '조회수', align:'center', width:15}
+              	   ],
+		              pager: '#pager',
+		              rowNum: 10,
+		              rowList: [10,30,50],
+		              viewrecords: true,
+		              multiselect: true,
+		              //등록시 인코드
+		  			  autoencode : 'true',
+		              //Data 연동 부분
+		              url : "/choongang/notification/getNotificationList",
+		              datatype : "JSON", //받을 때 파싱 설정
+		              postData : {}, //....
+		              mtype : "POST",
+		              loadtext : "로딩중...",
+		  	          height: 'auto',
+		  			  autowidth:true,  			 
+		  			
+		  			  onCellSelect: function(rowid, iCol, e){
+		  	            var rowData = $("#list").getRowData(rowid);
+		  	            var nc_no = rowData.nc_no;
+		  	            
+		  	            if(iCol == 2){
+			  	            location.href="readPage?nc_no=" + nc_no;
+		  	            } else {
+		  	            	return;
+		  	            }
+		  	          
+		  	         },  	  		    
        });		
   }
 
@@ -155,7 +157,14 @@ function updateModal() {
   	  		
 	        var btn2 = document.getElementById('deleteBtn3');
             btn2.setAttribute("style","display:block");			              			            			        
-	            
+	        
+            // 업로드 된 파일 리스트 만들기
+            $.each(data.fileVo, function(index, item){
+            	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
+            	$('#afile3-list').append("<br/>");
+            });
+            
+            
   	  		modalOn();
 		}
 	});
@@ -268,6 +277,8 @@ function modalOff() {
 	document.getElementById("regNotificationInfo").reset();  //입력했던 값 지우기
 	$('#nc_no').remove();
 	$('#deleteBtn2').remove();
+	$('#afile3-list a').remove();
+	$('#afile3-list br').remove();
 }
 
 //모달창 열렸을 때 ESC누르면 닫힘
@@ -282,9 +293,6 @@ window.addEventListener("DOMContentLoaded", function(){
 		createAndInitGrid();
 	
 	const modal = document.getElementById("modal");
-	
-	// 엔터 누르면 검색
-	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
 
 	/* 	
 	//모달창 외 부분 클릭하면 모달창 닫힘 : 불편함... 없애는게 나을거 같음
@@ -294,7 +302,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	})
  */
 	
-	$("#noticePage").addClass("on");
+	$("#notificationPage").addClass("on");
 });
 
 </script>
@@ -303,41 +311,25 @@ window.addEventListener("DOMContentLoaded", function(){
 <body>
 	<jsp:include page="../common/nav.jsp"></jsp:include>
 	
-	<div id="container">
-		<div id="box">
-		
-		
-		<div id="gnb">
-			<div class="iconBox">
-			<img src="../resources/img/user.png" class="profile">
-				<div class="icon">
-				<p class="iconText" >닉네임</p>
-				</div>
+	<div class="container">
+		<div class="row mt-3" style="position: relative;top: 100px;z-index: 999;left: 700px;">
+			<div class="col-4">
+				<input id="searchWord" type="text" class="form-control" placeholder="제목/내용">
+			</div>
+			<div class="col">
+				<button class="writeBtn" onclick="search()">검색</button>
 			</div>
 		</div>
-		
-		<div id="noticeBox">
-		<div id="top">
-			<div class="btnBox">
-         	<button class="writeBtn" id="insertBtn" onclick="registerNotification()">등록</button>
-         	<button class="writeBtn" id="updateBtn" onclick="updateModal()">수정</button>		
-         	<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()">삭제</button>
-         	</div>
-         		<div id="search">
-         			<div class="searchBox">
-						<input id="searchWord" type="text" class="searchForm" placeholder="제목/내용">
-						<button class="searchBtn" onclick="search()">검색</button>
-					</div>
-				</div>	
-		</div>
-			
-         <div id="jqgridBox">
-         	<table id="list" style="width:100%"></table>
-         	<div id="pager"></div>
-         </div>
-         </div>
-         
-      </div>
+	
+		<div id="box">
+			<button class="writeBtn" id="insertBtn" onclick="registerNotification()">등록</button>
+			<button class="writeBtn" id="updateBtn" onclick="updateModal()">수정</button>			
+			<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()">삭제</button>
+						
+			<h2>공지사항</h2>
+			<table id="list"></table>
+			<div id="pager"></div>
+		</div>	
 	</div>
 
 		<!--등록 모달창 시작 -->
@@ -351,18 +343,18 @@ window.addEventListener("DOMContentLoaded", function(){
 						<h3 class="title">공지사항 등록</h3>
 						<i class="bi bi-x" onclick="modalOff()"></i>
 					</div>
-					<div class="noticeInput">
+					<div class="titleBox">
 						<strong class="text">제목<span class="star">*</span></strong>
 						<input type="text" id="nc_title" name="nc_title" class="textBox" >
 					</div>
-					<div class="noticeInput" style="display: flex;">
+					<div class="titleBox" style="display: flex;">
 						<strong class="text">내용<span class="star">*</span></strong>
 						<textarea id="nc_content" name="nc_content" class="textBox" style="height: 150px;"></textarea>
 					</div>
 								
-						<div class="noticeInput">
+						<div class="titleBox">
 							<strong class="text">파일<span class="star">*</span></strong>
-							<input type="file" name="file" />
+							<input type="file" name="file"/>
 							<div id="afile3-list" style="border:2px solid #c9c9c9;min-height:50px"></div> 
 							
 						</div>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
@@ -140,10 +141,35 @@ public class RestNotificationController {
 	@RequestMapping("getNotification")
 	public HashMap<String, Object> getNotification(int nc_no){
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		System.out.println("nc_no : " + nc_no);
+
 		data.put("notification", notiService.getNotification(nc_no));
+		data.put("fileVo", notiService.getFileVo(nc_no));
 		
 		return data;
+	}
+	
+	@RequestMapping("download")
+	public void download(HttpServletResponse response, int file_no) throws Exception{
+	
+		try {
+			FileVo fVo = notiService.getFileInfo(file_no);
+			
+			String original = fVo.getUploadedFileName();
+			
+			File file = new File(original);
+			response.setHeader("Content-Disposition", "attachment;filename=" + fVo.getFileName());
+			
+			FileInputStream fiStream = new FileInputStream(original);
+			OutputStream out = response.getOutputStream();
+			
+			int read = 0;
+			byte[] buffer = new byte[1024];
+			while((read = fiStream.read(buffer)) != -1) {
+				out.write(buffer, 0, read);
+			}
+		} catch (Exception e) {
+			throw new Exception("download error");
+		}
 	}
 	
 	// 파일 다운로드
