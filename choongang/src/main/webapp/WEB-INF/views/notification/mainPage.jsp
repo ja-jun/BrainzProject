@@ -282,6 +282,9 @@ window.addEventListener("DOMContentLoaded", function(){
 		createAndInitGrid();
 	
 	const modal = document.getElementById("modal");
+	
+	// 엔터 누르면 검색
+	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
 
 	/* 	
 	//모달창 외 부분 클릭하면 모달창 닫힘 : 불편함... 없애는게 나을거 같음
@@ -291,7 +294,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	})
  */
 	
-	$("#notificationPage").addClass("on");
+	$("#noticePage").addClass("on");
 });
 
 </script>
@@ -323,6 +326,7 @@ window.addEventListener("DOMContentLoaded", function(){
          		<div id="search">
          			<div class="searchBox">
 						<input id="searchWord" type="text" class="searchForm" placeholder="제목/내용">
+						<button class="searchBtn" onclick="search()">검색</button>
 					</div>
 				</div>	
 		</div>

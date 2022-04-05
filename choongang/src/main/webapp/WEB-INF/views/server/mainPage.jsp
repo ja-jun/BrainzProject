@@ -351,6 +351,9 @@ window.addEventListener("DOMContentLoaded", function(){
 	
 	createAndInitGrid();
 	
+	// 엔터 누르면 검색
+	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
+	
 	const modal = document.getElementById("modal");
 	
 	$("#serverPage").addClass("on");
@@ -361,34 +364,19 @@ window.addEventListener("DOMContentLoaded", function(){
 
 <body>
 	<jsp:include page="../common/nav.jsp"></jsp:include>
-
+	
 	<div id="container">
-		<div id="container">
-			<div class="container">
-
-				<div id="box">
-					<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-					<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
-					<a href="./getExcelServerList" id="exportAnchor"><button
-							class="writeBtn" id="excelBtn">내보내기</button></a>
-
-					<h2>서버 관리</h2>
-					<table id="list"></table>
-					<div id="pager"></div>
+		<div id="box">
+		
+		
+		<div id="gnb">
+			<div class="iconBox">
+			<img src="../resources/img/user.png" class="profile">
+				<div class="icon">
+				<p class="iconText" >닉네임</p>
 				</div>
-				<div class="row mt-3">
-					<div class="col-4">
-						<input id="searchWord" type="text" class="form-control"
-							placeholder="서버명/IP">
-					</div>
-					<div class="col ">
-						<button class="writeBtn" onclick="search()">검색</button>
-					</div>
-				</div>
-
 			</div>
 		</div>
-<<<<<<< HEAD
 		
 		<div id="serverBox">
 		<div id="top">
@@ -412,9 +400,8 @@ window.addEventListener("DOMContentLoaded", function(){
          </div>
          
       </div>
-=======
->>>>>>> branch 'main' of http://github.com/ja-jun/BrainzProject
 	</div>
+	
 
 
 	<!--등록 모달창 시작 -->
@@ -428,17 +415,17 @@ window.addEventListener("DOMContentLoaded", function(){
 						<h3 class="title">서버 등록</h3>
 						<i class="bi bi-x" onclick="modalOff()"></i>
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">서버명<span class="star">*</span></strong>
 						<input type="text" id="name" name="name" class="textBox" >
-						<div id="nameAlertBox"></div> 
+						<div id="nameAlertBox" class="confirmAlertBox"></div> 
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">IP<span class="star">*</span></strong>
 						<input type="text" id="ip" name="ip" class="textBox">
-						<div id="ipAlertBox"></div> 						
+						<div id="ipAlertBox" class="confirmAlertBox"></div> 						
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">OS분류<span class="star">*</span></strong>
 						<select form="regServerInfo" id="os" name="os" class="selectBox" >
 								<option value="AIX">AIX</option>
@@ -448,27 +435,27 @@ window.addEventListener("DOMContentLoaded", function(){
 								<option value="Linux">Linux</option>							
 							</select>
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">위치</strong>
 						<input type="text" id="loc" name="loc" class="textBox">
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">MAC<span class="star">*</span></strong>
 						<input type="text" id="mac"  name="mac" class="textBox" onblur="confirmMac()">
-						<div id="macAlertBox"></div> 
+						<div id="macAlertBox" class="confirmAlertBox"></div> 
 					</div>
 					
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">관리번호</strong>
 						<input type="text" id="control_num" name="control_num" class="textBox">
 					</div>
-					<div class="titleBox">
+					<div class="serverInput">
 						<strong class="text">설명</strong>
 						<input type="text" id="dsc" name="dsc" class="textBox">
 					</div>
 					<div class="btnBox">
-						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertServer()">
-						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
+						<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertServer()">
+						<input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >
 					</div>
 					</form>
 

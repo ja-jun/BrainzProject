@@ -74,29 +74,29 @@
     }
 #modal .modalBox .top{
     background: #18244d;
-    height: 45px;
+    height: 53px;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     display: flex;
     justify-content: space-between;
-    padding: 0px 10px 0px 30px;
+    padding: 0px 30px 0px 30px;
 }
 #modal .modalBox .top .title{
     line-height: 3.2;
 }
 #modal .modalBox .top .bi-x{
-    font-size: 18px;
+    font-size: 22px;
     line-height: 2.4;
     cursor: pointer;
 }
 
 #modal .modalBox .serverInput{
     border-top: 1px solid #e5e5e5;
-    padding: 25px 30px 25px 30px;
+    padding: 20px 30px 20px 30px;
 }
 #modal .modalBox .serverInput:last-child{border:none}
 #modal .modalBox .serverInput .text{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     width: 120px;
     display: inline-flex;
@@ -113,7 +113,7 @@
     height: 35px;
     width: 380px;
     padding-left: 8px;
-}
+font-size: 15px;font-weight: 300;}
 
 #modal .modalBox .serverInput .input_id{
     border: 1px solid #ccc;
@@ -200,3 +200,10 @@
 	margin-left: 120px;
 	}
 .searchBtn{width: 80px;height: 45px;border: 1px solid #ccc;background: #18244d;border-radius: 7px;color: #fff;font-size: 16px;}
+#os{
+	height: 35px;
+	width: 100px;
+	font-size: 13px;
+	padding-left: 5px;
+	border: 1px solid #ccc;
+}
