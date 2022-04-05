@@ -41,17 +41,6 @@ public class RestNotificationController {
 
 	@Autowired
 	private NotificationService notiService;
-	
-//	@RequestMapping("readPage")
-//	public String readContentPage(int nc_no , Model model) {
-//		
-//		notiService.increaseReadCount(nc_no);
-//		
-//		HashMap<String, Object> map = notiService.getNotification(nc_no);
-//		model.addAttribute("data" , map);
-//		
-//		return "notification/readPage";		
-//	}
 		
 	@RequestMapping("getNotificationList")
 	public HashMap<String, Object> getNotificationList(PageVo param){
