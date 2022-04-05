@@ -6,22 +6,21 @@
 	<select id="getNotificationList" resultType="com.choongang.bcentral.noti.vo.NotificationVo">
 		select bn.nc_no, bn.nc_title, bn.nc_content, 
 			   bn.nc_readCount, bn.nc_writeDate, 
-			   bu.user_id, bu.user_no, bu.name 
-		from bp_notification bn, bp_user bu
-		where bn.user_no = bu.user_no
+			   bu.user_id, bu.user_no, bu.name, 
+			   bf.file_no
+		from (bp_notification bn inner join bp_user bu on bn.user_no = bu.user_no) 
+				left join bp_file bf on bn.nc_no = bf.nc_no
 			<if test="searchWord !=null">
-				AND nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
+				where nc_title iLIKE '%'||#{searchWord}||'%' OR nc_content iLIKE '%'||#{searchWord}||'%'
 			</if>
 		ORDER BY bn.nc_no desc
 		LIMIT #{rows}   
 		OFFSET (#{page} -1) * #{rows}
-	</select>
-	
+	</select>	
 	
 	<select id="getNextNotificationNo" resultType="int">
 		select nextval('BP_notification_seq')
-	</select>
-	
+	</select>	
 	
 	<insert id="insertNotification">
 		INSERT into bp_notification values(

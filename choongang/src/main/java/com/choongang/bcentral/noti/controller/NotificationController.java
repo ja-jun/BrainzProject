@@ -25,6 +25,9 @@ public class NotificationController {
 	
 	@RequestMapping("readPage")
 	public String readPage(HttpSession session, int nc_no, Model model) {
+		
+		NotificationService.increaseReadCount(nc_no);
+		
 		NotificationVo data = NotificationService.getNotification(nc_no);
 		model.addAttribute("data",data);
 		

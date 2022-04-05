@@ -30,7 +30,7 @@ function createAndInitGrid(){
          colModel: [   
 		            {name: 'nc_no', label : '번호', align:'center', width:15},
 		            {name:'nc_title', label:'제목', align:'left', width:200},
-		            {name: 'nc_file', label : '파일', align:'center', width:15, formatter: imageFormatter},
+		            {name: 'file_no', label : '파일', align:'center', width:15, formatter: imageFormatter},
 		            {name: 'nc_writeDate', label : '등록일시', align:'center', width:50},              
 		            {name: 'name', label : '등록자', align:'center', width:30},
 		            {name: 'nc_readCount', label : '조회수', align:'center', width:15}
@@ -66,12 +66,19 @@ function createAndInitGrid(){
   }
 
 /*** Formatter 스크립트 함수 ***/
-function imageFormatter()
+function imageFormatter(cellValue)
 {
     // rowObject  : JqGrid의 행 정보를 담고 있다.
-//    console.log(rowObject);
-
-    return '<img src="../resources/img/file1.png" />';
+	// console.log(rowObject);
+//	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
+	
+	if(cellValue == null){
+		   return '';
+		} else {
+		   return '<a href="/choongang/notification/download?file_no=' + cellValue + '"><img src="../resources/img/file1.png" /></a>';
+		}
+	
+   // return '<img src="../resources/img/file1.png" />';
 }
 
 
@@ -169,10 +176,8 @@ function updateModal() {
             // 업로드 된 파일 리스트 만들기
             $.each(data.fileVo, function(index, item){
             	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
-            	$('#afile3-list').append("<br/>");
             });
-            
-            
+                        
   	  		modalOn();
 		}
 	});
