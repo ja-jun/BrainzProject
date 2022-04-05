@@ -66,12 +66,12 @@ public class NotificationService {
 		return notiSQLMapper.getNotificationCount(vo);
 	}
 	
-	public int PREBNO(int nc_no) {
-		return notiSQLMapper.PREBNO(nc_no);
+	public ArrayList<FileVo> getFileVo(int nc_no){
+		return notiSQLMapper.getFileVo(nc_no);
 	}
 	
-	public int NEXTBNO(int nc_no) {
-		return notiSQLMapper.NEXTBNO(nc_no);
+	public FileVo getFileInfo(int file_no) {
+		return notiSQLMapper.getFileInfo(file_no);
 	}
 	
 }
