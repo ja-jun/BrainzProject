@@ -89,4 +89,34 @@
 		from bp_file
 		where file_no = #{file_no}
 	</select>
+	
+		<select id="PREBNO" resultType="int">
+		SELECT PREBNO FROM(
+		SELECT 
+    		nc_no,
+    		LAG(nc_no,1,-1) OVER(ORDER BY nc_no ASC) AS PREBNO,
+    		LEAD(nc_no,1,-1) OVER(ORDER BY nc_no ASC) AS NEXTBNO 
+		FROM bp_notification
+		) n
+		WHERE n.nc_no=#{nc_no}
+	</select>
+	
+	<select id="NEXTBNO" resultType="int">
+		SELECT NEXTBNO FROM(
+		SELECT 
+    		nc_no,
+    		LAG(nc_no,1,-1) OVER(ORDER BY nc_no ASC) AS PREBNO,
+    		LEAD(nc_no,1,-1) OVER(ORDER BY nc_no ASC) AS NEXTBNO 
+		FROM bp_notification
+		) n
+		WHERE n.nc_no=#{nc_no}
+	</select>
+	
+	
+	<select id="getFileList" resultType="com.choongang.bcentral.noti.vo.FileVo">
+		SELECT bp_file.file_no, bp_file.name, bp_file.nc_no, bp_file.fileName, bp_file.uploadedFileName,
+		bp_file.fileSize, bp_file.contentType, bp_file.downlink
+		FROM bp_file
+		WHERE nc_no = #{nc_no}
+	</select>
 </mapper>

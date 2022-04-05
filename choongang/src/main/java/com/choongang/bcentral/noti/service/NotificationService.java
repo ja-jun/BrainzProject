@@ -1,6 +1,7 @@
 package com.choongang.bcentral.noti.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,14 @@ public class NotificationService {
 	
 	public FileVo getFileInfo(int file_no) {
 		return notiSQLMapper.getFileInfo(file_no);
+	}
+	
+	public int PREBNO(int nc_no) {
+		return notiSQLMapper.PREBNO(nc_no);
+	}
+	
+	public int NEXTBNO(int nc_no) {
+		return notiSQLMapper.NEXTBNO(nc_no);
 	}
 	
 }

@@ -15,12 +15,15 @@ public interface NotificationSQLMapper {
 	public void increaseReadCount(int nc_no);
 	public int getNotificationCount(PageVo vo);
 	public int getNextFileNo();
+	public int PREBNO(int nc_no);
+	public int NEXTBNO(int nc_no);
 	
 	//...
 	public int getNextNotificationNo();
 	public void insertFile(FileVo fileVo);
 	public ArrayList<FileVo> getFileVo(int nc_no);
 	public FileVo getFileInfo(int file_no);
+	public ArrayList<FileVo> getFileList(int nc_no);
 	
 	
 }
