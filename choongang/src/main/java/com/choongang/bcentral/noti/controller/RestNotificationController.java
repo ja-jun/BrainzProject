@@ -40,7 +40,7 @@ public class RestNotificationController {
 
 	@Autowired
 	private NotificationService notiService;
-	
+		
 	@RequestMapping("getNotificationList")
 	public HashMap<String, Object> getNotificationList(PageVo param){
 		HashMap<String, Object> data = new HashMap<String, Object>();
