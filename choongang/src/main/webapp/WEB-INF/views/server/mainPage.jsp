@@ -68,6 +68,7 @@ function createAndInitGrid(){
 			
 			// 수정 모달 창 띄우기
  	        ondblClickRow: function (rowId) { 
+ 	        	validationCheck();
 	            var rowData = $("#list").getRowData(rowId);
 	            var server_no = rowData.server_no;
 		       	
@@ -116,25 +117,6 @@ function createAndInitGrid(){
       
 }
 
-//수정 서버 넘기기
-function updateServer(){			
-	
-	var formData = new FormData(document.getElementById('regServerInfo'));
-	 $.ajax({
-	    url: "./updateServer",
-	    type: "post",
-	    processData: false,
-	    contentType: false,
-	    data: formData
-	}).done(function(){
-	 	if(result != "0"){
-			validationError(result);
-			$("#list").trigger('reloadGrid');
-	 	}
-		modalOff();
-		alert("수정되었습니다.");
-	});	
-}
 
 //검색시 서버 가져와서 집어넣기
 function search(){
@@ -164,10 +146,7 @@ function search(){
 
 function insertServer(){
 	
-	//IP 정규표현식
-	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-	
-	if($("#name").val() == ""){
+ 	if($("#name").val() == ""){
 		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
 		 document.getElementById("nameAlertBox").style.color = "red";
 		 $('#name').focus();
@@ -175,7 +154,10 @@ function insertServer(){
 	} else{
 		 document.getElementById("nameAlertBox").innerText = "";
 	}
-	
+
+	//IP 정규표현식
+	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+
 	if(!regExp.test($("#ip").val())){
 		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
 		 document.getElementById("ipAlertBox").style.color = "red";
@@ -186,20 +168,16 @@ function insertServer(){
 		 document.getElementById("ipAlertBox").style.color = "green";
 	}
 
-	//MAC 정규표현식
-	var regExpmac =/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-
-	if(!regExpmac.test($("#mac").val())){
-		 document.getElementById("macAlertBox").innerText = "유효한 MAC 주소가 아닙니다.";
-		 document.getElementById("macAlertBox").style.color = "red";
-		$('#mac').focus();
-		return;
-	} 
+	confirmMac();
 	
 	if(isConfirmedMac == false){
+		$('#mac').focus();
 		return;
 	}
 
+	console.log("인서트 시작");
+//	validationCheck();
+	
 	var formData = new FormData(document.getElementById('regServerInfo'));
 	//input태그의 name과 vo변수명이 같을때 자동으로 들어간다
 	 $.ajax({
@@ -208,16 +186,73 @@ function insertServer(){
 	     processData: false,
 	     contentType: false,
 	     data: formData
-	 }).done(function(){
+	 }).done(function(data){
 		 	var result= data.result;
 		 	if(result != "0"){
-				validationError(result);
-				$("#list").trigger('reloadGrid');
+				//validationError(result);
+		 		alert("XXXXX");			 
+		 	} else{
+				alert("등록되었습니다.");			 		
 		 	}
+			$("#list").trigger('reloadGrid');
 			modalOff();
-			alert("등록되었습니다.");	
 	 });	 
 }
+
+
+ //삭제
+function deleteServer(){ 
+	var serverNos = [];
+	var rowids = $("#list").getGridParam("selarrrow");
+
+	for (let i = 0; i < rowids.length; i++) {
+        const rowid = rowids[i];
+        var rowData = $("#list").getRowData(rowid);
+		serverNos.push(rowData.server_no);
+    }		
+	
+		$("#list").jqGrid("clearGridData", true);		
+
+          if(confirm("정말 삭제하시겠습니까?") == true ){
+        	  var text = "";
+			 $.ajax({
+			     url: "./deleteServer",
+			     type: "post",
+			     contentType:'application/json',
+			     data: JSON.stringify(serverNos)
+			 }).done(function(){
+					$("#list").trigger('reloadGrid');
+					alert("삭제되었습니다.");
+			 });
+			}else{
+					$("#list").trigger('reloadGrid');
+				   alert("취소합니다.");
+			}
+ }
+ 
+//수정 서버 넘기기
+function updateServer(){			
+//	validationTest();
+
+	var formData = new FormData(document.getElementById('regServerInfo'));
+	 $.ajax({
+	    url: "./updateServer",
+	    type: "post",
+	    processData: false,
+	    contentType: false,
+	    data: formData
+	}).done(function(data){
+		var result= data.result;
+	 	if(result != "0"){
+			validationError(result);
+	 	} else{
+			alert("수정되었습니다.");	 		
+	 	}
+		$("#list").trigger('reloadGrid');
+		modalOff();
+	});	
+}
+
 
 //mac 중복확인용
 var isConfirmedMac = false; 
@@ -235,13 +270,18 @@ function confirmMac(){
 			var data = JSON.parse(xhr.responseText); 
 		
 			var macAlertBox = document.getElementById("macAlertBox");
-			if(data.result == true){
+			if(data.formMac == false){
+				isConfirmedMac = false; 
+				macAlertBox.innerText = "유효하지 않은 MAC 입니다.";
+				macAlertBox.setAttribute("style","color:red");
+			} else if(data.isExistMac == true){
 				isConfirmedMac = false; 
 				macAlertBox.innerText = "이미 존재하는 MAC 입니다.";
 				macAlertBox.setAttribute("style","color:red");
 			} else{
 				isConfirmedMac = true; 
-				macAlertBox.innerText = "";
+				macAlertBox.innerText = "유효한 MAC 입니다.";
+				macAlertBox.setAttribute("style","color:green");
 			}
 		}
 	};
@@ -351,9 +391,6 @@ window.addEventListener("DOMContentLoaded", function(){
 	
 	createAndInitGrid();
 	
-	// 엔터 누르면 검색
-	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
-	
 	const modal = document.getElementById("modal");
 	
 	$("#serverPage").addClass("on");
@@ -364,44 +401,34 @@ window.addEventListener("DOMContentLoaded", function(){
 
 <body>
 	<jsp:include page="../common/nav.jsp"></jsp:include>
-	
+
 	<div id="container">
-		<div id="box">
-		
-		
-		<div id="gnb">
-			<div class="iconBox">
-			<img src="../resources/img/user.png" class="profile">
-				<div class="icon">
-				<p class="iconText" >닉네임</p>
+		<div id="container">
+			<div class="container">
+
+				<div id="box">
+					<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
+					<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
+					<a href="./getExcelServerList" id="exportAnchor"><button
+							class="writeBtn" id="excelBtn">내보내기</button></a>
+
+					<h2>서버 관리</h2>
+					<table id="list"></table>
+					<div id="pager"></div>
 				</div>
+				<div class="row mt-3">
+					<div class="col-4">
+						<input id="searchWord" type="text" class="form-control"
+							placeholder="서버명/IP">
+					</div>
+					<div class="col ">
+						<button class="writeBtn" onclick="search()">검색</button>
+					</div>
+				</div>
+
 			</div>
 		</div>
-		
-		<div id="serverBox">
-		<div id="top">
-			<div class="btnBox">
-         	<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-         	<button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
-         	<a href="./getExcelServerList" id="exportAnchor"><button class="writeBtn" id="excelBtn">내보내기</button></a>
-         	</div>
-         		<div id="search">
-         			<div class="searchBox">
-						<input id="searchWord" type="text" class="searchForm" placeholder="서버명/IP">
-						<button class="searchBtn" onclick="search()">검색</button>
-					</div>
-				</div>	
-		</div>
-			
-         <div id="jqgridBox">
-         	<table id="list" style="width:100%"></table>
-         	<div id="pager"></div>
-         </div>
-         </div>
-         
-      </div>
 	</div>
-	
 
 
 	<!--등록 모달창 시작 -->
@@ -415,17 +442,17 @@ window.addEventListener("DOMContentLoaded", function(){
 						<h3 class="title">서버 등록</h3>
 						<i class="bi bi-x" onclick="modalOff()"></i>
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">서버명<span class="star">*</span></strong>
 						<input type="text" id="name" name="name" class="textBox" >
-						<div id="nameAlertBox" class="confirmAlertBox"></div> 
+						<div id="nameAlertBox"></div> 
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">IP<span class="star">*</span></strong>
 						<input type="text" id="ip" name="ip" class="textBox">
-						<div id="ipAlertBox" class="confirmAlertBox"></div> 						
+						<div id="ipAlertBox"></div> 						
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">OS분류<span class="star">*</span></strong>
 						<select form="regServerInfo" id="os" name="os" class="selectBox" >
 								<option value="AIX">AIX</option>
@@ -435,27 +462,27 @@ window.addEventListener("DOMContentLoaded", function(){
 								<option value="Linux">Linux</option>							
 							</select>
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">위치</strong>
 						<input type="text" id="loc" name="loc" class="textBox">
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">MAC<span class="star">*</span></strong>
 						<input type="text" id="mac"  name="mac" class="textBox" onblur="confirmMac()">
-						<div id="macAlertBox" class="confirmAlertBox"></div> 
+						<div id="macAlertBox"></div> 
 					</div>
 					
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">관리번호</strong>
 						<input type="text" id="control_num" name="control_num" class="textBox">
 					</div>
-					<div class="serverInput">
+					<div class="titleBox">
 						<strong class="text">설명</strong>
 						<input type="text" id="dsc" name="dsc" class="textBox">
 					</div>
 					<div class="btnBox">
-						<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertServer()">
-						<input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >
+						<input type="button" id="inputBtn" value="등록" class="btnBoxbtn" onclick="insertServer()">
+						<input type="button" name="" value="닫기" class="btnBoxbtn" onclick="modalOff()" >
 					</div>
 					</form>
 
