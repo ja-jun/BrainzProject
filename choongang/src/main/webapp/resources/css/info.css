@@ -152,7 +152,7 @@ grid-area: midBottom;/* margin-top: 500px; */}
 #bar{
 	width: 100%;
 	background: #fff;
-	padding: 40px 40px 70px 40px;
+	padding: 40px 40px 40px 40px;
 	border-radius: 20px;
 	border: 1px solid #e9e9ee;
 	margin-right: 30px;

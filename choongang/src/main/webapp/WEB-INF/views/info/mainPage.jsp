@@ -21,7 +21,7 @@
 <link href='../resources/css/reset.css' rel='stylesheet' />
 <link href='../resources/css/info.css' rel='stylesheet' />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js" integrity="sha512-+UYTD5L/bU1sgAfWA0ELK5RlQ811q8wZIocqI7+K0Lhh8yVdIoAMEs96wJAIbgFvzynPm36ZCXtkydxu1cs27w==" crossorigin="anonymous"></script>
 <!-- fullcalender -->
 <link href='../resources/css/mainCalendar.css' rel='stylesheet' />
 <link href='../resources/css/main.min.css' rel='stylesheet' />
@@ -54,12 +54,15 @@
 	<div id="doughnut">
 	<div id="bar">
 		<div class="titleB">
-    	<h3 class="title"><spring:message code="info.serverstate"/></h3>
+		<div>
+	    	<h3 class="title" style="margin-bottom: 10px"><spring:message code="info.serverstate"/></h3>
+	    	<h6 id="info-standard" style="margin-bottom: 15px; color: #b4b4b4"></h6>
+		</div>
     	<a href="/choongang/server/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
     	</div>
 		<div class="barBox">
 		<div class="barBar">
-		<canvas id="barChart" width="400" height="300" style=""></canvas>
+		<canvas id="barChart" width="450" height="350" style=""></canvas>
 		
 		<ul class="barUl">
 			<li class="barList"><p class="colorBox"></p><h3 class="titleBox"><spring:message code="info.schedule.working"/></h3></li>
@@ -71,9 +74,11 @@
 		<div class="barBar2">
 		<ul class="barUl2">
 		<!-- 작업 중 서버 목록 -->
+			<li style="text-align: left; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem">작업 중 서버</li>
 		</ul>
 		<ul class="barUl3">
 		<!-- 작업 예정 서버 목록 -->
+			<li style="text-align: left; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem">작업 예정 서버</li>
 		</ul>
 		</div>
 		
@@ -206,6 +211,18 @@ $.ajax({
 		}
 	}
 	
+	var totalServer = json.totalServer.length;
+	console.log(totalServer);
+	
+	var maxState = 0;
+	for(var count in json.stateCount){
+		if(parseInt(maxState) < parseInt(count)){
+			maxState = count;
+		}
+	}
+	
+	console.log(maxState);
+	
 	// 서버 상태 Bar Chart 작성
 	var myChart = new Chart(context, {
 		type: 'bar',
@@ -222,13 +239,56 @@ $.ajax({
 				json.stateCount[3]
 			]
 	    }]},
+	    plugins: [ChartDataLabels],
 	    options: {
-			responsive: false,
-			legend: {
-				display:false
-			},
+	    	plugins: {
+	    		responsive: false,
+	    		legend:{
+	    			display: false
+	    		},
+	    		datalabels: {
+	    			offset: 20,
+	    			anchor: 'end',
+	    			align: 'start',
+	    			color: 'white',
+	    			font: {
+	    				size: 16,
+	    				weight: 'bolder'
+	    			},
+	    			formatter: function(value, context){
+	    				return value;
+	    			}
+	    		}
+	    	},
+	    	responsive: false,
 			scales: {
-				yAxes: [{
+				y: {
+					max: parseInt(maxState),
+					grid: {
+						display: false
+					},
+					ticks: {
+						stepSize: 1,
+						font: {
+							size: 30
+						},
+						color: '#222',
+						size: 16,
+						font: 'Montserrat'
+					}
+				},
+				x: {
+					grid: {
+						display: false
+					},
+					ticks: {
+						size: 30,
+						color: '#222',
+						font: 'Noto Sans KR',
+						textStrokeWidth: 4
+					}
+				}
+				/* yAxes: [{
 					ticks: {
 						beginAtZero: true,
 						stepSize : 20,
@@ -254,7 +314,7 @@ $.ajax({
 					gridLines:{
 						display:false
 					}
-				}]
+				}] */
 			}
 		}
 	});
@@ -273,15 +333,26 @@ $.ajax({
 	        }
 	      ]
 	    },
+	    plugins: [ChartDataLabels],
 	    options: {
-			responsive: false,
-			legend: {
-				display:false
-			}
+	    	plugins:{
+				responsive: false,
+				legend: {
+					display:false
+				},
+				datalabels: {
+					color: 'white',
+					font: {
+						size: 16,
+						weight: 'bold'
+					},
+					formatter: function(value, context){
+	    				return Math.round((value / totalServer) * 100) + '%';
+	    			}
+				}
+	    	}
 	    }
 	});
-	
-	console.log(json.weekScheduleInfo.length);
 	
 	var events = json.weekScheduleInfo.map(function(item){
 		return{
@@ -348,7 +419,9 @@ $.ajax({
 		$('.noticeUl').append(list);
 	}
 })
- </script>
+
+$('#info-standard').text(new Date().toLocaleString() + ' 기준');
+</script>
 	
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
