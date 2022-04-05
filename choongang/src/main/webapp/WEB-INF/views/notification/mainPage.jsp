@@ -30,7 +30,7 @@ function createAndInitGrid(){
          colModel: [   
 		            {name: 'nc_no', label : '번호', align:'center', width:15},
 		            {name:'nc_title', label:'제목', align:'left', width:200},
-		            {name: 'nc_file', label : '파일', align:'center', width:15},
+		            {name: 'nc_file', label : '파일', align:'center', width:15, formatter: imageFormatter},
 		            {name: 'nc_writeDate', label : '등록일시', align:'center', width:50},              
 		            {name: 'name', label : '등록자', align:'center', width:30},
 		            {name: 'nc_readCount', label : '조회수', align:'center', width:15}
@@ -64,6 +64,16 @@ function createAndInitGrid(){
 		  	         },  	  		    
        });		
   }
+
+/*** Formatter 스크립트 함수 ***/
+function imageFormatter()
+{
+    // rowObject  : JqGrid의 행 정보를 담고 있다.
+//    console.log(rowObject);
+
+    return '<img src="../resources/img/file1.png" />';
+}
+
 
 //검색시 서버 가져와서 집어넣기
 function search(){
