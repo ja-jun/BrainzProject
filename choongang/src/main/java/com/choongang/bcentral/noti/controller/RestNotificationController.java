@@ -101,12 +101,7 @@ public class RestNotificationController {
 					
 				}
 			}
-		}
-		
-		
-		
-		
-		
+		}	
 		
 		UserVo uv = (UserVo) session.getAttribute("userInfo");
 		

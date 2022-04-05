@@ -25,5 +25,4 @@ public interface NotificationSQLMapper {
 	public FileVo getFileInfo(int file_no);
 	public ArrayList<FileVo> getFileList(int nc_no);
 	
-	
 }
