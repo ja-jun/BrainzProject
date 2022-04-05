@@ -60,9 +60,9 @@
 				</ul>
 				
 				<ul class="language2">
-					<li class="languageBox2 onn"><span class="languageText">Ko</span></li>
-					<li class="languageBox2"><span class="languageText">En</span></li>
-					<li class="languageBox2"><span class="languageText">Cn</span></li>
+					<li class="languageBox2 onn"><a href="./mainPage?lang=ko"><span class="languageText">Ko</span></a></li>
+					<li class="languageBox2"><a href="./mainPage?lang=en"><span class="languageText">En</span></a></li>
+					<li class="languageBox2"><a href="./mainPage?lang=cn"><span class="languageText">Cn</span></a></li>
 				</ul>
 				
 			</div>

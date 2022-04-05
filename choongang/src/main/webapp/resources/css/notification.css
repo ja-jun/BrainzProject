@@ -4,7 +4,7 @@
 
 
 
-#noticeBox{width: 100%;background: #fff;border-radius: 20px;height: 800px;}
+#noticeBox{width: 100%;background: #fff;border-radius: 10px;height: 800px;border: 1px solid #e9e9ee;}
 #container{
     position: absolute;
     top: 0;

@@ -33,44 +33,44 @@
 		
 		<div id="noticeBox">
 			<div class="titleBar">
-				<h3 class="titleText">${data.nc_title }</h3>
-				<strong class="dateText">${data.nc_writeDate }</strong>
+				<h3 class="titleText">${data.a.nc_title }</h3>
+				<strong class="dateText">${data.a.nc_writeDate }</strong>
 			</div>
 			
 			<div class="contentBox">
-				<p class="contentText">${data.nc_content }</p>
+				<p class="contentText">${data.a.nc_content }</p>
+				<c:forEach items="${data.fileVoList }" var="data">
+					<img style="width: 50%;display: block;margin: auto;" src="/upload/${data.UploadedFileName }">
+				</c:forEach>
 			</div>
 			
 			<div class="footer">
 			
 			<c:choose>
-            		<c:when test="${empty data3.nc_no }">
+            		<c:when test="${empty data3.a.nc_no }">
             		<div class="next" style="display:none">
-					<i class="bi bi-chevron-up"></i>
-					<span class="nextTitle">다음</span>
-					<p class="nextText">${data3.nc_title }</p>
 					</div>
             		</c:when>
             		<c:otherwise>
             		<div class="next">
-					<a href="./readPage?nc_no=${data3.nc_no }" style="display: flex;">
+					<a href="./readPage?nc_no=${data3.a.nc_no }" style="display: flex;">
 					<img src="https://img.icons8.com/ios-filled/50/000000/collapse-arrow.png" style="width:15px">
 					<span class="nextTitle">다음</span>
-					<p class="nextText">${data3.nc_title }</p>
+					<p class="nextText">${data3.a.nc_title }</p>
 					</a>
 					</div>
             		</c:otherwise>
            </c:choose>
 			
 			<div class="prev">
-				<a href="./readPage?nc_no=${data2.nc_no }" style="display: flex;">
+				<a href="./readPage?nc_no=${data2.a.nc_no }" style="display: flex;">
 				<img src="https://img.icons8.com/ios-filled/50/000000/expand-arrow--v1.png" style="width:15px">
 				<span class="prevTitle">이전</span>
-				<p class="prevText">${data2.nc_title }</p>
+				<p class="prevText">${data2.a.nc_title }</p>
 				</a>
 			</div>
-			<div class="btnList">
-				<a href="./mainPage"><button class="btn">목록보기</button></a>
+			<div class="btnBox">
+				<a href="./mainPage"><button class="btnList">목록보기</button></a>
 			</div>
 			</div>
       	</div>

@@ -4,7 +4,7 @@
 
 
 
-#noticeBox{width: 1520px;background: #fff;border-radius: 20px;height: 800px;padding: 50px;display: grid;align-items: baseline;grid-template-rows: 55px auto 210px;overflow: hidden;}
+#noticeBox{width: 1520px;background: #fff;border-radius: 10px;padding: 50px;display: grid;align-items: baseline;border: 1px solid #e9e9ee;}
 #container{
     position: absolute;
     top: 0;
@@ -12,8 +12,8 @@
     background: #f3f3f6;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-}
+    
+overflow-x: hidden;}
   
 #content{
     display: flex;
@@ -52,7 +52,7 @@
 #noticeBox .titleBar .dateText{font-size: 17px;color: #999;font-family: Montserrat;}
 #noticeBox .titleBar .bar{}
 #noticeBox .contentBox{padding: 50px 0px 50px 0px;width: 1420px;}
-#noticeBox .contentBox .contentText{font-size: 18px;word-break: break-all;line-height: 1.5;font-weight: 300;}
+#noticeBox .contentBox .contentText{font-size: 18px;word-break: break-all;line-height: 1.5;font-weight: 300;white-space: pre-wrap;}
 .footer{font-size: 16px;}
 .next{display: flex;height: 60px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding-left: 10px;align-items: center;}
 .next .nextTitle{margin-left: 10px;font-weight: 600;margin-right: 30px;}
@@ -60,5 +60,5 @@
 .prev{display: flex;height: 60px;border-bottom: 1px solid #ddd;padding-left: 10px;align-items: center;}
 .prev .prevTitle{margin-left: 10px;font-weight: 600;margin-right: 30px;}
 .prev .prevText{}
-.btnList {display: flex;justify-content: center;}
-.btnList .btn{width: 110px;height: 50px;border: 1px solid #222 !important;border-radius: 10px !important;font-size: 16px !important;font-weight: 500 !important;margin-top: 40px;}
+.btnBox {display: flex;justify-content: center;}
+.btnBox .btnList{width: 110px;height: 50px;border: 1px solid #222 !important;border-radius: 10px !important;font-size: 16px !important;font-weight: 500 !important;margin-top: 40px;background: #fff;}
