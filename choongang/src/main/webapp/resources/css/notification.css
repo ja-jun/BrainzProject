@@ -109,7 +109,7 @@ align-items: center;}
 #modal .modalBox .noticeInput .textBox{
     border: 1px solid #ccc;
     height: 35px;
-    width: 468px;
+    width: 448px;
     padding: 8px;
 	font-size: 15px;
 	font-weight: 300;
@@ -189,10 +189,10 @@ align-items: center;}
 	}
 .searchBtn{width: 80px;height: 45px;border: 1px solid #ccc;background: #18244d;border-radius: 7px;color: #fff;font-size: 16px;}
 #afile3-list{
-	height: 100px;
+	/* height: 100px;
 	border: 1px solid #ccc;
 	margin-top: 10px;
-}
+ */}
 #afile3-list a{
 	padding: 8px;
 	display: block;
