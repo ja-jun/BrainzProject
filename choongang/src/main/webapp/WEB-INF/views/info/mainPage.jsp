@@ -74,11 +74,11 @@
 		<div class="barBar2">
 		<ul class="barUl2">
 		<!-- 작업 중 서버 목록 -->
-			<li style="text-align: left; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem">작업 중 서버</li>
+			<li style="text-align: left; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem">작업 중 서버 &nbsp Top6</li>
 		</ul>
 		<ul class="barUl3">
 		<!-- 작업 예정 서버 목록 -->
-			<li style="text-align: left; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem">작업 예정 서버</li>
+			<li style="text-align: left; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem">작업 예정 서버 &nbsp Top6</li>
 		</ul>
 		</div>
 		
