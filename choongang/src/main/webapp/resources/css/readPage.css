@@ -60,7 +60,7 @@ overflow-x: hidden;}
 #noticeBox .titleBar .dateText{font-size: 17px;color: #999;font-family: Montserrat;}
 #noticeBox .titleBar .bar{}
 #noticeBox .contentBox{padding: 50px 0px 50px 0px;width: 1420px;}
-#noticeBox .contentBox .contentText{font-size: 18px;word-break: break-all;line-height: 1.5;font-weight: 300;white-space: pre-wrap;}
+#noticeBox .contentBox .contentText{font-size: 18px;word-break: break-all;line-height: 1.5;font-weight: 300;white-space: pre-wrap;padding-left: 10px}
 .footer{font-size: 16px;}
 .next{display: flex;height: 60px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding-left: 10px;align-items: center;}
 .next .nextTitle{margin-left: 10px;font-weight: 600;margin-right: 30px;}
