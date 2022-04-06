@@ -80,7 +80,10 @@ public class RestServerController {
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
 			data.put("result", "4");
 			return data;
-		} //현재 서버번호와 다른 서버들의 mac과 중복되지 않는지 확인해야함
+		} else if(serverService.isExistMacwithServerNo(param.getMac(),param.getServer_no())) {
+			data.put("result", "5"); 
+			return data;
+		}
 		
 //		System.out.println(new Gson().toJson(param));
 		
@@ -129,7 +132,10 @@ public class RestServerController {
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
 			data.put("result", "4"); //mac 형식이 안맞을때
 			return data;
-		} //현재 서버번호와 다른 서버들의 mac과 중복되지 않는지 확인해야함
+		} else if(serverService.isExistMacwithServerNo(param.getMac(),param.getServer_no())) {
+			data.put("result", "5"); //mac이 중복될때
+			return data;
+		}
 	
 		serverService.updateServer(param);
 		
@@ -139,15 +145,19 @@ public class RestServerController {
 	}
 	
 	@RequestMapping("validationMac")
-	public HashMap<String, Object> validationMac(String mac){
+	public HashMap<String, Object> validationMac(String mac, String server_no){
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		
-		
 		
 		data.put("formMac", serverService.formMac(mac)); //형식에 맞지 않으면 false, 아니면 true
 		
-		data.put("isExistMac", serverService.isExistMac(mac)); //mac이 존재하면 true,아니면 false
+		int serverNo = Integer.parseInt(server_no);
 		
+		data.put("isExistMac", serverService.isExistMacwithServerNo(mac,serverNo)); //내서버번호와 다른서버에 같은mac이 존재하면 true,아니면 false
+		
+		
+		System.out.println("mac=" + mac);
+		System.out.println("파싱전 서버번호="+ server_no);
+		System.out.println("파싱한서버번호=" + serverNo);
 		System.out.println("mac유효성 (정상:(t,f)) : " +  data.get("formMac") + "," + data.get("isExistMac"));
 
 		//true,false가 되어야 insert되게 해야함

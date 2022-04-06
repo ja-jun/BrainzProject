@@ -2,6 +2,8 @@ package com.choongang.bcentral.mapper;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.server.vo.ServerVo;
@@ -14,6 +16,7 @@ public interface ServerSQLMapper {
 	public void deleteServer(int server_no);
 	public void updateServer(ServerVo vo);
 	public int getCountByMac(String mac);
+	public int isExistMacwithServerNo(@Param("mac") String mac,@Param("server_no") int server_no);
 	public ArrayList<ServerVo> getServerListForExcel(PageVo vo);
 
 

@@ -22,6 +22,12 @@
 <script src="../resources/js/jquery-ui.min.js"></script>
 
 <script>
+//mac 중복확인용
+var isConfirmedMac = false; 
+
+//ip 정규식
+var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+
 function createAndInitGrid(){
     $("#list").jqGrid({
 	        colModel: [   
@@ -33,9 +39,9 @@ function createAndInitGrid(){
 		        	 case "0":
 						return "오늘 작업 예정";
 		        	 case "1":
-						return "작업 중";
+						return "현재 작업 중";
 		        	 case "2":
-						return "작업 완료";
+						return "오늘 작업 완료";
 		        	 case "3":
 						return "오늘 작업 없음";
 	            }}},              
@@ -44,7 +50,7 @@ function createAndInitGrid(){
 	            {name: 'control_num', label : '관리번호', align:'left'},
 	            {name: 'dsc', label : '설명', align:'left'},     
 	            {name: 'write_date', label : '등록일', align:'center' },
-	            {name: 'server_no',label:'서버번호', hidden:true}
+	            {name: 'server_no',label:'서버 번호', hidden:true}
 	            ],
             pager: '#pager',
             rowNum: 10,
@@ -65,7 +71,14 @@ function createAndInitGrid(){
 				cm = $(this).jqGrid('getGridParam','colModel');
 				return (cm[i].name === 'cb');
 			},
-			
+			/*
+			loadComplete : function(){
+				alert(1111);	
+			},
+			*/
+			gridComplete : function(){
+				//alert(3333);	
+			},
 			// 수정 모달 창 띄우기
  	        ondblClickRow: function (rowId) { 
  	        	
@@ -103,7 +116,6 @@ function createAndInitGrid(){
 			            btn.setAttribute("onclick","updateServer()");
 		    	  		
 		    	  		modalOn();
-		    	  		validationTest();
 					},
 			        error: function() {
 			        	alert("잘못된 접근입니다.");
@@ -191,8 +203,14 @@ function deleteServer(){
 			     contentType:'application/json',
 			     data: JSON.stringify(serverNos)
 			 }).done(function(){
-					$("#list").trigger('reloadGrid');
-					alert("삭제되었습니다.");
+					$("#list").trigger('reloadGrid').bind("jqGridAfterLoadComplete" , function(){
+						//alert("삭제되었습니다.");	
+						var toastLiveExample = document.getElementById('liveToast');
+						var toast = new bootstrap.Toast(toastLiveExample);
+						toast.show();
+						
+					});
+											
 			 });
 			}else{
 				   alert("취소합니다.");
@@ -211,10 +229,6 @@ function updateServer(){
 		 document.getElementById("nameAlertBox").innerText = "";
 	}
 
-	//IP 정규표현식
-	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-//	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
-	
 	if(!regExp.test($("#ip").val())){
 		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
 		 document.getElementById("ipAlertBox").style.color = "red";
@@ -223,42 +237,36 @@ function updateServer(){
 	} else{
 		 document.getElementById("ipAlertBox").innerText = "";
 	}
-
+	
 	var mac = document.getElementById("mac");
 	var macValue = mac.value;
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){ 
-			var data = JSON.parse(xhr.responseText); 
-		
+
+	var server_no = $('#server_no').val();	
+	 $.ajax({
+	     url: "./validationMac",
+	     type: "post",
+	     processData: false,
+	     contentType: false,
+	     data: {server_no : server_no, mac : macValue}
+	 }).done(function(data){
 			var macAlertBox = document.getElementById("macAlertBox");
 			if(data.formMac == false){
 				isConfirmedMac = false; 
 				macAlertBox.innerText = "유효하지 않은 MAC 입니다.";
 				macAlertBox.setAttribute("style","color:red");
+				return;
 			} else if(data.isExistMac == true){
 				isConfirmedMac = false; 
 				macAlertBox.innerText = "이미 존재하는 MAC 입니다.";
 				macAlertBox.setAttribute("style","color:red");
+				return;
 			} else{
 				isConfirmedMac = true; 
 				macAlertBox.innerText = "";
 			}
-		}
-	};
-	
-	xhr.open("post" , "./validationMac", true);  
-   xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
-	xhr.send("mac=" + macValue); 
-	
-	
-	if(isConfirmedMac == false){
-		$('#mac').focus();
-		return;
-	}
+	 });	 
 
+	 console.log("eeeeeeee");
 
 
 	var formData = new FormData(document.getElementById('regServerInfo'));
@@ -281,8 +289,6 @@ function updateServer(){
 }
 
 
-//mac 중복확인용
-var isConfirmedMac = false; 
 
 /* //MAC 중복확인 - server_no가 수정전 server_no랑 같으면 mac이 같아도 되게 만들어야함.....
 function confirmMac(){
@@ -316,36 +322,6 @@ function confirmMac(){
     xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
 	xhr.send("mac=" + macValue); 
 } */
-
- //삭제
-function deleteServer(){ 
-	var serverNos = [];
-	var rowids = $("#list").getGridParam("selarrrow");
-
-	for (let i = 0; i < rowids.length; i++) {
-        const rowid = rowids[i];
-        var rowData = $("#list").getRowData(rowid);
-		serverNos.push(rowData.server_no);
-    }		
-	
-		$("#list").jqGrid("clearGridData", true);		
-
-          if(confirm("정말 삭제하시겠습니까?") == true ){
-        	  var text = "";
-			 $.ajax({
-			     url: "./deleteServer",
-			     type: "post",
-			     contentType:'application/json',
-			     data: JSON.stringify(serverNos)
-			 }).done(function(){
-					$("#list").trigger('reloadGrid');
-					alert("삭제되었습니다.");
-			 });
-			}else{
-					$("#list").trigger('reloadGrid');
-				   alert("취소합니다.");
-			}
- }
  
 	
 function validationTest(){
@@ -358,9 +334,7 @@ function validationTest(){
 		 document.getElementById("nameAlertBox").innerText = "";
 	}
 
-	//IP 정규표현식
 	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-//	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
 	
 	if(!regExp.test($("#ip").val())){
 		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
@@ -413,8 +387,7 @@ function validationTest(){
  
  
  
- 
- 
+
  
  //서버에서 유효성 검사 결과를 alert로 보여주기
  function validationError(result){
@@ -430,6 +403,9 @@ function validationTest(){
 		 break;
 	 case "4":
 		 alert("유효한 MAC 주소가 아닙니다.");
+		 break;
+	 case "5":
+		 alert("중복된 MAC 입니다.");
 		 break;
 	 }
  }
@@ -462,12 +438,6 @@ function modalOff() {
     btn.setAttribute("onclick","insertServer()");	
 }
 
-function alterText(){
-    $('td[title="0"]').text('오늘 작업 예정');
-    $('td[title="1"]').text('현재 작업중');
-    $('td[title="2"]').text('오늘 작업 완료');
-    $('td[title="3"]').text('오늘 작업 없음');
-}
 
 //모달창 열렸을 때 ESC누르면 닫힘
 window.addEventListener("keyup", e => {
@@ -484,7 +454,6 @@ window.addEventListener("DOMContentLoaded", function(){
 	const modal = document.getElementById("modal");
 	
 	$("#serverPage").addClass("on");
-	alterText();
 });
 </script>
 </head>
@@ -594,6 +563,17 @@ window.addEventListener("DOMContentLoaded", function(){
 <script>
 
 </script>
+
+<div class="position-fixed top-0 start-50 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body fw-bold fs-1 text-danger">
+      삭제되었습니다.
+    </div>
+  </div>
+</div>
+
+
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>

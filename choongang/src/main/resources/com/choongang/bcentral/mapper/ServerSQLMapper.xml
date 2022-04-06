@@ -111,5 +111,33 @@
 		FROM BP_Mgmt_server BM
 		WHERE sc_no = #{sc_no} 
  	</select>
+
+
+	<select id="isExistMacwithServerNo" resultType="int">
+		select count(bps.*)
+		from bp_server bps
+		where mac=#{mac}
+		and server_no != #{server_no}	
+	</select> 
+
+
+
+
+
+
+	<select id="????">
+		with RECURSIVE q AS(	SELECT *
+										FROM bp_user t1
+										WHERE t1.user_no = 6 -- this condition defines the ultimate ancestors in your chain, change it as appropriate
+										UNION ALL
+										SELECT m.*
+										FROM bp_user m
+										JOIN q
+										ON m.parent = q.user_no
+									)
+		SELECT * FROM q;
+	</select>
+ 	
+ 	
  	
 </mapper>

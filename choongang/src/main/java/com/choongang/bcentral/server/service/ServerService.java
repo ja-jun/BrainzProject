@@ -64,6 +64,16 @@ public class ServerService {
 		}
 	}
 	
+	public boolean isExistMacwithServerNo(String mac, int server_no) {
+		int count = svSQLMapper.isExistMacwithServerNo(mac,server_no);
+		
+		if(count > 0) {
+			return true; //내번화와 다른 서버에 같은 mac이 존재하면 true
+		} else {
+			return false; //아니면 false
+		}
+	}
+	
 	public boolean formMac(String mac) {
 		if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", mac) ) {
 			return false; //형식에 맞지 않으면 false
