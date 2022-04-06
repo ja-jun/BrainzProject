@@ -113,11 +113,7 @@ public class ServerService {
 	         break;
 	      case 2: //특정 주차의 특정 요일의 작업일 경우
 	    	 
-	    	  //아마도 틀 인듯? 한주의 시작을 일요일, 달도 그런 일주일 형식으로 설정?
-	         WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1); //(DayOfWeek firstDayOfWeek, int minimalDaysInFirstWeek?)
-	         TemporalField weekOfMonth = weekFields.weekOfMonth(); 
-	         
-	         int wom = now.get(weekOfMonth); //오늘의 주
+	         int wom = ((now_date.getDayOfMonth() - 1) / 7) + 1;
 	         
 	         //반복주는 몇째주인지 저장되어 있는?
 	         if(wom == sVo.getRepeat_week() && days[day] != null) { //오늘의 주가 작업반복 주이고, 오늘요일에 작업이 있으면

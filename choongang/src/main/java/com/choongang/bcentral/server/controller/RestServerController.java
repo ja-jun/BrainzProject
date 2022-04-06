@@ -61,7 +61,10 @@ public class RestServerController {
 	public HashMap<String, Object> insertServer(ServerVo param, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		System.out.println(new Gson().toJson(param));
+//		System.out.println(new Gson().toJson(param));
+		
+		String test = "((\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])([.](?!$)|$)){4}";
+		//String test = "^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
 		
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { //인터셉터 존재??? delete,update...ajax에서 사용...ㅜㅜ
@@ -70,7 +73,7 @@ public class RestServerController {
 		} else if(param.getName() == null) {
 			data.put("result", "2");
 			return data;
-		} else if(!Pattern.matches("^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$", param.getMac()) ) {
+		} else if(!Pattern.matches(test, param.getIp()) ) {
 			System.out.println("ip 패턴이 안맞음....");
 			data.put("result", "3");
 			return data;
@@ -79,15 +82,12 @@ public class RestServerController {
 			return data;
 		} //현재 서버번호와 다른 서버들의 mac과 중복되지 않는지 확인해야함
 		
-		System.out.println(new Gson().toJson(param));
-
-		System.out.println("인서트 시작...ㅠㅠ....");
+//		System.out.println(new Gson().toJson(param));
 		
 		param.setUser_no(userInfo.getUser_no());
 		serverService.insertServer(param);
 		data.put("result", "0");
 
-		System.out.println("인서트 됐나요??ㅠㅠㅠ");
 		System.out.println("인서트 결과(숫자/0:정상) : " + data.get("result"));
 		return data;
 	}
@@ -123,7 +123,7 @@ public class RestServerController {
 		} else if(param.getName() == null) {
 			data.put("result", "2"); //서버명이 없을때
 			return data;
-		} else if(!Pattern.matches("^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$", param.getMac()) ) {
+		} else if(!Pattern.matches("((\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])([.](?!$)|$)){4}", param.getIp()) ) {
 			data.put("result", "3"); //ip 형식이 안맞을때
 			return data;
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
@@ -134,7 +134,7 @@ public class RestServerController {
 		serverService.updateServer(param);
 		
 		data.put("result", "0");
-		System.out.println("수정 결과(숫자) :  " + data.get("result"));
+		System.out.println("수정 결과(정상:0) :  " + data.get("result"));
 		return data;
 	}
 	
@@ -142,7 +142,10 @@ public class RestServerController {
 	public HashMap<String, Object> validationMac(String mac){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
+		
+		
 		data.put("formMac", serverService.formMac(mac)); //형식에 맞지 않으면 false, 아니면 true
+		
 		data.put("isExistMac", serverService.isExistMac(mac)); //mac이 존재하면 true,아니면 false
 		
 		System.out.println("mac유효성 (정상:(t,f)) : " +  data.get("formMac") + "," + data.get("isExistMac"));

@@ -146,36 +146,7 @@ function search(){
 
 function insertServer(){
 	
- 	if($("#name").val() == ""){
-		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
-		 document.getElementById("nameAlertBox").style.color = "red";
-		 $('#name').focus();
-		return;
-	} else{
-		 document.getElementById("nameAlertBox").innerText = "";
-	}
-
-	//IP 정규표현식
-	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
-	
-	if(!regTest.test($("#ip").val())){
-		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
-		 document.getElementById("ipAlertBox").style.color = "red";
-		$('#ip').focus();
-		return;
-	} else{
-		 document.getElementById("ipAlertBox").innerText = "유효한 IP 주소입니다.";
-		 document.getElementById("ipAlertBox").style.color = "green";
-	}
-
-	confirmMac();
-	
-	if(isConfirmedMac == false){
-		$('#mac').focus();
-		return;
-	}
-
+	validationTest();
 	console.log("인서트 시작");
 	
 	var formData = new FormData(document.getElementById('regServerInfo'));
@@ -190,7 +161,6 @@ function insertServer(){
 		 	var result= data.result;
 		 	if(result != "0"){
 				validationError(result);
-//		 		alert("XXXXX");			 
 		 	} else{
 				alert("등록되었습니다.");			 		
 		 	}
@@ -225,14 +195,71 @@ function deleteServer(){
 					alert("삭제되었습니다.");
 			 });
 			}else{
-					$("#list").trigger('reloadGrid');
 				   alert("취소합니다.");
+					$("#list").trigger('reloadGrid');
 			}
  }
  
 //수정 서버 넘기기
 function updateServer(){			
-//	validationTest();
+ 	if($("#name").val() == ""){
+		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
+		 document.getElementById("nameAlertBox").style.color = "red";
+		 $('#name').focus();
+		return;
+	} else{
+		 document.getElementById("nameAlertBox").innerText = "";
+	}
+
+	//IP 정규표현식
+	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+//	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
+	
+	if(!regExp.test($("#ip").val())){
+		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
+		 document.getElementById("ipAlertBox").style.color = "red";
+		$('#ip').focus();
+		return;
+	} else{
+		 document.getElementById("ipAlertBox").innerText = "";
+	}
+
+	var mac = document.getElementById("mac");
+	var macValue = mac.value;
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){ 
+			var data = JSON.parse(xhr.responseText); 
+		
+			var macAlertBox = document.getElementById("macAlertBox");
+			if(data.formMac == false){
+				isConfirmedMac = false; 
+				macAlertBox.innerText = "유효하지 않은 MAC 입니다.";
+				macAlertBox.setAttribute("style","color:red");
+			} else if(data.isExistMac == true){
+				isConfirmedMac = false; 
+				macAlertBox.innerText = "이미 존재하는 MAC 입니다.";
+				macAlertBox.setAttribute("style","color:red");
+			} else{
+				isConfirmedMac = true; 
+				macAlertBox.innerText = "";
+			}
+		}
+	};
+	
+	xhr.open("post" , "./validationMac", true);  
+   xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
+	xhr.send("mac=" + macValue); 
+	
+	
+	if(isConfirmedMac == false){
+		$('#mac').focus();
+		return;
+	}
+
+
 
 	var formData = new FormData(document.getElementById('regServerInfo'));
 	 $.ajax({
@@ -257,7 +284,7 @@ function updateServer(){
 //mac 중복확인용
 var isConfirmedMac = false; 
 
-//MAC 중복확인 - server_no가 수정전 server_no랑 같으면 mac이 같아도 되게 만들어야함.....
+/* //MAC 중복확인 - server_no가 수정전 server_no랑 같으면 mac이 같아도 되게 만들어야함.....
 function confirmMac(){
 	
 	var mac = document.getElementById("mac");
@@ -280,8 +307,7 @@ function confirmMac(){
 				macAlertBox.setAttribute("style","color:red");
 			} else{
 				isConfirmedMac = true; 
-				macAlertBox.innerText = "유효한 MAC 입니다.";
-				macAlertBox.setAttribute("style","color:green");
+				macAlertBox.innerText = "";
 			}
 		}
 	};
@@ -289,7 +315,7 @@ function confirmMac(){
 	xhr.open("post" , "./validationMac", true);  
     xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
 	xhr.send("mac=" + macValue); 
-}
+} */
 
  //삭제
 function deleteServer(){ 
@@ -334,24 +360,52 @@ function validationTest(){
 
 	//IP 정규표현식
 	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
+//	var regTest  =  new RegExp('^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$');
 	
-	if(!regTest.test($("#ip").val())){
+	if(!regExp.test($("#ip").val())){
 		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
 		 document.getElementById("ipAlertBox").style.color = "red";
 		$('#ip').focus();
 		return;
 	} else{
-		 document.getElementById("ipAlertBox").innerText = "유효한 IP 주소입니다.";
-		 document.getElementById("ipAlertBox").style.color = "green";
+		 document.getElementById("ipAlertBox").innerText = "";
 	}
 
-	confirmMac();
+	var mac = document.getElementById("mac");
+    var macValue = mac.value;
+	
+	var xhr = new XMLHttpRequest();
+	
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200){ 
+			var data = JSON.parse(xhr.responseText); 
+		
+			var macAlertBox = document.getElementById("macAlertBox");
+			if(data.formMac == false){
+				isConfirmedMac = false; 
+				macAlertBox.innerText = "유효하지 않은 MAC 입니다.";
+				macAlertBox.setAttribute("style","color:red");
+			} else if(data.isExistMac == true){
+				isConfirmedMac = false; 
+				macAlertBox.innerText = "이미 존재하는 MAC 입니다.";
+				macAlertBox.setAttribute("style","color:red");
+			} else{
+				isConfirmedMac = true; 
+				macAlertBox.innerText = "";
+			}
+		}
+	};
+	
+	xhr.open("post" , "./validationMac", true);  
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
+	xhr.send("mac=" + macValue); 
+	
 	
 	if(isConfirmedMac == false){
 		$('#mac').focus();
 		return;
 	}
+
 
 }
  
