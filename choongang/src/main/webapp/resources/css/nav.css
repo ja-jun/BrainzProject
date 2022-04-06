@@ -6,12 +6,10 @@
 
 
 
-.navBar ul .pageList:nth-child(1) .imgNav{width: 30px;}
-.navBar ul .pageList:nth-child(2) .imgNav{}
-.navBar ul .pageList:nth-child(3) .imgNav{}
-.navBar ul .pageList:nth-child(4) .imgNav{}
+.navBar ul .pageList:first-child .imgNav{width: 30px;}
+.navBar ul .pageList:first-child .navTitle{margin-left: 15px;}
 .navTitle{
-    margin-left: 15px;
+    margin-left: 20px;
 }
 .navBox{
     display: flex;
@@ -22,42 +20,40 @@
 }
 a .headerName{color:#fff}
 .headerName{
-    font-size: 28px;
+    font-size: 25px;
     font-weight: 700;
     font-family: 'Montserrat', sans-serif;
-text-align: left;padding-left: 60px;}
+text-align: left;margin-bottom: 35px;padding-left: 45px;}
 .navBar{
     width: 300px;
-    background: #18244d;
+    background: #293042;
     position: fixed;
     height: 100%;
     z-index: 99;
     color: #fff;
-    display: grid;
-    grid-template-rows: 0.4fr 5fr 1fr;
-    padding-top: 40px;
-    margin: auto;
-    text-align: center;}
+    
+    
+    padding-top: 45px;
+    }
 
-.navBar ul .pageList:first-child{}
 .navBar ul .pageList{
-    height: 90px;
+    height: 80px;
     font-size: 18px;
     font-family: 'Noto Sans KR';
     font-weight: 400;
     color: #fff;
     display: flex;
 	align-items: center;
-	padding-left: 60px;}
+	padding-left: 42px;}
 .navBar ul .on{
-    background: #314279;
-padding-left: -100px;padding: -100px;}
+    background: #404B66;
+width: 100%;}
 #content{
     display: flex;
-    height: 100%;
+    height: 100vh;
 }
-.language2{}
-.language2 .languageBox2{font-size: 18px;display: inline-flex;margin-right: 40px;font-family: 'Montserrat';font-weight: 600;color: #314279;line-height: 1.5;cursor: pointer;}
+.language2{text-align: center;padding-right: 5px;margin-top: 450px;}
+.language2 .languageBox2{font-size: 18px;display: inline-flex;margin-right: 40px;font-family: 'Montserrat';font-weight: 600;color: #404B66;line-height: 1.5;cursor: pointer;}
 .language2 .languageBox2:last-child{margin-right:0px}
 .language2 .languageBox2 .languageText{}
 .language2 .onn{border-bottom: 3px solid #fff;width: 24px;color: #fff;font-weight: 600;}

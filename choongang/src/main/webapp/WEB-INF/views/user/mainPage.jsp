@@ -28,11 +28,11 @@
 function createAndInitGrid(){
     $("#list").jqGrid({
     	colModel: [   
-   			{name: 'user_id', label : '아이디', align:'left'},
-            {name: 'name', label:'이름', align:'left'},
-            {name: 'authority', label : '권한', align:'center'},
-            {name: 'dsc', label : '설명', align:'left'},
-            {name: 'last_login', label : '최종 로그인 시간', align:'center', formatter:dateFormatter},
+   			{name: 'user_id', label : '아이디', align:'left', width:'30%'},
+            {name: 'name', label:'이름', align:'left', width:'30%'},
+            {name: 'authority', label : '권한', align:'center', width:'30%'},
+            {name: 'dsc', label : '설명', align:'left', width:'50%'},
+            {name: 'last_login', label : '최종 로그인 시간', align:'center', formatter:dateFormatter, width:'40%'},
             {name: 'user_no', label : '사용자번호', hidden:true}
             ],
         pager: '#pager',
@@ -40,6 +40,7 @@ function createAndInitGrid(){
         rowList: [10,30,50],
         viewrecords: true,
         multiselect: true,
+        multiselectWidth: 100,
         //등록시 인코드
 		autoencode : 'true',
         //Data 연동 부분
@@ -538,6 +539,7 @@ window.addEventListener("DOMContentLoaded", function(){
 				<h3 class="title">사용자 등록</h3>
 				<i class="bi bi-x" onclick="modalOff()"></i>
 			</div>
+			<div class="bottom">
 			<div class="userInput">
 				<strong class="text">아이디<span class="star">*</span></strong>
 				<input type="text" id="user_id" name="user_id" class="input_id" check_result="fail" required />
@@ -582,9 +584,10 @@ window.addEventListener("DOMContentLoaded", function(){
 				<strong class="text">설명</strong>
 				<input type="text" id="dsc" name="dsc" class="textBox">
 			</div>
-			<div class="btnBox">
-				<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="registerUser()" >
-				<input type="button" value="닫기" class="writeBtn2" onclick="modalOff()" >
+			<ul class="btnList">
+				<li class="btnLi"><input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="registerUser()" ></li>
+				<li class="btnLi"><input type="button" value="닫기" class="writeBtn2" onclick="modalOff()" ></li>
+			</ul>
 			</div>
 			</form>
 

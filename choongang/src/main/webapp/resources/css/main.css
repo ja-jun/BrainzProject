@@ -753,7 +753,9 @@ A HORIZONTAL event
 }
 .fc .fc-daygrid-event-harness {
     position: relative;
-  font-size: 19px;}
+  font-size: 19px;margin-left: 10px;white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;margin-right: 10px;background: #5a43f2;border-radius: 6px;margin-bottom: 10px;color: #fff;}
 .fc .fc-daygrid-event-harness-abs {
     position: absolute;
     top: 0; /* fallback coords for when cannot yet be computed */
@@ -875,8 +877,10 @@ A HORIZONTAL event
     flex-shrink: 1;
     min-width: 0; /* important for allowing to shrink all the way */
     overflow: hidden;
-    font-weight: bold;
-  }
+    font-weight: 400 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;}
 .fc-daygrid-dot-event:hover,
   .fc-daygrid-dot-event.fc-event-mirror {
     background: rgba(0, 0, 0, 0.1);
@@ -898,8 +902,8 @@ A HORIZONTAL event
 display: none;}
 /* --- spacing between time and title --- */
 .fc-direction-ltr .fc-daygrid-event .fc-event-time {
-    margin-right: 3px;
-  }
+    font-size: 15px;margin-right: 3px;
+  font-weight: 300 !important;margin-right: 10px !important;}
 .fc-direction-rtl .fc-daygrid-event .fc-event-time {
     margin-left: 3px;
   }
@@ -1477,3 +1481,6 @@ A VERTICAL event
 
 .fc-day-sat .fc-col-header-cell-cushion {color: #4444af;}
 .fc-day-sat .fc-daygrid-day-number {color: #4444af;}
+
+.fc .fc-day-past .fc-event {color:#999 !important; !important;}
+.fc .fc-day-past .fc-daygrid-event-harness{background:#eee !important}

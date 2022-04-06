@@ -4,7 +4,7 @@
 
 
 
-#serverBox{width: 100%;background: #fff;border-radius: 10px;height: 800px;border: 1px solid #e9e9ee;}
+#serverBox{width: 100%;background: #fff;border-radius: 10px;height: calc(100vh - 160px);border: 1px solid #e9e9ee;}
 #container{
     position: absolute;
     top: 0;
@@ -15,11 +15,11 @@
     overflow: hidden;
 }
 .writeBtn{
-	width: 85px;
-    height: 45px;
-    font-weight: 500;
-    border: 1px solid #18244d;
-    border-radius: 7px;
+	width: 83px;
+    height: 46px;
+    font-weight: 400;
+    border: 1px solid #555;
+    border-radius: 5px;
     cursor: pointer;
     color: #222;
 	background: #fff;
@@ -27,7 +27,7 @@
 	transition: 0.3s;
 }
 .writeBtn:hover{
-	background: #18244d;
+	background: #293042;
     color: #fff;
 }     
 #content{
@@ -37,7 +37,7 @@
     margin: 30px 0px 100px 350px;
     width: 100%;
     padding-right: 400px;
-    /* height: 100%; */}
+    }
 
 #modal{
 	display:none;
@@ -47,7 +47,6 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	/* height: 100vh; */
 	background-color: rgba(0, 0, 0, 0.3);
 	z-index: 99;
 	height: 100%;
@@ -67,11 +66,11 @@
     width: 600px;background: #fff;
     justify-content: center;
     background-color: #ffffff;
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
-    overflow-y: auto;
-    height: 750px;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 17%);
+    
+    height: 600px;
     align-content: center;
-    }
+    border-radius: 10px;overflow: hidden;}
 #modal .modalBox .top{
     background: #18244d;
     height: 53px;
@@ -80,10 +79,10 @@
     display: flex;
     justify-content: space-between;
     padding: 0px 30px 0px 30px;
-}
+align-items: center;}
 #modal .modalBox .top .title{
-    line-height: 3.2;
-}
+    
+font-weight: 500;font-size: 17px;}
 #modal .modalBox .top .bi-x{
     font-size: 22px;
     line-height: 2.4;
@@ -91,15 +90,16 @@
 }
 
 #modal .modalBox .serverInput{
-    border-top: 1px solid #e5e5e5;
-    padding: 20px 30px 20px 30px;
+    padding: 10px 0px 10px 0px;vertical-align: middle;
 }
+#modal .modalBox .serverInput:first-child{border-top:none;padding-top: 0px;}
 #modal .modalBox .serverInput:last-child{border:none}
 #modal .modalBox .serverInput .text{
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
     width: 120px;
     display: inline-flex;
+	align-items: center;
 }
 
 .star{
@@ -110,33 +110,18 @@
 
 #modal .modalBox .serverInput .textBox{
     border: 1px solid #ccc;
-    height: 35px;
+    height: 40px;
     width: 380px;
     padding-left: 8px;
-font-size: 15px;font-weight: 300;}
-
-#modal .modalBox .serverInput .input_id{
-    border: 1px solid #ccc;
-    height: 33px;
-    width: 300px;
-    padding-left: 8px;
-}
+	font-size: 15px;
+	font-weight: 300;
+border-radius: 5px;}
 
 .ui-jqgrid .ui-jqgrid-htable{width:100%}
 
-.id_check_button { 
-    height: 33px;
-    width: 80px;
-    font-size: 1em;
-    background: #353c40;
-    border: none;
-    color: #fff;
-    outline: none;
-    margin-left: -7px;
-}
-
 #jqgridBox{
 	border-top:none;
+	padding-left:30px;
 	}
 #deleteBtn{
 	margin-left:10px
@@ -144,10 +129,10 @@ font-size: 15px;font-weight: 300;}
 #excelBtn{
 	margin-left:10px
 }
-#top{display: flex;justify-content: space-between;padding: 30px 30px 10px 30px;}
+#top{display: flex;justify-content: space-between;padding: 30px 30px 20px 30px;}
 #search{display: flex;}
 #search .searchBox{margin-right: 10px;}
-#search .searchBox .searchForm{width: 300px;height: 45px;border: #ccc 1px solid;padding-left: 35px;border-radius: 10px;background-image: url(../img/search.png);background-repeat: no-repeat;background-position: 10px;background-size: 17px;font-size: 14px;color: #555;}
+#search .searchBox .searchForm{width: 250px;height: 46px;border: #ccc 1px solid;padding-left: 35px;border-radius: 5px;background-image: url(../img/search.png);background-repeat: no-repeat;background-position: 10px;background-size: 17px;font-size: 15px;color: #555;font-weight: 400;}
 #gnb{
     display: flex;
     justify-content: flex-end;
@@ -172,38 +157,34 @@ font-size: 15px;font-weight: 300;}
 	padding-left: 5px;
 	border: 1px solid #ccc;
 }
-.btnBox{
-	display: flex;
+.btnList{
+	margin-top: 20px;display: flex;
 	justify-content: flex-end;
-	padding-right: 20px;
 	margin-bottom: 20px;
 	}
-.btnBox .writeBtn2{
+.btnList .btnLi .writeBtn2{
 	width: 80px;
-    height: 40px;
-    font-weight: 500;
-    border-radius: 10px;
+    height: 45px;
+    font-weight: 400;
+    border: 1px solid #555;
+    background:#293042;
+    border-radius: 5px;
     cursor: pointer;
     color: #fff;
-	background: #18244d;
-	font-size: 15px;
-	transition: 0.3s;
-	margin-left: 10px;
-	border: none;
+	font-size: 16px;
+	margin-left:10px
 	}
-	
 .confirmAlertBox{
 	margin-top: 5px;
 	font-weight:300;
 	font-size: 14px;
-	color: red;
-	margin-left: 120px;
-	}
-.searchBtn{width: 80px;height: 45px;border: 1px solid #ccc;background: #18244d;border-radius: 7px;color: #fff;font-size: 16px;}
+	margin-left: 120px;}
+.searchBtn{width: 83px;height: 46px;border: 1px solid #ccc;background: #18244d;border-radius: 5px;color: #fff;font-size: 16px;margin-left: 5px;}
 #os{
-	height: 35px;
+	height: 40px;
 	width: 100px;
 	font-size: 13px;
 	padding-left: 5px;
 	border: 1px solid #ccc;
-}
+border-radius: 5px;}
+.bottom{padding: 20px 30px 0px 30px;overflow-y: auto;height: 650px;}
