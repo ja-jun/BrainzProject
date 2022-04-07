@@ -135,9 +135,7 @@ public class ScheduleService {
 						break;
 					case 2:
 						// 기간 내 월의 특정 주차에 해당하는 특정 요일만 선택하는 경우
-						WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
-						TemporalField weekOfMonth = weekFields.weekOfMonth();
-						int wom = cur_date.get(weekOfMonth);
+						int wom = ((cur_date.getDayOfMonth() - 1) / 7) + 1;
 						
 						if(wom == vo.getRepeat_week() && dayCheck[day] != null) {
 							event.put("sc_no", sc_no);

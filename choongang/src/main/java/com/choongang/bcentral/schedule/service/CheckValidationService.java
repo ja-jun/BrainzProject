@@ -42,9 +42,8 @@ public class CheckValidationService {
 				}
 				break;
 			case 2:
-				WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
-				TemporalField weekOfMonth = weekFields.weekOfMonth();
-				int wom = cur_date.get(weekOfMonth);
+				int wom = ((cur_date.getDayOfMonth() - 1) / 7) + 1;
+				
 				System.out.println("cur_date는 " + cur_date.getMonthValue() + "월의 " + wom + "주차 입니다.");
 				if(wom == ssVo.getRepeat_week() && dayCheck[day] != null) {
 					return 0;

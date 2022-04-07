@@ -80,9 +80,7 @@ public class InfoService {
 			}
 			break;
 		case 2:
-			WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
-			TemporalField weekOfMonth = weekFields.weekOfMonth();
-			int wom = now.get(weekOfMonth);
+			int wom = ((now_date.getDayOfMonth() - 1) / 7) + 1;
 			
 			if(wom == sVo.getRepeat_week() && days[day] != null) {
 				if(now_time.isBefore(sVo.getStart_time())) {
@@ -157,6 +155,10 @@ public class InfoService {
 		while(!cur_date.equals(LocalDate.now().plusDays(7))) {
 			
 			for(ScheduleVo scVo : weekScVo) {
+				if(!cur_date.isBefore(scVo.getEnd_date())) {
+					break;
+				}
+				
 				HashMap<String, Object> event = new HashMap<String, Object>();
 				int sc_no = scVo.getSc_no();
 				String title = scVo.getTitle();
@@ -213,9 +215,7 @@ public class InfoService {
 					}
 					break;
 				case 2:
-					WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
-					TemporalField weekOfMonth = weekFields.weekOfMonth();
-					int wom = cur_date.get(weekOfMonth);
+					int wom = ((cur_date.getDayOfMonth() - 1) / 7) + 1;
 					
 					if(wom == scVo.getRepeat_week() && dayCheck[day] != null) {
 						event.put("sc_no", sc_no);
