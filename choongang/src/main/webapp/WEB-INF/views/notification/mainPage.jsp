@@ -185,7 +185,7 @@ function updateModal() {
             	div.append(a);
             	// div.append(img);
             	
-            	var button = $('<button class="filename" onclick="createFileBtn()">변경</button>');
+            	var button = $('<button class="filename" style="background:#e88790" onclick="createFileBtn()">변경</button>');
             	
             	$('#fileBox').append(strong);
             	$('#fileBox').append(div);
@@ -420,7 +420,7 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
 					<div class="noticeInput" style="display: flex;">
 						<strong class="text">내용<span class="star">*</span></strong>
-						<textarea id="nc_content" name="nc_content" class="textBox" style="height: 150px;"></textarea>
+						<textarea id="nc_content" name="nc_content" class="textBox" style="height: 240px;"></textarea>
 					</div>
 								
 						<div id="fileBox" class="noticeInput">

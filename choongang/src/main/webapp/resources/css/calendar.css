@@ -16,6 +16,9 @@
     background: #f3f3f6;
     width: 100%;
 }
+#jqgridBox{
+	padding-left:30px;
+	padding-top: 30px;}
 .writeBtn{
 	width: 83px;
     height: 46px;
@@ -168,6 +171,8 @@ border-radius: 5px;
 	border-radius: 5px;
 	font-weight: 300;
 }
+select[disabled] {border:1px solid #ddd; color:#bdbdbd; }
+.selectUser2{margin-left: 80px;display: none;}
 #modal .modalBox .dateBox{
     display: flex;
     align-items: center;
@@ -305,8 +310,7 @@ color: #222;}
 .serverList{
     display: grid;
     height: 220px;
-    
-margin-bottom: 50px;}
+	margin-bottom: 50px;}
 .serverList .serverHeader{
     display: flex;
     font-size: 16px;
@@ -434,7 +438,9 @@ font-family: 'Montserrat';color: #222;}
 border-radius: 10px;box-shadow: 0 10px 30px rgb(0 0 0 / 17%);}
 #serverModalBox{
 	overflow: hidden;
-border-radius: 10px;}
+border-radius: 10px;
+width:800px
+}
 
 
 /* 바디에 스크롤 막는 방법 */
@@ -470,7 +476,8 @@ border-radius: 10px;}
     color: #fff;
 	background: #293042;
 	font-size: 16px;
-margin-right: 10px;}
+	margin-right: 10px;
+	}
 
 
 .btnBoxbtn3{
@@ -482,7 +489,6 @@ margin-right: 10px;}
     border-radius: 5px;
     cursor: pointer;
     color: #fff;
-	
 	font-size: 16px;
 }
 
@@ -499,7 +505,7 @@ margin-right: 10px;}
 
 .datetimepicker{
     border: 1px solid #ccc;
-    height: 35px;
+    height: 40px;
     width: 150px;
     padding: 8px;
     font-size: 15px;
@@ -511,7 +517,7 @@ margin-right: 10px;}
 border-radius: 5px;font-family: 'Montserrat';}
 
 #datetimepicker2{
-    height: 35px;
+    height: 40px;
     width: 150px;
     padding-left: 8px;
     font-size: 15px;
@@ -544,7 +550,9 @@ border-radius: 5px;font-family: 'Montserrat';}
 #deleteRadio .radioBox .radioBoxList{
     display: flex;
     margin-bottom: 20px;
-font-size: 17px;align-items: center;}
+	font-size: 17px;
+	align-items: center;
+	}
 #deleteRadio .radioBox .radioBoxList .sapnRadio{
     display: grid;
     margin-left: 4px;
@@ -552,7 +560,8 @@ font-size: 17px;align-items: center;}
 
 .tbodyBox{
     height: 190px;
-overflow-y: auto;}
+	overflow-y: auto;
+	}
 .fc .fc-daygrid-day.fc-day-today{background:#f2f3f4}
 
 .box{

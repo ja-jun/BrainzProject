@@ -108,7 +108,7 @@ align-items: center;}
 #modal .modalBox .noticeInput .textBox{
     border: 1px solid #ccc;
     height: 40px;
-    width: 470px;
+    width: 509px;
     padding-left: 8px;
 	font-size: 15px;
 	font-weight: 300;
@@ -158,12 +158,12 @@ resize: none;padding: 8px;line-height: 1.5;}
 .btnBox2{
 	display: flex;
 	justify-content: flex-end;
-	padding-right: 20px;
+	padding-right: 31px;
 	margin-bottom: 20px;
-	margin-top:30px}
+	margin-top: 20px;}
 .btnBox2 .writeBtn2{
 	width: 80px;
-    height: 45px;
+    height: 40px;
     font-weight: 400;
     border: 1px solid #555;
     background:#293042;
@@ -171,8 +171,7 @@ resize: none;padding: 8px;line-height: 1.5;}
     cursor: pointer;
     color: #fff;
 	font-size: 16px;
-	margin-left:10px
-	}
+	margin-left: 12px;}
 	
 .confirmAlertBox{
 	margin-top: 5px;
@@ -200,7 +199,7 @@ input[type="file"] {
 }
 .filename { 
 	display: inline-flex; 
-	color: #555; 
+	color: #fff; 
 	cursor: pointer; 
 	width: 80px;
 	height: 40px;
@@ -209,7 +208,7 @@ input[type="file"] {
 	justify-content: center;
 	vertical-align: middle;
 	margin-left: 5px;
-	background: #eee;border-radius: 5px;}
+	background: #928fe8;border-radius: 5px;border: none;}
 .upload-name { 
 	display: inline-block; 
 	padding: 8px; /* label의 패딩값과 일치 */ 

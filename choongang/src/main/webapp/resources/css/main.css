@@ -1482,5 +1482,5 @@ A VERTICAL event
 .fc-day-sat .fc-col-header-cell-cushion {color: #4444af;}
 .fc-day-sat .fc-daygrid-day-number {color: #4444af;}
 
-.fc .fc-day-past .fc-event {color:#999 !important; !important;}
+.fc .fc-day-past .fc-event {color:#999 !important; }
 .fc .fc-day-past .fc-daygrid-event-harness{background:#eee !important}

@@ -70,12 +70,20 @@ function delBtn() {
 	document.getElementById("regScheduleInfo").reset();
 	$('input[name=pre_title]').remove();
 }
+function delBtn2() {
+	const modal = document.getElementById("serverModal");
+	modal.setAttribute("style","display:none");
+}
 /* 등록 클릭시 */
 function writeBtn() {
 	
 	$('body').css("overflow", "hidden");
 	var modal = document.getElementById("modal");
 	modal.setAttribute("style","display:flex");
+	
+	const selectUser2 = document.querySelector('.selectUser2');
+    selectUser2.setAttribute("style","display: none");
+    $("#selectUser").attr("disabled", false);
 	
 	var confirmAlertBox = document.getElementById("confirmAlertBox");
     confirmAlertBox.setAttribute("style","display:none");
@@ -105,6 +113,7 @@ function writeBtn() {
     $('.serverContent').remove();
     $('.btnDay').removeClass("active");
 	$('.btnDay').children().remove();
+	
     
 	 var btn1 = document.getElementById('btnBoxbtn1');
      btn1.innerHTML="";
@@ -209,6 +218,7 @@ function getCalendarList(){
 			            right: 'next'
 			        },
 				events : events,
+				height: 'auto',
 				locale: language,
 				eventClick: function(info){
 					/* 특정 event를 클릭했을 때 등록 창이 나오도록 변경 */
@@ -223,6 +233,10 @@ function getCalendarList(){
 				            var sc_server = data.serverList;
 				            
 				            $('.textBox').val(sc_info.title);
+				            
+				            const selectUser2 = document.querySelector('.selectUser2');
+				            selectUser2.setAttribute("style","display: block");
+				            $('#selectUser').attr('disabled', 'true');
 				            
 				            var pre_title = document.createElement('input');
 				            pre_title.setAttribute('type', 'hidden');
@@ -383,6 +397,7 @@ function getCalendarList(){
 				            btn2.setAttribute("id","btnBoxbtn2");
 				            btn2.setAttribute("onclick","molBtn()");
 				            
+				            
 				            var input_date = document.createElement('input');
 				            var event_date = info.event.start;
 				            var month = "";
@@ -516,13 +531,13 @@ function getServerList(){
 				data: jsonArr,
 				rowNum: 10,
 				rowList:[10,20,30],
-				multiselectWidth: 100,
-				height:500,
-				width:800,
+				multiselectWidth: 30,
+				height: 'auto',
+				autowidth:true, 
 				colModel: [	
-						{name: 'name', label : lang_svname, align:'left'},
-				        {name: 'ip', label : 'IP', align:'left'},
-				        {name: 'os', label : 'OS', align:'left'},
+						{name: 'name', label : lang_svname, align:'left', width:'50%'},
+				        {name: 'ip', label : 'IP', align:'left', width:'40%'},
+				        {name: 'os', label : 'OS', align:'left', width:'30%'},
 				        {name: 'server_no', hidden: true}
 						],
 			    pager: '#pager',
@@ -1073,12 +1088,22 @@ function delSchedule(){
 					</div>
 					
 					<div class="selectUser">
-                  	<strong class="text">권한</strong>
+                  	<strong class="text">담당자</strong>
                   	<select id="selectUser" name="" class="selectUserBox" >
                         <option value="">관리자</option>
                         <option value="">사용자</option>                    
                      </select>
+                     
+                     <div class="selectUser2">
+                  	<strong class="text">담당자 변경</strong>
+                  	<select id="selectUser2" name="" class="selectUserBox" >
+                        <option value="">관리자</option>
+                        <option value="">사용자</option>                    
+                     </select>
                		</div>
+               		</div>
+               		
+               		
 					
 					<div class="dateBox">
 						<strong class="text"><spring:message code="schedule.period"/></strong>
@@ -1181,14 +1206,16 @@ function delSchedule(){
 		<div id="serverModalBox">
 		<div class="top">
 			<h3 class="title">서버리스트</h3>
-			<i class="bi bi-x" onclick="delBtn()"></i>
+			<i class="bi bi-x" onclick="delBtn2()"></i>
 		</div>
-			<table id="list"></table>
+			<div id="jqgridBox">
+         	<table id="list" style="width:100%"></table>
 			<div class="btnBox2">
 				<input type="button" value="<spring:message code='schedule.add'/>" class="btnBoxbtn2" autocomplete='off'>
 				<input type="button" value="<spring:message code='schedule.closebtn'/>" class="btnBoxbtn3" autocomplete='off'>
 			</div>
 			<div id="pager"></div> 
+			</div>
 		</div>
 		</div>
 	
