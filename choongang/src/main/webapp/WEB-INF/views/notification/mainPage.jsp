@@ -172,11 +172,15 @@ function updateModal() {
 	            btn.setAttribute("onclick","updateNotification()");
   	  		
 	        var btn2 = document.getElementById('deleteBtn3');
-            btn2.setAttribute("style","display:block");			              			            			        
+            btn2.setAttribute("style","display:block");		
+            
+            var afile3 = document.getElementById('afile3-list');
+            afile3.setAttribute("style","display:flex");	
 	        
             // 업로드 된 파일 리스트 만들기
             $.each(data.fileVo, function(index, item){
             	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
+            	$('#afile3-list').append("<img src='../resources/img/delete.png'>");
             });
                         
   	  		modalOn();

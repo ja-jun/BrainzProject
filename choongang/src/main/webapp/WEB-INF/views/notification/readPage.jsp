@@ -30,6 +30,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		success: function(data){
             // 업로드 된 파일 리스트 만들기
             $.each(data.fileVo, function(index, item){
+            	$('#afile3-list').append("<img src='../resources/img/file1.png'>");
             	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
             });
                   
@@ -64,7 +65,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			</div>
 			
 			<c:if test="${!empty file}">
-				<div id="afile3-list"></div>
+				<div id="afile3-list"><h3 class="afile3-text">첨부파일</h3></div>
 			</c:if>
 			
 			<div class="contentBox">
