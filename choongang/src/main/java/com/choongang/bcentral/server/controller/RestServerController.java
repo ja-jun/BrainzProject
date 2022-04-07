@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.server.service.ServerService;
@@ -21,6 +22,12 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping("/server/*")
 public class RestServerController {
+
+	String regExp = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$";
+	String regIp4 = "^(([1-9]?\\d|1\\d{2}|2([0-4]\\d)|25[0-5])\\.){3}([1-9]?\\d|1\\d{2}|2([0-4]\\d)|25[0-5])$";
+	String regIp6 = "^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$";
+
+	//String test = "^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
 	
 	@Autowired
 	private ServerService serverService;
@@ -61,11 +68,8 @@ public class RestServerController {
 	public HashMap<String, Object> insertServer(ServerVo param, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-//		System.out.println(new Gson().toJson(param));
-		
-		String test = "((\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])([.](?!$)|$)){4}";
-		//String test = "^([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.([1-9]?[0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
-		
+		System.out.println("insertServer : " + new Gson().toJson(param));
+				
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { //인터셉터 존재??? delete,update...ajax에서 사용...ㅜㅜ
 			data.put("result", "1"); 
@@ -73,14 +77,14 @@ public class RestServerController {
 		} else if(param.getName() == null) {
 			data.put("result", "2");
 			return data;
-		} else if(!Pattern.matches(test, param.getIp()) ) {
+		} else if(!Pattern.matches(regIp4, param.getIp()) && !Pattern.matches(regIp6, param.getIp()) ) {
 			System.out.println("ip 패턴이 안맞음....");
 			data.put("result", "3");
 			return data;
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
 			data.put("result", "4");
 			return data;
-		} else if(serverService.isExistMacwithServerNo(param.getMac(),param.getServer_no())) {
+		} else if(serverService.isExistMac(param.getMac())) {
 			data.put("result", "5"); 
 			return data;
 		}
@@ -119,6 +123,8 @@ public class RestServerController {
 	public HashMap<String, Object> updateServer(ServerVo param, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
+		System.out.println("updateServer : " + new Gson().toJson(param));
+		
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { 
 			data.put("result", "1");  //로그인되지 않았을때
@@ -126,14 +132,14 @@ public class RestServerController {
 		} else if(param.getName() == null) {
 			data.put("result", "2"); //서버명이 없을때
 			return data;
-		} else if(!Pattern.matches("((\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])([.](?!$)|$)){4}", param.getIp()) ) {
+		} else if(!Pattern.matches(regIp4, param.getIp()) && !Pattern.matches(regIp6, param.getIp()) ) {
 			data.put("result", "3"); //ip 형식이 안맞을때
 			return data;
 		} else if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", param.getMac()) ) {
 			data.put("result", "4"); //mac 형식이 안맞을때
 			return data;
 		} else if(serverService.isExistMacwithServerNo(param.getMac(),param.getServer_no())) {
-			data.put("result", "5"); //mac이 중복될때
+			data.put("result", "5"); //나와 다른 서버의 mac이 중복될때
 			return data;
 		}
 	
@@ -145,27 +151,34 @@ public class RestServerController {
 	}
 	
 	@RequestMapping("validationMac")
-	public HashMap<String, Object> validationMac(String mac, String server_no){
+	public HashMap<String, Object> validationMac(String mac){
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		
-		data.put("formMac", serverService.formMac(mac)); //형식에 맞지 않으면 false, 아니면 true
-		
-		int serverNo = Integer.parseInt(server_no);
-		
-		data.put("isExistMac", serverService.isExistMacwithServerNo(mac,serverNo)); //내서버번호와 다른서버에 같은mac이 존재하면 true,아니면 false
-		
+						
+		data.put("isExistMac", serverService.isExistMac(mac)); //내서버번호와 다른서버에 같은mac이 존재하면 true,아니면 false		
 		
 		System.out.println("mac=" + mac);
-		System.out.println("파싱전 서버번호="+ server_no);
-		System.out.println("파싱한서버번호=" + serverNo);
-		System.out.println("mac유효성 (정상:(t,f)) : " +  data.get("formMac") + "," + data.get("isExistMac"));
+		System.out.println("mac유효성 (정상:f) : "+ data.get("isExistMac"));
 
-		//true,false가 되어야 insert되게 해야함
 		return data;
 	}
 	
+	@RequestMapping("validationMacwithServerNo")
+	public HashMap<String, Object> validationMacwithServerNo(String mac,String server_no){
+		HashMap<String, Object> data = new HashMap<String, Object>();
 
-	
+		System.out.println("mac 주소="+ mac);
+		System.out.println("파싱전 서버번호="+ server_no);
+		Integer serverNo = Integer.parseInt(server_no);
+		System.out.println("파싱한 서버번호=" + serverNo);
+
+		data.put("isExistMac", serverService.isExistMacwithServerNo(mac,serverNo)); //내서버번호와 다른서버에 같은mac이 존재하면 true,아니면 false		
+		
+		System.out.println("mac=" + mac);
+		System.out.println("mac중복 (정상:f) : " + data.get("isExistMac"));
+
+		//false가 되어야 insert되게 해야함
+		return data;
+	}
 	
 	
 	

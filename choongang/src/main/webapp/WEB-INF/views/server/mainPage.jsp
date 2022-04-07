@@ -25,8 +25,13 @@
 //mac 중복확인용
 var isConfirmedMac = false; 
 
-//ip 정규식
-var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+//ipv4 ,6 정규식
+var regExpIp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+var regExpIp4 = /^(([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])\.){3}([1-9]?\d|1\d{2}|2([0-4]\d)|25[0-5])$/;
+var regExpIp6 = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+
+//mac 정규식
+var regExpMac = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
 
 function createAndInitGrid(){
     $("#list").jqGrid({
@@ -158,8 +163,53 @@ function search(){
 
 
 function insertServer(){
+ 	if($("#name").val() == ""){
+		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
+		 document.getElementById("nameAlertBox").style.color = "red";
+		 $('#name').focus();
+		return;
+	} else{
+		 document.getElementById("nameAlertBox").innerText = "";
+	}
 	
-	validationTest();
+	if(!regExpIp4.test($('#ip').val()) && !regExpIp6.test($('#ip').val())){
+		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
+		 document.getElementById("ipAlertBox").style.color = "red";
+		$('#ip').focus();
+		return;
+	} else{
+		 document.getElementById("ipAlertBox").innerText = "";
+	}
+
+	var macValue = document.getElementById("mac").value;
+	var validatedMac = false;
+	
+	if(!regExpMac.test($('#mac').val())){
+		document.getElementById("macAlertBox").innerText = "유효하지 않은 MAC 입니다.";
+		document.getElementById("macAlertBox").style.color = "red";
+		$('#mac').focus();
+		return;
+	} else{
+		 $.ajax({
+		     url: "./validationMac",
+		     type: "post",
+		     async: false, //비동기식 변환
+		     data: {mac : macValue}
+		 }).done(function(data){
+				if(data.isExistMac == true){
+					document.getElementById("macAlertBox").innerText = "이미 존재하는 MAC 입니다.";
+					document.getElementById("macAlertBox").style.color = "red";
+				} else{
+					macAlertBox.innerText = "";
+					validatedMac = true;
+				}
+		 });	 
+	}
+	
+	if(!validatedMac){
+		return;
+	}
+
 	console.log("인서트 시작");
 	
 	var formData = new FormData(document.getElementById('regServerInfo'));
@@ -204,23 +254,27 @@ function deleteServer(){
 			     contentType:'application/json',
 			     data: JSON.stringify(serverNos)
 			 }).done(function(){
-					$("#list").trigger('reloadGrid').bind("jqGridAfterLoadComplete" , function(){
-						//alert("삭제되었습니다.");	
+					$("#list").trigger('reloadGrid');
+/* 					.bind("jqGridAfterLoadComplete" , function(){
 						var toastLiveExample = document.getElementById('liveToast');
 						var toast = new bootstrap.Toast(toastLiveExample);
 						toast.show();
-						
-					});
-											
-			 });
+ */			});
+				alert("삭제되었습니다.");			
 			}else{
-				   alert("취소합니다.");
-					$("#list").trigger('reloadGrid');
+				$("#list").trigger('reloadGrid');
+				alert("취소합니다.");
 			}
  }
  
 //수정 서버 넘기기
-function updateServer(){			
+function updateServer(){		
+	var mac = document.getElementById("mac").value;
+	var server_no = document.getElementById("server_no").value;
+	
+	console.log(server_no);
+	console.log(mac);
+	
  	if($("#name").val() == ""){
 		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
 		 document.getElementById("nameAlertBox").style.color = "red";
@@ -230,7 +284,7 @@ function updateServer(){
 		 document.getElementById("nameAlertBox").innerText = "";
 	}
 
-	if(!regExp.test($("#ip").val())){
+	if(!regExpIp4.test($('#ip').val()) && !regExpIp6.test($('#ip').val())){
 		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
 		 document.getElementById("ipAlertBox").style.color = "red";
 		$('#ip').focus();
@@ -239,37 +293,36 @@ function updateServer(){
 		 document.getElementById("ipAlertBox").innerText = "";
 	}
 	
-	var mac = document.getElementById("mac");
-	var macValue = mac.value;
+	
+	var validatedMac = false;
+	
+	if(!regExpMac.test($('#mac').val())){
+		document.getElementById("macAlertBox").innerText = "유효하지 않은 MAC 입니다.";
+		document.getElementById("macAlertBox").style.color = "red";
+		$('#mac').focus();
+		return;
+	} else{
+		 $.ajax({
+		     url: "./validationMacwithServerNo",
+		     type: "post",
+		     data: {"server_no" : server_no, "mac" : mac},
+		     async: false, 
+		 }).done(function(data){
+				if(data.isExistMac == true){
+					document.getElementById("macAlertBox").innerText = "이미 존재하는 MAC 입니다.";
+					document.getElementById("macAlertBox").style.color = "red";
+				} else{
+					macAlertBox.innerText = "";
+					validatedMac = true;
+				}
+		 });	 
+	}
 
-	var server_no = $('#server_no').val();	
-	 $.ajax({
-	     url: "./validationMac",
-	     type: "post",
-	     processData: false,
-	     contentType: false,
-	     data: {server_no : server_no, mac : macValue}
-	 }).done(function(data){
-			var macAlertBox = document.getElementById("macAlertBox");
-			if(data.formMac == false){
-				isConfirmedMac = false; 
-				macAlertBox.innerText = "유효하지 않은 MAC 입니다.";
-				macAlertBox.setAttribute("style","color:red");
-				return;
-			} else if(data.isExistMac == true){
-				isConfirmedMac = false; 
-				macAlertBox.innerText = "이미 존재하는 MAC 입니다.";
-				macAlertBox.setAttribute("style","color:red");
-				return;
-			} else{
-				isConfirmedMac = true; 
-				macAlertBox.innerText = "";
-			}
-	 });	 
-
-	 console.log("eeeeeeee");
-
-
+	if(!validatedMac){
+		return;
+	}
+	
+	
 	var formData = new FormData(document.getElementById('regServerInfo'));
 	 $.ajax({
 	    url: "./updateServer",
@@ -291,7 +344,7 @@ function updateServer(){
 
 
 
-/* //MAC 중복확인 - server_no가 수정전 server_no랑 같으면 mac이 같아도 되게 만들어야함.....
+/* //MAC 중복확인 함수
 function confirmMac(){
 	
 	var mac = document.getElementById("mac");
@@ -325,71 +378,7 @@ function confirmMac(){
 } */
  
 	
-function validationTest(){
- 	if($("#name").val() == ""){
-		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
-		 document.getElementById("nameAlertBox").style.color = "red";
-		 $('#name').focus();
-		return;
-	} else{
-		 document.getElementById("nameAlertBox").innerText = "";
-	}
 
-	var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-	
-	if(!regExp.test($("#ip").val())){
-		 document.getElementById("ipAlertBox").innerText = "IPv4 또는 IPv6 형식으로 입력해주세요.";
-		 document.getElementById("ipAlertBox").style.color = "red";
-		$('#ip').focus();
-		return;
-	} else{
-		 document.getElementById("ipAlertBox").innerText = "";
-	}
-
-	var mac = document.getElementById("mac");
-    var macValue = mac.value;
-	
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){ 
-			var data = JSON.parse(xhr.responseText); 
-		
-			var macAlertBox = document.getElementById("macAlertBox");
-			if(data.formMac == false){
-				isConfirmedMac = false; 
-				macAlertBox.innerText = "유효하지 않은 MAC 입니다.";
-				macAlertBox.setAttribute("style","color:red");
-			} else if(data.isExistMac == true){
-				isConfirmedMac = false; 
-				macAlertBox.innerText = "이미 존재하는 MAC 입니다.";
-				macAlertBox.setAttribute("style","color:red");
-			} else{
-				isConfirmedMac = true; 
-				macAlertBox.innerText = "";
-			}
-		}
-	};
-	
-	xhr.open("post" , "./validationMac", true);  
-    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded"); //Post
-	xhr.send("mac=" + macValue); 
-	
-	
-	if(isConfirmedMac == false){
-		$('#mac').focus();
-		return;
-	}
-
-
-}
- 
- 
- 
- 
- 
-
- 
  //서버에서 유효성 검사 결과를 alert로 보여주기
  function validationError(result){
 	 switch(result){
@@ -415,8 +404,6 @@ function validationTest(){
  
  
  
- 
-
 //모달창 함수	
 function modalOn() {
     modal.style.display = "flex";
@@ -427,15 +414,15 @@ function isModalOn() {
 }
 function modalOff() {
     modal.style.display = "none";
-	document.getElementById("regServerInfo").reset();  //입력했던 값 지우기
-	document.getElementById("macAlertBox").innerText=""; 	//MAC 중복 메세지 지우기
-	document.getElementById("ipAlertBox").innerText=""; 	
-	document.getElementById("nameAlertBox").innerText=""; 	
-    var title = document.querySelector('.title');
-    title.innerText="서버 등록";
+	document.getElementById("regServerInfo").reset(); 			 //입력했던 값 지우기
+	document.getElementById("macAlertBox").innerText=""; 	//MAC 유효성 메세지 지우기
+	document.getElementById("ipAlertBox").innerText=""; 		//IP 유효성 메세지 지우기
+	document.getElementById("nameAlertBox").innerText=""; 	//서버명 메세지 지우기
+    var title = document.querySelector('.title');						
+    title.innerText="서버 등록"; 											//모달창 타이틀 '서버 등록'으로 변경
 
 	var btn = document.getElementById('inputBtn');
-    btn.setAttribute("value","등록");
+    btn.setAttribute("value","등록");									//모달창 버튼명 '등록'으로 변경
     btn.setAttribute("onclick","insertServer()");	
 }
 
@@ -453,6 +440,8 @@ window.addEventListener("DOMContentLoaded", function(){
 	createAndInitGrid();
 	
 	const modal = document.getElementById("modal");
+	
+	$("#searchWord").keyup(function(e){if(e.keyCode == 13)  search(); });
 	
 	$("#serverPage").addClass("on");
 });

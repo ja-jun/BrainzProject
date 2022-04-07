@@ -16,7 +16,7 @@ public interface ServerSQLMapper {
 	public void deleteServer(int server_no);
 	public void updateServer(ServerVo vo);
 	public int getCountByMac(String mac);
-	public int isExistMacwithServerNo(@Param("mac") String mac,@Param("server_no") int server_no);
+	public int getCountByMacWithServerNo(@Param("mac") String mac,@Param("server_no") int server_no);
 	public ArrayList<ServerVo> getServerListForExcel(PageVo vo);
 
 

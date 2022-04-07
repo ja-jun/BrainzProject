@@ -68,11 +68,6 @@
 		WHERE server_no=#{server_no}
 	</delete>
 
-	<select id="getCountByMac" resultType="int">
-		SELECT count(bps.*) from BP_SERVER bps
-		WHERE mac = #{mac}
-	</select>
-
 	<select id="getServerListForExcel" resultType="com.choongang.bcentral.server.vo.ServerVo">
 		SELECT bps.* FROM BP_server bps
 		<if test="searchWord != null">
@@ -112,8 +107,12 @@
 		WHERE sc_no = #{sc_no} 
  	</select>
 
+	<select id="getCountByMac" resultType="int">
+		SELECT count(bps.*) from BP_SERVER bps
+		WHERE mac = #{mac}
+	</select>
 
-	<select id="isExistMacwithServerNo" resultType="int">
+	<select id="getCountByMacWithServerNo" resultType="int">
 		select count(bps.*)
 		from bp_server bps
 		where mac=#{mac}

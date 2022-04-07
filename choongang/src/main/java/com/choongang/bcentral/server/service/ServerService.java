@@ -56,7 +56,7 @@ public class ServerService {
 	
 	public boolean isExistMac(String mac) {
 		int count = svSQLMapper.getCountByMac(mac);
-		
+		System.out.println("mac검사중************************************************************");
 		if(count > 0) {
 			return true; //같은 mac이 존재하면 true
 		} else {
@@ -65,22 +65,22 @@ public class ServerService {
 	}
 	
 	public boolean isExistMacwithServerNo(String mac, int server_no) {
-		int count = svSQLMapper.isExistMacwithServerNo(mac,server_no);
+		int count = svSQLMapper.getCountByMacWithServerNo(mac,server_no);
 		
 		if(count > 0) {
-			return true; //내번화와 다른 서버에 같은 mac이 존재하면 true
+			return true; //내서버번호와 다른 서버에 같은 mac이 존재하면 true
 		} else {
 			return false; //아니면 false
 		}
 	}
 	
-	public boolean formMac(String mac) {
-		if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", mac) ) {
-			return false; //형식에 맞지 않으면 false
-		} else {
-			return true; //아니면 true
-		}
-	}
+//	public boolean formMac(String mac) {
+//		if(!Pattern.matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", mac) ) {
+//			return false; //형식에 맞지 않으면 false
+//		} else {
+//			return true; //아니면 true
+//		}
+//	}
 	
 	public int todaySchedule(ScheduleVo sVo){
 	      /*   result = 0 : 작업 전
