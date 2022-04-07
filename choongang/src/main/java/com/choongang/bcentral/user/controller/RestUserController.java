@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.user.service.AESUtil;
 import com.choongang.bcentral.user.service.UserService;
+import com.choongang.bcentral.user.vo.UserPageVo;
 import com.choongang.bcentral.user.vo.UserVo;
 
 // [사용자관리] 비동기적 Controller
@@ -26,9 +27,12 @@ public class RestUserController {
 	AESUtil aes;
 
 	@RequestMapping("getUserList")
-	public HashMap<String, Object> getUserList(PageVo param) {
+	public HashMap<String, Object> getUserList(UserPageVo param, HttpSession session) {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		param.setUser_no(userVo.getUser_no());
+		
 		if(param.getSearchWord() != null) {
 			String searchWord = param.getSearchWord();
 			searchWord = searchWord.replaceAll("\\\\" , "\\\\\\\\").replaceAll("%" , "\\\\%").replaceAll("_", "\\\\_");
@@ -51,9 +55,11 @@ public class RestUserController {
 	}
 
 	@RequestMapping("registerUser")
-	public HashMap<String, Object> insertUser(UserVo param) throws Exception {
+	public HashMap<String, Object> insertUser(UserVo param, HttpSession session) throws Exception {
 		HashMap<String, Object> data = new HashMap<String, Object>();
-
+		
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		param.setParent(userVo.getUser_no());
 		userService.registerUser(param);
 
 		data.put("result", "success");

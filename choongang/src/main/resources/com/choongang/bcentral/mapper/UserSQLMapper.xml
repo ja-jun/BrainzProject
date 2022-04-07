@@ -20,12 +20,23 @@
 			#{email},
 			#{dsc},
 			now(),
-			null
+			null,
+			#{parent}
 		)
 	</insert>
 	
 	<select id="getUserList" resultType="com.choongang.bcentral.user.vo.UserVo">		
-		select * from bp_user
+		with RECURSIVE req_user AS 
+	        (
+	        SELECT * 
+			FROM bp_user t1 
+			WHERE t1.user_no = #{user_no} <!-- 기준 -->
+	        UNION ALL
+	        SELECT  t2.* 
+			FROM bp_user t2
+	        JOIN req_user ON t2.parent = req_user.user_no
+	        )
+		SELECT * FROM req_user
 			<if test="searchWord !=null">
 				WHERE user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
 			</if> 
@@ -44,7 +55,7 @@
 					</choose>
 				</when>
 				<when test="sidx == '' ">
-					order by user_no desc
+					order by q.user_id asc
 				</when>
 			</choose> 
 		LIMIT #{rows}   
@@ -52,7 +63,17 @@
  	</select>
  	
 	<select id="getUserCount" resultType="int">
- 		select count(*) from bp_user
+ 		with RECURSIVE req_user AS 
+	        (
+	        SELECT * 
+			FROM bp_user t1 
+			WHERE t1.user_no = #{user_no} <!-- 기준 -->
+	        UNION ALL
+	        SELECT  t2.* 
+			FROM bp_user t2
+	        JOIN req_user ON t2.parent = req_user.user_no
+	        )
+		SELECT count(*) FROM req_user
 			<if test="searchWord !=null">
 				where user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
 			</if>

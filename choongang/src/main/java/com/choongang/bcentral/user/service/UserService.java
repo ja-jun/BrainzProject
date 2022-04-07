@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.bcentral.mapper.UserSQLMapper;
 import com.choongang.bcentral.server.vo.PageVo;
+import com.choongang.bcentral.user.vo.UserPageVo;
 import com.choongang.bcentral.user.vo.UserVo;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,12 +43,12 @@ public class UserService {
 	}
 
 	// 사용자관리에 나타날 사용자 목록 출력 및 검색
-	public ArrayList<UserVo> getUserList(PageVo vo) {
+	public ArrayList<UserVo> getUserList(UserPageVo vo) {
 		return userSQLMapper.getUserList(vo);
 	}
 	
 	// 사용자관리에서 검색 했을 때 총 몇건이 출력될 지 값을 리턴
-	public int getUserCount(PageVo vo) {
+	public int getUserCount(UserPageVo vo) {
 		return userSQLMapper.getUserCount(vo);
 	}
 	

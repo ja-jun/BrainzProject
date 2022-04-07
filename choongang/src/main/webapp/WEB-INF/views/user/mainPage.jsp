@@ -28,11 +28,11 @@
 function createAndInitGrid(){
     $("#list").jqGrid({
     	colModel: [   
-   			{name: 'user_id', label : '아이디', align:'left'},
-            {name: 'name', label:'이름', align:'left'},
-            {name: 'authority', label : '권한', align:'center'},
-            {name: 'dsc', label : '설명', align:'left'},
-            {name: 'last_login', label : '최종 로그인 시간', align:'center', formatter:dateFormatter},
+   			{name: 'user_id', label : '아이디', align:'left', width:'30%'},
+            {name: 'name', label:'이름', align:'left', width:'30%'},
+            {name: 'authority', label : '권한', align:'center', width:'30%'},
+            {name: 'dsc', label : '설명', align:'left', width:'50%'},
+            {name: 'last_login', label : '최종 로그인 시간', align:'center', formatter:dateFormatter, width:'40%'},
             {name: 'user_no', label : '사용자번호', hidden:true}
             ],
         pager: '#pager',
@@ -40,6 +40,7 @@ function createAndInitGrid(){
         rowList: [10,30,50],
         viewrecords: true,
         multiselect: true,
+        multiselectWidth: 100,
         //등록시 인코드
 		autoencode : 'true',
         //Data 연동 부분
@@ -107,10 +108,8 @@ function createAndInitGrid(){
 			});	     
                      	
         }
-
  });	
 };
-
 var dateFormatter = function(cellvalue, options, rowObject) {
 	var new_format_value='';
 		 
@@ -128,7 +127,6 @@ var dateFormatter = function(cellvalue, options, rowObject) {
 	
 	return new_format_value;
 }
-
 // 수정 유효성 체크
 function updCheck(target){
 	var result = 1;
@@ -169,7 +167,6 @@ function updCheck(target){
 	
 	return result;
 }
-
 // 수정 서버 넘기기
 function updateUser(){	
 	var formData = new FormData(document.getElementById('regUserInfo'));
@@ -190,11 +187,9 @@ function updateUser(){
 		});	
 	}
 }
-
 //검색시 서버 가져와서 집어넣기
 function search(){
 	var searchWord = document.getElementById("searchWord").value;	
-
 	$("#list").jqGrid("clearGridData", true);		
 	$("#list")
 	.setGridParam({
@@ -204,9 +199,7 @@ function search(){
 		dataType : "json",
 	})
 	.trigger("reloadGrid");			
-
 }
-
 // 사용자 등록 유효성 체크
 function regCheck(target){
 	
@@ -263,7 +256,6 @@ function regCheck(target){
         $('#checkEmail_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
-
 		var checkEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 		
         if (!checkEmail.test(target.getAll('email'))) {
@@ -275,7 +267,6 @@ function regCheck(target){
 	
 	return result;
 }
-
 //사용자 등록
 function registerUser(){
 	var formData = new FormData(document.getElementById('regUserInfo'));
@@ -301,7 +292,6 @@ function registerUser(){
 		
 	}
 }
-
 //id 중복확인
 function id_check() {
 	$('.input_id').change(function () {
@@ -335,7 +325,6 @@ function id_check() {
 		}
 	});
 }
-
  //그리드에 값 집어넣기          
 function renderGridByDatas(datas){
 	var jsonArr = [];
@@ -361,7 +350,6 @@ function renderGridByDatas(datas){
 	$('#list').jqGrid('clearGridData');
 	$('#list').jqGrid('setGridParam', {data: jsonArr}).trigger('reloadGrid');
 };
-
 //비밀번호 확인 메세지
 $(function(){
 	$('#user_id').keyup(function(){
@@ -387,7 +375,6 @@ $(function(){
 	$('#email').keyup(function(){
       $('#checkEmail_Msg ').html('');
     });
-
     $('#user_pw2').keyup(function(){
         if($('#user_pw').val() != $('#user_pw2').val()){
           $('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
@@ -408,12 +395,10 @@ $(function(){
         }
     });
 });
-
 //삭제
 function deleteUser(){ 
 	var userNos = [];
 	var rowids = $("#list").getGridParam("selarrrow");
-
 	for (let i = 0; i < rowids.length; i++) {
         const rowid = rowids[i];
         var rowData = $("#list").getRowData(rowid);
@@ -421,7 +406,6 @@ function deleteUser(){
     }		
 	
 	$("#list").jqGrid("clearGridData", true);		
-
 	if(confirm("정말 삭제하시겠습니까?") == true ){
     	var text = "";
  		$.ajax({
@@ -437,16 +421,13 @@ function deleteUser(){
 		alert("취소합니다.");
 	}
 }
-
 //모달창 함수	
 function modalOn() {
     modal.style.display = "flex";
 }
-
 function isModalOn() {
     return modal.style.display === "flex";
 }
-
 function modalOff() {
     modal.style.display = "none";
 	document.getElementById("regUserInfo").reset();  //입력했던 값 지우기
@@ -471,12 +452,10 @@ function modalOff() {
     var title = document.querySelector('.title');
     title.innerText="사용자 등록";
 }
-
 //모달창 열렸을 때 ESC누르면 닫힘
 window.addEventListener("keyup", e => {
     if(isModalOn() && e.key === "Escape") { modalOff(); }
 })
-
 window.addEventListener("DOMContentLoaded", function(){
 	createAndInitGrid();
 	const modal = document.getElementById("modal");	
@@ -538,6 +517,7 @@ window.addEventListener("DOMContentLoaded", function(){
 				<h3 class="title">사용자 등록</h3>
 				<i class="bi bi-x" onclick="modalOff()"></i>
 			</div>
+			<div class="bottom">
 			<div class="userInput">
 				<strong class="text">아이디<span class="star">*</span></strong>
 				<input type="text" id="user_id" name="user_id" class="input_id" check_result="fail" required />
@@ -582,9 +562,10 @@ window.addEventListener("DOMContentLoaded", function(){
 				<strong class="text">설명</strong>
 				<input type="text" id="dsc" name="dsc" class="textBox">
 			</div>
-			<div class="btnBox">
-				<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="registerUser()" >
-				<input type="button" value="닫기" class="writeBtn2" onclick="modalOff()" >
+			<ul class="btnList">
+				<li class="btnLi"><input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="registerUser()" ></li>
+				<li class="btnLi"><input type="button" value="닫기" class="writeBtn2" onclick="modalOff()" ></li>
+			</ul>
 			</div>
 			</form>
 

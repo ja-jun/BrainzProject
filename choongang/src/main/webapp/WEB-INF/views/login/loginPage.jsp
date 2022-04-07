@@ -24,13 +24,15 @@
 
 	<!-- 메인 -->
 	<section>
-		<form action="login_check" method="post">
+		<form action="login_check" method="post" >
 			  <div class="input-group">
-			      <input type="text" name="user_id" id="user_id" autocomplete="off" required />
+			      <input type="text" name="user_id" id="user_id" autocomplete="new-password"  required />
 			      <label for="user_id"><i class="fa-solid fa-user"></i> Username</label>
+			      <input style="display:none" aria-hidden="true"> 
+			      <input type="password" style="display:none" aria-hidden="true">
 		      </div>
 		      <div class="input-group">
-			      <input type="password" name="user_pw" id="user_pw" autocomplete="off" required />
+			      <input type="password" name="user_pw" id="user_pw" autocomplete="new-password"  required />
 			      <label for="user_pw"><i class="fa-solid fa-lock"></i> Password</label>
 		      </div>
 		      <div class="btn-area"><button id="btn" type="submit">로그인</button></div>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.choongang.bcentral.server.vo.PageVo;
+import com.choongang.bcentral.user.vo.UserPageVo;
 import com.choongang.bcentral.user.vo.UserVo;
 
 
@@ -19,8 +20,8 @@ public interface UserSQLMapper {
 	public void registerUser(UserVo vo);
 	
 	// 사용자 검색 getUserCount >> 검색 했을 때 총 몇건의 row가 있는지 확인
-	public ArrayList<UserVo> getUserList(PageVo vo);
-	public int getUserCount(PageVo vo);
+	public ArrayList<UserVo> getUserList(UserPageVo vo);
+	public int getUserCount(UserPageVo vo);
 	
 	// 사용자 정보 가져오기
 	public UserVo getUser(int user_no);
