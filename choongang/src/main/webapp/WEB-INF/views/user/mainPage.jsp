@@ -83,7 +83,8 @@ function createAndInitGrid(){
 		            
 		            $('#user_id').val(user.user_id);
 		            $('#user_id').attr("disabled", "disabled");
-		            $('#id_check_button').attr("disabled", "disabled");
+   					$('.id_check_button').hide();
+		            $('#check_sucess_icon').hide();
 		            $('#user_pw').val();
 		            $('#user_pw').attr("placeholder", "비밀번호 미입력시 기존 비밀번호로 등록됩니다.");
 		            $('#user_pw2').val();
@@ -415,8 +416,7 @@ function deleteUser(){
 			data: JSON.stringify(userNos)
 	 	}).done(function(){
 			$("#list").trigger('reloadGrid');
-			alert("삭제되었습니다.");
-		});
+		}); alert("삭제되었습니다.");
 	}else{
 		alert("취소합니다.");
 	}

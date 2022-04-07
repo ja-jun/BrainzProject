@@ -55,7 +55,7 @@
 					</choose>
 				</when>
 				<when test="sidx == '' ">
-					order by q.user_id asc
+					order by req_user.user_id asc
 				</when>
 			</choose> 
 		LIMIT #{rows}   

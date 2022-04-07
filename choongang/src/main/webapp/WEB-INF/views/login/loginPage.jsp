@@ -13,26 +13,29 @@
 <body>
 
 	<!-- 동영상 배경화면 -->
-	<video autoplay muted loop>
-   		<source src="../resources/video/bg2.mp4#t=4,36" type="video/mp4"/>  <!-- bg1, bg2, bg3 중에 선택 -->
+	<video autoplay muted>
+   		<source src="../resources/video/bg.mp4" type="video/mp4"/>  <!-- bg1, bg2, bg3 중에 선택 -->
 	</video>
 
 	<!-- 상단 -->
 	<header>
-		
+		<div class="content stagger-wrapper">
+	        <p class="stagger-item">We’ve got you covered</p>
+			<h1 class="stagger-item">Bcentral EMS</h1>
+		</div>
 	</header>
 
 	<!-- 메인 -->
 	<section>
-		<form action="login_check" method="post" >
+		<form action="login_check" method="post">
 			  <div class="input-group">
-			      <input type="text" name="user_id" id="user_id" autocomplete="new-password"  required />
+			      <input type="text" name="user_id" id="user_id" autocomplete="off"  required />
 			      <label for="user_id"><i class="fa-solid fa-user"></i> Username</label>
 			      <input style="display:none" aria-hidden="true"> 
 			      <input type="password" style="display:none" aria-hidden="true">
 		      </div>
 		      <div class="input-group">
-			      <input type="password" name="user_pw" id="user_pw" autocomplete="new-password"  required />
+			      <input type="password" name="user_pw" id="user_pw" autocomplete="off"  required />
 			      <label for="user_pw"><i class="fa-solid fa-lock"></i> Password</label>
 		      </div>
 		      <div class="btn-area"><button id="btn" type="submit">로그인</button></div>
@@ -48,7 +51,7 @@
 	<footer>
 		<p>Copyright &copy 2022 Bcentral, All rights reserved.</p>
 	</footer>
-
+	<!-- 아이디, 비밀번호 미입력시 경고 -->
 	<script>
         let id = $('#user_id');
         let pw = $('#user_pw');
@@ -68,6 +71,11 @@
                 },1500);
             }
         });
+        
+        /* 비밀번호 오류 메세지 삭제 */
+        setTimeout(function(){
+            $('.Message').empty();
+         }, 7000);
     </script>
 </body>
 </html>
