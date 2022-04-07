@@ -30,7 +30,7 @@
   grid-template-rows: 520px 400px;}
 .title{
     
-    font-size: 22px;
+    font-size: 25px;
     font-weight: 600;
     margin-bottom: 50px;
 }
@@ -39,7 +39,7 @@
     background: #fff;
     padding: 40px 40px 70px 40px;
     border-radius: 20px;
-    border: 1px solid #e9e9ee;
+    border: 1px solid #DEDEDE;
     margin-right: 30px;
 }
 .doughnutBox2{
@@ -69,12 +69,12 @@
 .doughnutUl .doughnutList:nth-child(3) .colorBox{background: #f8c631;}
 .doughnutUl .doughnutList .titleBox{
 	color: #777;
-}
+font-size: 18px;}
 
 #scheduleBox{
     padding: 40px 40px 40px 40px;
     background: #fff;
-    border: 1px solid #e9e9ee;
+    border: 1px solid #DEDEDE;
     border-radius: 20px;
     height: 920px;
     margin-left: 30px;
@@ -114,7 +114,7 @@ grid-area: midBottom;/* margin-top: 500px; */}
 #noticeBox{
     padding: 40px 40px 40px 40px;
     background: #fff;
-    border: 1px solid #e9e9ee;
+    border: 1px solid #DEDEDE;
     width: 50%;
     border-radius: 20px;
 }
@@ -129,10 +129,10 @@ grid-area: midBottom;/* margin-top: 500px; */}
 }
 #noticeBox .noticeBox2 .noticeUl .noticeList:last-child{border:none}
 #noticeBox .noticeBox2 .noticeUl .noticeList .titleList{
-    font-size: 16px;
+    font-size: 17px;
     color: #222;
 }
-#noticeBox .noticeBox2 .noticeUl .noticeList .date{font-family: 'Montserrat';color: #888;font-weight: 400;font-size: 15px;}
+#noticeBox .noticeBox2 .noticeUl .noticeList .date{font-family: 'Montserrat';color: #888;font-weight: 400;font-size: 16px;}
 #doughnut{
 	/* height: 500px; */
 
@@ -143,8 +143,8 @@ grid-area: midBottom;/* margin-top: 500px; */}
 }
 .more{
     
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 400;
     color: #999;
     display: inline-flex;
     margin-right: 10px;
@@ -154,7 +154,7 @@ grid-area: midBottom;/* margin-top: 500px; */}
 	background: #fff;
 	padding: 40px 40px 40px 40px;
 	border-radius: 20px;
-	border: 1px solid #e9e9ee;
+	border: 1px solid #DEDEDE;
 	margin-right: 30px;
 }
 #bar .barBox{
@@ -269,3 +269,4 @@ color: #777;
 .titleE:last-child{
 	margin-top:-20px
 }
+#info-standard{font-size: 16px;}

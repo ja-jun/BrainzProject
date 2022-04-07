@@ -15,7 +15,7 @@
 <link href="../resources/css/jquery-ui.css" rel="stylesheet"/>
 <link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
 <!-- jqGrid -->
-<link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
+<link rel="stylesheet" href="../resources/css/serverGrid.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
 <script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
@@ -31,10 +31,10 @@ var regExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4
 function createAndInitGrid(){
     $("#list").jqGrid({
 	        colModel: [   
-	            {name: 'name', label : '서버명', align:'left'},
-	            {name: 'ip', label:'IP', align:'left'},
-	            {name: 'os', label : 'OS분류', align:'center'},
-	            {name: 'status', label : '상태', align:'center', formatter : function(cellvalue){
+	            {name: 'name', label : '서버명', align:'left', width:'40%'},
+	            {name: 'ip', label:'IP', align:'left', width:'40%'},
+	            {name: 'os', label : 'OS분류', align:'center', width:'30%'},
+	            {name: 'status', label : '상태', align:'center', width:'40%', formatter : function(cellvalue){
 		           	 switch(cellvalue){
 		        	 case "0":
 						return "오늘 작업 예정";
@@ -45,11 +45,11 @@ function createAndInitGrid(){
 		        	 case "3":
 						return "오늘 작업 없음";
 	            }}},              
-	            {name: 'loc', label : '위치', align:'left'},
-	            {name: 'mac', label : 'MAC', align:'center'},
-	            {name: 'control_num', label : '관리번호', align:'left'},
-	            {name: 'dsc', label : '설명', align:'left'},     
-	            {name: 'write_date', label : '등록일', align:'center' },
+	            {name: 'loc', label : '위치', align:'left', width:'50%'},
+	            {name: 'mac', label : 'MAC', align:'center', width:'50%'},
+	            {name: 'control_num', label : '관리번호', align:'left', width:'20%'},
+	            {name: 'dsc', label : '설명', align:'left', width:'40%'},     
+	            {name: 'write_date', label : '등록일', align:'center', width:'40%'},
 	            {name: 'server_no',label:'서버 번호', hidden:true}
 	            ],
             pager: '#pager',
@@ -57,6 +57,7 @@ function createAndInitGrid(){
             rowList: [10,30,50],
             viewrecords: true,
             multiselect: true,
+            multiselectWidth: 70,
 			autoencode: true,
             //Data 연동 부분
             url : "./getServerList",
@@ -64,8 +65,8 @@ function createAndInitGrid(){
             postData : {},
             mtype : "POST",
             loadtext : "로딩중...",
+            autowidth:true,
 	        height: 'auto',
-			autowidth:true,
 			beforeSelectRow: function(rowid, e){
 				i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
 				cm = $(this).jqGrid('getGridParam','colModel');
@@ -511,6 +512,7 @@ window.addEventListener("DOMContentLoaded", function(){
                   <h3 class="title">서버 등록</h3>
                   <i class="bi bi-x" onclick="modalOff()"></i>
                </div>
+               <div class="bottom">
                <div class="serverInput">
                   <strong class="text">서버명<span class="star">*</span></strong>
                   <input type="text" id="name" name="name" class="textBox" >
@@ -549,9 +551,10 @@ window.addEventListener("DOMContentLoaded", function(){
                   <strong class="text">설명</strong>
                   <input type="text" id="dsc" name="dsc" class="textBox">
                </div>
-               <div class="btnBox">
-                  <input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertServer()">
-                  <input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >
+               <ul class="btnList">
+					<li class="btnLi"><input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertServer()" ></li>
+					<li class="btnLi"><input type="button" value="닫기" class="writeBtn2" onclick="modalOff()" ></li>
+				</ul>
                </div>
                </form>
 

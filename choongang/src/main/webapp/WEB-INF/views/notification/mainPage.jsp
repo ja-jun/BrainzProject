@@ -18,7 +18,7 @@
 <link href="../resources/css/jquery-ui.min.css" rel="stylesheet"/>
 
 <!-- jqGrid -->
-<link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
+<link rel="stylesheet" href="../resources/css/noticeGrid.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
 <script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
@@ -28,18 +28,19 @@
 function createAndInitGrid(){
     $("#list").jqGrid({
          colModel: [   
-		            {name: 'nc_no', label : '번호', align:'center', width:15},
-		            {name:'nc_title', label:'제목', align:'left', width:200},
-		            {name: 'file_no', label : '파일', align:'center', width:15, formatter: imageFormatter},
-		            {name: 'nc_writeDate', label : '등록일시', align:'center', width:50},              
-		            {name: 'name', label : '등록자', align:'center', width:30},
-		            {name: 'nc_readCount', label : '조회수', align:'center', width:15}
+		            {name: 'nc_no', label : '번호', align:'center', width:'15%'},
+		            {name:'nc_title', label:'제목', align:'left', width:'70%'},
+		            {name: 'file_no', label : '파일', align:'center', width:'10%', formatter: imageFormatter},
+		            {name: 'nc_writeDate', label : '등록일시', align:'center', width:'30%'},              
+		            {name: 'name', label : '등록자', align:'center', width:'30%'},
+		            {name: 'nc_readCount', label : '조회수', align:'center', width:'20%'}
               	   ],
 		              pager: '#pager',
 		              rowNum: 10,
 		              rowList: [10,30,50],
 		              viewrecords: true,
 		              multiselect: true,
+		              multiselectWidth: 70,
 		              //등록시 인코드
 		  			  autoencode : 'true',
 		              //Data 연동 부분
@@ -399,7 +400,7 @@ window.addEventListener("DOMContentLoaded", function(){
 					<div id="result"></div>		
 																
 						
-					<div class="btnBox">					
+					<div class="btnBox2">					
 						<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertNotification()">
 						<input type="button" id="deleteBtn3" value="삭제" class="writeBtn2" onclick="deleteModal()" style="display:none">						
 						<input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >					

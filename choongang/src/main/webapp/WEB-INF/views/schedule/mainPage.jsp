@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="../resources/css/tui-time-picker.css" />
 <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
 <!-- jqGrid -->
-<link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
+<link rel="stylesheet" href="../resources/css/calendarGrid.css" />
 <script src="../resources/js/grid.locale-kr.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
 <link rel="stylesheet" href="../resources/css/jquery.datetimepicker.css" />
@@ -516,12 +516,13 @@ function getServerList(){
 				data: jsonArr,
 				rowNum: 10,
 				rowList:[10,20,30],
+				multiselectWidth: 100,
 				height:500,
-				width:1000,
+				width:800,
 				colModel: [	
 						{name: 'name', label : lang_svname, align:'left'},
 				        {name: 'ip', label : 'IP', align:'left'},
-				        {name: 'os', label : 'OS', align:'center'},
+				        {name: 'os', label : 'OS', align:'left'},
 				        {name: 'server_no', hidden: true}
 						],
 			    pager: '#pager',
@@ -1059,6 +1060,7 @@ function delSchedule(){
 						<i class="bi bi-x" onclick="delBtn()"></i>
 					</div>
 					
+					<div class="bottom">
 					<div class="titleBox">
 						<strong class="text">
 							<spring:message code="schedule.title"/>
@@ -1069,6 +1071,14 @@ function delSchedule(){
 						<div id="confirmAlertBox" class="confirmAlertBox"></div>
 					</div>
 					</div>
+					
+					<div class="selectUser">
+                  	<strong class="text">권한</strong>
+                  	<select id="selectUser" name="" class="selectUserBox" >
+                        <option value="">관리자</option>
+                        <option value="">사용자</option>                    
+                     </select>
+               		</div>
 					
 					<div class="dateBox">
 						<strong class="text"><spring:message code="schedule.period"/></strong>
@@ -1159,6 +1169,7 @@ function delSchedule(){
 						<input type="button" value="<spring:message code='schedule.closebtn'/>" class="btnBoxbtn" id="btnBoxbtn2" onclick="delBtn()" autocomplete='off'>
 					</div>
 					<div id="deleteRadio"></div>
+					</div>
 					</form>
 					<!-- Form 태그 종료 -->
 				</div>
@@ -1168,7 +1179,10 @@ function delSchedule(){
 		<!-- server 등록 modal 창 -->
 		<div id="serverModal">
 		<div id="serverModalBox">
-		<div class="box">SERVER LIST</div>
+		<div class="top">
+			<h3 class="title">서버리스트</h3>
+			<i class="bi bi-x" onclick="delBtn()"></i>
+		</div>
 			<table id="list"></table>
 			<div class="btnBox2">
 				<input type="button" value="<spring:message code='schedule.add'/>" class="btnBoxbtn2" autocomplete='off'>

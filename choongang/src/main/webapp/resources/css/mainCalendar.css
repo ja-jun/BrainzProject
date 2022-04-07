@@ -1387,7 +1387,7 @@ A VERTICAL event
     padding: 8px 14px;
     height: 60px;
     /* margin-top: ; */
-  }
+  line-height: 1.5;}
 .fc {
 
 
@@ -1508,7 +1508,9 @@ A VERTICAL event
 
 
 
-
+.fc-list-day-text{
+  font-size:17px
+}
 
 .popper,
   .tooltip {
@@ -1612,5 +1614,5 @@ A VERTICAL event
   .fc-list-day-side-text{
     color: #999;
     font-weight: 400;
-    font-family: 'Montserrat';
-    }
+    
+    font-size: 17px;}
