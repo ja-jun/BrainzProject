@@ -1,5 +1,6 @@
 package com.choongang.bcentral.noti.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,4 +84,37 @@ public class NotificationService {
 		return notiSQLMapper.NEXTBNO(nc_no);
 	}
 	
+	public void deleteRealFile(FileVo fileVo) {
+		File file = new File(fileVo.getUploadedFileName());
+		
+		if(file.exists()) {
+			file.delete();
+		}
+	}
+	
+	public void deleteFile(int nc_no) {
+		ArrayList<FileVo> fileList = notiSQLMapper.getFileList(nc_no);
+		
+		if(!fileList.isEmpty()) {
+			for(FileVo fVo : fileList) {
+				deleteRealFile(fVo);
+				
+				notiSQLMapper.deleteFile(fVo.getFile_no());
+			}
+		}
+	}
+	
+	public void updateFile(int nc_no, FileVo fileVo) {
+		ArrayList<FileVo> fileList = notiSQLMapper.getFileList(nc_no);
+		
+		if(!fileList.isEmpty()) {
+			for(FileVo preFileVo : fileList) {
+				deleteRealFile(preFileVo);
+				
+				fileVo.setFile_no(preFileVo.getFile_no());
+				
+				notiSQLMapper.updateFile(fileVo);
+			}
+		}
+	}
 }

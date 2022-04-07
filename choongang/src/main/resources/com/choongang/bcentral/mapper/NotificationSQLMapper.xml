@@ -120,4 +120,18 @@
 		FROM bp_file
 		WHERE nc_no = #{nc_no}
 	</select>
+	
+	<delete id="deleteFile">
+		delete from bp_file 
+		where file_no = #{file_no }
+	</delete>
+	
+	<update id="updateFile">
+		update bp_file
+		set filename = #{fileName },
+			uploadedfilename = #{uploadedFileName },
+			filesize = #{fileSize },
+			contenttype = #{contentType }
+		where file_no = #{file_no }
+	</update>
 </mapper>

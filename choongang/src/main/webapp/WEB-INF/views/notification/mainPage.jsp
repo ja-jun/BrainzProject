@@ -174,13 +174,22 @@ function updateModal() {
 	        var btn2 = document.getElementById('deleteBtn3');
             btn2.setAttribute("style","display:block");		
             
-            var afile3 = document.getElementById('afile3-list');
-            afile3.setAttribute("style","display:flex");	
-	        
-            // 업로드 된 파일 리스트 만들기
             $.each(data.fileVo, function(index, item){
-            	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
-            	$('#afile3-list').append("<img src='../resources/img/delete.png'>");
+				$('#fileBox').empty();
+            	
+            	var strong = $('<strong class="text">파일</strong>');
+            	
+            	var div = $('<div class="upload-name"></div>');
+            	var a = $("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
+            	// var img = $("<img src='../resources/img/delete.png'>");
+            	div.append(a);
+            	// div.append(img);
+            	
+            	var button = $('<button class="filename" onclick="createFileBtn()">변경</button>');
+            	
+            	$('#fileBox').append(strong);
+            	$('#fileBox').append(div);
+            	$('#fileBox').append(button);
             });
                         
   	  		modalOn();
@@ -244,12 +253,18 @@ function deleteModal() {
 }
 
 function registerNotification(){
+		var title = document.querySelector('.title');
+		title.innerText="공지사항 등록";
+		
 		var btn = document.getElementById('inputBtn');
         btn.setAttribute("value","등록");
 		btn.setAttribute("onclick","insertNotification()");
 	  		
         var btn2 = document.getElementById('deleteBtn3');
-        btn2.setAttribute("style","display:none");	
+        btn2.setAttribute("style","display:none");
+        
+        $('#fileBox').empty();
+        createFileBtn();
 		
 		modalOn();
 }
@@ -281,7 +296,20 @@ $(document).ready(function(){
 });
 */
 
-
+//파일 창 생성 및 삭제
+function createFileBtn(){
+	$('#fileBox').empty();
+	
+	var strong = $('<strong class="text">파일</strong>');
+	var input = $('<input class="upload-name" value="파일선택">');
+	var label = $('<label for="ex_filename" class="filename">업로드</label>');
+	var input_label = $('<input type="file" name="file" id="ex_filename" onchange="insertSelectedFileName()"/>');
+	
+	$('#fileBox').append(strong);
+	$('#fileBox').append(input);
+	$('#fileBox').append(label);
+	$('#fileBox').append(input_label);
+}
 
 //모달창 함수	
 function modalOn() {
@@ -299,6 +327,10 @@ function modalOff() {
 	$('#afile3-list br').remove();
 }
 
+function insertSelectedFileName(){
+	var fileName = $("#ex_filename").val();
+	$(".upload-name").val(fileName);
+}
 
 //모달창 열렸을 때 ESC누르면 닫힘
 window.addEventListener("keyup", e => {
@@ -391,14 +423,11 @@ window.addEventListener("DOMContentLoaded", function(){
 						<textarea id="nc_content" name="nc_content" class="textBox" style="height: 150px;"></textarea>
 					</div>
 								
-						<div class="noticeInput">
+						<div id="fileBox" class="noticeInput">
 							<strong class="text">파일</strong>
 							<input class="upload-name" value="파일선택">
 							<label for="ex_filename" class="filename">업로드</label>
-							
 							<input type="file" name="file" id="ex_filename"/>
-							<div id="afile3-list"></div> 
-							
 						</div>
 					
 					<div id="result"></div>		

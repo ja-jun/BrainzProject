@@ -34,6 +34,7 @@ import com.choongang.bcentral.noti.vo.FileVo;
 import com.choongang.bcentral.noti.vo.NotificationVo;
 import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.user.vo.UserVo;
+import com.google.gson.Gson;
 
 @RestController
 @RequestMapping("/notification/*")
@@ -115,9 +116,48 @@ public class RestNotificationController {
 	}
 	
 	@RequestMapping("updateNotification")
-	public HashMap<String, Object> updateNotification(NotificationVo param){
+	public HashMap<String, Object> updateNotification(NotificationVo param, HttpSession session , MultipartFile [] file){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		param.setUser_no(userVo.getUser_no());
+		
+		System.out.println(new Gson().toJson(file));
+		
+		if(file.length == 0) {
+			// 내용만 수정하며, 파일은 그대로 두는 경우
+		} else if(file[0].isEmpty()) {
+			// 내용을 수정하며 파일을 비우는 경우
+			notiService.deleteFile(param.getNc_no());
+		} else {
+			for(MultipartFile element : file) {
+					String fileName = element.getOriginalFilename();
+					String ext = fileName.substring(fileName.lastIndexOf('.'));
+					int fileSize = (int)element.getSize();
+					
+					
+					String uploadRootFolderName = "C:/uploadFolder/";
+					String internalfileName = UUID.randomUUID().toString();
+					
+					String internalFilePath = uploadRootFolderName + internalfileName + ext;
+					
+					try {
+						element.transferTo(new File(internalFilePath));
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					
+					FileVo fileVo = new FileVo();
+					
+					fileVo.setFileName(fileName);
+					fileVo.setUploadedFileName(internalFilePath);
+					fileVo.setFileSize(fileSize);
+					fileVo.setContentType(ext);
+					
+					notiService.updateFile(param.getNc_no(), fileVo);
+			}
+		}
+
 		notiService.updateNotification(param);
 		
 		data.put("result", "success");
