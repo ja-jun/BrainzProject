@@ -33,4 +33,8 @@ public interface ServerSQLMapper {
 	//등록된 스케줄의 서버번호리스트 받기
 	public ArrayList<Integer> getServerNosByScNo(int sc_no);
 	
+	//상태별로 서버리스트 받기 ....getServerList를 그냥 써도 될거 같음
+	public ArrayList<ServerVo> getServerListByStatus(PageVo vo);
+	
+
 }

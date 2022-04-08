@@ -259,17 +259,14 @@ function deleteServer(){
 			     data: JSON.stringify(serverNos)
 			 }).done(function(){
 					$("#list").trigger('reloadGrid');
-/* 					.bind("jqGridAfterLoadComplete" , function(){
-						var toastLiveExample = document.getElementById('liveToast');
-						var toast = new bootstrap.Toast(toastLiveExample);
-						toast.show();
- */			});
+						});
 				alert("삭제되었습니다.");			
 			}else{
 				$("#list").trigger('reloadGrid');
 				alert("취소합니다.");
 			}
- }
+}
+
  
 //수정 서버 넘기기
 function updateServer(){		
@@ -404,6 +401,19 @@ function confirmMac(){
 	 }
  }
  
+//select box 선택시 선택상태의 서버만 불러오기
+function Onchange(s){
+	 var status = s[s.selectedIndex].value;
+	 
+	$("#list")
+	.setGridParam({
+		url : "./getServerListByStatus",
+		mtype : "post",
+		postData : {status : status},
+		dataType : "json",
+	})
+	.trigger("reloadGrid");
+}
  
  
  
@@ -474,6 +484,13 @@ window.addEventListener("DOMContentLoaded", function(){
             <button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
             <button class="writeBtn" id="deleteBtn" onclick="deleteServer()">삭제</button>
             <a href="./getExcelServerList" id="exportAnchor"><button class="writeBtn" id="excelBtn">내보내기</button></a>
+            <select id="statusSelect" onchange="Onchange(this)">
+            	<option value="">작업 상태</option>            
+            	<option value="0">오늘 작업 예정</option>
+            	<option value="1">현재 작업 중</option>
+            	<option value="2">오늘 작업 완료</option>
+            	<option value="3">오늘 작업 없음</option>
+            </select>
             </div>
                <div id="search">
                   <div class="searchBox">
@@ -555,20 +572,6 @@ window.addEventListener("DOMContentLoaded", function(){
             </div>
          </div>
       </div>
-
-<script>
-
-</script>
-
-<div class="position-fixed top-0 start-50 p-3" style="z-index: 11">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-body fw-bold fs-1 text-danger">
-      삭제되었습니다.
-    </div>
-  </div>
-</div>
-
-
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

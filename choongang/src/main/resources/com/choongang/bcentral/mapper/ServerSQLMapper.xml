@@ -119,6 +119,30 @@
 		and server_no != #{server_no}	
 	</select> 
 
+	<select id="getServerListByStatus" resultType = "com.choongang.bcentral.server.vo.ServerVo">
+		SELECT bps.* FROM BP_server bps 
+			<choose>
+				<when test="sidx != null and sidx !='' "> ORDER BY	
+	  				<choose>
+					    <when test="sidx eq 'name'"> NAME </when>
+					    <when test="sidx eq 'ip'"> IP </when>
+					    <when test="sidx eq 'os'"> OS </when>
+					    <when test="sidx eq 'control_num'"> CONTROL_NUM </when>
+					    <when test="sidx eq 'write_date' "> WRITE_DATE </when>
+			    		<otherwise>name</otherwise>
+	 				</choose> 
+					<choose>
+					    <when test="sord eq 'desc'"> DESC </when>
+					    <otherwise> ASC </otherwise>
+					</choose>
+				</when>
+				<when test="sidx == '' ">
+					ORDER BY name
+				</when>
+			</choose> 
+		LIMIT #{rows}   
+		OFFSET (#{page} -1) * #{rows}
+	</select>
 
 
 

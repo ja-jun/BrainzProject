@@ -1,14 +1,9 @@
 package com.choongang.bcentral.server.service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalField;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -191,6 +186,31 @@ public class ServerService {
 	}
 	
 
+	public  ArrayList<ServerVo> getServerListByStatus (PageVo pVo ,String status) {
+		ArrayList<ServerVo> serverList = svSQLMapper.getServerListByStatus(pVo);
+		ArrayList<ServerVo> serverListByStatus = new ArrayList<ServerVo>();
+	
+		if(status == "") {
+			serverListByStatus = serverList;
+			for(ServerVo vo : serverList) {
+				int server_no = vo.getServer_no();
+				String s = getServerState(server_no);
+				vo.setStatus(s);		
+			}
+		} else {
+			for(ServerVo vo : serverList) {
+				int server_no = vo.getServer_no();
+				
+				if(getServerState(server_no).equals(status)) {
+					String s = getServerState(server_no);
+					vo.setStatus(s);			
+					serverListByStatus.add(vo);
+				}
+			}
+		}
+		System.out.println("선택한 상태 서버리스트의 사이즈는 " + serverListByStatus.size());
+		return serverListByStatus;
+	}
 
 
 	

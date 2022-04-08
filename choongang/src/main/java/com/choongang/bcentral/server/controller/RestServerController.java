@@ -180,6 +180,23 @@ public class RestServerController {
 		return data;
 	}
 	
+	@RequestMapping("getServerListByStatus")
+	public HashMap<String, Object> getServerListByStatus(PageVo param, String status){
+		HashMap<String, Object> data = new HashMap<String, Object>();		
+		
+		ArrayList<ServerVo> serverListByStatus = serverService.getServerListByStatus(param,status);
+			
+		int rows = param.getRows();
+		int records = serverService.getServerCount(param); //문제.......!!!!
+		int total = (int) Math.ceil((double)records / rows);
+
+		data.put("rows", serverListByStatus); // 데이터
+		data.put("records", records); // 데이터의 전체 개수 (viewrecords 에 사용됨)
+		data.put("page", param.getPage()); // 현재 페이지
+		data.put("total", total); // 총 페이지
+
+		return data;
+	}
 	
 	
 	
