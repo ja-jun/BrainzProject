@@ -157,8 +157,12 @@ function search(){
 	if(qIndex >= 0){
 		exportAnchor.href = exportAnchor.href.substring(0, qIndex) + "?searchWord=" + searchWord;
 	} else {
-		exportAnhcor.href += "?searchWord=" + searchWord;
+		exportAnchor.href += "?searchWord=" + searchWord;
 	}
+}
+
+function makeURL(searchWord){
+	
 }
 
 
