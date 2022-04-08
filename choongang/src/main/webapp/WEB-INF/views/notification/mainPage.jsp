@@ -77,7 +77,6 @@ function imageFormatter(cellValue)
 	
 }
 
-
 //검색시 서버 가져와서 집어넣기
 function search(){
 	var searchWord = document.getElementById("searchWord").value;	
@@ -127,6 +126,7 @@ function updateNotification(){
 	});	
 }
 
+// 수정 모달창
 function updateModal() {
 	
 	var rowIds = $('#list').getGridParam('selarrrow');
@@ -222,6 +222,7 @@ function deleteNotification(){
 		 }
 }
 
+// 삭제 모달
 function deleteModal() {
 		
 	var notificationNos = [];
@@ -247,6 +248,7 @@ function deleteModal() {
 	 	}	
 }
 
+// 등록 모달
 function registerNotification(){
 		var title = document.querySelector('.title');
 		title.innerText="공지사항 등록";
@@ -264,10 +266,6 @@ function registerNotification(){
 		modalOn();
 }
 
-
-
-
-
 //파일 창 생성 및 삭제
 function createFileBtn(){
 	$('#fileBox').empty();
@@ -275,7 +273,8 @@ function createFileBtn(){
 	var strong = $('<strong class="text">파일</strong>');
 	var input = $('<input class="upload-name" value="파일선택">');
 	var label = $('<label for="ex_filename" class="filename">파일선택</label>');
-	var input_label = $('<input type="file" name="file" id="ex_filename" onchange="insertSelectedFileName()"/>');
+	var input_label = 
+		$('<input type="file" name="file" id="ex_filename" onchange="insertSelectedFileName()" accept=".bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt"/>');
 	
 	$('#fileBox').append(strong);
 	$('#fileBox').append(input);
@@ -283,13 +282,16 @@ function createFileBtn(){
 	$('#fileBox').append(input_label);
 }
 
+
 //모달창 함수	
 function modalOn() {
     modal.style.display = "flex";
 }
+
 function isModalOn() {
     return modal.style.display === "flex";
 }
+
 function modalOff() {
     modal.style.display = "none";
 	document.getElementById("regNotificationInfo").reset();  //입력했던 값 지우기
@@ -301,7 +303,15 @@ function modalOff() {
 
 function insertSelectedFileName(){
 	var fileName = $("#ex_filename").val();
-	$(".upload-name").val(fileName);
+		 
+	 var fileExtension = '.bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt';
+	 
+	 if(fileExtension.lastIndexOf(fileName.substring(fileName.lastIndexOf('.'))) != -1){
+		  $(".upload-name").val(fileName);			 
+	 } else {
+		 alert("파일선택을 다시 해주세요");
+		 createFileBtn();
+	 }				
 }
 
 //모달창 열렸을 때 ESC누르면 닫힘
@@ -319,8 +329,19 @@ window.addEventListener("DOMContentLoaded", function(){
 	$("#noticePage").addClass("on");
 	
 	$("#ex_filename").on('change',function(){
-		  var fileName = $("#ex_filename").val();
-		  $(".upload-name").val(fileName);
+		
+		 var fileName = $("#ex_filename").val();
+		
+		 var fileLength = fileName.lastIndexOf('.');
+		 
+		 var fileExtension = '.bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt';
+		 
+		 if(fielExtension.lastIndexOf(fileName.subString(fileName.lastIndexOf('.'))) != -1){
+			  $(".upload-name").val(fileName);			 
+		 } else {
+			 alert("파일선택을 다시 해주세요");
+			 createFileBtn();
+		 }		
 	});
 	
 });
@@ -392,7 +413,7 @@ window.addEventListener("DOMContentLoaded", function(){
 							<strong class="text">파일</strong>
 							<input class="upload-name" value="파일선택">
 							<label for="ex_filename" class="filename">파일선택</label>
-							<input type="file" name="file" id="ex_filename"/>
+							<input type="file" name="file" id="ex_filename" accept=".bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt"/>
 						</div>
 					
 					<div id="result"></div>		
