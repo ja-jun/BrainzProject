@@ -234,10 +234,6 @@ function getCalendarList(){
 				            
 				            $('.textBox').val(sc_info.title);
 				            
-				            const selectUser2 = document.querySelector('.selectUser2');
-				            selectUser2.setAttribute("style","display: block");
-				            $('#selectUser').attr('disabled', 'true');
-				            
 				            var pre_title = document.createElement('input');
 				            pre_title.setAttribute('type', 'hidden');
 				            pre_title.setAttribute('name', 'pre_title');
@@ -416,6 +412,17 @@ function getCalendarList(){
 				            input_date.setAttribute("type","hidden");
 				            input_date.setAttribute("value", cur_date);
 				            $('#regScheduleInfo').append(input_date);
+				            
+				            /* 계층구조 추가를 위한 수정 내용 */
+				            const cur_manager = $('<option value="">' + sc_info.name + '</option>');
+				            $('#selectUser').attr('disabled', 'true');
+				            $('#selectUser').empty();
+				            $('#selectUser').append(cur_manager);
+				            
+				            const selectUser2 = document.querySelector('.selectUser2');
+				            selectUser2.setAttribute("style","display: block");
+				            selectUser($('#selectUser2'));
+				            
 				        },
 				        error: function() {
 				        	alert("잘못된 접근입니다.");
@@ -789,7 +796,8 @@ window.addEventListener("DOMContentLoaded" , function(){
     	$("#datetimepicker4").val("24:00");
   	});
   	
-	/* page load후 바로 실행 되는 함수들 */  	
+	/* page load후 바로 실행 되는 함수들 */
+	selectUser($('#selectUser'));
 	getCalendarList();
 	writeBtn();
 	getServerList();
@@ -1029,6 +1037,26 @@ function delSchedule(){
 		}
 	});
 }
+
+/* 선택 가능한 사용자 불러오기 */
+function selectUser(target){
+	$.ajax({
+    	url: '/choongang/schedule/getUserList',
+    	method: 'POST',
+    	dataType: 'JSON',
+		success: function(json){
+			var userList = json['userList'];
+			
+			for(var user in userList){
+				var option = $('<option value="' + userList[user].user_no + '">' + userList[user].name + '</option>');
+				target.append(option)
+			}
+		},
+		error: function(){
+			alert("로그인이 필요합니다.");
+		}
+	});
+}
 </script>
 
 </head>
@@ -1089,16 +1117,14 @@ function delSchedule(){
 					
 					<div class="selectUser">
                   	<strong class="text">담당자</strong>
-                  	<select id="selectUser" name="" class="selectUserBox" >
-                        <option value="">관리자</option>
-                        <option value="">사용자</option>                    
+                  	<select id="selectUser" name="selectManager" class="selectUserBox" >
+                        <option value="${userInfo.user_no }">본인</option>
                      </select>
                      
-                     <div class="selectUser2">
+                    <div class="selectUser2">
                   	<strong class="text">담당자 변경</strong>
-                  	<select id="selectUser2" name="" class="selectUserBox" >
-                        <option value="">관리자</option>
-                        <option value="">사용자</option>                    
+                  	<select id="selectUser2" name="changeManager" class="selectUserBox" >
+                        <option value="${userInfo.user_no }">본인</option>
                      </select>
                		</div>
                		</div>

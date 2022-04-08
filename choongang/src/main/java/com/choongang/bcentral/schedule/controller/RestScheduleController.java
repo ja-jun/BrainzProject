@@ -6,12 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.schedule.service.CheckValidationService;
 import com.choongang.bcentral.schedule.service.ScheduleService;
 import com.choongang.bcentral.schedule.vo.SetScheduleVo;
+import com.choongang.bcentral.user.service.UserService;
 import com.choongang.bcentral.user.vo.UserVo;
 import com.google.gson.Gson;
 
@@ -26,21 +28,42 @@ public class RestScheduleController {
 	@Autowired
 	private CheckValidationService ckService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@RequestMapping("getList")
 	public HashMap<String, Object> getList(Integer year, Integer month){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		data.put("scheduleList", scheduleService.getScheduleList(year, month));
+		data.put("scheduleList", scheduleService.getScheduleList(year, month)); 
+		
+		return data;
+	}
+	
+	@RequestMapping("getUserList")
+	public HashMap<String, Object> getUserList(HttpSession session){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		
+		data.put("userList", userService.getTotalUserList(userVo.getUser_no()));
 		
 		return data;
 	}
 	
 	@RequestMapping("getScheduleInfo")
-	public HashMap<String, Object> getScheduleInfo(Integer sc_no){
+	public HashMap<String, Object> getScheduleInfo(Integer sc_no, HttpSession session, Authentication auth){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		System.out.println("Authentication에 등록되어 있는 ID : " + auth.getName() + ", 권한 : " + auth.getAuthorities());
+		
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		
+		System.out.println("userInfo에 등록되어 있는 ID : " + userVo.getName());
 		
 		data.put("scheduleInfo", scheduleService.getScheduleInfo(sc_no));
 		data.put("serverList", scheduleService.getServerList(sc_no));
+		data.put("userList", userService.getTotalUserList(userVo.getUser_no()));
 		
 		return data;
 	}
@@ -57,16 +80,21 @@ public class RestScheduleController {
 	@RequestMapping("regSchedule")
 	public HashMap<String, Object> regSchedule(HttpServletRequest param, 
 											   HttpSession session,
-											   SetScheduleVo ssVo, 
+											   SetScheduleVo ssVo,
+											   Integer selectManager,
 											   String start_date, 
 											   String end_date,
 											   String start_time,
 											   String end_time){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		/* 계층 구조를 위해서 scheduleVo에 입력되는 user_no 는 담당자 정보로 변경
+		 * UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		 * 
+		 * ssVo.setUser_no(userVo.getUser_no());
+		 */
 		
-		ssVo.setUser_no(userVo.getUser_no());
+		ssVo.setUser_no(selectManager);
 		
 		System.out.println(new Gson().toJson(ssVo));
 		

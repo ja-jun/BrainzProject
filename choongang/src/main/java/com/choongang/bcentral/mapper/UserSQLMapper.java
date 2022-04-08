@@ -38,4 +38,7 @@ public interface UserSQLMapper {
 	
 	// 마지막 로그인 시간 업데이트
 	public void lastLogin(String user_id);
+	
+	// 해당 사용자가 조회할 수 있는 유저 목록을 가져 옴
+	public ArrayList<UserVo> getTotalUserList(int user_no);
 }

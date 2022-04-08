@@ -32,6 +32,7 @@ public class ScheduleVo {
 	private LocalDateTime write_date;
 	@JsonFormat(pattern = "yyyy-MM-dd kk:mm")
 	private LocalDateTime delete_date;
+	private String name;
 	
 	public ScheduleVo() {
 		super();
@@ -40,7 +41,7 @@ public class ScheduleVo {
 	public ScheduleVo(Integer sc_no, Integer user_no, String title, LocalDate start_date, LocalTime start_time,
 			LocalDate end_date, LocalTime end_time, Integer repeat_cat, Integer repeat_day, Integer repeat_week,
 			String mon, String the, String wed, String thu, String fri, String sat, String sun,
-			LocalDateTime write_date, LocalDateTime delete_date) {
+			LocalDateTime write_date, LocalDateTime delete_date, String name) {
 		super();
 		this.sc_no = sc_no;
 		this.user_no = user_no;
@@ -61,6 +62,7 @@ public class ScheduleVo {
 		this.sun = sun;
 		this.write_date = write_date;
 		this.delete_date = delete_date;
+		this.name = name;
 	}
 	
 	public Integer getSc_no() {
@@ -176,5 +178,13 @@ public class ScheduleVo {
 	}
 	public void setDelete_date(LocalDateTime delete_date) {
 		this.delete_date = delete_date;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 }

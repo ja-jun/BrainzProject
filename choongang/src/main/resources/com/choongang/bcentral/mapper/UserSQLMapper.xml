@@ -25,6 +25,20 @@
 		)
 	</insert>
 	
+	<select id="getTotalUserList" resultType="com.choongang.bcentral.user.vo.UserVo">
+		with RECURSIVE req_user AS 
+	        (
+	        SELECT * 
+			FROM bp_user t1 
+			WHERE t1.user_no = #{user_no }
+	        UNION ALL
+	        SELECT  t2.* 
+			FROM bp_user t2
+	        JOIN req_user ON t2.parent = req_user.user_no
+	        )
+		SELECT * FROM req_user where user_no != #{user_no }
+	</select>
+	
 	<select id="getUserList" resultType="com.choongang.bcentral.user.vo.UserVo">		
 		with RECURSIVE req_user AS 
 	        (

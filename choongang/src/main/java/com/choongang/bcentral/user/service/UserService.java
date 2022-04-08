@@ -101,4 +101,8 @@ public class UserService {
 	public void lastLogin(String user_id) {
 		userSQLMapper.lastLogin(user_id);
 	}
+	
+	public ArrayList<UserVo> getTotalUserList(int user_no){
+		return userSQLMapper.getTotalUserList(user_no);
+	}
 }
