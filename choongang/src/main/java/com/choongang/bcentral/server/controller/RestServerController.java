@@ -2,6 +2,7 @@ package com.choongang.bcentral.server.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.server.service.ServerService;
@@ -35,6 +35,7 @@ public class RestServerController {
 	@RequestMapping("getServerList")
 	public HashMap<String, Object> getServerList(PageVo param){
 		HashMap<String, Object> data = new HashMap<String, Object>();
+		int count = 0;
 		
 		if(param.getSearchWord() != null){
 			String searchWord = param.getSearchWord();
@@ -46,14 +47,14 @@ public class RestServerController {
 		
 		for(ServerVo vo : serverList) {
 			int server_no = vo.getServer_no();
-			
+			count = vo.getCount();
 			String status = serverService.getServerState(server_no);
 			
 			vo.setStatus(status);
 		}
 	
 		int rows = param.getRows();
-		int records = serverService.getServerCount(param);
+		int records = count;
 		int total = (int) Math.ceil((double)records / rows);
 
 		data.put("rows", serverList); // 데이터
@@ -186,17 +187,21 @@ public class RestServerController {
 		
 		ArrayList<ServerVo> serverListByStatus = serverService.getServerListByStatus(param,status);
 		
+		List<ServerVo> list = serverListByStatus.subList(9, 11);
+		
+	
+		
 		if(status == "") {
 			data = getServerList(param);
 		} else {
-//			int rows = param.getRows();
-//			int records =  serverListByStatus.size();
-//			int total = (int) Math.ceil((double)records / rows);
+			int rows = param.getRows();
+			int records =  serverListByStatus.size();
+			int total = (int) Math.ceil((double)records / rows);
 
-			data.put("rows", serverListByStatus); // 데이터
+			data.put("rows", list); // 데이터
 //			data.put("records", records); // 데이터의 전체 개수 (viewrecords 에 사용됨)
 //			data.put("page", param.getPage()); // 현재 페이지
-//			data.put("total", total); // 총 페이지
+			data.put("total", total); // 총 페이지
 		}
 		
 		return data;
