@@ -6,6 +6,7 @@ public class PageVo {
 	private String sidx;     //정렬할 column name
 	private String sord;	 //정렬기준 (asc,desc)
 	private String searchWord; //검색어 
+	private String status; //상태...
 
 	public PageVo() {
 		// TODO Auto-generated constructor stub

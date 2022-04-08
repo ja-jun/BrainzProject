@@ -67,7 +67,7 @@ function createAndInitGrid(){
             //Data 연동 부분
             url : "./getServerList",
             datatype : "JSON", //받을 때 파싱 설정
-            postData : {},
+            postData : {aaa : 111},
             mtype : "POST",
             loadtext : "로딩중...",
             autowidth:true,
@@ -139,13 +139,14 @@ function createAndInitGrid(){
 //검색시 서버 가져와서 집어넣기
 function search(){
 	var searchWord = document.getElementById("searchWord").value;	
+//	var searchWord = document.getElementById("searchWord").value;	
 
 	$("#list").jqGrid("clearGridData", true);		
 	$("#list")
 	.setGridParam({
 		url : "./getServerList",
 		mtype : "post",
-		postData : {searchWord : searchWord},
+		postData : {searchWord : searchWord , status : '0'},
 		dataType : "json",
 	})
 	.trigger("reloadGrid");
@@ -447,10 +448,6 @@ window.addEventListener("keyup", e => {
 })
 
 window.addEventListener("DOMContentLoaded", function(){
-	$(window).resize(function() {
-		$("#list").setGridWidth($(this).width() * .100);
-	});
-	
 	createAndInitGrid();
 	
 	const modal = document.getElementById("modal");
