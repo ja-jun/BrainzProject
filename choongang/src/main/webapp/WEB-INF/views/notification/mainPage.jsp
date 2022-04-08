@@ -185,7 +185,7 @@ function updateModal() {
             	div.append(a);
             	// div.append(img);
             	
-            	var button = $('<button class="filename" style="background:#e88790" onclick="createFileBtn()">변경</button>');
+            	var button = $('<button class="filename" style="background:#e88790" onclick="createFileBtn()">제거</button>');
             	
             	$('#fileBox').append(strong);
             	$('#fileBox').append(div);
@@ -426,7 +426,7 @@ window.addEventListener("DOMContentLoaded", function(){
 						<div id="fileBox" class="noticeInput">
 							<strong class="text">파일</strong>
 							<input class="upload-name" value="파일선택">
-							<label for="ex_filename" class="filename">업로드</label>
+							<label for="ex_filename" class="filename">파일선택</label>
 							<input type="file" name="file" id="ex_filename"/>
 						</div>
 					

@@ -4,7 +4,7 @@
 
 
 
-#noticeBox{width: 1520px;background: #fff;border-radius: 10px;padding: 50px;display: grid;align-items: baseline;border: 1px solid #e9e9ee;}
+#noticeBox{width: 100%;background: #fff;border-radius: 10px;padding: 50px;display: grid;align-items: baseline;border: 1px solid #e9e9ee;}
 #container{
     position: absolute;
     top: 0;
@@ -55,11 +55,11 @@ overflow-x: hidden;}
 	padding-left: 10px;
 }
 #noticeBox{}
-#noticeBox .titleBar{display: flex;width: 1420px;justify-content: space-between;align-items: center;border-bottom: 2px solid #222;}
+#noticeBox .titleBar{display: flex;width: 100%;justify-content: space-between;align-items: center;border-bottom: 2px solid #222;}
 #noticeBox .titleBar .titleText{font-size: 30px;font-weight: 600;margin-bottom: 25px;}
 #noticeBox .titleBar .dateText{font-size: 17px;color: #999;font-family: Montserrat;}
 #noticeBox .titleBar .bar{}
-#noticeBox .contentBox{padding: 50px 0px 50px 0px;width: 1420px;}
+#noticeBox .contentBox{padding: 50px 0px 50px 0px;width: 100%;}
 #noticeBox .contentBox .contentText{font-size: 18px;word-break: break-all;line-height: 1.5;font-weight: 300;white-space: pre-wrap;padding-left: 10px}
 .footer{font-size: 16px;}
 .next{display: flex;height: 60px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;padding-left: 10px;align-items: center;}
