@@ -31,7 +31,7 @@ function createAndInitGrid(){
 		            {name: 'nc_no', label : '번호', align:'center', width:'15%'},
 		            {name:'nc_title', label:'제목', align:'left', width:'70%'},
 		            {name: 'file_no', label : '파일', align:'center', width:'10%', formatter: imageFormatter},
-		            {name: 'nc_writeDate', label : '등록일시', align:'center', width:'30%'},              
+		            {name: 'nc_writeDate', label : '등록일', align:'center', width:'30%'},              
 		            {name: 'name', label : '등록자', align:'center', width:'30%'},
 		            {name: 'nc_readCount', label : '조회수', align:'center', width:'20%'}
               	   ],
