@@ -325,6 +325,7 @@ $.ajax({
 	});
 	
 	var events = json.weekScheduleInfo.map(function(item){
+		console.log(item.title);
 		return{
 			title : item.title,
 			start : item.start_date + "T" + item.start_time,
@@ -332,6 +333,8 @@ $.ajax({
 			id : item.sc_no
 		}
 	});
+	
+	console.log();
 	
 	var calendarEl = document.getElementById('calendar');
 	var calendar = new FullCalendar.Calendar(calendarEl, {

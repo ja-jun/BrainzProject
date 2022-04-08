@@ -2,8 +2,11 @@ package com.choongang.bcentral.mapper;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.choongang.bcentral.schedule.vo.MgmtVo;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
+import com.choongang.bcentral.schedule.vo.SelectScheduleVo;
 import com.choongang.bcentral.schedule.vo.SetScheduleVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 
@@ -18,7 +21,7 @@ public interface ScheduleSQLMapper {
 	public ArrayList<ServerVo> selectServer();
 	
 	// 등록된 스케줄 중 해당하는 달에 맞는 스케줄 가져오기
-	public ArrayList<ScheduleVo> selectScheduleByMonth(int month);
+	public ArrayList<ScheduleVo> selectScheduleByMonth(SelectScheduleVo sscVo);
 	
 	// 특정 이벤트 클릭 시 Schedule 정보 입력
 	public ScheduleVo selectScheduleByNo(int sc_no);

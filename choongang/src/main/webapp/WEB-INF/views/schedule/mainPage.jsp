@@ -1070,7 +1070,7 @@ function selectUser(target){
 					<div class="iconBox">
 						<img src="../resources/img/user.png" class="profile">
 						<div class="icon">
-						<p class="iconText" >닉네임</p>
+						<p class="iconText" >${userInfo.name }</p>
 						</div>
 					</div>
 				</div>

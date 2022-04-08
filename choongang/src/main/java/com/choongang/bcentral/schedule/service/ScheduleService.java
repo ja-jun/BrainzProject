@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.choongang.bcentral.mapper.ScheduleSQLMapper;
 import com.choongang.bcentral.schedule.vo.MgmtVo;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
+import com.choongang.bcentral.schedule.vo.SelectScheduleVo;
 import com.choongang.bcentral.schedule.vo.SetScheduleVo;
 import com.choongang.bcentral.server.vo.ServerVo;
 
@@ -62,11 +63,13 @@ public class ScheduleService {
 	}
 	
 	// 해당 달에 출력되야 할 이벤트 작성
-	public ArrayList<HashMap<String, Object>> getScheduleList(int year, int month){
+	public ArrayList<HashMap<String, Object>> getScheduleList(int year, int month, int user_no){
 		ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String, Object>>();
 		
+		SelectScheduleVo sscVo = new SelectScheduleVo(month, user_no); 
+		
 		// 1. 해당 월에 출력되야 할 Schedule 모두 가져오기
-		ArrayList<ScheduleVo> list = scSqlMapper.selectScheduleByMonth(month);
+		ArrayList<ScheduleVo> list = scSqlMapper.selectScheduleByMonth(sscVo);
 		
 		for(ScheduleVo vo : list) {
 			LocalDate start_date = vo.getStart_date();
