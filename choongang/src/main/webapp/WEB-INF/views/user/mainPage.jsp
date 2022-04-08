@@ -96,6 +96,7 @@ function createAndInitGrid(){
 	    	  		$('#dsc').val(user.dsc);
 	    	  		
 	    	  		
+	    	  		
 	    	  		var btn = document.getElementById('inputBtn');
 		            btn.setAttribute("value","수정");
 		            btn.setAttribute("onclick","updateUser()"); 
@@ -107,27 +108,30 @@ function createAndInitGrid(){
 		        	alert("잘못된 접근입니다.");
 		        }
 			});	     
-                     	
+            $("#user_no").remove();          	
         }
  });	
 };
+
+// 최종 로그인 시간 형 변환
 var dateFormatter = function(cellvalue, options, rowObject) {
 	var new_format_value='';
 		 
-	var date = new Date(cellvalue);
+	var date = new Date(cellvalue); //현재 시간
 		  	 
-	if(date== "Thu Jan 01 1970 09:00:00 GMT+0900 (한국 표준시)") {
-		new_format_value= "접속기록 없음"	
+	if(cellvalue == null) {
+		new_format_value= "접속기록 없음"
 	} else {	
 		new_format_value = date.getFullYear() + "."
 		+ (date.getMonth() + 1).toString().padStart(2,'0') + "."
 		+ date.getDate().toString().padStart(2,'0') + "  ("
-		+ (date.getHours() + 9).toString().padStart(2,'0') + ":"
+		+ (date.getHours()).toString().padStart(2,'0') + ":"
 		+ date.getMinutes().toString().padStart(2,'0') + ")";  
 	} 
 	
 	return new_format_value;
 }
+
 // 수정 유효성 체크
 function updCheck(target){
 	var result = 1;
@@ -168,7 +172,7 @@ function updCheck(target){
 	
 	return result;
 }
-// 수정 서버 넘기기
+// 수정 사용자 넘기기
 function updateUser(){	
 	var formData = new FormData(document.getElementById('regUserInfo'));
 	
@@ -188,7 +192,7 @@ function updateUser(){
 		});	
 	}
 }
-//검색시 서버 가져와서 집어넣기
+//검색시 사용자 가져와서 집어넣기
 function search(){
 	var searchWord = document.getElementById("searchWord").value;	
 	$("#list").jqGrid("clearGridData", true);		
@@ -210,6 +214,12 @@ function regCheck(target){
 		$('#checkId_Msg').html('아이디를 입력해주세요.');
         $('#checkId_Msg').attr("style", "color: red");
         result = 0;
+	} else {
+		if(confirmedId == false) {
+			$('#checkId_Msg').html('아이디 중복검사를 해주세요.');
+	        $('#checkId_Msg').attr("style", "color: red");
+	        result = 0;
+		} 
 	} 
 	
 	if(target.getAll('user_pw') == ''){
@@ -293,6 +303,10 @@ function registerUser(){
 		
 	}
 }
+
+
+var confirmedId = false;
+
 //id 중복확인
 function id_check() {
 	$('.input_id').change(function () {
@@ -314,6 +328,7 @@ function id_check() {
 			if (data.result == false) {
 				$('#checkId_Msg').html('이미 존재하는 아이디 입니다.');
 				$('#checkId_Msg').attr("style", "color: red");
+				confirmedId = true;
 				return;
 			} else {
 				$('#checkId_Msg').html('사용가능한 아이디 입니다.');
@@ -321,36 +336,13 @@ function id_check() {
 				$('.input_id').attr("check_result", "success");
 				$('#check_sucess_icon').show();
 				$('.id_check_button').hide();
+				confirmedId = true;
 				return;
 			}
 		}
 	});
 }
- //그리드에 값 집어넣기          
-function renderGridByDatas(datas){
-	var jsonArr = [];
-    for (var i = 0; i < datas.length; i++) {
-	    //숫자를 날짜로
-	    var userInsertDate = new Date(datas[i].write_date);  
-	    //날짜를 문자로 
-	    write_date = userInsertDate.getFullYear() + "."
-	                 + (userInsertDate.getMonth() + 1) + "."
-	                 + userInsertDate.getDate() + " "
-	                 + "(" + userInsertDate.getHours() + ":"
-	                 + userInsertDate.getMinutes() + ")"; 
-	     
-	    jsonArr.push({
-	    	'user_id': datas[i].user_id,
-	        'name':datas[i].name,
-	        'authority':datas[i].authority,
-	        'dsc':datas[i].dsc,
-	        'write_date': datas[i].write_date,
-	        'user_no':datas[i].user_no
-		});
-	};
-	$('#list').jqGrid('clearGridData');
-	$('#list').jqGrid('setGridParam', {data: jsonArr}).trigger('reloadGrid');
-};
+ 
 //비밀번호 확인 메세지
 $(function(){
 	$('#user_id').keyup(function(){
@@ -396,10 +388,12 @@ $(function(){
         }
     });
 });
+
 //삭제
 function deleteUser(){ 
 	var userNos = [];
 	var rowids = $("#list").getGridParam("selarrrow");
+	var currentPage = $("#list").getGridParam("page");  
 	for (let i = 0; i < rowids.length; i++) {
         const rowid = rowids[i];
         var rowData = $("#list").getRowData(rowid);
@@ -408,19 +402,21 @@ function deleteUser(){
 	
 	$("#list").jqGrid("clearGridData", true);		
 	if(confirm("정말 삭제하시겠습니까?") == true ){
-    	var text = "";
+		var text = "";
  		$.ajax({
 			url: "./deleteUser",
 			type: "post",
 			contentType:'application/json',
 			data: JSON.stringify(userNos)
 	 	}).done(function(){
-			$("#list").trigger('reloadGrid');
-		}); alert("삭제되었습니다.");
+	 		$('#list').jqGrid('setGridParam', {page:currentPage}).trigger('reloadGrid');
+	 	}); alert("삭제되었습니다.");
 	}else{
+		$("#list").trigger('reloadGrid');
 		alert("취소합니다.");
 	}
-}
+} 
+
 //모달창 함수	
 function modalOn() {
     modal.style.display = "flex";
