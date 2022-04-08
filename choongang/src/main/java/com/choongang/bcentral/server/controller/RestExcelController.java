@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.choongang.bcentral.server.service.ExcelService;
 import com.choongang.bcentral.server.vo.PageVo;
 import com.choongang.bcentral.server.vo.ServerVo;
+import com.google.gson.Gson;
 
 // [서버관리] 에서 내보내기 기능을 비동기적으로 사용하기 위한 Controller
 @RestController
@@ -25,6 +26,9 @@ public class RestExcelController {
 	
 	@RequestMapping("getExcelServerList")
 	public void getServerList(PageVo vo, HttpServletResponse response) throws IOException {
+		
+		System.out.println(new Gson().toJson(vo));
+		
 		ArrayList<ServerVo> serverList = excelService.getServerList(vo);
 		
 		Date date = new Date();
