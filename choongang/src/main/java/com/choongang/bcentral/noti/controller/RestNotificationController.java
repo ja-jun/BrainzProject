@@ -130,12 +130,14 @@ public class RestNotificationController {
 			// 내용을 수정하며 파일을 비우는 경우
 			notiService.deleteFile(param.getNc_no());
 		} else {
+			
+			System.out.println("파일수정");
+			// 파일을 넣어주는 로직
 			for(MultipartFile element : file) {
 					String fileName = element.getOriginalFilename();
 					String ext = fileName.substring(fileName.lastIndexOf('.'));
 					int fileSize = (int)element.getSize();
-					
-					
+										
 					String uploadRootFolderName = "C:/uploadFolder/";
 					String internalfileName = UUID.randomUUID().toString();
 					

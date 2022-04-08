@@ -97,7 +97,7 @@ public class NotificationService {
 		
 		if(!fileList.isEmpty()) {
 			for(FileVo fVo : fileList) {
-				deleteRealFile(fVo);
+				// deleteRealFile(fVo);
 				
 				notiSQLMapper.deleteFile(fVo.getFile_no());
 			}
@@ -109,7 +109,7 @@ public class NotificationService {
 		
 		if(!fileList.isEmpty()) {
 			for(FileVo preFileVo : fileList) {
-				deleteRealFile(preFileVo);
+				// deleteRealFile(preFileVo);
 				
 				fileVo.setFile_no(preFileVo.getFile_no());
 				
