@@ -32,10 +32,12 @@ public class RestScheduleController {
 	private UserService userService;
 	
 	@RequestMapping("getList")
-	public HashMap<String, Object> getList(Integer year, Integer month){
+	public HashMap<String, Object> getList(Integer year, Integer month, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		data.put("scheduleList", scheduleService.getScheduleList(year, month)); 
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		
+		data.put("scheduleList", scheduleService.getScheduleList(year, month, userVo.getUser_no())); 
 		
 		return data;
 	}
@@ -72,7 +74,6 @@ public class RestScheduleController {
 	public HashMap<String, Object> getServerList(){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		data.put("serverList", scheduleService.getServerList());
-		System.out.println(data);
 		
 		return data;
 	}
@@ -135,12 +136,15 @@ public class RestScheduleController {
 	}
 	
 	@RequestMapping("modSchedule")
-	public HashMap<String, Object> modSchedule(SetScheduleVo ssVo, String cur_date){
+	public HashMap<String, Object> modSchedule(SetScheduleVo ssVo, String cur_date, Integer changeManager){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(ssVo));
 		System.out.println(cur_date);
+		System.out.println(changeManager);
+		
+		ssVo.setUser_no(changeManager);
 		
 		scheduleService.modSchedule(ssVo);
 		

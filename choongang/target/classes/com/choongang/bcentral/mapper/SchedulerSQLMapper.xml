@@ -113,6 +113,7 @@
 	<!-- 특정 이벤트를 수정하는 Query -->
 	<update id="updateSchedule">
 		update bp_schedule set
+			   user_no = #{user_no },
 			   title = #{title },
 			   start_date = #{start_date },
 			   end_date = #{end_date }, 

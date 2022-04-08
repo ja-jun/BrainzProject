@@ -153,7 +153,7 @@ public class InfoService {
 		LocalDate cur_date = LocalDate.now();
 		
 		while(!cur_date.equals(LocalDate.now().plusDays(7))) {
-			
+			System.out.println("실행은 되나요?");
 			for(ScheduleVo scVo : weekScVo) {
 				if(!cur_date.isBefore(scVo.getEnd_date())) {
 					break;
