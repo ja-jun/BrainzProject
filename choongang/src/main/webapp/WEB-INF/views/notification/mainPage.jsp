@@ -274,7 +274,7 @@ function createFileBtn(){
 	
 	var strong = $('<strong class="text">파일</strong>');
 	var input = $('<input class="upload-name" value="파일선택">');
-	var label = $('<label for="ex_filename" class="filename">업로드</label>');
+	var label = $('<label for="ex_filename" class="filename">파일선택</label>');
 	var input_label = $('<input type="file" name="file" id="ex_filename" onchange="insertSelectedFileName()"/>');
 	
 	$('#fileBox').append(strong);
