@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title><spring:message code="nav.user"/></title>
 <script src="https://kit.fontawesome.com/1fa86d52d5.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
@@ -23,17 +24,50 @@
 <script src="../resources/js/jquery-ui.min.js"></script>
 
 <script> 
-            
+const id = '<spring:message code="user.id"/>';
+const name = '<spring:message code="user.name"/>';
+const auth = '<spring:message code="user.authority"/>';
+const dsc = '<spring:message code="user.dsc"/>';
+const lastLogin = '<spring:message code="user.lastLogin"/>';
+const loadText = '<spring:message code="user.loadtext"/>';
+const modifyTitle = '<spring:message code="user.modal.modifyTitle"/>';
+const Ph1 = '<spring:message code="user.modifyPw.Ph1"/>';
+const Ph2 = '<spring:message code="user.modifyPw.Ph2"/>';
+const modifyBtn = '<spring:message code="user.modal.modifyBtn"/>';
+const wrongAccess = '<spring:message code="user.modify.wrongAccess"/>';
+const No = '<spring:message code="user.lastLogin.null"/>';
+const checkName_Msg = '<spring:message code="user.checkName_Msg"/>';
+const checkPhone_Msg1 = '<spring:message code="user.checkPhone_Msg1"/>';
+const checkPhone_Msg2 = '<spring:message code="user.checkPhone_Msg2"/>';
+const checkEmail_Msg1 = '<spring:message code="user.checkEmail_Msg1"/>';
+const checkEmail_Msg2 = '<spring:message code="user.checkEmail_Msg2"/>';
+const mod_success = '<spring:message code="user.modify.success"/>';
+const checkId_Msg1 = '<spring:message code="user.checkId_Msg1"/>';
+const checkId_Msg2 = '<spring:message code="user.checkId_Msg2"/>';
+const checkPw_Msg1 = '<spring:message code="user.checkPw_Msg1"/>';
+const checkPw_Msg2 = '<spring:message code="user.checkPw_Msg2"/>';
+const checkPw_Msg3 = '<spring:message code="user.checkPw_Msg3"/>';
+const reg_success = '<spring:message code="user.register.success"/>';
+const checkId_alert = '<spring:message code="user.checkId_alert"/>';
+const checkId_Msg3 = '<spring:message code="user.checkId_Msg3"/>';
+const checkId_Msg4 = '<spring:message code="user.checkId_Msg4"/>';
+const checkPw_Msg4 = '<spring:message code="user.checkPw_Msg4"/>';
+const del_confirm = '<spring:message code="user.delete.confirm"/>';
+const del_success = '<spring:message code="user.delete.success"/>';
+const cancel = '<spring:message code="user.delete.cancel"/>';
+const registerBtn = '<spring:message code="user.modal.registerBtn"/>';
+const registerTitle = '<spring:message code="user.modal.registerTitle"/>';
+
 //그리드 형식            
 function createAndInitGrid(){
     $("#list").jqGrid({
     	colModel: [   
-   			{name: 'user_id', label : '아이디', align:'left', width:'30%'},
-            {name: 'name', label:'이름', align:'left', width:'30%'},
-            {name: 'authority', label : '권한', align:'center', width:'30%'},
-            {name: 'dsc', label : '설명', align:'left', width:'50%'},
-            {name: 'last_login', label : '최종 로그인 시간', align:'center', formatter:dateFormatter, width:'40%'},
-            {name: 'user_no', label : '사용자번호', hidden:true}
+   			{name: 'user_id', label: id, align:'left', width:'30%'},
+            {name: 'name', label: name, align:'left', width:'30%'},
+            {name: 'authority', label: auth, align:'center', width:'30%'},
+            {name: 'dsc', label: dsc, align:'left', width:'50%'},
+            {name: 'last_login', label: lastLogin, align:'center', formatter:dateFormatter, width:'40%'},
+            {name: 'user_no', label: '사용자번호', hidden:true}
             ],
         pager: '#pager',
         rowNum: 10,
@@ -48,7 +82,7 @@ function createAndInitGrid(){
         datatype : "JSON", //받을 때 파싱 설정
         postData : {}, //....
         mtype : "POST",
-        loadtext : "로딩중...",
+        loadtext : loadText,
         width:1573,
         height: 'auto',
 		autowidth:true,
@@ -72,13 +106,13 @@ function createAndInitGrid(){
 					var user = data.user;		    	  		 
 	    	  		 
 		            var title = document.querySelector('.title');
-		            title.innerText="사용자 수정";
+		            title.innerText = modifyTitle;
 	    	  		
 		            var user_no = document.createElement('input');
 		            user_no.setAttribute('type','hidden');
 		            user_no.setAttribute('name','user_no');
 		            user_no.setAttribute('id','user_no');
-		            user_no.setAttribute('value',user.user_no);
+		            user_no.setAttribute('value', user.user_no);
 		            $('#regUserInfo').append(user_no); 
 		            
 		            $('#user_id').val(user.user_id);
@@ -86,9 +120,9 @@ function createAndInitGrid(){
    					$('.id_check_button').hide();
 		            $('#check_sucess_icon').hide();
 		            $('#user_pw').val();
-		            $('#user_pw').attr("placeholder", "비밀번호 미입력시 기존 비밀번호로 등록됩니다.");
+		            $('#user_pw').attr("placeholder", modifyPw.Ph1);
 		            $('#user_pw2').val();
-		            $('#user_pw2').attr("placeholder", "비밀번호 미입력시 기존 비밀번호로 등록됩니다.");
+		            $('#user_pw2').attr("placeholder", modifyPw.Ph2);
 		            $('#name').val(user.name);
 	    	  		$('#authority').val(user.authority);
 	    	  		$('#phone').val(user.phone);
@@ -98,14 +132,14 @@ function createAndInitGrid(){
 	    	  		
 	    	  		
 	    	  		var btn = document.getElementById('inputBtn');
-		            btn.setAttribute("value","수정");
+		            btn.setAttribute("value", modifyBtn);
 		            btn.setAttribute("onclick","updateUser()"); 
 	    	  		
 	    	  		modalOn();
 	    	  		
 				},
 		        error: function() {
-		        	alert("잘못된 접근입니다.");
+		        	alert(wrongAccess);
 		        }
 			});	     
             $("#user_no").remove();          	
@@ -120,7 +154,7 @@ var dateFormatter = function(cellvalue, options, rowObject) {
 	var date = new Date(cellvalue); //현재 시간
 		  	 
 	if(cellvalue == null) {
-		new_format_value= "접속기록 없음"
+		new_format_value = No;
 	} else {	
 		new_format_value = date.getFullYear() + "."
 		+ (date.getMonth() + 1).toString().padStart(2,'0') + "."
@@ -137,34 +171,34 @@ function updCheck(target){
 	var result = 1;
 	
 	if(target.getAll('name') == ''){
-		$('#checkName_Msg').html('이름을 입력해주세요.');
+		$('#checkName_Msg').html( checkName_Msg );
         $('#checkName_Msg').attr("style", "color: red");
 		result = 0;
 	}
 	
 	if(target.getAll('phone') == ''){
-		$('#checkPhone_Msg').html('연락처를 입력해주세요.');
+		$('#checkPhone_Msg').html( checkPhone_Msg1 );
         $('#checkPhone_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
 		var checkPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
         
 		if (!checkPhone.test(target.getAll('phone'))) {
-        	$('#checkPhone_Msg').html('전화번호 형식이 올바르지 않습니다.');
+        	$('#checkPhone_Msg').html( checkPhone_Msg2 );
             $('#checkPhone_Msg').attr("style", "color: red");
     		result = 0;	
 		}
 	}		
 	
 	if(target.getAll('email') == ''){
-		$('#checkEmail_Msg').html('이메일을 입력해주세요.');
+		$('#checkEmail_Msg').html( checkEmail_Msg1 );
         $('#checkEmail_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
 		var checkEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 		
         if (!checkEmail.test(target.getAll('email'))) {
-        	$('#checkEmail_Msg').html('이메일 형식이 올바르지 않습니다.');
+        	$('#checkEmail_Msg').html( checkEmail_Msg2 );
             $('#checkEmail_Msg').attr("style", "color: red");
     		result = 0;	
 		} 
@@ -188,7 +222,7 @@ function updateUser(){
 		}).done(function(){
 			$("#list").trigger('reloadGrid');
 			modalOff();
-			alert("수정되었습니다.");
+			alert( mod_success );
 		});	
 	}
 }
@@ -211,43 +245,43 @@ function regCheck(target){
 	var result = 1;
 	
 	if(target.getAll('user_id') == ''){
-		$('#checkId_Msg').html('아이디를 입력해주세요.');
+		$('#checkId_Msg').html( checkId_Msg1 );
         $('#checkId_Msg').attr("style", "color: red");
         result = 0;
 	} else {
 		if(confirmedId == false) {
-			$('#checkId_Msg').html('아이디 중복검사를 해주세요.');
+			$('#checkId_Msg').html( checkId_Msg2 );
 	        $('#checkId_Msg').attr("style", "color: red");
 	        result = 0;
 		} 
 	} 
 	
 	if(target.getAll('user_pw') == ''){
-		$('#checkPw_Msg').html('비밀번호를 입력해주세요.');
+		$('#checkPw_Msg').html( checkPw_Msg1 );
         $('#checkPw_Msg').attr("style", "color: red");
 		result = 0;
 	} 
 	
 	if($('#user_pw2').val() == ''){
-		$('#checkPw_Msg2').html('비밀번호 확인을 입력해주세요.');
+		$('#checkPw_Msg2').html( checkPw_Msg2 );
         $('#checkPw_Msg2').attr("style", "color: red");
 		result = 0;
 	} 
 	
 	if(target.getAll('user_pw') != $('#user_pw2').val()){
-		$('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
+		$('#checkPw_Msg2').html( checkPw_Msg3 );
         $('#checkPw_Msg2').attr("style", "color: red");
 		result = 0;
 	} 
 	
 	if(target.getAll('name') == ''){
-		$('#checkName_Msg').html('이름을 입력해주세요.');
+		$('#checkName_Msg').html( checkName_Msg );
         $('#checkName_Msg').attr("style", "color: red");
 		result = 0;
 	} 
 	
 	if(target.getAll('phone') == ''){
-		$('#checkPhone_Msg').html('연락처를 입력해주세요.');
+		$('#checkPhone_Msg').html( checkPhone_Msg1 );
         $('#checkPhone_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
@@ -255,7 +289,7 @@ function regCheck(target){
 		var checkPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
         
 		if (!checkPhone.test(target.getAll('phone'))) {
-        	$('#checkPhone_Msg').html('전화번호 형식이 올바르지 않습니다.');
+        	$('#checkPhone_Msg').html( checkPhone_Msg2 );
             $('#checkPhone_Msg').attr("style", "color: red");
     		result = 0;	
 		}
@@ -263,14 +297,14 @@ function regCheck(target){
 	
 	
 	if(target.getAll('email') == ''){
-		$('#checkEmail_Msg').html('이메일을 입력해주세요.');
+		$('#checkEmail_Msg').html( checkEmail_Msg1 );
         $('#checkEmail_Msg').attr("style", "color: red");
 		result = 0;
 	} else {
 		var checkEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 		
         if (!checkEmail.test(target.getAll('email'))) {
-        	$('#checkEmail_Msg').html('이메일 형식이 올바르지 않습니다.');
+        	$('#checkEmail_Msg').html( checkEmail_Msg2 );
             $('#checkEmail_Msg').attr("style", "color: red");
     		result = 0;	
 		} 
@@ -298,7 +332,7 @@ function registerUser(){
 		 }).done(function(){
 				$("#list").trigger('reloadGrid');
 				modalOff();
-				alert("등록되었습니다.");
+				alert( reg_success );
 		 });	 
 		
 	}
@@ -315,7 +349,7 @@ function id_check() {
 		$('.input_id').attr("check_result", "fail");
 	})
 	if ($('.input_id').val() == '') {
-		alert('아이디를 입력해주세요.')
+		alert( checkId_alert )
 		return;
 	}
 	
@@ -326,12 +360,12 @@ function id_check() {
 		datatype: 'json',
 		success: function (data) {
 			if (data.result == false) {
-				$('#checkId_Msg').html('이미 존재하는 아이디 입니다.');
+				$('#checkId_Msg').html( checkId_Msg3 );
 				$('#checkId_Msg').attr("style", "color: red");
 				confirmedId = true;
 				return;
 			} else {
-				$('#checkId_Msg').html('사용가능한 아이디 입니다.');
+				$('#checkId_Msg').html( checkId_Msg4 );
 				$('#checkId_Msg').attr("style", "color: blue");
 				$('.input_id').attr("check_result", "success");
 				$('#check_sucess_icon').show();
@@ -370,20 +404,20 @@ $(function(){
     });
     $('#user_pw2').keyup(function(){
         if($('#user_pw').val() != $('#user_pw2').val()){
-          $('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
+          $('#checkPw_Msg2').html( checkPw_Msg3 );
           $('#checkPw_Msg2').attr("style", "color: red");
         } else{
-          $('#checkPw_Msg2').html('비밀번호 일치합니다.');
+          $('#checkPw_Msg2').html( checkPw_Msg4 );
           $('#checkPw_Msg2').attr("style", "color: blue");
         }
     });
     
     $('#user_pw').keyup(function(){
         if($('#user_pw2').val() != $('#user_pw').val()){
-          $('#checkPw_Msg2').html('비밀번호가 일치하지 않습니다.');
+          $('#checkPw_Msg2').html( checkPw_Msg3 );
           $('#checkPw_Msg2').attr("style", "color: red");
         } else{
-          $('#checkPw_Msg2').html('비밀번호 일치합니다.');
+          $('#checkPw_Msg2').html( checkPw_Msg4 );
           $('#checkPw_Msg2').attr("style", "color: blue");
         }
     });
@@ -401,7 +435,7 @@ function deleteUser(){
     }		
 	
 	$("#list").jqGrid("clearGridData", true);		
-	if(confirm("정말 삭제하시겠습니까?") == true ){
+	if(confirm( del_confirm ) == true ){
 		var text = "";
  		$.ajax({
 			url: "./deleteUser",
@@ -410,10 +444,10 @@ function deleteUser(){
 			data: JSON.stringify(userNos)
 	 	}).done(function(){
 	 		$('#list').jqGrid('setGridParam', {page:currentPage}).trigger('reloadGrid');
-	 	}); alert("삭제되었습니다.");
+	 	}); alert( del_success );
 	}else{
 		$("#list").trigger('reloadGrid');
-		alert("취소되었습니다.");
+		alert( cancel );
 	}
 } 
 
@@ -435,7 +469,7 @@ function modalOff() {
 	document.getElementById("checkEmail_Msg").innerText="";
 	
 	var btn = document.getElementById('inputBtn');
-    btn.setAttribute("value","등록");
+    btn.setAttribute("value", registerBtn );
     btn.setAttribute("onclick","registerUser()");
     
     
@@ -446,7 +480,7 @@ function modalOff() {
     $('#user_pw').removeAttr('placeholder');
     $('#user_pw2').removeAttr('placeholder');
     var title = document.querySelector('.title');
-    title.innerText="사용자 등록";
+    title.innerText= registerTitle;
 }
 //모달창 열렸을 때 ESC누르면 닫힘
 window.addEventListener("keyup", e => {
@@ -474,21 +508,22 @@ window.addEventListener("DOMContentLoaded", function(){
 			<div class="iconBox">
 			<img src="../resources/img/user.png" class="profile">
 				<div class="icon">
-				<p class="iconText" >닉네임</p>
+				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>
+				<a href="/choongang/security_logout"><i class="fa-solid fa-right-from-bracket" style=" margin-left: 16px; font-size: 22px; padding-top: 2px;"></i></a>
 			</div>
 		</div>
 		
 		<div id="userBox">
 		<div id="top">
 			<div class="btnBox">
-         	<button class="writeBtn" id="insertBtn" onclick="modalOn()">등록</button>
-         	<button class="writeBtn" id="deleteBtn" onclick="deleteUser()">삭제</button>
+         	<button class="writeBtn" id="insertBtn" onclick="modalOn()"><spring:message code="user.view.registerBtn"/></button>
+         	<button class="writeBtn" id="deleteBtn" onclick="deleteUser()"><spring:message code="user.view.deleteBtn"/></button>
          	</div>
          		<div id="search">
          			<div class="searchBox">
-						<input id="searchWord" type="text" class="searchForm" placeholder="아이디/이름">
-						<button class="searchBtn" onclick="search()">검색</button>
+						<input id="searchWord" type="text" class="searchForm" placeholder="<spring:message code="user.view.searchPh"/>">
+						<button class="searchBtn" onclick="search()"><spring:message code="user.view.search"/></button>
 					</div>
 				</div>	
 		</div>
@@ -510,57 +545,57 @@ window.addEventListener("DOMContentLoaded", function(){
 			<!-- Form 태그 시작 -->
 			<form id="regUserInfo">
 			<div class="top">
-				<h3 class="title">사용자 등록</h3>
+				<h3 class="title"><spring:message code="user.modal.registerTitle"/></h3>
 				<i class="bi bi-x" onclick="modalOff()"></i>
 			</div>
 			<div class="bottom">
 			<div class="userInput">
-				<strong class="text">아이디<span class="star">*</span></strong>
+				<strong class="text"><spring:message code="user.modal.registerId"/><span class="star">*</span></strong>
 				<input type="text" id="user_id" name="user_id" class="input_id" check_result="fail" required />
-				<button type="button" id="id_check_button" class="id_check_button" onclick="id_check()">중복검사</button>
+				<button type="button" id="id_check_button" class="id_check_button" onclick="id_check()"><spring:message code='user.modal.registerIdBtn'/></button>
 				<i class="fa-solid fa-check" id="check_sucess_icon" style="display: none;font-size: 20px;padding-left: 10px"></i><br>
 				<div id="checkId_Msg" class="confirmAlertBox"></div>
 			</div>
 			<div class="userInput">
-				<strong class="text">비밀번호<span class="star">*</span></strong>
+				<strong class="text"><spring:message code="user.modal.registerPw1"/><span class="star">*</span></strong>
 				<input type="password" id="user_pw" name="user_pw" class="textBox"><br>
 				<div id="checkPw_Msg" class="confirmAlertBox"></div>
 			</div>
 			<div class="userInput">
-				<strong class="text">비밀번호 확인<span class="star">*</span></strong>
+				<strong class="text"><spring:message code="user.modal.registerPw2"/><span class="star">*</span></strong>
 				<input type="password" id="user_pw2" class="textBox"><br>
 				<div id="checkPw_Msg2" class="confirmAlertBox"></div>
 			</div>
 			<div class="userInput">
-				<strong class="text">이름<span class="star">*</span></strong>
+				<strong class="text"><spring:message code="user.modal.registerName"/><span class="star">*</span></strong>
 				<input type="text" id="name" name="name" class="textBox"><br>
 				<div id="checkName_Msg" class="confirmAlertBox"></div>
 			</div>
 			<div class="userInput">
-				<strong class="text">권한<span class="star">*</span></strong>
+				<strong class="text"><spring:message code="user.modal.auth"/><span class="star">*</span></strong>
 				<select form="regUserInfo" id="authority" name="authority" class="selectBox" >
 					<option value="ROLE_ADMIN">관리자</option>
 					<option value="ROLE_USER">사용자</option>
 				</select>
 			</div>
 			<div class="userInput">
-				<strong class="text">연락처<span class="star">*</span></strong>
+				<strong class="text"><spring:message code="user.modal.phone"/><span class="star">*</span></strong>
 				<input type="text" id="phone" name="phone" class="textBox" ><br>
 				<div id="checkPhone_Msg" class="confirmAlertBox"></div>
 			</div>
 			
 			<div class="userInput">
-				<strong class="text">이메일<span class="star">*</span></strong>
+				<strong class="text"><spring:message code="user.modal.email"/><span class="star">*</span></strong>
 				<input type="text" id="email" name="email" class="textBox"><br>
 				<div id="checkEmail_Msg" class="confirmAlertBox"></div>
 			</div>
 			<div class="userInput">
-				<strong class="text">설명</strong>
+				<strong class="text"><spring:message code="user.modal.desc"/></strong>
 				<input type="text" id="dsc" name="dsc" class="textBox">
 			</div>
 			<ul class="btnList">
-				<li class="btnLi"><input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="registerUser()" ></li>
-				<li class="btnLi"><input type="button" value="닫기" class="writeBtn2" onclick="modalOff()" ></li>
+				<li class="btnLi"><input type="button" id="inputBtn" value="<spring:message code='user.view.registerBtn'/>" class="writeBtn2" onclick="registerUser()" ></li>
+				<li class="btnLi"><input type="button" value="<spring:message code='user.view.deleteBtn'/>" class="writeBtn2" onclick="modalOff()" ></li>
 			</ul>
 			</div>
 			</form>

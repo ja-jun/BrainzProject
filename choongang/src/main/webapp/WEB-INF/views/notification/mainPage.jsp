@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
- 
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,16 +24,21 @@
 <script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
 <script src="../resources/js/jquery-ui.min.js"></script>
 <script>
-
+const number = '<spring:message code="noti.number"/>';
+const title = '<spring:message code="noti.title"/>';
+const file = '<spring:message code="noti.file"/>';
+const write_date = '<spring:message code="noti.writedate"/>';
+const writer = '<spring:message code="noti.writer"/>';
+const readCount = '<spring:message code="noti.readCount"/>';
 function createAndInitGrid(){
     $("#list").jqGrid({
          colModel: [   
-		            {name: 'nc_no', label : '번호', align:'center', width:'15%'},
-		            {name:'nc_title', label:'제목', align:'left', width:'70%'},
-		            {name: 'file_no', label : '파일', align:'center', width:'10%', formatter: imageFormatter},
-		            {name: 'nc_writeDate', label : '등록일', align:'center', width:'30%'},              
-		            {name: 'name', label : '등록자', align:'center', width:'30%'},
-		            {name: 'nc_readCount', label : '조회수', align:'center', width:'20%'}
+		            {name: 'nc_no', label : number, align:'center', width:'15%'},
+		            {name:'nc_title', label: title, align:'left', width:'70%'},
+		            {name: 'file_no', label : file, align:'center', width:'10%', formatter: imageFormatter},
+		            {name: 'nc_writeDate', label : write_date, align:'center', width:'30%'},              
+		            {name: 'name', label : writer, align:'center', width:'30%'},
+		            {name: 'nc_readCount', label : readCount, align:'center', width:'20%'}
               	   ],
 		              pager: '#pager',
 		              rowNum: 10,

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +27,7 @@
 						<a href="../user/mainPage">
 						<div class="navBox">
 						<img src="../resources/img/person.png" class="imgNav">
-						<span class="navTitle">사용자관리</span>
+						<span class="navTitle"><spring:message code="nav.user"/></span>
 						</div>
 						</a>
 					</li>
@@ -35,7 +36,7 @@
 						<a href="../server/mainPage">
 						<div class="navBox">
 						<img src="../resources/img/servers.png" class="imgNav">
-						<span class="navTitle">서버관리</span>
+						<span class="navTitle"><spring:message code="nav.server"/></span>
 						</div>
 						</a>
 					</li>
@@ -44,7 +45,7 @@
 						<a href="../schedule/mainPage">
 						<div class="navBox">
 						<img src="../resources/img/calendar2.png" class="imgNav">
-						<span class="navTitle">작업관리</span>
+						<span class="navTitle"><spring:message code="nav.schedule"/></span>
 						</div>
 						</a>
 					</li>
@@ -53,21 +54,48 @@
 						<a href="../notification/mainPage">
 						<div class="navBox">
 						<img src="../resources/img/notice.png" class="imgNav">
-						<span class="navTitle">공지사항</span>
+						<span class="navTitle"><spring:message code="nav.notification"/></span>
 						</div>
 						</a>
 					</li>
 				</ul>
 				
 				<ul class="language2">
-					<li class="languageBox2 onn"><a href="./mainPage?lang=ko"><span class="languageText">Ko</span></a></li>
+					<li class="languageBox2"><a href="./mainPage?lang=ko"><span class="languageText">Ko</span></a></li>
 					<li class="languageBox2"><a href="./mainPage?lang=en"><span class="languageText">En</span></a></li>
-					<li class="languageBox2"><a href="./mainPage?lang=cn"><span class="languageText">Cn</span></a></li>
+					<li class="languageBox2"><a href="./mainPage?lang=ch"><span class="languageText">Cn</span></a></li>
 				</ul>
 				
 			</div>
 	    </div>	
 
+<script>
+function getCookie(key){
+    var result = null;
+    var cookie = document.cookie.split(';');
+    cookie.some(function(item){
+        item = item.replace(' ', '');
+        var dic = item.split('=');
+
+        if(key === dic[0]){
+            result = dic[1];
+            return true;
+        }
+    });
+    return result;
+};
+var selectLang = document.getElementsByClassName('languageBox2');
+
+var lang = getCookie('clientlanguage');
+
+if(lang == 'en'){
+	selectLang[1].setAttribute("class", "languageBox2 onn");	
+} else if(lang == 'ch'){
+	selectLang[2].setAttribute("class", "languageBox2 onn");
+} else {
+	selectLang[0].setAttribute("class", "languageBox2 onn");
+}
+</script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>
