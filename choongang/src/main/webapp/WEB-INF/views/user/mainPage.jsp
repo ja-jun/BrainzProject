@@ -423,8 +423,14 @@ $(function(){
     });
 });
 
+//권한 넘기기
+function deleteChangeUser(){
+	$('#deleteModalBack').show();
+}
+
 //삭제
 function deleteUser(){ 
+	$('#deleteModalBack').hide();
 	var userNos = [];
 	var rowids = $("#list").getGridParam("selarrrow");
 	var currentPage = $("#list").getGridParam("page");  
@@ -435,7 +441,7 @@ function deleteUser(){
     }		
 	
 	$("#list").jqGrid("clearGridData", true);		
-	if(confirm( del_confirm ) == true ){
+	if(confirm("정말 삭제하시겠습니까?") == true ){
 		var text = "";
  		$.ajax({
 			url: "./deleteUser",
@@ -444,10 +450,10 @@ function deleteUser(){
 			data: JSON.stringify(userNos)
 	 	}).done(function(){
 	 		$('#list').jqGrid('setGridParam', {page:currentPage}).trigger('reloadGrid');
-	 	}); alert( del_success );
+	 	}); alert("삭제되었습니다.");
 	}else{
 		$("#list").trigger('reloadGrid');
-		alert( cancel );
+		alert("취소되었습니다.");
 	}
 } 
 
@@ -459,6 +465,7 @@ function isModalOn() {
     return modal.style.display === "flex";
 }
 function modalOff() {
+	$('#deleteModalBack').hide();
     modal.style.display = "none";
 	document.getElementById("regUserInfo").reset();  //입력했던 값 지우기
 	document.getElementById("checkId_Msg").innerText="";
@@ -518,7 +525,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		<div id="top">
 			<div class="btnBox">
          	<button class="writeBtn" id="insertBtn" onclick="modalOn()"><spring:message code="user.view.registerBtn"/></button>
-         	<button class="writeBtn" id="deleteBtn" onclick="deleteUser()"><spring:message code="user.view.deleteBtn"/></button>
+         	<button class="writeBtn" id="deleteBtn" onclick="deleteChangeUser()"><spring:message code="user.view.deleteBtn"/></button>
          	</div>
          		<div id="search">
          			<div class="searchBox">
@@ -601,6 +608,28 @@ window.addEventListener("DOMContentLoaded", function(){
 			</form>
 
 		<!-- Form 태그 종료 -->
+		</div>
+	</div>
+</div>
+
+<div id="deleteModalBack">
+	<div class="deleteModal">
+		<div class="deleteBox">
+			
+			<div class="top">
+				<h3 class="title">사용자 삭제</h3>
+				<i class="bi bi-x" onclick="modalOff()"></i>
+			</div>
+			<img src="../resources/img/trash2.png" class="trash">
+			<p class="text">사용자를 삭제 하기 전에 권한을 넘겨야 합니다.</p>
+			<select id="selectUser" name="changeManager" class="selectUserBox" >
+               <option value="">옵션1</option>
+               <option value="">옵션2</option>
+            </select>
+			<ul class="btnList">
+				<li class="btnLi"><input type="button" value="취소" class="writeBtn2" onclick="modalOff()"></li>
+				<li class="btnLi"><input type="button" value="삭제" class="writeBtn2" onclick="deleteUser()"></li>
+			</ul>
 		</div>
 	</div>
 </div>
