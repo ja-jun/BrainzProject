@@ -70,6 +70,7 @@ function createAndInitGrid(){
             postData : {aaa : 111},
             mtype : "POST",
             loadtext : "로딩중...",
+            emptyrecords : "데이터가 없습니다.", //viewrecords에 나오는 문구
             autowidth:true,
 	        height: 'auto',
 			beforeSelectRow: function(rowid, e){
@@ -412,10 +413,10 @@ function Onchange(s){
 		mtype : "post",
 		postData : {status : status},
 		dataType : "json",
+		page : 1
 	})
 	.trigger("reloadGrid");
 }
- 
  
  
  
