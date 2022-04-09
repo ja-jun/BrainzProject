@@ -19,7 +19,7 @@
 
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/noticeGrid.css" />
-<script src="../resources/js/grid.locale-kr.js"></script>
+<script src='../resources/js/grid.locale-<spring:message code="lang"/>.js'></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
 <script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
 <script src="../resources/js/jquery-ui.min.js"></script>
@@ -30,6 +30,20 @@ const file = '<spring:message code="noti.file"/>';
 const write_date = '<spring:message code="noti.writedate"/>';
 const writer = '<spring:message code="noti.writer"/>';
 const readCount = '<spring:message code="noti.readCount"/>';
+const loading = '<spring:message code="noti.loading"/>';
+const registerd = '<spring:message code="noti.registered"/>';
+const modified = '<spring:message code="noti.modified"/>';
+const modified1 = '<spring:message code="noti.modified1"/>';
+const modified2 = '<spring:message code="noti.modified2"/>';
+const title_modification = '<spring:message code="noti.title.modification"/>';
+const modify_btn = '<spring:message code="noti.modification"/>';
+const remove1 = '<spring:message code="noti.remove1"/>';
+const remove2 = '<spring:message code="noti.remove2"/>';
+const cancel = '<spring:message code="noti.cancel"/>';
+const reg = '<spring:message code="noti.registration"/>';
+const reg2 = '<spring:message code="noti.registration2"/>';
+const fileselect2 = '<spring:message code="noti.fileselect2"/>';
+
 function createAndInitGrid(){
     $("#list").jqGrid({
          colModel: [   
@@ -53,7 +67,7 @@ function createAndInitGrid(){
 		              datatype : "JSON", //받을 때 파싱 설정
 		              postData : {}, //....
 		              mtype : "POST",
-		              loadtext : "로딩중...",
+		              loadtext : loading,
 		  	          height: 'auto',
 		  			  autowidth:true,  			 
 		  			
@@ -111,7 +125,7 @@ function insertNotification(){
 	 }).done(function(){
 			$("#list").trigger('reloadGrid');
 			modalOff();
-			alert("등록되었습니다.");
+			alert( registerd );
 	 });	 
 }
 
@@ -127,7 +141,7 @@ function updateNotification(){
 	}).done(function(){
 		$("#list").trigger('reloadGrid');
 		modalOff();
-		alert("수정되었습니다.");
+		alert( modified );
 	});	
 }
 
@@ -137,10 +151,10 @@ function updateModal() {
 	var rowIds = $('#list').getGridParam('selarrrow');
 	
 	if(rowIds.length > 1){
-		alert("1개의 글만 수정 가능합니다.");
+		alert( modified1 );
 		return;
 	} else if(rowIds.length == 0){
-		alert("수정하실 글을 선택해주세요.")
+		alert( modified2 )
 	} else {
 		var nc_no = $('#list').getRowData(rowIds[0]).nc_no;
 	}
@@ -155,7 +169,7 @@ function updateModal() {
 			var notification = data.notification;
 			
 			var title = document.querySelector('.title');
-	            title.innerText="공지사항 수정";
+	            title.innerText = title_modification;
   	  		
             var nc_no = document.createElement('input');
           	nc_no.setAttribute('type','hidden');
@@ -168,7 +182,7 @@ function updateModal() {
   	  		$('textarea[name=nc_content]').val(notification.nc_content);
   	  		
   	  		var btn = document.getElementById('inputBtn');
-	            btn.setAttribute("value","수정");
+	            btn.setAttribute("value",modify_btn);
 	            btn.setAttribute("onclick","updateNotification()");
   	  		
 	        var btn2 = document.getElementById('deleteBtn3');
@@ -177,7 +191,7 @@ function updateModal() {
             $.each(data.fileVo, function(index, item){
 				$('#fileBox').empty();
             	
-            	var strong = $('<strong class="text">파일</strong>');
+            	var strong = $('<strong class="text"> <spring:message code="noti.file"/> </strong>');
             	
             	var div = $('<div class="upload-name"></div>');
             	var a = $("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
@@ -185,7 +199,7 @@ function updateModal() {
             	div.append(a);
             	// div.append(img);
             	
-            	var button = $('<button class="filename" style="background:#e88790" onclick="createFileBtn()">제거</button>');
+            	var button = $('<button class="filename" style="background:#e88790" onclick="createFileBtn()"><spring:message code="noti.remove"/></button>');
             	
             	$('#fileBox').append(strong);
             	$('#fileBox').append(div);
@@ -210,7 +224,7 @@ function deleteNotification(){
 	
 		$("#list").jqGrid("clearGridData", true);		
 
-         if(confirm("정말 삭제하시겠습니까?") == true ){
+         if(confirm( remove1 ) == true ){
        	  var text = "";
 			 $.ajax({
 			     url: "/choongang/notification/deleteNotification",
@@ -220,10 +234,10 @@ function deleteNotification(){
 			 }).done(function(){
 					$("#list").trigger('reloadGrid');
 					modalOff();
-					alert("삭제되었습니다.");
+					alert( remove2 );
 			 });
 		 }else{
-				   alert("취소합니다.");
+				   alert( cancel );
 		 }
 }
 
@@ -235,7 +249,7 @@ function deleteModal() {
 	var nc_no = $("#nc_no").val();
     notificationNos.push(nc_no);
 
-	if(confirm("정말 삭제하시겠습니까?") == true ){
+	if(confirm( remove1 ) == true ){
      	 var text = "";
 		
 		 $.ajax({
@@ -246,20 +260,20 @@ function deleteModal() {
 		 }).done(function(){
 				$("#list").trigger('reloadGrid');
 				modalOff();
-				alert("삭제되었습니다.");
+				alert( remove2 );
 		 });
 	 	}else{
-			   alert("취소합니다.");
+			   alert( cancel );
 	 	}	
 }
 
 // 등록 모달
 function registerNotification(){
 		var title = document.querySelector('.title');
-		title.innerText="공지사항 등록";
+		title.innerText=reg;
 		
 		var btn = document.getElementById('inputBtn');
-        btn.setAttribute("value","등록");
+        btn.setAttribute("value",reg2);
 		btn.setAttribute("onclick","insertNotification()");
 	  		
         var btn2 = document.getElementById('deleteBtn3');
@@ -275,9 +289,9 @@ function registerNotification(){
 function createFileBtn(){
 	$('#fileBox').empty();
 	
-	var strong = $('<strong class="text">파일</strong>');
-	var input = $('<input class="upload-name" value="파일선택">');
-	var label = $('<label for="ex_filename" class="filename">파일선택</label>');
+	var strong = $('<strong class="text"> <spring:message code="noti.file"/> </strong>');
+	var input = $('<input class="upload-name" value="<spring:message code="noti.fileselect2"/>">');
+	var label = $('<label for="ex_filename" class="filename">"<spring:message code="noti.fileselect"/>"</label>');
 	var input_label = 
 		$('<input type="file" name="file" id="ex_filename" onchange="insertSelectedFileName()" accept=".bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt"/>');
 	
@@ -314,7 +328,7 @@ function insertSelectedFileName(){
 	 if(fileExtension.lastIndexOf(fileName.substring(fileName.lastIndexOf('.'))) != -1){
 		  $(".upload-name").val(fileName);			 
 	 } else {
-		 alert("파일선택을 다시 해주세요");
+		 alert( fileselect2 );
 		 createFileBtn();
 	 }				
 }
@@ -344,7 +358,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		 if(fielExtension.lastIndexOf(fileName.subString(fileName.lastIndexOf('.'))) != -1){
 			  $(".upload-name").val(fileName);			 
 		 } else {
-			 alert("파일선택을 다시 해주세요");
+			 alert( fileselect2 );
 			 createFileBtn();
 		 }		
 	});
@@ -373,14 +387,14 @@ window.addEventListener("DOMContentLoaded", function(){
 		<div id="noticeBox">
 		<div id="top">
 			<div class="btnBox">
-         	<button class="writeBtn" id="insertBtn" onclick="registerNotification()">등록</button>
-         	<button class="writeBtn" id="updateBtn" onclick="updateModal()">수정</button>		
-         	<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()">삭제</button>
+         	<button class="writeBtn" id="insertBtn" onclick="registerNotification()"><spring:message code="noti.registration2"/></button>
+         	<button class="writeBtn" id="updateBtn" onclick="updateModal()"><spring:message code="noti.modification"/></button>		
+         	<button class="writeBtn" id="deleteBtn" onclick="deleteNotification()"><spring:message code="noti.remove"/></button>
          	</div>
          		<div id="search">
          			<div class="searchBox">
-						<input id="searchWord" type="text" class="searchForm" placeholder="제목/내용">
-						<button class="searchBtn" onclick="search()">검색</button>
+						<input id="searchWord" type="text" class="searchForm" placeholder='<spring:message code="noti.search"/>'>
+						<button class="searchBtn" onclick="search()"><spring:message code="noti.search2"/></button>
 					</div>
 				</div>	
 		</div>
@@ -402,22 +416,22 @@ window.addEventListener("DOMContentLoaded", function(){
 					<!-- Form 태그 시작 -->
 					<form id="regNotificationInfo">
 					<div class="top">
-						<h3 class="title">공지사항 등록</h3>
+						<h3 class="title"><spring:message code="noti.registration"/></h3>
 						<i class="bi bi-x" onclick="modalOff()"></i>
 					</div>
 					<div class="noticeInput">
-						<strong class="text">제목<span class="star">*</span></strong>
+						<strong class="text"><spring:message code="noti.title"/><span class="star">*</span></strong>
 						<input type="text" id="nc_title" name="nc_title" class="textBox" >
 					</div>
 					<div class="noticeInput" style="display: flex;">
-						<strong class="text">내용<span class="star">*</span></strong>
+						<strong class="text"><spring:message code="noti.content"/><span class="star">*</span></strong>
 						<textarea id="nc_content" name="nc_content" class="textBox" style="height: 240px;"></textarea>
 					</div>
 								
 						<div id="fileBox" class="noticeInput">
 							<strong class="text">파일</strong>
-							<input class="upload-name" value="파일선택">
-							<label for="ex_filename" class="filename">파일선택</label>
+							<input class="upload-name" value='<spring:message code="noti.fileselect"/>'>
+							<label for="ex_filename" class="filename"><spring:message code="noti.fileselect"/></label>
 							<input type="file" name="file" id="ex_filename" accept=".bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt"/>
 						</div>
 					
@@ -425,9 +439,9 @@ window.addEventListener("DOMContentLoaded", function(){
 																
 						
 					<div class="btnBox2">					
-						<input type="button" id="inputBtn" value="등록" class="writeBtn2" onclick="insertNotification()">
-						<input type="button" id="deleteBtn3" value="삭제" class="writeBtn2" onclick="deleteModal()" style="display:none">						
-						<input type="button" name="" value="닫기" class="writeBtn2" onclick="modalOff()" >					
+						<input type="button" id="inputBtn" value='<spring:message code="noti.registration2"/>' class="writeBtn2" onclick="insertNotification()">
+						<input type="button" id="deleteBtn3" value='<spring:message code="noti.remove"/>' class="writeBtn2" onclick="deleteModal()" style="display:none">						
+						<input type="button" name="" value='<spring:message code="noti.close"/>' class="writeBtn2" onclick="modalOff()" >					
 					</div>
 					</form>					
 					<!-- Form 태그 종료 -->
