@@ -1418,7 +1418,7 @@ A VERTICAL event
 .fc-direction-ltr .fc-list-day-side-text,
 .fc-direction-rtl .fc-list-day-text {
   float: right;
-}
+padding-right: 15px;}
 /* make the dot closer to the event title */
 .fc-direction-ltr .fc-list-table .fc-list-event-graphic { padding-right: 0 }
 .fc-direction-rtl .fc-list-table .fc-list-event-graphic { padding-left: 0 }
@@ -1447,7 +1447,7 @@ A VERTICAL event
     border: calc(var(--fc-list-event-dot-width, 10px) / 2) solid var(--fc-event-border-color, #3788d8);
     border-radius: 5px;
     border-radius: calc(var(--fc-list-event-dot-width, 10px) / 2);
-  }
+  display: none !important;}
 .fc {
 
   /* reset <a> styling */

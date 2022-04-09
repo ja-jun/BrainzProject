@@ -201,6 +201,8 @@ function getCalendarList(){
 			var calendarEl = document.getElementById('calendar');
 			var list = data.scheduleList;
 			
+		
+			
 				var events = list.map(function(item) {
 				return {
 					title : item.title,
@@ -431,10 +433,26 @@ function getCalendarList(){
 				},
 				
 				eventDidMount: function(info) {
-		            tippy(info.el, {
-		                content:  info.event.title
-		            });
-		        }
+	                  tippy(info.el, {
+	                      content:  info.event.title
+	                  });
+	                  
+	                  
+	                  var letters = ['fc4e64', '5a43f2', 'ffb43a', '135feb', 'a23cdf', '29b52f', 'e91e63','46a5f1','673ab7'];
+	                  var title = document.querySelectorAll('.fc-event-title');
+	                 var map = new Map();
+	                 title.forEach(function(item, index){
+	                     var text = item.innerText;
+	                     var random = '#' + letters[Math.floor(Math.random() * letters.length)];
+	                     
+	                     if(map.has(text)){
+	                         var parent = item.closest('.fc-daygrid-event-harness');
+	                         parent.setAttribute("style","background: " + map.get(text));
+	                     } else {
+	                         map.set(text, random);
+	                     }
+	                 });
+	              }
 				
 			});
 			calendar.render();
@@ -647,6 +665,7 @@ window.addEventListener("DOMContentLoaded" , function(){
 			$('.checkboxAll').prop("checked", true); 
 		}
 	}); 
+	
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
         const btnDay = document.querySelectorAll('.btnDay'); 
@@ -749,7 +768,7 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
  	$(document).ready(function(){
  		  $('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
- 		})
+ 	})
  	
 	$(function(){
 		$('.datepicker').datepicker({
@@ -795,7 +814,9 @@ window.addEventListener("DOMContentLoaded" , function(){
     	});
     	$("#datetimepicker4").val("24:00");
   	});
-  	
+   
+   
+   
 	/* page load후 바로 실행 되는 함수들 */
 	selectUser($('#selectUser'));
 	getCalendarList();
