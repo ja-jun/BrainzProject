@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>작업관리</title>
+<title><spring:message code="nav.schedule"/></title>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -201,6 +201,9 @@ function getCalendarList(){
 			var calendarEl = document.getElementById('calendar');
 			var list = data.scheduleList;
 			
+			var letters = ['fc4e64', '5a43f2', 'ffb43a', '135feb', 'a23cdf', '29b52f', 'e91e63','46a5f1','673ab7'];
+            var map = new Map();
+            var count = 0;
 		
 			
 				var events = list.map(function(item) {
@@ -437,18 +440,17 @@ function getCalendarList(){
 	                      content:  info.event.title
 	                  });
 	                  
+	                 var title = document.querySelectorAll('.fc-event-title');
 	                  
-	                  var letters = ['fc4e64', '5a43f2', 'ffb43a', '135feb', 'a23cdf', '29b52f', 'e91e63','46a5f1','673ab7'];
-	                  var title = document.querySelectorAll('.fc-event-title');
-	                 var map = new Map();
 	                 title.forEach(function(item, index){
 	                     var text = item.innerText;
-	                     var random = '#' + letters[Math.floor(Math.random() * letters.length)];
+	                     var random = '#' + letters[count];
 	                     
 	                     if(map.has(text)){
 	                         var parent = item.closest('.fc-daygrid-event-harness');
 	                         parent.setAttribute("style","background: " + map.get(text));
 	                     } else {
+	                    	 count++;
 	                         map.set(text, random);
 	                     }
 	                 });
