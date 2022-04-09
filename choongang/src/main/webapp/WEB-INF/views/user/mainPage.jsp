@@ -413,7 +413,7 @@ function deleteUser(){
 	 	}); alert("삭제되었습니다.");
 	}else{
 		$("#list").trigger('reloadGrid');
-		alert("취소합니다.");
+		alert("취소되었습니다.");
 	}
 } 
 
