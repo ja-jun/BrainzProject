@@ -50,7 +50,7 @@
 			FROM bp_user t2
 	        JOIN req_user ON t2.parent = req_user.user_no
 	        )
-		SELECT * FROM req_user
+		SELECT req_user.*, bp_user.name AS parent_name FROM req_user left join bp_user ON req_user.parent = bp_user.user_no
 			<if test="searchWord !=null">
 				WHERE user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
 			</if> 
@@ -131,5 +131,10 @@
 		update bp_user 
 		set last_login = now() 
 		where user_id = #{user_id} 
+	</update>
+	
+	<update id="updateScheduleManager">
+		update bp_schedule set user_no = #{manager }
+		where user_no = #{user_no }
 	</update>
 </mapper>

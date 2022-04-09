@@ -1,6 +1,7 @@
 package com.choongang.bcentral.user.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,9 +63,9 @@ public class UserService {
 	}
 	
 	// 사용자 삭제
-	public void deleteUser(ArrayList<String> nos) {
-		for(String no  : nos) {
-			userSQLMapper.deleteUser(Integer.parseInt(no.trim()));
+	public void deleteUser(Integer[] nos) {
+		for(Integer no  : nos) {
+			userSQLMapper.deleteUser(no);
 		}
 	}
 	
@@ -104,5 +105,14 @@ public class UserService {
 	
 	public ArrayList<UserVo> getTotalUserList(int user_no){
 		return userSQLMapper.getTotalUserList(user_no);
+	}
+	
+	public void changeScheduleManager(Integer[] user_no, Integer changeManager) {
+		for(Integer no : user_no) {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("user_no", no);
+			map.put("manager", changeManager);
+			userSQLMapper.updateScheduleManager(map);
+		}
 	}
 }

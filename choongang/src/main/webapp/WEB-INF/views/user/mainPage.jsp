@@ -18,7 +18,7 @@
 
 <!-- jqGrid -->
 <link rel="stylesheet" href="../resources/css/ui.jqgrid2.css" />
-<script src="../resources/js/grid.locale-kr.js"></script>
+<script src="../resources/js/grid.locale-<spring:message code='lang'/>.js"></script>
 <script src="../resources/js/jquery.jqGrid.js"></script>
 <script src="../resources/js/jQuery.jqGrid.setColWidth.js"></script>
 <script src="../resources/js/jquery-ui.min.js"></script>
@@ -27,6 +27,7 @@
 const id = '<spring:message code="user.id"/>';
 const name = '<spring:message code="user.name"/>';
 const auth = '<spring:message code="user.authority"/>';
+const registrant = '<spring:message code="user.registrant"/>';
 const dsc = '<spring:message code="user.dsc"/>';
 const lastLogin = '<spring:message code="user.lastLogin"/>';
 const loadText = '<spring:message code="user.loadtext"/>';
@@ -57,6 +58,8 @@ const del_success = '<spring:message code="user.delete.success"/>';
 const cancel = '<spring:message code="user.delete.cancel"/>';
 const registerBtn = '<spring:message code="user.modal.registerBtn"/>';
 const registerTitle = '<spring:message code="user.modal.registerTitle"/>';
+const alert1 = '<spring:message code="user.delete.alert1"/>';
+const alert2 = '<spring:message code="user.delete.alert2"/>';
 
 //그리드 형식            
 function createAndInitGrid(){
@@ -64,7 +67,7 @@ function createAndInitGrid(){
     	colModel: [   
    			{name: 'user_id', label: id, align:'left', width:'30%'},
             {name: 'name', label: name, align:'left', width:'30%'},
-            {name: 'authority', label: auth, align:'center', width:'30%'},
+            {name: 'parent_name', label: registrant, align:'center', width:'30%'},
             {name: 'dsc', label: dsc, align:'left', width:'50%'},
             {name: 'last_login', label: lastLogin, align:'center', formatter:dateFormatter, width:'40%'},
             {name: 'user_no', label: '사용자번호', hidden:true}
@@ -120,9 +123,9 @@ function createAndInitGrid(){
    					$('.id_check_button').hide();
 		            $('#check_sucess_icon').hide();
 		            $('#user_pw').val();
-		            $('#user_pw').attr("placeholder", modifyPw.Ph1);
+		            $('#user_pw').attr("placeholder", Ph1);
 		            $('#user_pw2').val();
-		            $('#user_pw2').attr("placeholder", modifyPw.Ph2);
+		            $('#user_pw2').attr("placeholder", Ph2);
 		            $('#name').val(user.name);
 	    	  		$('#authority').val(user.authority);
 	    	  		$('#phone').val(user.phone);
@@ -315,8 +318,6 @@ function regCheck(target){
 //사용자 등록
 function registerUser(){
 	var formData = new FormData(document.getElementById('regUserInfo'));
-	console.log(formData.getAll('user_pw'));
-	console.log(formData.getAll('dsc'));
 	
 	//input태그의 name과 vo변수명이 같을때 자동으로 들어간다
 	if(regCheck(formData) == 0){
@@ -425,7 +426,46 @@ $(function(){
 
 //권한 넘기기
 function deleteChangeUser(){
+	var userNos = [];
+	var rowids = $("#list").getGridParam("selarrrow");
+	var currentPage = $("#list").getGridParam("page");  
+	for (let i = 0; i < rowids.length; i++) {
+        const rowid = rowids[i];
+        var rowData = $("#list").getRowData(rowid);
+        var user_no = rowData.user_no
+        if(user_no == ${userInfo.user_no}){
+        	alert( alert1 );
+        	return;
+        }
+		userNos.push(rowData.user_no);
+    }
+	
+	if(userNos.length == 0){
+		alert( alert2 );
+		return;
+	}
+	
 	$('#deleteModalBack').show();
+	
+	$('#selectUser').empty();
+	
+	$.ajax({
+		url: "./getSelectUserList",
+		type: "POST",
+		contentType: 'application/json',
+		data: JSON.stringify(userNos),
+		success: function(data){
+			var selectUserList = data.selectUserList;
+			
+			var selectUser = $('#selectUser');
+			selectUser.append($('<option value="' + ${userInfo.user_no} + '">본인</option>'));
+			
+			selectUserList.forEach(function(item, index){
+				var user = $('<option value="' + item.user_no + '">' + item.name + '</option>');
+				selectUser.append(user);
+			});
+		}
+	});
 }
 
 //삭제
@@ -438,22 +478,25 @@ function deleteUser(){
         const rowid = rowids[i];
         var rowData = $("#list").getRowData(rowid);
 		userNos.push(rowData.user_no);
-    }		
+    }
 	
-	$("#list").jqGrid("clearGridData", true);		
-	if(confirm("정말 삭제하시겠습니까?") == true ){
+	var changeManager = $('#selectUser').val();
+	console.log(changeManager);
+	
+	// $("#list").jqGrid("clearGridData", true);		
+	if(confirm( del_confirm ) == true ){
 		var text = "";
  		$.ajax({
 			url: "./deleteUser",
 			type: "post",
-			contentType:'application/json',
-			data: JSON.stringify(userNos)
+			traditional: true,
+			data: {param: userNos, changeManager: changeManager}
 	 	}).done(function(){
 	 		$('#list').jqGrid('setGridParam', {page:currentPage}).trigger('reloadGrid');
-	 	}); alert("삭제되었습니다.");
+	 	}); alert( del_cancel);
 	}else{
 		$("#list").trigger('reloadGrid');
-		alert("취소되었습니다.");
+		alert( cancel );
 	}
 } 
 
@@ -617,18 +660,16 @@ window.addEventListener("DOMContentLoaded", function(){
 		<div class="deleteBox">
 			
 			<div class="top">
-				<h3 class="title">사용자 삭제</h3>
+				<h3 class="title"><spring:message code="user.modal.deletetitle"/></h3>
 				<i class="bi bi-x" onclick="modalOff()"></i>
 			</div>
 			<img src="../resources/img/trash2.png" class="trash">
-			<p class="text">사용자를 삭제 하기 전에 권한을 넘겨야 합니다.</p>
+			<p class="text"><spring:message code="user.modal.deletecheck"/></p>
 			<select id="selectUser" name="changeManager" class="selectUserBox" >
-               <option value="">옵션1</option>
-               <option value="">옵션2</option>
             </select>
 			<ul class="btnList">
-				<li class="btnLi"><input type="button" value="취소" class="writeBtn2" onclick="modalOff()"></li>
-				<li class="btnLi"><input type="button" value="삭제" class="writeBtn2" onclick="deleteUser()"></li>
+				<li class="btnLi"><input type="button" value='<spring:message code="user.modal.cancle"/>' class="writeBtn2" onclick="modalOff()"></li>
+				<li class="btnLi"><input type="button" value='<spring:message code="user.view.deleteBtn"/>' class="writeBtn2" onclick="deleteUser()"></li>
 			</ul>
 		</div>
 	</div>
