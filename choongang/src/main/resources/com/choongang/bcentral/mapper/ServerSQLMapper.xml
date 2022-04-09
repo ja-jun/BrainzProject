@@ -17,7 +17,7 @@
 	</insert>
 	
 	<select id="getServerList" resultType="com.choongang.bcentral.server.vo.ServerVo">		
-		SELECT bps.* FROM BP_server bps 
+		SELECT count(bps.server_no) over(),  bps.* FROM BP_server bps 
 			<if test="searchWord !=null">
 				WHERE name ilike '%' || #{searchWord} || '%' OR ip ilike '%' || #{searchWord} || '%'
 			</if> 

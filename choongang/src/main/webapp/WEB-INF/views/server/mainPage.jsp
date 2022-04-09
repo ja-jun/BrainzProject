@@ -70,6 +70,7 @@ function createAndInitGrid(){
             postData : {aaa : 111},
             mtype : "POST",
             loadtext : "로딩중...",
+            emptyrecords : "데이터가 없습니다.", //viewrecords에 나오는 문구
             autowidth:true,
 	        height: 'auto',
 			beforeSelectRow: function(rowid, e){
@@ -242,7 +243,7 @@ function insertServer(){
 function deleteServer(){ 
 	var serverNos = [];
 	var rowids = $("#list").getGridParam("selarrrow");
-
+	var currentPage = $("#list").getGridParam("page");  
 	for (let i = 0; i < rowids.length; i++) {
         const rowid = rowids[i];
         var rowData = $("#list").getRowData(rowid);
@@ -259,9 +260,9 @@ function deleteServer(){
 			     contentType:'application/json',
 			     data: JSON.stringify(serverNos)
 			 }).done(function(){
-					$("#list").trigger('reloadGrid');
-						});
-				alert("삭제되었습니다.");			
+				 $('#list').jqGrid('setGridParam',{ page:currentPage}).trigger('reloadGrid');
+			 });
+			 alert("삭제되었습니다.");		
 			}else{
 				$("#list").trigger('reloadGrid');
 				alert("취소합니다.");
@@ -412,10 +413,10 @@ function Onchange(s){
 		mtype : "post",
 		postData : {status : status},
 		dataType : "json",
+		page : 1
 	})
 	.trigger("reloadGrid");
 }
- 
  
  
  

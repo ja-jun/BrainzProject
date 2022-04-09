@@ -1,5 +1,6 @@
 package com.choongang.bcentral.user.vo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,9 +16,9 @@ public class UserVo {
 	private String email;
 	private String dsc;
 	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
-	private Date write_date;
+	private LocalDateTime write_date;
 	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
-	private Date last_login;
+	private LocalDateTime last_login;
 	private int parent;
 	
 	private UserVo() {
@@ -25,7 +26,7 @@ public class UserVo {
 	}
 
 	private UserVo(int user_no, String user_id, String user_pw, String name, String authority, String phone,
-			String email, String dsc, Date write_date, Date last_login, int parent) {
+			String email, String dsc, LocalDateTime write_date, LocalDateTime last_login, int parent) {
 		super();
 		this.user_no = user_no;
 		this.user_id = user_id;
@@ -104,19 +105,19 @@ public class UserVo {
 		this.dsc = dsc;
 	}
 
-	public Date getWrite_date() {
+	public LocalDateTime getWrite_date() {
 		return write_date;
 	}
 
-	public void setWrite_date(Date write_date) {
+	public void setWrite_date(LocalDateTime write_date) {
 		this.write_date = write_date;
 	}
 
-	public Date getLast_login() {
+	public LocalDateTime getLast_login() {
 		return last_login;
 	}
 
-	public void setLast_login(Date last_login) {
+	public void setLast_login(LocalDateTime last_login) {
 		this.last_login = last_login;
 	}
 
