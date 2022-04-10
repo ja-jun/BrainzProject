@@ -86,9 +86,14 @@ function createAndInitGrid(){
         postData : {}, //....
         mtype : "POST",
         loadtext : loadText,
-        width:1573,
         height: 'auto',
 		autowidth:true,
+		loadComplete : function(data){
+			$("#nullData").remove();
+			if(data.rows.length == 0){
+				$(".ui-jqgrid-bdiv").append("<div id='nullData'><img src='../resources/img/external.png' class='dataI'><p class='dataP'>검색결과가 없습니다</p></div>");
+			}
+		},
 		beforeSelectRow: function(rowid, e){
 			i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
 			cm = $(this).jqGrid('getGridParam','colModel');
@@ -350,7 +355,7 @@ function id_check() {
 		$('.input_id').attr("check_result", "fail");
 	})
 	if ($('.input_id').val() == '') {
-		alert( checkId_alert )
+		$('#checkId_Msg').html( checkId_alert );
 		return;
 	}
 	
@@ -367,7 +372,7 @@ function id_check() {
 				return;
 			} else {
 				$('#checkId_Msg').html( checkId_Msg4 );
-				$('#checkId_Msg').attr("style", "color: blue");
+				$('#checkId_Msg').attr("style", "color: #0b5fda");
 				$('.input_id').attr("check_result", "success");
 				$('#check_sucess_icon').show();
 				$('.id_check_button').hide();
@@ -556,7 +561,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		
 		<div id="gnb">
 			<div class="iconBox">
-			<img src="../resources/img/user.png" class="profile">
+			<img src="../resources/img/profile.png" class="profile">
 				<div class="icon">
 				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>
@@ -601,9 +606,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			<div class="bottom">
 			<div class="userInput">
 				<strong class="text"><spring:message code="user.modal.registerId"/><span class="star">*</span></strong>
-				<input type="text" id="user_id" name="user_id" class="input_id" check_result="fail" required />
-				<button type="button" id="id_check_button" class="id_check_button" onclick="id_check()"><spring:message code='user.modal.registerIdBtn'/></button>
-				<i class="fa-solid fa-check" id="check_sucess_icon" style="display: none;font-size: 20px;padding-left: 10px"></i><br>
+				<input type="text" id="user_id" name="user_id" class="input_id" onblur="id_check()" check_result="fail" required />
 				<div id="checkId_Msg" class="confirmAlertBox"></div>
 			</div>
 			<div class="userInput">
@@ -660,7 +663,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		<div class="deleteBox">
 			
 			<div class="top">
-				<h3 class="title"><spring:message code="user.modal.deletetitle"/></h3>
+				<h3 class="topTitle"><spring:message code="user.modal.deletetitle"/></h3>
 				<i class="bi bi-x" onclick="modalOff()"></i>
 			</div>
 			<img src="../resources/img/trash2.png" class="trash">

@@ -26,7 +26,7 @@
 					<li class="pageList" id="userPage">
 						<a href="../user/mainPage">
 						<div class="navBox">
-						<img src="../resources/img/person.png" class="imgNav">
+						<img src="../resources/img/user.png">
 						<span class="navTitle"><spring:message code="nav.user"/></span>
 						</div>
 						</a>
@@ -35,7 +35,7 @@
 					<li class="pageList" id="serverPage">
 						<a href="../server/mainPage">
 						<div class="navBox">
-						<img src="../resources/img/servers.png" class="imgNav">
+						<img src="../resources/img/server.png">
 						<span class="navTitle"><spring:message code="nav.server"/></span>
 						</div>
 						</a>
@@ -44,7 +44,7 @@
 					<li class="pageList" id="calenderPage">
 						<a href="../schedule/mainPage">
 						<div class="navBox">
-						<img src="../resources/img/calendar2.png" class="imgNav">
+						<img src="../resources/img/calendarV1.png">
 						<span class="navTitle"><spring:message code="nav.schedule"/></span>
 						</div>
 						</a>
@@ -53,7 +53,7 @@
 					<li class="pageList" id="noticePage">
 						<a href="../notification/mainPage">
 						<div class="navBox">
-						<img src="../resources/img/notice.png" class="imgNav">
+						<img src="../resources/img/notice.png">
 						<span class="navTitle"><spring:message code="nav.notification"/></span>
 						</div>
 						</a>

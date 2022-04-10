@@ -2,12 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
 
-.bottom{/* padding: 20px 30px 0px 30px; */overflow-y: auto;}
+.bottom{overflow-y: auto;}
 #scheduleBox{width: 100%;background: #fff;border-radius: 10px;border: 1px solid #e9e9ee;}
 #box{
-    margin: 30px 0px 100px 350px;
     width: 100%;
-    padding-right: 400px;
+    padding: 1vw 2vw 2vw 16vw;
     }
 #container{
     position: absolute;
@@ -17,14 +16,14 @@
     width: 100%;
 }
 #jqgridBox{
-	padding-left:30px;
-	padding-top: 30px;}
+	
+	padding: 30px;}
 .writeBtn{
-	width: 83px;
-    height: 46px;
+	width: 85px;
+    height: 45px;
     font-weight: 400;
     border: 1px solid #555;
-    border-radius: 5px;
+    border-radius: 7px;
     cursor: pointer;
     color: #222;
 	background: #fff;
@@ -39,7 +38,11 @@
     display: flex;
 }
 
-#top{display: flex;justify-content: space-between;padding: 30px 30px 30px 30px;}
+#top{
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 30px 30px 30px;
+}
 #gnb{
     display: flex;
     justify-content: flex-end;
@@ -86,8 +89,7 @@
     justify-content: center;
     background-color: #ffffff;
     box-shadow: 0 10px 30px rgb(0 0 0 / 17%);
-    
-    height: 900px;
+    height: 890px;
     align-content: center;
     border-radius: 10px;overflow: hidden;}
 .top{
@@ -98,10 +100,10 @@
     display: flex;
     justify-content: space-between;
     padding: 0px 30px 0px 30px;
-align-items: center;}
+	align-items: center;
+}
 .top .title{
-font-weight: 500;
-font-size: 17px;
+	font-size: 16px;
 }
 .top .bi-x{
     font-size: 24px;
@@ -111,8 +113,10 @@ font-size: 17px;
 
 #modal .modalBox .titleBox{
     border-top:none;
-	
-margin-bottom: 30px;padding-left: 30px;padding-top: 20px;}
+	margin-bottom: 30px;
+	padding-left: 30px;
+	padding-top: 20px;
+}
 #modal .modalBox .titleBox .text{
     font-size: 16px;
     font-weight: 400;
@@ -129,10 +133,10 @@ margin-bottom: 30px;padding-left: 30px;padding-top: 20px;}
     border: 1px solid #ccc;
     height: 40px;
     width: 400px;
-    padding-left: 8px;
-	font-size: 15px;
-	font-weight: 300;
-border-radius: 5px;
+    padding-left: 10px;
+	font-size: 14px;
+	font-weight: 400;
+border-radius: 7px;
 }
 
 .confirmAlertBox{
@@ -146,7 +150,7 @@ border-radius: 5px;
 	display: none;
 	margin-left: 27px;
 	font-weight: 300;
-	font-size: 15px;
+	vertical-align: top;font-size: 14px;
 }
 
 #modal .modalBox .selectUser{
@@ -165,11 +169,11 @@ border-radius: 5px;
 .selectUserBox{
 	height: 40px;
 	width: 100px;
-	font-size: 15px;
+	font-size: 14px;
 	padding-left: 5px;
 	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-weight: 300;
+	border-radius: 7px;
+	font-weight: 400;
 }
 select[disabled] {border:1px solid #ddd; color:#bdbdbd; }
 .selectUser2{margin-left: 80px;display: none;}
@@ -186,9 +190,9 @@ select[disabled] {border:1px solid #ddd; color:#bdbdbd; }
 }
 #modal .modalBox .dateBox .radioBox{
     
-    color: #222;
-    font-weight: 300;
-    font-size: 15px;
+    color: #555;
+    
+    font-size: 14px;
 }
 #modal .modalBox .dateBox .radioBox .datepicker{
     height: 40px;
@@ -196,12 +200,12 @@ select[disabled] {border:1px solid #ddd; color:#bdbdbd; }
     width: 150px;
     padding: 8px;
     font-size: 15px;
-    font-weight: 300;
-    background-image: url('../img/calendar.svg');
+    font-weight: 400;
+    background-image: url('../img/calendarG.png');
     background-repeat: no-repeat;
     background-position: 95% 50%;
     
-border-radius: 5px;padding-left: 10px;}
+border-radius: 5px;padding-left: 10px;font-family: 'Montserrat';}
 .ing{
     margin: 6px 20px 0px 20px;
     font-size: 18px;
@@ -230,13 +234,13 @@ border-radius: 5px;padding-left: 10px;}
     padding-left: 30px;}
 #modal .modalBox .timeBox .text{
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
 }
 #modal .modalBox .timeBox .radioBox{
     margin-left: 65px;
-    font-weight: 300;
-    color: #222;
-    font-size: 15px;
+    
+    color: #555;
+    font-size: 14px;
 }
 #modal .modalBox .timeBox .dayBox{
     height: 30px;
@@ -244,14 +248,14 @@ border-radius: 5px;padding-left: 10px;}
     margin: 0px 3px 0px 3px;
     border: 1px solid #ccc;
     padding-left: 7px;
-    font-size: 15px;
-    font-weight: 300;
-border-radius: 5px;font-weight: 300;}
+    font-size: 14px;
+    
+border-radius: 5px;font-family: 'Montserrat';}
 #modal .modalBox .timeBox .btnDay:first-child{margin-right:20px}
 #modal .modalBox .timeBox .btnDay{
     margin-top: 10px;
-    height: 33px;
-    width: 60px;
+    height: 30px;
+    width: 55px;
     margin-left: 3px;
     background: none;
     border: 1px solid #ccc;
@@ -275,10 +279,10 @@ border-radius: 5px;}
     /* background: #f3f3f3; */
     display: flex;
     justify-content: space-between;
-    align-content: stretch;
-    padding: 10px 20px 10px 20px;
+    /* align-content: stretch; */
+    padding: 10px 16px 10px 25px;
     vertical-align: middle;
-margin-top: 40px;border-top: 1px solid #ccc;}
+margin-top: 40px;border-top: 1px solid #ddd;align-items: center;}
 #modal .modalBox .listBox .text{
     font-size: 16px;
     font-weight: 500;
@@ -296,7 +300,7 @@ color: #222;}
     font-size: 14px;
     margin-right: 10px;
     border-radius: 5px;
-    color: #777;
+    color: #222;
     display: grid;
     align-content: center;
 }
@@ -369,14 +373,14 @@ border-top: 1px solid #ccc;}
 	padding-right: 20px;
 	display: flex;
 	justify-content: flex-end;
-margin-bottom: 20px;}
+	margin-bottom: 20px;
+}
 
 .btnBox .btnBoxbtn{
     width: 80px;
-    height: 45px;
+    height: 40px;
     font-weight: 400;
     border: 1px solid #293042;
-    
     border-radius: 5px;
     cursor: pointer;
     color: #fff;
@@ -405,7 +409,7 @@ margin-left: 10px;}
     display: flex;
 font-family: 'Montserrat';color: #222;}
 
-#radioBoxRepeat .ing{margin: 0.3vw 1vw;}
+#radioBoxRepeat .ing{margin: 12px;}
 #radioBoxRepeat .repeatBox{
     display: flex;
 }
@@ -439,8 +443,7 @@ border-radius: 10px;box-shadow: 0 10px 30px rgb(0 0 0 / 17%);}
 #serverModalBox{
 	overflow: hidden;
 border-radius: 10px;
-width:800px
-}
+width: 800px;}
 
 
 /* 바디에 스크롤 막는 방법 */
@@ -461,13 +464,13 @@ width:800px
     padding-right: 20px;
 	display: flex;
 	justify-content: flex-end;
-	margin-bottom: 20px;
+	
 }
 
 
 .btnBoxbtn2{
     width: 80px;
-    height: 45px;
+    height: 40px;
     font-weight: 400;
     border: 1px solid #293042;
     background:#293042;
@@ -482,7 +485,7 @@ width:800px
 
 .btnBoxbtn3{
     width: 80px;
-    height: 45px;
+    height: 40px;
     font-weight: 400;
     border: 1px solid #293042;
     background: #293042;
@@ -509,8 +512,8 @@ width:800px
     width: 150px;
     padding: 8px;
     font-size: 15px;
-    font-weight: 300;
-    background-image: url('../img/alarm.svg');
+    font-weight: 400;
+    background-image: url('../img/time.png');
     background-position: 95% 50%;
     background-repeat: no-repeat;
     
@@ -521,7 +524,7 @@ border-radius: 5px;font-family: 'Montserrat';}
     width: 150px;
     padding-left: 8px;
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 #deleteRadio{
@@ -560,7 +563,7 @@ border-radius: 5px;font-family: 'Montserrat';}
 
 .tbodyBox{
     height: 190px;
-	overflow-y: auto;
+	overflow-y: overlay;
 	}
 .fc .fc-daygrid-day.fc-day-today{background:#f2f3f4}
 

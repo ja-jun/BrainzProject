@@ -545,114 +545,102 @@ function getCalendarList(){
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
-function getServerList(){
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			var data = JSON.parse(xhr.responseText);
-			
-			
-			var aaa = data.serverList;
-			var jsonArr = [];
-			for (var i = 0; i < aaa.length; i++) {
-			    jsonArr.push({
-			    	'name': aaa[i].name,
-			    	'ip': aaa[i].ip,
-			    	'os': aaa[i].os,
-			    	'server_no': aaa[i].server_no
-			    });
-			}
-			
-			
-			$("#list").jqGrid({
-				datatype: "local",
-				data: jsonArr,
-				rowNum: 10,
-				rowList:[10,20,30],
-				multiselectWidth: 30,
-				height: 'auto',
-				autowidth:true, 
-				colModel: [	
-						{name: 'name', label : lang_svname, align:'left', width:'50%'},
-				        {name: 'ip', label : 'IP', align:'left', width:'40%'},
-				        {name: 'os', label : 'OS', align:'left', width:'30%'},
-				        {name: 'server_no', hidden: true}
-						],
-			    pager: '#pager',
-			    multiselect: true
-			
-			});
-			
-			
-			$('.btnBoxbtn2').click(function(){
-				var params = new Array(); 
-				var a = $("#list").jqGrid('getGridParam', 'selarrrow');
-				
-				
-				for (var i = 0; i < a.length; i++) { //row id수만큼 실행          
-				    if($("input:checkbox[id='jqg_list_"+a[i]+"']").is(":checked")){ //checkbox checked 여부 판단
-				    var rowdata = $("#list").getRowData(a[i]);
-				    params.push(rowdata);
-				    console.log(params);
-				    
-				    }
-				
-				}
-				
-				console.log(params);
-		    	
-		    	const serverModal = document.getElementById("serverModal"); 
-		        serverModal.setAttribute("style","display: none");
-		        
-		        var theadList = document.getElementById("theadList");
-		        
-		    	var serverModal2 = document.getElementById("serverListM");
-		    	serverModal2.innerHTML = "";
-				
-		    	var tbody = document.createElement("tbody");
-		    	tbody.setAttribute("class","tbodyBox");
-		    
- 					for(var i = 0; i < params.length; i++){
-					var tr6 = document.createElement("tr");
-					tr6.setAttribute("class","serverContent");
-					tbody.appendChild(tr6);
-					var th7 = document.createElement("th");
-					th7.setAttribute("class","serverContentText");
-					tr6.appendChild(th7);
-					var th8 = document.createElement("input");
-					th8.setAttribute("type","checkbox");
-					th8.setAttribute("name","rowCheck");
-					th7.appendChild(th8);
-					var th9 = document.createElement("th");
-					th9.setAttribute("class","serverContentText");
-					th9.innerText=params[i].name;
-					tr6.appendChild(th9);
-					var th10 = document.createElement("th");
-					th10.setAttribute("class","serverContentText");
-					th10.innerText=params[i].ip;
-					tr6.appendChild(th10);
-					var th11 = document.createElement("th");
-					th11.setAttribute("class","serverContentText");
-					th11.innerText=params[i].os;
-					tr6.appendChild(th11);
-					var th12 = document.createElement("input");
-					th12.setAttribute("type","hidden");
-					th12.setAttribute("name","server_no");
-					th12.setAttribute("value",params[i].server_no);
-					tr6.appendChild(th12);
-					}  
-		    	
- 					tbody.appendChild(tr6);
- 					serverModal2.appendChild(theadList);
- 					serverModal2.appendChild(tbody);
-		    	
-			});
-		}
-	};
+function createAndInitGrid(){
 	
-	xhr.open("post" , "./getServerList" , true);
-	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xhr.send();	
+	$("#list").jqGrid({
+        colModel: [   
+            {name: 'name', label : '서버명', align:'left', width:'40%'},
+            {name: 'ip', label:'IP', align:'left', width:'40%'},
+            {name: 'os', label : 'OS분류', align:'center', width:'30%'},
+            {name: 'server_no',label:'서버 번호', hidden:true}
+            ],
+        pager: '#pager',
+        rowNum: 10,
+        rowList: [10,30,50],
+        viewrecords: true,
+        multiselect: true,
+        multiselectWidth: 100,
+		autoencode: true,
+        //Data 연동 부분
+        url : "./getServerList",
+        datatype : "JSON", //받을 때 파싱 설정
+        postData : {aaa : 111},
+        mtype : "POST",
+        loadtext : "로딩중...",
+        emptyrecords : "데이터가 없습니다.", //viewrecords에 나오는 문구
+        width:740,
+        height: 'auto',
+		beforeSelectRow: function(rowid, e){
+			i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
+			cm = $(this).jqGrid('getGridParam','colModel');
+			return (cm[i].name === 'cb');
+		}
+	});
+	
+	
+	$('.btnBoxbtn2').click(function(){
+		var params = new Array(); 
+		var a = $("#list").jqGrid('getGridParam', 'selarrrow');
+		
+		
+		for (var i = 0; i < a.length; i++) { //row id수만큼 실행          
+		    if($("input:checkbox[id='jqg_list_"+a[i]+"']").is(":checked")){ //checkbox checked 여부 판단
+		    var rowdata = $("#list").getRowData(a[i]);
+		    params.push(rowdata);
+		    console.log(params);
+		    
+		    }
+		
+		}
+		
+		console.log(params);
+    	
+    	const serverModal = document.getElementById("serverModal"); 
+        serverModal.setAttribute("style","display: none");
+        
+        var theadList = document.getElementById("theadList");
+        
+    	var serverModal2 = document.getElementById("serverListM");
+    	serverModal2.innerHTML = "";
+		
+    	var tbody = document.createElement("tbody");
+    	tbody.setAttribute("class","tbodyBox");
+    
+				for(var i = 0; i < params.length; i++){
+			var tr6 = document.createElement("tr");
+			tr6.setAttribute("class","serverContent");
+			tbody.appendChild(tr6);
+			var th7 = document.createElement("th");
+			th7.setAttribute("class","serverContentText");
+			tr6.appendChild(th7);
+			var th8 = document.createElement("input");
+			th8.setAttribute("type","checkbox");
+			th8.setAttribute("name","rowCheck");
+			th7.appendChild(th8);
+			var th9 = document.createElement("th");
+			th9.setAttribute("class","serverContentText");
+			th9.innerText=params[i].name;
+			tr6.appendChild(th9);
+			var th10 = document.createElement("th");
+			th10.setAttribute("class","serverContentText");
+			th10.innerText=params[i].ip;
+			tr6.appendChild(th10);
+			var th11 = document.createElement("th");
+			th11.setAttribute("class","serverContentText");
+			th11.innerText=params[i].os;
+			tr6.appendChild(th11);
+			var th12 = document.createElement("input");
+			th12.setAttribute("type","hidden");
+			th12.setAttribute("name","server_no");
+			th12.setAttribute("value",params[i].server_no);
+			tr6.appendChild(th12);
+			}  
+    	
+				tbody.appendChild(tr6);
+				serverModal2.appendChild(theadList);
+				serverModal2.appendChild(tbody);
+    	
+	});
 }
 window.addEventListener("DOMContentLoaded" , function(){
 	
@@ -833,7 +821,7 @@ window.addEventListener("DOMContentLoaded" , function(){
 	/* page load후 바로 실행 되는 함수들 */
 	getCalendarList();
 	writeBtn();
-	getServerList();
+	createAndInitGrid();
 	delBtn();
 });
 function confirmTitle(){
@@ -1101,7 +1089,7 @@ function selectUser(target){
 	    	<div id="box">
 	    		<div id="gnb">
 					<div class="iconBox">
-						<img src="../resources/img/user.png" class="profile">
+						<img src="../resources/img/profile.png" class="profile">
 						<div class="icon">
 						<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 						</div>

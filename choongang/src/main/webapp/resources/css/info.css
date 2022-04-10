@@ -16,9 +16,8 @@
 	overflow-x: hidden;
 }
 #box{
-    margin: 30px 0px 100px 350px;
     width: 100%;
-    padding-right: 400px;
+    padding: 1vw 2vw 2vw 16vw;
 }
 #first{
 	display: grid;

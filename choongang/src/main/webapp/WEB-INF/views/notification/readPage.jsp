@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		success: function(data){
             // 업로드 된 파일 리스트 만들기
             $.each(data.fileVo, function(index, item){
-            	$('#afile3-list').append("<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
+            	$('#afile3-list').append("<img src='../resources/img/download.png'>" + "<a href='/choongang/notification/download?file_no=" + item.file_no + "' download>" + item.fileName + "</a>");
             });
                   
 		}
@@ -52,7 +52,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		
 		<div id="gnb">
 			<div class="iconBox">
-			<img src="../resources/img/user.png" class="profile">
+			<img src="../resources/img/profile.png" class="profile">
 				<div class="icon">
 				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>
@@ -84,7 +84,7 @@ window.addEventListener("DOMContentLoaded", function(){
             		<c:otherwise>
             		<div class="next">
 					<a href="./readPage?nc_no=${data3.nc_no }" style="display: flex;">
-					<img src="https://img.icons8.com/ios-filled/50/000000/collapse-arrow.png" style="width:15px">
+					<img src="../resources/img/arrowUp.png">
 					<span class="nextTitle"><spring:message code="noti.page"/></span>
 					<p class="nextText">${data3.nc_title }</p>
 					</a>
@@ -101,7 +101,7 @@ window.addEventListener("DOMContentLoaded", function(){
             		<c:otherwise>
             		<div class="prev">
 					<a href="./readPage?nc_no=${data2.nc_no }" style="display: flex;">
-					<img src="https://img.icons8.com/ios-filled/50/000000/expand-arrow--v1.png" style="width:15px">
+					<img src="../resources/img/arrowDown.png">
 					<span class="prevTitle"><spring:message code="noti.page2"/></span>
 					<p class="prevText">${data2.nc_title }</p>
 					</a>

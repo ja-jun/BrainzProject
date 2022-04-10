@@ -71,7 +71,12 @@ function createAndInitGrid(){
 		              loadtext : loading,
 		  	          height: 'auto',
 		  			  autowidth:true,  			 
-		  			
+		  			  loadComplete : function(data){
+						$("#nullData").remove();
+						if(data.rows.length == 0){
+							$(".ui-jqgrid-bdiv").append("<div id='nullData'><img src='../resources/img/external.png' class='dataI'><p class='dataP'>검색결과가 없습니다</p></div>");
+						}
+					   },
 		  			  onCellSelect: function(rowid, iCol, e){
 		  	            var rowData = $("#list").getRowData(rowid);
 		  	            var nc_no = rowData.nc_no;
@@ -92,7 +97,7 @@ function imageFormatter(cellValue)
 	if(cellValue == null){
 		   return '';
 		} else {
-		   return '<a href="/choongang/notification/download?file_no=' + cellValue + '"><img src="../resources/img/file1.png" /></a>';
+		   return '<a href="/choongang/notification/download?file_no=' + cellValue + '"><img src="../resources/img/download.png" /></a>';
 		}
 	
 }
@@ -378,7 +383,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		
 		<div id="gnb">
 			<div class="iconBox">
-			<img src="../resources/img/user.png" class="profile">
+			<img src="../resources/img/profile.png" class="profile">
 				<div class="icon">
 				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>

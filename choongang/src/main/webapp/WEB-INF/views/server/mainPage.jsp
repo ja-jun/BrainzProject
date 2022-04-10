@@ -98,11 +98,12 @@ function createAndInitGrid(){
 				cm = $(this).jqGrid('getGridParam','colModel');
 				return (cm[i].name === 'cb');
 			},
-			/*
-			loadComplete : function(){
-				alert(1111);	
+			loadComplete : function(data){
+				$("#nullData").remove();
+				if(data.rows.length == 0){
+					$(".ui-jqgrid-bdiv").append("<div id='nullData'><img src='../resources/img/external.png' class='dataI'><p class='dataP'>검색결과가 없습니다</p></div>");
+				}
 			},
-			*/
 			gridComplete : function(){
 				//alert(3333);	
 			},
@@ -458,7 +459,7 @@ window.addEventListener("DOMContentLoaded", function(){
       
       <div id="gnb">
          <div class="iconBox">
-         <img src="../resources/img/user.png" class="profile">
+         <img src="../resources/img/profile.png" class="profile">
             <div class="icon">
             <p class="iconText" style="font-size: 18px">${userInfo.name }</p>
             </div>
@@ -474,7 +475,7 @@ window.addEventListener("DOMContentLoaded", function(){
             <a href="./getExcelServerList" id="exportAnchor"><button class="writeBtn" id="excelBtn"><spring:message code="server.export"/></button></a>
             </div>
                <div id="search">
-	              <select id="statusSelect" onchange="Onchange(this)" class="selectUserBox" style="height: 46px; width: 100px; font-size: 17px; padding-left: 5px; border: 1px solid #ccc; border-radius: 5px; font-weight: 300; margin-right: 10px;">
+	              <select id="statusSelect" onchange="Onchange(this)" class="selectUserBox">
 	            	  <option value=""><spring:message code="server.state"/></option>            
 	                  <option value="0"><spring:message code="info.schedule.preworking"/></option>
 	            	  <option value="1"><spring:message code="info.schedule.working"/></option>
