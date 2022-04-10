@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title><spring:message code="nav.schedule"/></title>
+<script src="https://kit.fontawesome.com/1fa86d52d5.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -61,6 +62,7 @@ const lang_reg_fail1 = '<spring:message code="schedule.register.fail1"/>';
 const lang_reg_fail2 = '<spring:message code="schedule.register.fail2"/>';
 const lang_mod_success = '<spring:message code="schedule.modify.success"/>';
 const lang_del_success = '<spring:message code="schedule.delete.success"/>';
+const lang_myself = '<spring:message code="schedule.myself"/>';
 
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
@@ -128,6 +130,9 @@ function writeBtn() {
      btn2.setAttribute("class","btnBoxbtn");
      btn2.setAttribute("id","btnBoxbtn2");
      btn2.setAttribute("onclick","delBtn()");
+ 	
+ 	$('#selectUser').empty();
+ 	selectUser($('#selectUser'));
 }
 /* 삭제 버튼 클릭시 */
 function molBtn() {
@@ -187,6 +192,7 @@ function molBtn() {
 	radioBoxList.appendChild(span);
 	radioBoxList3.appendChild(input3);
 	radioBoxList3.appendChild(span3);
+
 }
 /* 삭제 취소 버튼 클릭시 */
 function delBox() {
@@ -419,12 +425,17 @@ function getCalendarList(){
 				            $('#regScheduleInfo').append(input_date);
 				            
 				            /* 계층구조 추가를 위한 수정 내용 */
-				            const cur_manager = $('<option value="">' + sc_info.name + '</option>');
+				            var manager_name = sc_info.name;
+				            if(sc_info.user_no == '${userInfo.user_no}'){
+				            	manager_name = lang_myself;
+				            }
+				            const cur_manager = $('<option value="">' + manager_name + '</option>');
 				            $('#selectUser').attr('disabled', 'true');
 				            $('#selectUser').empty();
 				            $('#selectUser').append(cur_manager);
 				            
 				            const selectUser2 = document.querySelector('.selectUser2');
+				            $('#selectUser2').empty();
 				            selectUser2.setAttribute("style","display: block");
 				            selectUser($('#selectUser2'));
 				            
@@ -820,7 +831,6 @@ window.addEventListener("DOMContentLoaded" , function(){
    
    
 	/* page load후 바로 실행 되는 함수들 */
-	selectUser($('#selectUser'));
 	getCalendarList();
 	writeBtn();
 	getServerList();
@@ -1069,7 +1079,7 @@ function selectUser(target){
     	dataType: 'JSON',
 		success: function(json){
 			var userList = json['userList'];
-			
+			target.append($('<option value="' + ${userInfo.user_no} + '">' + lang_myself + '</option>'));
 			for(var user in userList){
 				var option = $('<option value="' + userList[user].user_no + '">' + userList[user].name + '</option>');
 				target.append(option)
@@ -1093,8 +1103,9 @@ function selectUser(target){
 					<div class="iconBox">
 						<img src="../resources/img/user.png" class="profile">
 						<div class="icon">
-						<p class="iconText" >${userInfo.name }</p>
+						<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 						</div>
+						<a href="/choongang/security_logout"><i class="fa-solid fa-right-from-bracket" style=" margin-left: 16px; font-size: 22px; padding-top: 2px;"></i></a>
 					</div>
 				</div>
 	    			
@@ -1139,15 +1150,13 @@ function selectUser(target){
 					</div>
 					
 					<div class="selectUser">
-                  	<strong class="text">담당자</strong>
+                  	<strong class="text"><spring:message code="schedule.manager"/></strong>
                   	<select id="selectUser" name="selectManager" class="selectUserBox" >
-                        <option value="${userInfo.user_no }">본인</option>
                      </select>
                      
                     <div class="selectUser2">
-                  	<strong class="text">담당자 변경</strong>
+                  	<strong class="text"><spring:message code="schedule.changemanager"/></strong>
                   	<select id="selectUser2" name="changeManager" class="selectUserBox" >
-                        <option value="${userInfo.user_no }">본인</option>
                      </select>
                		</div>
                		</div>
@@ -1254,7 +1263,7 @@ function selectUser(target){
 		<div id="serverModal">
 		<div id="serverModalBox">
 		<div class="top">
-			<h3 class="title">서버리스트</h3>
+			<h3 class="title">Server List</h3>
 			<i class="bi bi-x" onclick="delBtn2()"></i>
 		</div>
 			<div id="jqgridBox">

@@ -3,6 +3,8 @@ package com.choongang.bcentral.info.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +13,7 @@ import com.choongang.bcentral.info.service.InfoService;
 import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.server.vo.ServerInfoVo;
 import com.choongang.bcentral.server.vo.ServerVo;
+import com.choongang.bcentral.user.vo.UserVo;
 import com.google.gson.Gson;
 
 @RestController
@@ -21,7 +24,7 @@ public class RestInfoController {
 	private InfoService infoService;
 	
 	@RequestMapping("getServerInfo")
-	public HashMap<String, Object> getServerInfo(){
+	public HashMap<String, Object> getServerInfo(HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
 		ArrayList<ScheduleVo> scheduleList = infoService.getTodaySchedule();
@@ -35,10 +38,12 @@ public class RestInfoController {
 			System.out.println("server_no : " + serverNo + " server_status : " + siVo.getStatus());
 		}
 		
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		
 		data.put("serverInfo", serverInfo);
 		data.put("totalServer", infoService.getTotalServer());
 		data.put("stateCount", stateCount);
-		data.put("weekScheduleInfo", infoService.getWeekScheduleInfo());
+		data.put("weekScheduleInfo", infoService.getWeekScheduleInfo(userVo.getUser_no()));
 		data.put("notificationVo", infoService.getNotification());
 				
 		return data;

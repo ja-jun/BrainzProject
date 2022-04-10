@@ -2,11 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title><spring:message code="nav.notification"/></title>
+<script src="https://kit.fontawesome.com/1fa86d52d5.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -52,8 +54,9 @@ window.addEventListener("DOMContentLoaded", function(){
 			<div class="iconBox">
 			<img src="../resources/img/user.png" class="profile">
 				<div class="icon">
-				<p class="iconText" >닉네임</p>
+				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>
+				<a href="/choongang/security_logout"><i class="fa-solid fa-right-from-bracket" style=" margin-left: 16px; font-size: 22px; padding-top: 2px;"></i></a>
 			</div>
 		</div>
 		
@@ -82,7 +85,7 @@ window.addEventListener("DOMContentLoaded", function(){
             		<div class="next">
 					<a href="./readPage?nc_no=${data3.nc_no }" style="display: flex;">
 					<img src="https://img.icons8.com/ios-filled/50/000000/collapse-arrow.png" style="width:15px">
-					<span class="nextTitle">다음</span>
+					<span class="nextTitle"><spring:message code="noti.page"/></span>
 					<p class="nextText">${data3.nc_title }</p>
 					</a>
 					</div>
@@ -99,7 +102,7 @@ window.addEventListener("DOMContentLoaded", function(){
             		<div class="prev">
 					<a href="./readPage?nc_no=${data2.nc_no }" style="display: flex;">
 					<img src="https://img.icons8.com/ios-filled/50/000000/expand-arrow--v1.png" style="width:15px">
-					<span class="prevTitle">이전</span>
+					<span class="prevTitle"><spring:message code="noti.page2"/></span>
 					<p class="prevText">${data2.nc_title }</p>
 					</a>
 					</div>
@@ -108,7 +111,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			
 			
 			<div class="btnBox">
-				<a href="./mainPage"><button class="btnList">목록보기</button></a>
+				<a href="./mainPage"><button class="btnList"><spring:message code="noti.page3"/></button></a>
 			</div>
 			</div>
       	</div>

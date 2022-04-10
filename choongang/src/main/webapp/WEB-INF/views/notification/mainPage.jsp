@@ -6,9 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
+<title><spring:message code="nav.notification"/></title>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-
+<script src="https://kit.fontawesome.com/1fa86d52d5.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
@@ -42,6 +42,7 @@ const remove2 = '<spring:message code="noti.remove2"/>';
 const cancel = '<spring:message code="noti.cancel"/>';
 const reg = '<spring:message code="noti.registration"/>';
 const reg2 = '<spring:message code="noti.registration2"/>';
+const fileselect = '<spring:message code="noti.fileselect"/>';
 const fileselect2 = '<spring:message code="noti.fileselect2"/>';
 
 function createAndInitGrid(){
@@ -290,8 +291,8 @@ function createFileBtn(){
 	$('#fileBox').empty();
 	
 	var strong = $('<strong class="text"> <spring:message code="noti.file"/> </strong>');
-	var input = $('<input class="upload-name" value="<spring:message code="noti.fileselect2"/>">');
-	var label = $('<label for="ex_filename" class="filename">"<spring:message code="noti.fileselect"/>"</label>');
+	var input = $('<input class="upload-name" value="<spring:message code="noti.fileselect"/>">');
+	var label = $('<label for="ex_filename" class="filename"><spring:message code="noti.fileselect"/></label>');
 	var input_label = 
 		$('<input type="file" name="file" id="ex_filename" onchange="insertSelectedFileName()" accept=".bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt"/>');
 	
@@ -379,8 +380,9 @@ window.addEventListener("DOMContentLoaded", function(){
 			<div class="iconBox">
 			<img src="../resources/img/user.png" class="profile">
 				<div class="icon">
-				<p class="iconText" >닉네임</p>
+				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>
+				<a href="/choongang/security_logout"><i class="fa-solid fa-right-from-bracket" style=" margin-left: 16px; font-size: 22px; padding-top: 2px;"></i></a>
 			</div>
 		</div>
 		
@@ -429,7 +431,7 @@ window.addEventListener("DOMContentLoaded", function(){
 					</div>
 								
 						<div id="fileBox" class="noticeInput">
-							<strong class="text">파일</strong>
+							<strong class="text"><spring:message code="noti.file"/></strong>
 							<input class="upload-name" value='<spring:message code="noti.fileselect"/>'>
 							<label for="ex_filename" class="filename"><spring:message code="noti.fileselect"/></label>
 							<input type="file" name="file" id="ex_filename" accept=".bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt"/>

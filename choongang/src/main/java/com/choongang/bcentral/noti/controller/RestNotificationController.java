@@ -81,7 +81,7 @@ public class RestNotificationController {
 					int fileSize = (int)element.getSize();
 					
 					
-					String uploadRootFolderName = "C:/uploadFolder/";
+					String uploadRootFolderName = "/uploadFolder/";
 					String internalfileName = UUID.randomUUID().toString();
 					
 					String internalFilePath = uploadRootFolderName + internalfileName + ext;
@@ -138,7 +138,7 @@ public class RestNotificationController {
 					String ext = fileName.substring(fileName.lastIndexOf('.'));
 					int fileSize = (int)element.getSize();
 										
-					String uploadRootFolderName = "C:/uploadFolder/";
+					String uploadRootFolderName = "/uploadFolder/";
 					String internalfileName = UUID.randomUUID().toString();
 					
 					String internalFilePath = uploadRootFolderName + internalfileName + ext;
