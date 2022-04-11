@@ -50,7 +50,7 @@
 		select bn.nc_no, bn.user_no, bn.nc_title, bu.name, bn.nc_writedate
 		from bp_notification bn, bp_user bu
 		where bn.user_no = bu.user_no
-		order by bn.nc_writedate desc
+		order by bn.nc_no desc
 		limit 4
 	</select>
 	

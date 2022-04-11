@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.schedule.service.CheckValidationService;
 import com.choongang.bcentral.schedule.service.ScheduleService;
+import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.schedule.vo.SetScheduleVo;
 import com.choongang.bcentral.server.service.ServerService;
 import com.choongang.bcentral.server.vo.PageVo;
@@ -70,10 +71,13 @@ public class RestScheduleController {
 		
 		System.out.println("userInfo에 등록되어 있는 ID : " + userVo.getName());
 		
-		data.put("scheduleInfo", scheduleService.getScheduleInfo(sc_no));
+		ScheduleVo scVo = scheduleService.getScheduleInfo(sc_no);
+		
+		data.put("scheduleInfo", scVo);
 		data.put("serverList", scheduleService.getServerList(sc_no));
 		data.put("userList", userService.getTotalUserList(userVo.getUser_no()));
-		
+		data.put("start_time", scVo.getStart_time().toString());
+		data.put("end_time", scVo.getEnd_time().toString());
 		return data;
 	}
 	

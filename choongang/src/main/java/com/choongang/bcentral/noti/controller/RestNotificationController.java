@@ -78,6 +78,12 @@ public class RestNotificationController {
 
 					String fileName = element.getOriginalFilename();
 					String ext = fileName.substring(fileName.lastIndexOf('.'));
+//					String deny_ext = ".bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt";
+					
+//					if(deny_ext.indexOf(ext) == -1) {
+//						data.put("result", 0);
+//						return data;
+//					}
 					int fileSize = (int)element.getSize();
 					
 					

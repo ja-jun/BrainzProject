@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Bcentral</title>
 <!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 <!-- Google Fonts -->
@@ -43,7 +43,7 @@
 	
 	<div id="gnb">
 		<div class="iconBox">
-		<img src="../resources/img/user.png" class="profile">
+		<img src="../resources/img/profile.png" class="profile">
 		<div class="icon">
 		<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 		</div>

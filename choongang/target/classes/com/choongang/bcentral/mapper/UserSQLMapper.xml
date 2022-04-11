@@ -15,7 +15,7 @@
 			#{user_id},
 			#{user_pw},
 			#{name},
-			#{authority},
+			'ROLE_USER',
 			#{phone},
 			#{email},
 			#{dsc},
@@ -52,16 +52,16 @@
 	        )
 		SELECT req_user.*, bp_user.name AS parent_name FROM req_user left join bp_user ON req_user.parent = bp_user.user_no
 			<if test="searchWord !=null">
-				WHERE user_id iLIKE CONCAT('%',#{searchWord},'%') OR name iLIKE CONCAT('%',#{searchWord},'%')
+				WHERE req_user.user_id iLIKE CONCAT('%',#{searchWord},'%') OR req_user.name iLIKE CONCAT('%',#{searchWord},'%')
 			</if> 
 			<choose>
 				<when test="sidx != null and sidx !='' "> order by	
 	  				<choose>
-					    <when test="sidx eq 'user_id'"> user_id </when>
-					    <when test="sidx eq 'name'"> name </when>
-					    <when test="sidx eq 'authority'"> authority </when>
-					    <when test="sidx eq 'last_login' "> last_login </when>
-			    		<otherwise>user_no</otherwise>
+					    <when test="sidx eq 'user_id'"> req_user.user_id </when>
+					    <when test="sidx eq 'name'"> req_user.name </when>
+					    <when test="sidx eq 'parent_name'"> bp_user.name </when>
+					    <when test="sidx eq 'last_login' "> req_user.last_login </when>
+			    		<otherwise>req_user.user_no</otherwise>
 	 				</choose> 
 					<choose>
 					    <when test="sord eq 'desc'"> desc </when>
@@ -111,8 +111,7 @@
 	<update id="updateUser">
 		update bp_user 
 		set	
-			name=#{name}, 
-		    authority=#{authority}, 
+			name=#{name},
 		    phone=#{phone}, 
 			email=#{email}, 
 			dsc=#{dsc}

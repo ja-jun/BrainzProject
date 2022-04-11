@@ -624,13 +624,13 @@ window.addEventListener("DOMContentLoaded", function(){
 				<input type="text" id="name" name="name" class="textBox"><br>
 				<div id="checkName_Msg" class="confirmAlertBox"></div>
 			</div>
-			<div class="userInput">
+			<!-- <div class="userInput">
 				<strong class="text"><spring:message code="user.modal.auth"/><span class="star">*</span></strong>
 				<select form="regUserInfo" id="authority" name="authority" class="selectBox" >
 					<option value="ROLE_ADMIN">관리자</option>
 					<option value="ROLE_USER">사용자</option>
 				</select>
-			</div>
+			</div> -->
 			<div class="userInput">
 				<strong class="text"><spring:message code="user.modal.phone"/><span class="star">*</span></strong>
 				<input type="text" id="phone" name="phone" class="textBox" ><br>

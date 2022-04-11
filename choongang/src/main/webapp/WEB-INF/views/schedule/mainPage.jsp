@@ -257,16 +257,19 @@ function getCalendarList(){
 				            sc_no_input.setAttribute('value',sc_info.sc_no);
 				            $('.textBox').append(sc_no_input);
 				            
-				            $('input[name=start_date]').val(sc_info.start_date);
-				            $('input[name=end_date]').val(sc_info.end_date);
+				            //$('input[name=start_date]').val(sc_info.start_date);
+				            //$('input[name=end_date]').val(sc_info.end_date);
+				            
+				            var start_time = data.start_time;
+				            var end_time = data.end_time;
 				            
 				            if(sc_info.repeat_cat == 0){
 				            	$('.arr').attr('checked',false);
 				            	$('.timearr').attr('checked','checked');
 				            	$('input[name=start_date_2]').val(sc_info.start_date);
 					            $('input[name=end_date_2]').val(sc_info.end_date);
-					            $('input[name=start_time_2]').val(sc_info.start_time);
-					            $('input[name=end_time_2]').val(sc_info.end_time);
+					            $('input[name=start_time_2]').val(start_time);
+					            $('input[name=end_time_2]').val(end_time);
 					            
 					            const timeBox = document.querySelector('.timeBox');
 					 			timeBox.setAttribute("style","display: none");
@@ -279,13 +282,12 @@ function getCalendarList(){
 				            } else{
 				            	$('input[name=start_date_1]').val(sc_info.start_date);
 					            $('input[name=end_date_1]').val(sc_info.end_date);
-					            $('input[name=start_time_1]').val(sc_info.start_time);
+					            $('input[name=start_time_1]').val(start_time);
+				            	$('input[name=end_time_1]').val(end_time);
 				            	if(sc_info.end_date == '9999-12-31'){
 					            	$('.limitless').prop('checked',true);
 					            	const noneBox = document.querySelector('.noneBox2');
 					                noneBox.setAttribute("style","display: none");
-				            	} else {				            		
-					            	$('input[name=end_time_1]').val(sc_info.end_time);
 				            	}
 				            	
 					            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
@@ -795,7 +797,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     		format:'H:i',
     		step: 10
     	});
-    	$("#datetimepicker2").val("24:00");
+    	$("#datetimepicker2").val("23:50");
   	});
   	
   	$(function(){
@@ -813,7 +815,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     		format:'H:i',
     		step: 10
     	});
-    	$("#datetimepicker4").val("24:00");
+    	$("#datetimepicker4").val("23:50");
   	});
    
    
