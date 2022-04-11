@@ -12,13 +12,14 @@ public class PageVo {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PageVo(Integer rows, Integer page, String sidx, String sord, String searchWord) {
+	public PageVo(Integer rows, Integer page, String sidx, String sord, String searchWord, String status) {
 		super();
 		this.rows = rows;
 		this.page = page;
 		this.sidx = sidx;
 		this.sord = sord;
 		this.searchWord = searchWord;
+		this.status = status;
 	}
 
 	public Integer getRows() {
@@ -61,6 +62,11 @@ public class PageVo {
 		this.searchWord = searchWord;
 	}
 
+	public String getStatus() {
+		return status;
+	}
 	
-	
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

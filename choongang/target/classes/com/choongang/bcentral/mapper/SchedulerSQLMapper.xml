@@ -68,8 +68,8 @@
 				bs.write_date
 		from bp_schedule bs join req_user ru on bs.user_no = ru.user_no
 		<![CDATA[
-			where (to_char(bs.start_date, 'MM')::int <= #{month })
-			  and (to_char(bs.end_date, 'MM')::int >= #{month})
+			where (to_char(bs.start_date, 'YYYYMM')::int <= concat(#{year}, #{month })::int)
+			  and (to_char(bs.end_date, 'YYYYMM')::int >= concat(#{year}, #{month })::int)
 			  and delete_date is null
 		]]>
 		order by bs.start_date desc

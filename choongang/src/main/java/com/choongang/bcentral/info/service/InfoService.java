@@ -154,9 +154,6 @@ public class InfoService {
 		
 		while(!cur_date.equals(LocalDate.now().plusDays(7))) {
 			for(ScheduleVo scVo : weekScVo) {
-				if(!cur_date.isBefore(scVo.getEnd_date()) && !cur_date.isEqual(scVo.getEnd_date())) {
-					continue;
-				}
 				HashMap<String, Object> event = new HashMap<String, Object>();
 				int sc_no = scVo.getSc_no();
 				String title = scVo.getTitle();
@@ -165,6 +162,10 @@ public class InfoService {
 				LocalDate end_date = scVo.getEnd_date();
 				LocalTime start_time = scVo.getStart_time();
 				LocalTime end_time = scVo.getEnd_time();
+				
+				if(!(start_date.isBefore(cur_date) || start_date.equals(cur_date)) || !(end_date.isAfter(cur_date) || end_date.equals(cur_date))) {
+					continue;
+				}
 				
 				String[] dayCheck = {scVo.getMon(), scVo.getThe(), scVo.getWed(), scVo.getThu(), scVo.getFri(), scVo.getSat(), scVo.getSun()};
 				int day = cur_date.getDayOfWeek().getValue() - 1;

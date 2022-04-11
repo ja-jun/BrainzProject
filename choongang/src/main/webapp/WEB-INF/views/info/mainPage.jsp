@@ -366,9 +366,9 @@ $.ajax({
 	    }
 	});
 	
-	$('.doughnutList .titleBox')[0].innerText = 'Window[' + os[2] + ']';
+	$('.doughnutList .titleBox')[0].innerText = 'Window[' + os[1] + ']';
 	$('.doughnutList .titleBox')[1].innerText = 'AIX[' + os[0] + ']';
-	$('.doughnutList .titleBox')[2].innerText = 'Linux[' + os[1] + ']';
+	$('.doughnutList .titleBox')[2].innerText = 'Linux[' + os[2] + ']';
 	
 	var events = json.weekScheduleInfo.map(function(item){
 		return{

@@ -150,23 +150,25 @@ public class ServerService {
 
 	public String getServerState (int server_no){
 		ArrayList<ScheduleVo> scList = svSQLMapper.selectTodaySchedule(server_no);
+		ArrayList<Integer> stateList = new ArrayList<Integer>();
 
 		String status = "3";
+		
 		for(ScheduleVo sc : scList ) {
-			ArrayList<Integer> stateList = new ArrayList<Integer>();
 			int state = todaySchedule(sc);
+			System.out.println(new Gson().toJson(sc) + " 의 상태는 ::: " + state);
 			stateList.add(state);
-			
-			if(stateList.contains(1)) {
-				status  = "1";
-			} else if(stateList.contains(0)) {
-				status = "0";
-			} else if(stateList.contains(2)) {
-				status = "2";
-			} else {
-				status = "3";
-			}			
 		}
+		
+		if(stateList.contains(1)) {
+			status  = "1";
+		} else if(stateList.contains(0)) {
+			status = "0";
+		} else if(stateList.contains(2)) {
+			status = "2";
+		} else {
+			status = "3";
+		}			
 		return status;
 	}
 	

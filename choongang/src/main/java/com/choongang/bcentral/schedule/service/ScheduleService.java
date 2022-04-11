@@ -1,11 +1,8 @@
 package com.choongang.bcentral.schedule.service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalField;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,8 +62,7 @@ public class ScheduleService {
 	// 해당 달에 출력되야 할 이벤트 작성
 	public ArrayList<HashMap<String, Object>> getScheduleList(int year, int month, int user_no){
 		ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String, Object>>();
-		
-		SelectScheduleVo sscVo = new SelectScheduleVo(month, user_no); 
+		SelectScheduleVo sscVo = new SelectScheduleVo(year, month, user_no); 
 		
 		// 1. 해당 월에 출력되야 할 Schedule 모두 가져오기
 		ArrayList<ScheduleVo> list = scSqlMapper.selectScheduleByMonth(sscVo);

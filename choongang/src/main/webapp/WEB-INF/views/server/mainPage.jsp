@@ -54,6 +54,8 @@ const mes_modbtn = '<spring:message code="server.modifybtn"/>';
 const mes_error = '<spring:message code="server.error"/>';
 
 function createAndInitGrid(){
+	var search_status = $('#statusSelect').val();
+	console.log('검색 상태는 ' + search_status);
     $("#list").jqGrid({
 	        colModel: [   
 	            {name: 'name', label : mes_servername, align:'left', width:'40%'},
@@ -87,7 +89,7 @@ function createAndInitGrid(){
             //Data 연동 부분
             url : "./getServerList",
             datatype : "JSON", //받을 때 파싱 설정
-            postData : {aaa : 111},
+            postData : {status : search_status},
             mtype : "POST",
             loadtext : mes_loading,
             emptyrecords : mes_noserver, //viewrecords에 나오는 문구

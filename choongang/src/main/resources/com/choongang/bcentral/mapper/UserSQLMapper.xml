@@ -37,6 +37,7 @@
 	        JOIN req_user ON t2.parent = req_user.user_no
 	        )
 		SELECT * FROM req_user where user_no != #{user_no }
+		order by name asc
 	</select>
 	
 	<select id="getUserList" resultType="com.choongang.bcentral.user.vo.UserVo">		

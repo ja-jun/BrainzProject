@@ -81,7 +81,7 @@
 		FROM bp_schedule bsc, bp_server bs, bp_mgmt_server bms
 		WHERE bsc.sc_no = bms.sc_no 
 		AND bs.server_no = bms.server_no
-		AND now() between bsc.start_date and bsc.end_date
+		AND (now() between bsc.start_date and (bsc.end_date + 1))
 		AND bsc.delete_date is null
 		AND bs.server_no = #{server_no}
 	</select>
