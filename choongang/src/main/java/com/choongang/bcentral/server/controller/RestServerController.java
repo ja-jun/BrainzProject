@@ -69,7 +69,7 @@ public class RestServerController {
 	public HashMap<String, Object> insertServer(ServerVo param, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		System.out.println("insertServer : " + new Gson().toJson(param));
+//		System.out.println("insertServer : " + new Gson().toJson(param));
 				
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { //인터셉터 존재??? delete,update...ajax에서 사용...ㅜㅜ
@@ -96,7 +96,7 @@ public class RestServerController {
 		serverService.insertServer(param);
 		data.put("result", "0");
 
-		System.out.println("인서트 결과(숫자/0:정상) : " + data.get("result"));
+//		System.out.println("인서트 결과(숫자/0:정상) : " + data.get("result"));
 		return data;
 	}
 	
@@ -124,7 +124,7 @@ public class RestServerController {
 	public HashMap<String, Object> updateServer(ServerVo param, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		System.out.println("updateServer : " + new Gson().toJson(param));
+//		System.out.println("updateServer : " + new Gson().toJson(param));
 		
 		UserVo userInfo = (UserVo) session.getAttribute("userInfo");
 		if(userInfo == null) { 
@@ -147,7 +147,6 @@ public class RestServerController {
 		serverService.updateServer(param);
 		
 		data.put("result", "0");
-		System.out.println("수정 결과(정상:0) :  " + data.get("result"));
 		return data;
 	}
 	
@@ -156,10 +155,7 @@ public class RestServerController {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 						
 		data.put("isExistMac", serverService.isExistMac(mac)); //내서버번호와 다른서버에 같은mac이 존재하면 true,아니면 false		
-		
-		System.out.println("mac=" + mac);
-		System.out.println("mac유효성 (정상:f) : "+ data.get("isExistMac"));
-
+	
 		return data;
 	}
 	
@@ -167,16 +163,10 @@ public class RestServerController {
 	public HashMap<String, Object> validationMacwithServerNo(String mac,String server_no){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 
-		System.out.println("mac 주소="+ mac);
-		System.out.println("파싱전 서버번호="+ server_no);
 		Integer serverNo = Integer.parseInt(server_no);
-		System.out.println("파싱한 서버번호=" + serverNo);
 
 		data.put("isExistMac", serverService.isExistMacwithServerNo(mac,serverNo)); //내서버번호와 다른서버에 같은mac이 존재하면 true,아니면 false		
 		
-		System.out.println("mac=" + mac);
-		System.out.println("mac중복 (정상:f) : " + data.get("isExistMac"));
-
 		//false가 되어야 insert되게 해야함
 		return data;
 	}
