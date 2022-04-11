@@ -201,7 +201,8 @@ public class RestNotificationController {
 			String original = fVo.getUploadedFileName();
 			
 			File file = new File(original);
-			response.setHeader("Content-Disposition", "attachment;filename=" + fVo.getFileName());
+			String filename = new String(fVo.getFileName().getBytes("UTF-8"), "ISO-8859-1");
+			response.setHeader("Content-Disposition", "attachment;filename=" + filename);
 			
 			FileInputStream fiStream = new FileInputStream(original);
 			OutputStream out = response.getOutputStream();
