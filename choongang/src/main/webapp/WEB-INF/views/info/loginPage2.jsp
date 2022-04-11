@@ -16,7 +16,7 @@
 	
 	
 	<div class="imgBox">
-		<img src="../resources/img/login.svg" class="loginPng">
+		<img src="../resources/img/login_test.png" class="loginPng">
 		<div class="loginBox">
 			<h3 class="name">Login</h3>
 			<input type="text" class="id">

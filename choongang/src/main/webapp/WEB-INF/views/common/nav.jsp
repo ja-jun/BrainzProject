@@ -19,9 +19,12 @@
 	
 	<div id="content">
 			<div class="navBar">
-			<a href="../info/mainPage">
-                <h3 class="headerName">Bcentral</h3>
+			<div class="logoBox" style="display: inline-flex;padding-left: 24px;">
+				<a href="../info/mainPage" style="display: flex;align-items: center;">
+                <img src="../resources/img/logo_test2.png" style="display: flex;width: 70px">
+				<h3 class="headerName">Bcentral</h3>
             </a>
+			</div>
 				<ul id="ulList">
 					<li class="pageList" id="userPage">
 						<a href="../user/mainPage">
