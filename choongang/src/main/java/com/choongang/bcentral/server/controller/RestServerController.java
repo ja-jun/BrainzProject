@@ -35,32 +35,56 @@ public class RestServerController {
 	@RequestMapping("getServerList")
 	public HashMap<String, Object> getServerList(PageVo param){
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		int count = 0;
 		
 		if(param.getSearchWord() != null){
 			String searchWord = param.getSearchWord();
 			searchWord = searchWord.replaceAll("\\\\" , "\\\\\\\\").replaceAll("%" , "\\\\%").replaceAll("_", "\\\\_");			
 			param.setSearchWord(searchWord);
 		}
-		
-		ArrayList<ServerVo> serverList = serverService.getServerList(param);
-		
-		for(ServerVo vo : serverList) {
-			int server_no = vo.getServer_no();
-			count = vo.getCount();
-			String status = serverService.getServerState(server_no);
-			
-			vo.setStatus(status);
-		}
-	
-		int rows = param.getRows();
-		int records = count;
-		int total = (int) Math.ceil((double)records / rows);
 
-		data.put("rows", serverList); // 데이터
-		data.put("records", records); // 데이터의 전체 개수 (viewrecords 에 사용됨)
-		data.put("page", param.getPage()); // 현재 페이지
-		data.put("total", total); // 총 페이지
+		
+		if(param.getStatus() == "" || param.getStatus() == null) {
+			int count = 0;	
+			
+			ArrayList<ServerVo> serverList = serverService.getServerList(param);
+			
+			for(ServerVo vo : serverList) {
+				int server_no = vo.getServer_no();
+				count = vo.getCount();
+				String status = serverService.getServerState(server_no);
+				
+				vo.setStatus(status);
+			}
+		
+			int rows = param.getRows();
+			int total = (int) Math.ceil((double)count / rows);
+
+			data.put("rows", serverList); // 데이터
+			data.put("records", count); // 데이터의 전체 개수 (viewrecords 에 사용됨)
+			data.put("page", param.getPage()); // 현재 페이지
+			data.put("total", total); // 총 페이지
+
+		} else {
+			
+			ArrayList<ServerVo> serverListByStatus = serverService.getServerListByStatus(param);
+			int rows = param.getRows();
+			int records =  serverListByStatus.size();
+			int total = (int) Math.ceil((double)records / rows);
+			int page = param.getPage();
+			
+			List<ServerVo> list = new ArrayList<ServerVo>();
+			
+			if(page >= total ) {
+				list = serverListByStatus.subList((page-1)*rows, records);
+			} else {
+				list = serverListByStatus.subList((page-1)*rows, page*rows);
+			}
+
+			data.put("rows", list); // 데이터
+			data.put("records", records); // 데이터의 전체 개수 (viewrecords 에 사용됨)
+			data.put("page", param.getPage()); // 현재 페이지
+			data.put("total", total); // 총 페이지
+		}
 		
 		return data;
 	}
@@ -172,13 +196,13 @@ public class RestServerController {
 	}
 	
 	@RequestMapping("getServerListByStatus")
-	public HashMap<String, Object> getServerListByStatus(PageVo param, String status){
+	public HashMap<String, Object> getServerListByStatus(PageVo param){
 		HashMap<String, Object> data = new HashMap<String, Object>();		
 		
-		if(status == "") {
+		if(param.getStatus() == "") {
 			data = getServerList(param);
 		} else {
-			ArrayList<ServerVo> serverListByStatus = serverService.getServerListByStatus(param,status);
+			ArrayList<ServerVo> serverListByStatus = serverService.getServerListByStatus(param);
 			int rows = param.getRows();
 			int records =  serverListByStatus.size();
 			int total = (int) Math.ceil((double)records / rows);

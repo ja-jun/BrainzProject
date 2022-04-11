@@ -163,13 +163,15 @@ function createAndInitGrid(){
 //검색시 서버 가져와서 집어넣기
 function search(){
 	var searchWord = document.getElementById("searchWord").value;	
-
+	var status = $('#statusSelect').val();
+	
+	console.log(status);
 	$("#list").jqGrid("clearGridData", true);		
 	$("#list")
 	.setGridParam({
 		url : "./getServerList",
 		mtype : "post",
-		postData : {searchWord : searchWord , status : '0'},
+		postData : {searchWord : searchWord , status : status},
 		dataType : "json",
 	})
 	.trigger("reloadGrid");
@@ -179,9 +181,9 @@ function search(){
 	var qIndex = exportAnchor.href.lastIndexOf("?");
 	
 	if(qIndex >= 0){
-		exportAnchor.href = exportAnchor.href.substring(0, qIndex) + "?searchWord=" + searchWord;
+		exportAnchor.href = exportAnchor.href.substring(0, qIndex) + "?searchWord=" + searchWord + "&status=" + status;
 	} else {
-		exportAnchor.href += "?searchWord=" + searchWord;
+		exportAnchor.href += "?searchWord=" + searchWord + "&status=" + status;
 	}
 }
 

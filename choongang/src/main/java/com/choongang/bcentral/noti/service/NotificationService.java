@@ -115,6 +115,17 @@ public class NotificationService {
 				
 				notiSQLMapper.updateFile(fileVo);
 			}
+		}else {
+			fileVo.setNc_no(nc_no);
+			
+			//test
+			fileVo.setName("사용 안함");
+			fileVo.setDownlink("사용 안함");
+						
+			int fileNo = notiSQLMapper.getNextFileNo();
+			fileVo.setFile_no(fileNo);
+			
+			notiSQLMapper.insertFile(fileVo);
 		}
 	}
 }

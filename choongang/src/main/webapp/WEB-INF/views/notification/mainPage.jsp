@@ -224,30 +224,35 @@ function updateModal() {
 function deleteNotification(){ 
 	var notificationNos = [];
 	var rowids = $("#list").getGridParam("selarrrow");
-
-	for (let i = 0; i < rowids.length; i++) {
-       const rowid = rowids[i];
-       var rowData = $("#list").getRowData(rowid);
-       notificationNos.push(rowData.nc_no);
-    }		
 	
-		$("#list").jqGrid("clearGridData", true);		
+	if( rowids.length == 0){
+		alert("삭제하실 글을 선택해주세요.");
+		return;
+	} else {
+		for (let i = 0; i < rowids.length; i++) {
+	       const rowid = rowids[i];
+	       var rowData = $("#list").getRowData(rowid);
+	       notificationNos.push(rowData.nc_no);
+	    }		
+	}
+	
+	$("#list").jqGrid("clearGridData", true);		
 
-         if(confirm( remove1 ) == true ){
-       	  var text = "";
-			 $.ajax({
-			     url: "/choongang/notification/deleteNotification",
-			     type: "post",
-			     contentType:'application/json',
-			     data: JSON.stringify(notificationNos)
-			 }).done(function(){
-					$("#list").trigger('reloadGrid');
-					modalOff();
-					alert( remove2 );
-			 });
-		 }else{
-				   alert( cancel );
-		 }
+        if(confirm( remove1 ) == true ){
+      	  var text = "";
+		 $.ajax({
+		     url: "/choongang/notification/deleteNotification",
+		     type: "post",
+		     contentType:'application/json',
+		     data: JSON.stringify(notificationNos)
+		 }).done(function(){
+				$("#list").trigger('reloadGrid');
+				modalOff();
+				alert( remove2 );
+		 });
+	 }else{
+			   alert( cancel );
+	 }
 }
 
 // 삭제 모달
@@ -257,7 +262,7 @@ function deleteModal() {
 	
 	var nc_no = $("#nc_no").val();
     notificationNos.push(nc_no);
-
+    
 	if(confirm( remove1 ) == true ){
      	 var text = "";
 		

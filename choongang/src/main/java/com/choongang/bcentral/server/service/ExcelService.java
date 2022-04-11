@@ -33,9 +33,34 @@ public class ExcelService {
 	
 	@Autowired
 	private ServerSQLMapper svSQLMapper;
+	@Autowired
+	private ServerService  svService;
 	
 	public ArrayList<ServerVo> getServerList(PageVo vo){
-		return svSQLMapper.getServerListForExcel(vo);
+		ArrayList<ServerVo> list = svSQLMapper.getServerListForExcel(vo);
+		ArrayList<ServerVo> result = new ArrayList<ServerVo>();
+		
+		for(ServerVo svo : list) {
+			String status = svService.getServerState(svo.getServer_no());
+			System.out.println(status);
+			String st = vo.getStatus();
+			System.out.println(st);
+			if(vo.getStatus().equals(status)) {
+				if(status.equals("0")) {
+					status = "작업예정";
+				} else if(status.equals("1")) {
+					status = "작업중";
+				} else if(status.equals("2")) {
+					status = "작업완료";
+				} else {
+					status = "작업없음";
+				}
+				svo.setStatus(status);
+				result.add(svo);
+			}
+		}
+		
+		return result;
 	}
 	
 	public void xlsWiter(ArrayList<ServerVo> list , OutputStream out) {
@@ -211,7 +236,7 @@ public class ExcelService {
 			cell.setCellStyle(rowStyle4);
 			
 			cell = row.createCell(3);
-			cell.setCellValue(vo.getLoc());
+			cell.setCellValue(vo.getStatus());
 			cell.setCellStyle(rowStyle4);
 			
 			cell = row.createCell(4);

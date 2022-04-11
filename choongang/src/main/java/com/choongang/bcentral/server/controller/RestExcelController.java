@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +30,9 @@ public class RestExcelController {
 		
 		System.out.println(new Gson().toJson(vo));
 		
+		if(vo.getStatus() == null) {
+			vo.setStatus("3");
+		}
 		ArrayList<ServerVo> serverList = excelService.getServerList(vo);
 		
 		Date date = new Date();

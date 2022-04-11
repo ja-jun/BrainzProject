@@ -188,11 +188,11 @@ public class ServerService {
 	}
 	
 
-	public  ArrayList<ServerVo> getServerListByStatus (PageVo pVo ,String status) {
+	public  ArrayList<ServerVo> getServerListByStatus (PageVo pVo) {
 		ArrayList<ServerVo> serverList = svSQLMapper.getServerListByStatus(pVo);
 		ArrayList<ServerVo> serverListByStatus = new ArrayList<ServerVo>();
 	
-		if(status == "") {
+		if(pVo.getStatus() == "") {
 			serverListByStatus = serverList;
 			for(ServerVo vo : serverList) {
 				int server_no = vo.getServer_no();
@@ -203,7 +203,7 @@ public class ServerService {
 			for(ServerVo vo : serverList) {
 				int server_no = vo.getServer_no();
 				
-				if(getServerState(server_no).equals(status)) {
+				if(getServerState(server_no).equals(pVo.getStatus())) {
 					String s = getServerState(server_no);
 					vo.setStatus(s);			
 					serverListByStatus.add(vo);
