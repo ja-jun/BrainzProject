@@ -30,9 +30,6 @@ public class RestExcelController {
 		
 		System.out.println(new Gson().toJson(vo));
 		
-		if(vo.getStatus() == null) {
-			vo.setStatus("3");
-		}
 		ArrayList<ServerVo> serverList = excelService.getServerList(vo);
 		
 		Date date = new Date();

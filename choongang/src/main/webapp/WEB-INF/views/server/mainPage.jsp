@@ -76,7 +76,7 @@ function createAndInitGrid(){
 	            {name: 'mac', label : 'MAC', align:'center', width:'50%'},
 	            {name: 'control_num', label : mes_mgno, align:'left', width:'20%'},
 	            {name: 'dsc', label : mes_dsc, align:'left', width:'40%'},     
-	            {name: 'write_date', label : mes_date, align:'center', width:'40%'},
+	            {name: 'write_date', label : mes_date, align:'center', formatter:dateFormatter, width:'40%'},
 	            {name: 'server_no',label: mes_servernum, hidden:true}
 	            ],
             pager: '#pager',
@@ -157,6 +157,24 @@ function createAndInitGrid(){
      });		
     
       
+}
+
+var dateFormatter = function(cellvalue, options, rowObject) {
+	var new_format_value='';
+		 
+	var date = new Date(cellvalue); //현재 시간
+		  	 
+	if(cellvalue == null) {
+		new_format_value = No;
+	} else {	
+		new_format_value = date.getFullYear() + "."
+		+ (date.getMonth() + 1).toString().padStart(2,'0') + "."
+		+ date.getDate().toString().padStart(2,'0') + "  ("
+		+ (date.getHours()).toString().padStart(2,'0') + ":"
+		+ date.getMinutes().toString().padStart(2,'0') + ")";  
+	} 
+	
+	return new_format_value;
 }
 
 
@@ -407,6 +425,17 @@ function Onchange(s){
 		page : 1
 	})
 	.trigger("reloadGrid");
+	
+	var searchWord = document.getElementById("searchWord").value;
+	
+	var exportAnchor = document.getElementById("exportAnchor");
+	var qIndex = exportAnchor.href.lastIndexOf("?");
+	
+	if(qIndex >= 0){
+		exportAnchor.href = exportAnchor.href.substring(0, qIndex) + "?searchWord=" + searchWord + "&status=" + status;
+	} else {
+		exportAnchor.href += "?searchWord=" + searchWord + "&status=" + status;
+	}
 }
  
  

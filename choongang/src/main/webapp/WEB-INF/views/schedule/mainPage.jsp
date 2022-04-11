@@ -409,14 +409,14 @@ function getCalendarList(){
 				            
 				            var input_date = document.createElement('input');
 				            var event_date = info.event.start;
-				            var month = "";
-				            var day = "";
+				            var month = event_date.getMonth() + 1;
+				            var day = event_date.getDate();
 				            
-				            if((event_date.getMonth() + 1) >= 1 || (event_date.getMonth() + 1) < 10){
+				            if((event_date.getMonth() + 1) >= 1 && (event_date.getMonth() + 1) < 10){
 				            	month = "0" + (event_date.getMonth() + 1);	
 				            }
 				            
-				            if(event_date.getDate() >= 1 || event_date.getDate() < 10){
+				            if(event_date.getDate() >= 1 && event_date.getDate() < 10){
 				            	day = "0" + event_date.getDate();
 				            }
 				            cur_date = event_date.getFullYear() + "-" + month + "-" + day;
@@ -594,8 +594,6 @@ function createAndInitGrid(){
 		    }
 		
 		}
-		
-		console.log(params);
     	
     	const serverModal = document.getElementById("serverModal"); 
         serverModal.setAttribute("style","display: none");

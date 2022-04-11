@@ -147,13 +147,12 @@ public class RestScheduleController {
 	}
 	
 	@RequestMapping("delSchedule")
-	public HashMap<String, Object> delSchedule(Integer delete_radio, SetScheduleVo ssVo, String cur_date){
+	public HashMap<String, Object> delSchedule(Integer delete_radio, SetScheduleVo ssVo, String cur_date, HttpSession session){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		
-		Gson gson = new Gson();
-		System.out.println(gson.toJson(ssVo));
-		System.out.println(delete_radio);
-		System.out.println(cur_date);
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		
+		ssVo.setUser_no(userVo.getUser_no());
 		
 		if(delete_radio == 0) {
 			scheduleService.delCat0(ssVo.getSc_no());

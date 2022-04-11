@@ -51,7 +51,7 @@ function createAndInitGrid(){
 		            {name: 'nc_no', label : number, align:'center', width:'15%'},
 		            {name:'nc_title', label: title, align:'left', width:'70%'},
 		            {name: 'file_no', label : file, align:'center', width:'10%', formatter: imageFormatter},
-		            {name: 'nc_writeDate', label : write_date, align:'center', width:'30%'},              
+		            {name: 'nc_writeDate', label : write_date, align:'center', formatter:dateFormatter, width:'30%'},              
 		            {name: 'name', label : writer, align:'center', width:'30%'},
 		            {name: 'nc_readCount', label : readCount, align:'center', width:'20%'}
               	   ],
@@ -90,6 +90,24 @@ function createAndInitGrid(){
 		  	         },  	  		    
        });		
   }
+
+var dateFormatter = function(cellvalue, options, rowObject) {
+	var new_format_value='';
+		 
+	var date = new Date(cellvalue); //현재 시간
+		  	 
+	if(cellvalue == null) {
+		new_format_value = No;
+	} else {	
+		new_format_value = date.getFullYear() + "."
+		+ (date.getMonth() + 1).toString().padStart(2,'0') + "."
+		+ date.getDate().toString().padStart(2,'0') + "  ("
+		+ (date.getHours()).toString().padStart(2,'0') + ":"
+		+ date.getMinutes().toString().padStart(2,'0') + ")";  
+	} 
+	
+	return new_format_value;
+}
 
 /*** Formatter 스크립트 함수 ***/
 function imageFormatter(cellValue)
