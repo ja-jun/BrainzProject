@@ -12,7 +12,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: #f3f3f6;
+    background: #f2f4f8;
     width: 100%;
 }
 #jqgridBox{
@@ -22,7 +22,7 @@
 	width: 85px;
     height: 45px;
     font-weight: 400;
-    border: 1px solid #555;
+    border: 1px solid #222;
     border-radius: 7px;
     cursor: pointer;
     color: #222;
@@ -31,7 +31,7 @@
 	transition: 0.3s;
 }
 .writeBtn:hover{
-	background: #293042;
+	background: #171f46;
     color: #fff;
 }     
 #content{
@@ -93,7 +93,7 @@
     align-content: center;
     border-radius: 10px;overflow: hidden;}
 .top{
-    background: #293042;
+    background: #171f46;
     height: 53px;
     color: #fff;
     font-size: 16px;
@@ -380,11 +380,11 @@ border-top: 1px solid #ccc;}
     width: 80px;
     height: 40px;
     font-weight: 400;
-    border: 1px solid #293042;
+    border: 1px solid #171f46;
     border-radius: 5px;
     cursor: pointer;
     color: #fff;
-	background: #293042;
+	background: #171f46;
 	font-size: 16px;
 margin-left: 10px;}
 
@@ -472,12 +472,11 @@ width: 800px;}
     width: 80px;
     height: 40px;
     font-weight: 400;
-    border: 1px solid #293042;
-    background:#293042;
+    border: 1px solid #171f46;
+    background:#171f46;
     border-radius: 5px;
     cursor: pointer;
     color: #fff;
-	background: #293042;
 	font-size: 16px;
 	margin-right: 10px;
 	}
@@ -487,8 +486,8 @@ width: 800px;}
     width: 80px;
     height: 40px;
     font-weight: 400;
-    border: 1px solid #293042;
-    background: #293042;
+    border: 1px solid #171f46;
+    background: #171f46;
     border-radius: 5px;
     cursor: pointer;
     color: #fff;

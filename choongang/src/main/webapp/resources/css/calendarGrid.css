@@ -9,7 +9,7 @@
 .ui-jqgrid .ui-jqgrid-titlebar-close span { display: block; margin: 1px; }
 .ui-jqgrid .ui-jqgrid-titlebar-close:hover { padding: 0; }
 /* header*/
-.ui-jqgrid .ui-jqgrid-hdiv {background: #f3f3f3; width: 100% !important;color: #222;border: none !important;/* padding-right: 32px; *//* border-top: 1px solid #ccc !important; */border-bottom: 1px solid #ccc !important;border-radius: 10px 10px 0px 0px;}
+.ui-jqgrid .ui-jqgrid-hdiv {background: #f2f4f8; width: 100% !important;color: #222;border: none !important;/* padding-right: 32px; *//* border-top: 1px solid #ccc !important; */border-bottom: 1px solid #ccc !important;border-radius: 10px 10px 0px 0px;}
 .ui-jqgrid .ui-jqgrid-hbox {height: 100%;width: 100%;display: flex;border: none;color: #222;border: none !important;}
 .ui-jqgrid .ui-jqgrid-htable {margin:0;height: 100%;width: 100% !important;border: none;color: #fff;}
 .ui-jqgrid .ui-jqgrid-htable th {height: 100%;border-right: 1px solid #dfdfdf;}

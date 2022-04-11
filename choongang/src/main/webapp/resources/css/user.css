@@ -9,7 +9,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: #f3f3f6;
+    background: #f2f4f8;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -18,7 +18,7 @@
 	width: 85px;
     height: 45px;
     font-weight: 400;
-    border: 1px solid #555;
+    border: 1px solid #222;
     border-radius: 7px;
     cursor: pointer;
     color: #222;
@@ -27,7 +27,8 @@
 	transition: 0.3s;
 }
 .writeBtn:hover{
-	background: #293042;
+	background: #171f46;
+	border: 1px solid #171f46;
     color: #fff;
 }     
 #content{
@@ -72,7 +73,7 @@
     border-radius: 10px;
 }
 #modal .modalBox .top{
-    background: #293042;
+    background: #171f46;
     height: 53px;
     color: #fff;
     font-size: 16px;
@@ -216,8 +217,8 @@ padding-right: 30px;}
 	width: 80px;
     height: 40px;
     font-weight: 400;
-    border: 1px solid #555;
-    background:#293042;
+    border: 1px solid #171f46;
+    background: #171f46;
     border-radius: 7px;
     cursor: pointer;
     color: #fff;
@@ -233,8 +234,8 @@ padding-right: 30px;}
 .searchBtn{
 	width: 85px;
 	height: 45px;
-	border: 1px solid #293042;
-	background: #293042;
+	border: 1px solid #275dea;
+	background: #275dea;
 	border-radius: 7px;
 	color: #fff;
 	font-size: 16px;
@@ -259,7 +260,7 @@ padding-right: 30px;}
 	width: 500px;background: #fff;
     background-color: #ffffff;
     box-shadow: 0 10px 30px rgb(0 0 0 / 17%);
-    height: 390px;
+    height: 340px;
     display: flex;
     align-content: center;
     border-radius: 10px;
@@ -275,7 +276,7 @@ padding-right: 30px;}
 #deleteModalBack .deleteModal .deleteBox{width: 100%;}
 #deleteModalBack .deleteModal .deleteBox .trash{width: 40px;}
 #deleteModalBack .deleteModal .deleteBox .top{
-	background: #293042;
+	background: #171f46;
     height: 53px;
     color: #fff;
     font-size: 16px;
@@ -301,7 +302,7 @@ padding-right: 30px;}
 margin-top: 10px;}
 #deleteModalBack .deleteModal .deleteBox .text{
 	font-weight: 400;
-	margin-top: 10px;
+	margin-top: 20px;
 	font-size: 16px;
 	color: #555;
 line-height: 0.8;}
@@ -313,9 +314,9 @@ line-height: 0.8;}
     border: 1px solid #ccc;
     border-radius: 5px;
     font-weight: 300;
-    margin-top: 40px;
+    margin-top: 30px;
  }
-#deleteModalBack .deleteModal .deleteBox .btnList{margin-top: 40px;justify-content: center;margin-bottom: 30px;}
+#deleteModalBack .deleteModal .deleteBox .btnList{margin-top: 30px;justify-content: center;margin-bottom: 30px;}
 #deleteModalBack .deleteModal .deleteBox .btnList .btnLi:first-child .writeBtn2{
 	background:#fff;
 	color:#293042;
