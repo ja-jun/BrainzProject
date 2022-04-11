@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>작업관리</title>
+<title><spring:message code="nav.schedule"/></title>
+<script src="https://kit.fontawesome.com/1fa86d52d5.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -61,6 +62,7 @@ const lang_reg_fail1 = '<spring:message code="schedule.register.fail1"/>';
 const lang_reg_fail2 = '<spring:message code="schedule.register.fail2"/>';
 const lang_mod_success = '<spring:message code="schedule.modify.success"/>';
 const lang_del_success = '<spring:message code="schedule.delete.success"/>';
+const lang_myself = '<spring:message code="schedule.myself"/>';
 
 /* 팝업닫기 버튼 클릭시 */
 function delBtn() {
@@ -128,6 +130,9 @@ function writeBtn() {
      btn2.setAttribute("class","btnBoxbtn");
      btn2.setAttribute("id","btnBoxbtn2");
      btn2.setAttribute("onclick","delBtn()");
+ 	
+ 	$('#selectUser').empty();
+ 	selectUser($('#selectUser'));
 }
 /* 삭제 버튼 클릭시 */
 function molBtn() {
@@ -187,6 +192,7 @@ function molBtn() {
 	radioBoxList.appendChild(span);
 	radioBoxList3.appendChild(input3);
 	radioBoxList3.appendChild(span3);
+
 }
 /* 삭제 취소 버튼 클릭시 */
 function delBox() {
@@ -200,6 +206,11 @@ function getCalendarList(){
 			var data = JSON.parse(xhr.responseText);
 			var calendarEl = document.getElementById('calendar');
 			var list = data.scheduleList;
+			
+			var letters = ['fc4e64', '5a43f2', 'ffb43a', '135feb', 'a23cdf', '29b52f', 'e91e63','46a5f1','673ab7'];
+            var map = new Map();
+            var count = 0;
+		
 			
 				var events = list.map(function(item) {
 				return {
@@ -246,16 +257,19 @@ function getCalendarList(){
 				            sc_no_input.setAttribute('value',sc_info.sc_no);
 				            $('.textBox').append(sc_no_input);
 				            
-				            $('input[name=start_date]').val(sc_info.start_date);
-				            $('input[name=end_date]').val(sc_info.end_date);
+				            //$('input[name=start_date]').val(sc_info.start_date);
+				            //$('input[name=end_date]').val(sc_info.end_date);
+				            
+				            var start_time = data.start_time;
+				            var end_time = data.end_time;
 				            
 				            if(sc_info.repeat_cat == 0){
 				            	$('.arr').attr('checked',false);
 				            	$('.timearr').attr('checked','checked');
 				            	$('input[name=start_date_2]').val(sc_info.start_date);
 					            $('input[name=end_date_2]').val(sc_info.end_date);
-					            $('input[name=start_time_2]').val(sc_info.start_time);
-					            $('input[name=end_time_2]').val(sc_info.end_time);
+					            $('input[name=start_time_2]').val(start_time);
+					            $('input[name=end_time_2]').val(end_time);
 					            
 					            const timeBox = document.querySelector('.timeBox');
 					 			timeBox.setAttribute("style","display: none");
@@ -268,13 +282,12 @@ function getCalendarList(){
 				            } else{
 				            	$('input[name=start_date_1]').val(sc_info.start_date);
 					            $('input[name=end_date_1]').val(sc_info.end_date);
-					            $('input[name=start_time_1]').val(sc_info.start_time);
+					            $('input[name=start_time_1]').val(start_time);
+				            	$('input[name=end_time_1]').val(end_time);
 				            	if(sc_info.end_date == '9999-12-31'){
 					            	$('.limitless').prop('checked',true);
 					            	const noneBox = document.querySelector('.noneBox2');
 					                noneBox.setAttribute("style","display: none");
-				            	} else {				            		
-					            	$('input[name=end_time_1]').val(sc_info.end_time);
 				            	}
 				            	
 					            var repeat_cat = $('input[name=repeat_cat]').get(sc_info.repeat_cat - 1);
@@ -414,12 +427,17 @@ function getCalendarList(){
 				            $('#regScheduleInfo').append(input_date);
 				            
 				            /* 계층구조 추가를 위한 수정 내용 */
-				            const cur_manager = $('<option value="">' + sc_info.name + '</option>');
+				            var manager_name = sc_info.name;
+				            if(sc_info.user_no == '${userInfo.user_no}'){
+				            	manager_name = lang_myself;
+				            }
+				            const cur_manager = $('<option value="">' + manager_name + '</option>');
 				            $('#selectUser').attr('disabled', 'true');
 				            $('#selectUser').empty();
 				            $('#selectUser').append(cur_manager);
 				            
 				            const selectUser2 = document.querySelector('.selectUser2');
+				            $('#selectUser2').empty();
 				            selectUser2.setAttribute("style","display: block");
 				            selectUser($('#selectUser2'));
 				            
@@ -431,10 +449,25 @@ function getCalendarList(){
 				},
 				
 				eventDidMount: function(info) {
-		            tippy(info.el, {
-		                content:  info.event.title
-		            });
-		        }
+	                  tippy(info.el, {
+	                      content:  info.event.title
+	                  });
+	                  
+	                 var title = document.querySelectorAll('.fc-event-title');
+	                  
+	                 title.forEach(function(item, index){
+	                     var text = item.innerText;
+	                     var random = '#' + letters[count];
+	                     
+	                     if(map.has(text)){
+	                         var parent = item.closest('.fc-daygrid-event-harness');
+	                         parent.setAttribute("style","background: " + map.get(text));
+	                     } else {
+	                    	 count++;
+	                         map.set(text, random);
+	                     }
+	                 });
+	              }
 				
 			});
 			calendar.render();
@@ -514,114 +547,102 @@ function getCalendarList(){
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send("year=" + today.getFullYear() + "&month=" + (today.getMonth() + 1));
 }
-function getServerList(){
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			var data = JSON.parse(xhr.responseText);
-			
-			
-			var aaa = data.serverList;
-			var jsonArr = [];
-			for (var i = 0; i < aaa.length; i++) {
-			    jsonArr.push({
-			    	'name': aaa[i].name,
-			    	'ip': aaa[i].ip,
-			    	'os': aaa[i].os,
-			    	'server_no': aaa[i].server_no
-			    });
-			}
-			
-			
-			$("#list").jqGrid({
-				datatype: "local",
-				data: jsonArr,
-				rowNum: 10,
-				rowList:[10,20,30],
-				multiselectWidth: 30,
-				height: 'auto',
-				autowidth:true, 
-				colModel: [	
-						{name: 'name', label : lang_svname, align:'left', width:'50%'},
-				        {name: 'ip', label : 'IP', align:'left', width:'40%'},
-				        {name: 'os', label : 'OS', align:'left', width:'30%'},
-				        {name: 'server_no', hidden: true}
-						],
-			    pager: '#pager',
-			    multiselect: true
-			
-			});
-			
-			
-			$('.btnBoxbtn2').click(function(){
-				var params = new Array(); 
-				var a = $("#list").jqGrid('getGridParam', 'selarrrow');
-				
-				
-				for (var i = 0; i < a.length; i++) { //row id수만큼 실행          
-				    if($("input:checkbox[id='jqg_list_"+a[i]+"']").is(":checked")){ //checkbox checked 여부 판단
-				    var rowdata = $("#list").getRowData(a[i]);
-				    params.push(rowdata);
-				    console.log(params);
-				    
-				    }
-				
-				}
-				
-				console.log(params);
-		    	
-		    	const serverModal = document.getElementById("serverModal"); 
-		        serverModal.setAttribute("style","display: none");
-		        
-		        var theadList = document.getElementById("theadList");
-		        
-		    	var serverModal2 = document.getElementById("serverListM");
-		    	serverModal2.innerHTML = "";
-				
-		    	var tbody = document.createElement("tbody");
-		    	tbody.setAttribute("class","tbodyBox");
-		    
- 					for(var i = 0; i < params.length; i++){
-					var tr6 = document.createElement("tr");
-					tr6.setAttribute("class","serverContent");
-					tbody.appendChild(tr6);
-					var th7 = document.createElement("th");
-					th7.setAttribute("class","serverContentText");
-					tr6.appendChild(th7);
-					var th8 = document.createElement("input");
-					th8.setAttribute("type","checkbox");
-					th8.setAttribute("name","rowCheck");
-					th7.appendChild(th8);
-					var th9 = document.createElement("th");
-					th9.setAttribute("class","serverContentText");
-					th9.innerText=params[i].name;
-					tr6.appendChild(th9);
-					var th10 = document.createElement("th");
-					th10.setAttribute("class","serverContentText");
-					th10.innerText=params[i].ip;
-					tr6.appendChild(th10);
-					var th11 = document.createElement("th");
-					th11.setAttribute("class","serverContentText");
-					th11.innerText=params[i].os;
-					tr6.appendChild(th11);
-					var th12 = document.createElement("input");
-					th12.setAttribute("type","hidden");
-					th12.setAttribute("name","server_no");
-					th12.setAttribute("value",params[i].server_no);
-					tr6.appendChild(th12);
-					}  
-		    	
- 					tbody.appendChild(tr6);
- 					serverModal2.appendChild(theadList);
- 					serverModal2.appendChild(tbody);
-		    	
-			});
-		}
-	};
+function createAndInitGrid(){
 	
-	xhr.open("post" , "./getServerList" , true);
-	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xhr.send();	
+	$("#list").jqGrid({
+        colModel: [   
+            {name: 'name', label : '서버명', align:'left', width:'40%'},
+            {name: 'ip', label:'IP', align:'left', width:'40%'},
+            {name: 'os', label : 'OS분류', align:'center', width:'30%'},
+            {name: 'server_no',label:'서버 번호', hidden:true}
+            ],
+        pager: '#pager',
+        rowNum: 10,
+        rowList: [10,30,50],
+        viewrecords: true,
+        multiselect: true,
+        multiselectWidth: 100,
+		autoencode: true,
+        //Data 연동 부분
+        url : "./getServerList",
+        datatype : "JSON", //받을 때 파싱 설정
+        postData : {aaa : 111},
+        mtype : "POST",
+        loadtext : "로딩중...",
+        emptyrecords : "데이터가 없습니다.", //viewrecords에 나오는 문구
+        width:740,
+        height: 'auto',
+		beforeSelectRow: function(rowid, e){
+			i = $.jgrid.getCellIndex($(e.target).closest('td')[0]),
+			cm = $(this).jqGrid('getGridParam','colModel');
+			return (cm[i].name === 'cb');
+		}
+	});
+	
+	
+	$('.btnBoxbtn2').click(function(){
+		var params = new Array(); 
+		var a = $("#list").jqGrid('getGridParam', 'selarrrow');
+		
+		
+		for (var i = 0; i < a.length; i++) { //row id수만큼 실행          
+		    if($("input:checkbox[id='jqg_list_"+a[i]+"']").is(":checked")){ //checkbox checked 여부 판단
+		    var rowdata = $("#list").getRowData(a[i]);
+		    params.push(rowdata);
+		    console.log(params);
+		    
+		    }
+		
+		}
+		
+		console.log(params);
+    	
+    	const serverModal = document.getElementById("serverModal"); 
+        serverModal.setAttribute("style","display: none");
+        
+        var theadList = document.getElementById("theadList");
+        
+    	var serverModal2 = document.getElementById("serverListM");
+    	serverModal2.innerHTML = "";
+		
+    	var tbody = document.createElement("tbody");
+    	tbody.setAttribute("class","tbodyBox");
+    
+				for(var i = 0; i < params.length; i++){
+			var tr6 = document.createElement("tr");
+			tr6.setAttribute("class","serverContent");
+			tbody.appendChild(tr6);
+			var th7 = document.createElement("th");
+			th7.setAttribute("class","serverContentText");
+			tr6.appendChild(th7);
+			var th8 = document.createElement("input");
+			th8.setAttribute("type","checkbox");
+			th8.setAttribute("name","rowCheck");
+			th7.appendChild(th8);
+			var th9 = document.createElement("th");
+			th9.setAttribute("class","serverContentText");
+			th9.innerText=params[i].name;
+			tr6.appendChild(th9);
+			var th10 = document.createElement("th");
+			th10.setAttribute("class","serverContentText");
+			th10.innerText=params[i].ip;
+			tr6.appendChild(th10);
+			var th11 = document.createElement("th");
+			th11.setAttribute("class","serverContentText");
+			th11.innerText=params[i].os;
+			tr6.appendChild(th11);
+			var th12 = document.createElement("input");
+			th12.setAttribute("type","hidden");
+			th12.setAttribute("name","server_no");
+			th12.setAttribute("value",params[i].server_no);
+			tr6.appendChild(th12);
+			}  
+    	
+				tbody.appendChild(tr6);
+				serverModal2.appendChild(theadList);
+				serverModal2.appendChild(tbody);
+    	
+	});
 }
 window.addEventListener("DOMContentLoaded" , function(){
 	
@@ -647,6 +668,7 @@ window.addEventListener("DOMContentLoaded" , function(){
 			$('.checkboxAll').prop("checked", true); 
 		}
 	}); 
+	
 	/* 요일 전체 체크 시 */
     $('.checkboxAll').click(function(){
         const btnDay = document.querySelectorAll('.btnDay'); 
@@ -749,7 +771,7 @@ window.addEventListener("DOMContentLoaded" , function(){
  	
  	$(document).ready(function(){
  		  $('.fc-scrollgrid-sync-table tbody tr:nth-child(n+4)').children('.fc-day-other').remove();
- 		})
+ 	})
  	
 	$(function(){
 		$('.datepicker').datepicker({
@@ -775,7 +797,7 @@ window.addEventListener("DOMContentLoaded" , function(){
     		format:'H:i',
     		step: 10
     	});
-    	$("#datetimepicker2").val("24:00");
+    	$("#datetimepicker2").val("23:50");
   	});
   	
   	$(function(){
@@ -793,14 +815,15 @@ window.addEventListener("DOMContentLoaded" , function(){
     		format:'H:i',
     		step: 10
     	});
-    	$("#datetimepicker4").val("24:00");
+    	$("#datetimepicker4").val("23:50");
   	});
-  	
+   
+   
+   
 	/* page load후 바로 실행 되는 함수들 */
-	selectUser($('#selectUser'));
 	getCalendarList();
 	writeBtn();
-	getServerList();
+	createAndInitGrid();
 	delBtn();
 });
 function confirmTitle(){
@@ -1046,7 +1069,7 @@ function selectUser(target){
     	dataType: 'JSON',
 		success: function(json){
 			var userList = json['userList'];
-			
+			target.append($('<option value="' + ${userInfo.user_no} + '">' + lang_myself + '</option>'));
 			for(var user in userList){
 				var option = $('<option value="' + userList[user].user_no + '">' + userList[user].name + '</option>');
 				target.append(option)
@@ -1068,10 +1091,11 @@ function selectUser(target){
 	    	<div id="box">
 	    		<div id="gnb">
 					<div class="iconBox">
-						<img src="../resources/img/user.png" class="profile">
+						<img src="../resources/img/profile.png" class="profile">
 						<div class="icon">
-						<p class="iconText" >${userInfo.name }</p>
+						<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 						</div>
+						<a href="/choongang/security_logout"><i class="fa-solid fa-right-from-bracket" style=" margin-left: 16px; font-size: 22px; padding-top: 2px;"></i></a>
 					</div>
 				</div>
 	    			
@@ -1116,15 +1140,13 @@ function selectUser(target){
 					</div>
 					
 					<div class="selectUser">
-                  	<strong class="text">담당자</strong>
+                  	<strong class="text"><spring:message code="schedule.manager"/></strong>
                   	<select id="selectUser" name="selectManager" class="selectUserBox" >
-                        <option value="${userInfo.user_no }">본인</option>
                      </select>
                      
                     <div class="selectUser2">
-                  	<strong class="text">담당자 변경</strong>
+                  	<strong class="text"><spring:message code="schedule.changemanager"/></strong>
                   	<select id="selectUser2" name="changeManager" class="selectUserBox" >
-                        <option value="${userInfo.user_no }">본인</option>
                      </select>
                		</div>
                		</div>
@@ -1231,7 +1253,7 @@ function selectUser(target){
 		<div id="serverModal">
 		<div id="serverModalBox">
 		<div class="top">
-			<h3 class="title">서버리스트</h3>
+			<h3 class="title">Server List</h3>
 			<i class="bi bi-x" onclick="delBtn2()"></i>
 		</div>
 			<div id="jqgridBox">

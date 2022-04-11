@@ -4,7 +4,7 @@
 
 
 
-#serverBox{width: 100%;background: #fff;border-radius: 10px;height: calc(100vh - 160px);border: 1px solid #e9e9ee;}
+#serverBox{width: 100%;background: #fff;border-radius: 10px;height: auto;border: 1px solid #e9e9ee;padding-bottom: 30px;}
 #container{
     position: absolute;
     top: 0;
@@ -15,11 +15,11 @@
     overflow: hidden;
 }
 .writeBtn{
-	width: 83px;
-    height: 46px;
+	width: 85px;
+    height: 45px;
     font-weight: 400;
     border: 1px solid #555;
-    border-radius: 5px;
+    border-radius: 7px;
     cursor: pointer;
     color: #222;
 	background: #fff;
@@ -34,10 +34,9 @@
     display: flex;
 }
 #box{
-    margin: 30px 0px 100px 350px;
     width: 100%;
-    padding-right: 400px;
-    }
+    padding: 1vw 2vw 2vw 16vw;
+}
 
 #modal{
 	display:none;
@@ -52,37 +51,41 @@
 	height: 100%;
 }
 #modal .window {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  font-size: 13px;
-  }
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
 #modal .modalBox{
-    width: 600px;background: #fff;
+    width: 600px;
+    background: #fff;
     justify-content: center;
     background-color: #ffffff;
     box-shadow: 0 10px 30px rgb(0 0 0 / 17%);
-    
-    height: 600px;
+    height: auto;
     align-content: center;
-    border-radius: 10px;overflow: hidden;}
+    border-radius: 10px;
+    overflow: hidden;
+}
 #modal .modalBox .top{
-    background: #18244d;
+    background: #293042;
     height: 53px;
     color: #fff;
     font-size: 16px;
     display: flex;
     justify-content: space-between;
     padding: 0px 30px 0px 30px;
-align-items: center;}
+    align-items: center;
+    border-radius: 10px 10px 0px 0px;
+}
 #modal .modalBox .top .title{
-    
-font-weight: 500;font-size: 17px;}
+	font-size: 16px;
+}
 #modal .modalBox .top .bi-x{
     font-size: 22px;
     line-height: 2.4;
@@ -90,7 +93,8 @@ font-weight: 500;font-size: 17px;}
 }
 
 #modal .modalBox .serverInput{
-    padding: 10px 0px 10px 0px;vertical-align: middle;
+    padding: 10px 0px 10px 0px;
+	vertical-align: middle;
 }
 #modal .modalBox .serverInput:first-child{border-top:none;padding-top: 0px;}
 #modal .modalBox .serverInput:last-child{border:none}
@@ -109,13 +113,14 @@ font-weight: 500;font-size: 17px;}
 }
 
 #modal .modalBox .serverInput .textBox{
-    border: 1px solid #ccc;
+	border: 1px solid #ccc;
     height: 40px;
     width: 380px;
-    padding-left: 8px;
-	font-size: 15px;
-	font-weight: 300;
-border-radius: 5px;}
+    padding-left: 10px;
+	font-size: 14px;
+	font-weight: 400;
+	border-radius: 7px;
+}
 
 .ui-jqgrid .ui-jqgrid-htable{width:100%}
 
@@ -129,10 +134,31 @@ border-radius: 5px;}
 #excelBtn{
 	margin-left:10px
 }
-#top{display: flex;justify-content: space-between;padding: 30px 30px 20px 30px;}
-#search{display: flex;}
-#search .searchBox{margin-right: 10px;}
-#search .searchBox .searchForm{width: 250px;height: 46px;border: #ccc 1px solid;padding-left: 35px;border-radius: 5px;background-image: url(../img/search.png);background-repeat: no-repeat;background-position: 10px;background-size: 17px;font-size: 15px;color: #555;font-weight: 400;}
+#top{
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 30px 20px 30px;
+}
+#search{
+	display: flex;
+}
+#search .searchBox{
+	margin-right: 10px;
+}
+#search .searchBox .searchForm{
+	width: 250px;
+	height: 45px;
+	border: #ccc 1px solid;
+	padding-left: 35px;
+	border-radius: 7px;
+	background-image: url(../img/search.png);
+	background-repeat: no-repeat;
+	background-position: 10px;
+	background-size: 17px;
+	font-size: 15px;
+	color: #555;
+	font-weight: 400;
+}
 #gnb{
     display: flex;
     justify-content: flex-end;
@@ -158,33 +184,70 @@ border-radius: 5px;}
 	border: 1px solid #ccc;
 }
 .btnList{
-	margin-top: 20px;display: flex;
+	margin-top: 30px;display: flex;
 	justify-content: flex-end;
-	margin-bottom: 20px;
+	
 	}
 .btnList .btnLi .writeBtn2{
 	width: 80px;
-    height: 45px;
+    height: 40px;
     font-weight: 400;
     border: 1px solid #555;
     background:#293042;
-    border-radius: 5px;
+    border-radius: 7px;
     cursor: pointer;
     color: #fff;
 	font-size: 16px;
 	margin-left:10px
 	}
 .confirmAlertBox{
-	margin-top: 5px;
+	margin-top: 7px;
 	font-weight:300;
 	font-size: 14px;
-	margin-left: 120px;}
-.searchBtn{width: 83px;height: 46px;border: 1px solid #ccc;background: #18244d;border-radius: 5px;color: #fff;font-size: 16px;margin-left: 5px;}
+	margin-left: 124px;
+}
+.searchBtn{
+	width: 85px;
+	height: 45px;
+	border: 1px solid #293042;
+	background: #293042;
+	border-radius: 7px;
+	color: #fff;
+	font-size: 16px;
+	margin-left: 5px;
+}
 #os{
 	height: 40px;
 	width: 100px;
-	font-size: 13px;
+	font-size: 14px;
 	padding-left: 5px;
 	border: 1px solid #ccc;
-border-radius: 5px;}
-.bottom{padding: 20px 30px 0px 30px;overflow-y: auto;height: 650px;}
+	border-radius: 7px;
+	font-weight: 400;
+}
+.bottom{
+	padding: 20px 30px 20px 30px;
+}
+#statusSelect{
+	width: 120px;
+	height: 45px;
+	border-radius: 7px;
+	border: 1px solid #555;
+	margin-right:10px;
+	padding-left: 5px;
+	font-size: 16px;
+}
+#nullData{
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	top: 40%;}
+#nullData .dataI{
+	opacity: 0.2
+}
+#nullData .dataP{
+	font-size: 20px;
+	font-weight: 400;
+	margin-top: 14px;
+	color: #282828;
+}

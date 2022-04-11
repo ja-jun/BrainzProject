@@ -1,5 +1,6 @@
 package com.choongang.bcentral.schedule.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.choongang.bcentral.schedule.service.CheckValidationService;
 import com.choongang.bcentral.schedule.service.ScheduleService;
+import com.choongang.bcentral.schedule.vo.ScheduleVo;
 import com.choongang.bcentral.schedule.vo.SetScheduleVo;
+import com.choongang.bcentral.server.service.ServerService;
+import com.choongang.bcentral.server.vo.PageVo;
+import com.choongang.bcentral.server.vo.ServerVo;
 import com.choongang.bcentral.user.service.UserService;
 import com.choongang.bcentral.user.vo.UserVo;
 import com.google.gson.Gson;
@@ -30,6 +35,9 @@ public class RestScheduleController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ServerService serverService;
 	
 	@RequestMapping("getList")
 	public HashMap<String, Object> getList(Integer year, Integer month, HttpSession session){
@@ -63,17 +71,45 @@ public class RestScheduleController {
 		
 		System.out.println("userInfo에 등록되어 있는 ID : " + userVo.getName());
 		
-		data.put("scheduleInfo", scheduleService.getScheduleInfo(sc_no));
+		ScheduleVo scVo = scheduleService.getScheduleInfo(sc_no);
+		
+		data.put("scheduleInfo", scVo);
 		data.put("serverList", scheduleService.getServerList(sc_no));
 		data.put("userList", userService.getTotalUserList(userVo.getUser_no()));
-		
+		data.put("start_time", scVo.getStart_time().toString());
+		data.put("end_time", scVo.getEnd_time().toString());
 		return data;
 	}
 	
 	@RequestMapping("getServerList")
-	public HashMap<String, Object> getServerList(){
+	public HashMap<String, Object> getServerList(PageVo param){
 		HashMap<String, Object> data = new HashMap<String, Object>();
-		data.put("serverList", scheduleService.getServerList());
+		int count = 0;
+		
+		if(param.getSearchWord() != null){
+			String searchWord = param.getSearchWord();
+			searchWord = searchWord.replaceAll("\\\\" , "\\\\\\\\").replaceAll("%" , "\\\\%").replaceAll("_", "\\\\_");			
+			param.setSearchWord(searchWord);
+		}
+		
+		ArrayList<ServerVo> serverList = serverService.getServerList(param);
+		
+		for(ServerVo vo : serverList) {
+			int server_no = vo.getServer_no();
+			count = vo.getCount();
+			String status = serverService.getServerState(server_no);
+			
+			vo.setStatus(status);
+		}
+	
+		int rows = param.getRows();
+		int records = count;
+		int total = (int) Math.ceil((double)records / rows);
+
+		data.put("rows", serverList); // 데이터
+		data.put("records", records); // 데이터의 전체 개수 (viewrecords 에 사용됨)
+		data.put("page", param.getPage()); // 현재 페이지
+		data.put("total", total); // 총 페이지
 		
 		return data;
 	}

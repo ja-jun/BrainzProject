@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Bcentral</title>
 <!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 <!-- Google Fonts -->
@@ -43,10 +43,11 @@
 	
 	<div id="gnb">
 		<div class="iconBox">
-		<img src="../resources/img/user.png" class="profile">
+		<img src="../resources/img/profile.png" class="profile">
 		<div class="icon">
-		<p class="iconText" >${userInfo.name }</p>
+		<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 		</div>
+		<a href="/choongang/security_logout"><i class="fa-solid fa-right-from-bracket" style=" margin-left: 16px; font-size: 22px; padding-top: 2px;"></i></a>
 	</div>
 	</div>
 	
@@ -74,11 +75,11 @@
 		<div class="barBar2">
 		<ul class="barUl2">
 		<!-- 작업 중 서버 목록 -->
-			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px">작업 중 서버 &nbsp Top6</li>
+			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px"><spring:message code="info.schedule.working"/> &nbsp Top6</li>
 		</ul>
 		<ul class="barUl3">
 		<!-- 작업 예정 서버 목록 -->
-			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px">작업 예정 서버 &nbsp Top6</li>
+			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px"><spring:message code="info.schedule.preworking"/> &nbsp Top6</li>
 		</ul>
 		</div>
 		
@@ -106,9 +107,9 @@
 		<div class="doughnutBox2">
 		<canvas id="doughnut-chart" width="300" height="300" style="width:100%"></canvas>
 		<ul class="doughnutUl">
-			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">Window</h3></li>
-			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">Linux</h3></li>
-			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox">AIX</h3></li>
+			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox"></h3></li>
+			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox"></h3></li>
+			<li class="doughnutList"><p class="colorBox"></p><h3 class="titleBox"></h3></li>
 		</ul>
 	</div>
 	</div>
@@ -148,7 +149,7 @@ $.ajax({
 	method : 'POST',
 	dataType : 'JSON'
 }).done(function(json){
-	const stateLabels = [info_working, info_preworking, info_aftworking, info_noworking];
+	const stateLabels = [info_working, info_preworking, info_aftworking];
 	const osLabels = ['AIX', 'Windows', 'Linux'];
 	
 	var os = [0, 0, 0];
@@ -226,14 +227,13 @@ $.ajax({
 		data: {
 		labels: stateLabels,
 		datasets: [{
-			backgroundColor: ["#e04651", "#f8c631","#3d5fac","#c9c9c9"], 
+			backgroundColor: ["#e04651", "#f8c631","#3d5fac"], 
 			pointBackgroundColor: 'white',
 			borderWidth: 0,
 			data: [
 				json.stateCount[1],
 				json.stateCount[0],
-				json.stateCount[2],
-				json.stateCount[3]
+				json.stateCount[2]
 			]
 	    }]},
 	    plugins: [ChartDataLabels],
@@ -244,15 +244,18 @@ $.ajax({
 	    			display: false
 	    		},
 	    		datalabels: {
-	    			offset: 20,
+	    			offset: 10,
 	    			anchor: 'end',
 	    			align: 'start',
 	    			color: 'white',
 	    			font: {
-	    				size: 16,
+	    				size: 18,
 	    				weight: 'bolder'
 	    			},
 	    			formatter: function(value, context){
+	    				if(value == 0){
+	    					return '';
+	    				}
 	    				return value;
 	    			}
 	    		}
@@ -260,11 +263,13 @@ $.ajax({
 	    	responsive: false,
 			scales: {
 				y: {
+					display: false,
 					max: parseInt(maxState) + 2,
 					grid: {
 						display: false
 					},
 					ticks: {
+						display: false,
 						stepSize: 1,
 						font: {
 							size: 30
@@ -289,6 +294,32 @@ $.ajax({
 		}
 	});
 	
+	// counter plugin block
+	const counter = {
+		id: 'counter',
+		beforeDraw(chart, args, options){
+			const { ctx, chartArea: { top, right, bottom, left, width, height } } = chart;
+			ctx.save();
+			
+			// 1 how to get the position
+			// ctx.fillStyle = 'blue';
+			// console.log(top);
+			// console.log(right);
+			// ctx.fillRect(125, 125, 10, 10);
+			// ctx.fillRect(x0, y0, x1, y1);
+			// x0 = Starting point on the horizontal level left/right
+			// y0 = Starting point on the vertical level top/bottom
+			// x1 = length of the shape in pixel horizontal level
+			// y1 = length of the shape in pixel vertical level
+			
+			// 2 how to write text + automate the text
+			ctx.font = options.fontSize + ' ' + options.fontFamily;
+			ctx.textAlign = 'center';
+			ctx.fillStyle = options.fontColor;
+			ctx.fillText('Total ' + totalServer, 125, 130);
+		}
+	};
+	
 	// 서버 OS 종류별 작성
 	new Chart(document.getElementById("doughnut-chart"), {
 	    type: 'doughnut',
@@ -303,7 +334,7 @@ $.ajax({
 	        }
 	      ]
 	    },
-	    plugins: [ChartDataLabels],
+	    plugins: [ChartDataLabels, counter],
 	    options: {
 	    	plugins:{
 				responsive: false,
@@ -317,15 +348,29 @@ $.ajax({
 						weight: 'bold'
 					},
 					formatter: function(value, context){
-	    				return Math.round((value / totalServer) * 100) + '%';
+						var percent = Math.round((value / totalServer) * 100)
+						if(percent == '0'){
+							return '';
+						} else {
+		    				return percent + '%';						
+						}
 	    			}
+				},
+				counter: {
+					fontColor: 'black',
+					fontSize: '18px',
+					fontFamily: 'sans-serif'
+					
 				}
 	    	}
 	    }
 	});
 	
+	$('.doughnutList .titleBox')[0].innerText = 'Window[' + os[2] + ']';
+	$('.doughnutList .titleBox')[1].innerText = 'AIX[' + os[0] + ']';
+	$('.doughnutList .titleBox')[2].innerText = 'Linux[' + os[1] + ']';
+	
 	var events = json.weekScheduleInfo.map(function(item){
-		console.log(item.title);
 		return{
 			title : item.title,
 			start : item.start_date + "T" + item.start_time,
@@ -333,8 +378,6 @@ $.ajax({
 			id : item.sc_no
 		}
 	});
-	
-	console.log();
 	
 	var calendarEl = document.getElementById('calendar');
 	var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -375,9 +418,14 @@ $.ajax({
 		var list = document.createElement("li");
 		list.setAttribute("class", "noticeList");
 		
-		var h3 = document.createElement("h3");
+		/* var h3 = document.createElement("h3");
 		h3.setAttribute("class", "titleList");
-		h3.innerText = notiVo.nc_title;
+		h3.innerText = notiVo.nc_title; */
+		
+		var a = document.createElement("a");
+		a.setAttribute("class", "titleList");
+		a.setAttribute("href","../notification/readPage?nc_no=" + notiVo.nc_no);
+		a.innerText = notiVo.nc_title;
 		
 		var p = document.createElement("p");
 		p.setAttribute("class", "date");		
@@ -385,14 +433,14 @@ $.ajax({
 		var writedate = new Date(notiVo.nc_writeDate);
 		p.innerText = writedate.toLocaleDateString();
 		
-		list.append(h3);
+		list.append(a);
 		list.append(p);
 		
 		$('.noticeUl').append(list);
 	}
 })
 
-$('#info-standard').text(new Date().toLocaleString() + ' 기준');
+$('#info-standard').text(new Date().toLocaleString(language) + ' 기준');
 </script>
 	
 </body>

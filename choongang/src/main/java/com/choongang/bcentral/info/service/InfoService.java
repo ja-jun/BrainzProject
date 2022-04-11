@@ -145,20 +145,18 @@ public class InfoService {
 		return serverInfo;
 	}
 	
-	public ArrayList<HashMap<String, Object>> getWeekScheduleInfo(){
+	public ArrayList<HashMap<String, Object>> getWeekScheduleInfo(int user_no){
 		ArrayList<HashMap<String, Object>> weekScInfo = new ArrayList<HashMap<String, Object>>();
 		
-		ArrayList<ScheduleVo> weekScVo = ifSqlMapper.selectWeekSchedule();
+		ArrayList<ScheduleVo> weekScVo = ifSqlMapper.selectWeekSchedule(user_no);
 		
 		LocalDate cur_date = LocalDate.now();
 		
 		while(!cur_date.equals(LocalDate.now().plusDays(7))) {
-			System.out.println("실행은 되나요?");
 			for(ScheduleVo scVo : weekScVo) {
-				if(!cur_date.isBefore(scVo.getEnd_date())) {
-					break;
+				if(!cur_date.isBefore(scVo.getEnd_date()) && !cur_date.isEqual(scVo.getEnd_date())) {
+					continue;
 				}
-				
 				HashMap<String, Object> event = new HashMap<String, Object>();
 				int sc_no = scVo.getSc_no();
 				String title = scVo.getTitle();

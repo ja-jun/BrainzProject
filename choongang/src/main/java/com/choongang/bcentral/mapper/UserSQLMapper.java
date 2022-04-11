@@ -41,4 +41,7 @@ public interface UserSQLMapper {
 	
 	// 해당 사용자가 조회할 수 있는 유저 목록을 가져 옴
 	public ArrayList<UserVo> getTotalUserList(int user_no);
+	
+	// 사용자 삭제로 인한 작업 담당자 변경
+	public void updateScheduleManager(HashMap<String, Integer> map);
 }

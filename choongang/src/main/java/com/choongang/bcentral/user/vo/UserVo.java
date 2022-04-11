@@ -20,13 +20,14 @@ public class UserVo {
 	@JsonFormat(pattern="yyyy-MM-dd kk:mm:ss")
 	private LocalDateTime last_login;
 	private int parent;
+	private String parent_name;
 	
 	private UserVo() {
 		super();
 	}
 
 	private UserVo(int user_no, String user_id, String user_pw, String name, String authority, String phone,
-			String email, String dsc, LocalDateTime write_date, LocalDateTime last_login, int parent) {
+			String email, String dsc, LocalDateTime write_date, LocalDateTime last_login, int parent, String parent_name) {
 		super();
 		this.user_no = user_no;
 		this.user_id = user_id;
@@ -39,6 +40,7 @@ public class UserVo {
 		this.write_date = write_date;
 		this.last_login = last_login;
 		this.parent = parent;
+		this.parent_name = parent_name;
 	}
 
 	public int getUser_no() {
@@ -127,6 +129,14 @@ public class UserVo {
 
 	public void setParent(int parent) {
 		this.parent = parent;
+	}
+	
+	public String getParent_name() {
+		return parent_name;
+	}
+	
+	public void setParent_name(String parent_name) {
+		this.parent_name = parent_name;
 	}
 	
 }

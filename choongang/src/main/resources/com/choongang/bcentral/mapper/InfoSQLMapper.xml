@@ -24,10 +24,23 @@
 	</select>
 	
 	<select id="selectWeekSchedule" resultType="com.choongang.bcentral.schedule.vo.ScheduleVo">
-		select bs.sc_no, bs.user_no, bs.title, bs.start_date, bs.end_date,
-			   bs.start_time, bs.end_time, bs.repeat_cat, bs.repeat_day, bs.repeat_week,
-			   bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun, bs.write_date
-		from bp_schedule bs
+		with recursive req_user
+			as(
+				select name, user_no, parent
+				from bp_user
+				where user_no = #{user_no }
+				union all
+				select bu.name ,bu.user_no, ru.user_no
+				from bp_user bu join req_user ru
+				on bu.parent = ru.user_no
+			) select bs.sc_no, bs.user_no, bs.title,
+				bs.start_date, bs.end_date,
+				bs.start_time, bs.end_time,
+				bs.repeat_cat, bs.repeat_day,
+				bs.repeat_week,
+				bs.mon, bs.the, bs.wed, bs.thu, bs.fri, bs.sat, bs.sun,
+				bs.write_date
+		from bp_schedule bs join req_user ru on bs.user_no = ru.user_no
 		where bs.delete_date is null
 		  and (now() between bs.start_date and bs.start_date + 7
 		   or  now() between bs.end_date - 7 and bs.end_date)
@@ -37,7 +50,7 @@
 		select bn.nc_no, bn.user_no, bn.nc_title, bu.name, bn.nc_writedate
 		from bp_notification bn, bp_user bu
 		where bn.user_no = bu.user_no
-		order by bn.nc_writedate desc
+		order by bn.nc_no desc
 		limit 4
 	</select>
 	

@@ -14,6 +14,7 @@ import com.choongang.bcentral.user.service.AESUtil;
 import com.choongang.bcentral.user.service.UserService;
 import com.choongang.bcentral.user.vo.UserPageVo;
 import com.choongang.bcentral.user.vo.UserVo;
+import com.google.gson.Gson;
 
 // [사용자관리] 비동기적 Controller
 @RestController
@@ -68,9 +69,13 @@ public class RestUserController {
 	}
 
 	@RequestMapping("deleteUser")
-	public HashMap<String, Object> deleteUser(@RequestBody ArrayList<String> param) {
+	public HashMap<String, Object> deleteUser(Integer[] param,
+											  Integer changeManager) {
 		HashMap<String, Object> data = new HashMap<String, Object>();
-
+		System.out.println(new Gson().toJson(param));
+		System.out.println(changeManager);
+		
+		userService.changeScheduleManager(param, changeManager);
 		userService.deleteUser(param);
 
 		data.put("result", "success");
@@ -113,6 +118,40 @@ public class RestUserController {
 
 		data.put("result", result);
 
+		return data;
+	}
+	
+	@RequestMapping("getSelectUserList")
+	public HashMap<String, Object> getSelectUserList(HttpSession session, @RequestBody ArrayList<Integer> userNos){
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		
+		UserVo userVo = (UserVo) session.getAttribute("userInfo");
+		
+		ArrayList<UserVo> userList = userService.getTotalUserList(userVo.getUser_no());
+		
+		ArrayList<UserVo> selectUserList = new ArrayList<UserVo>();
+		System.out.println(userNos.size());
+		if(!userNos.isEmpty()) {
+			for(UserVo uVo : userList) {
+				int cur_user_no = uVo.getUser_no();
+				int count = 0;
+				 
+				for(Integer delete_no : userNos) {
+					if(cur_user_no == delete_no) {
+						count++;
+					}
+				}
+				
+				if(count == 0) {
+					selectUserList.add(uVo);
+				}
+			}
+		} else {
+			selectUserList = userList;
+		}
+		
+		data.put("selectUserList", selectUserList);
+		
 		return data;
 	}
 }

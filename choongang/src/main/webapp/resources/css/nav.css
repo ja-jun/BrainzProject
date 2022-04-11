@@ -7,7 +7,7 @@
 
 
 .navBar ul .pageList:first-child .imgNav{width: 30px;}
-.navBar ul .pageList:first-child .navTitle{margin-left: 15px;}
+.navBar ul .pageList:first-child .navTitle{margin-left: 21px;}
 .navTitle{
     margin-left: 20px;
 }
@@ -25,20 +25,18 @@ a .headerName{color:#fff}
     font-family: 'Montserrat', sans-serif;
 text-align: left;margin-bottom: 35px;padding-left: 45px;}
 .navBar{
-    width: 300px;
+    width: 14%;
     background: #293042;
     position: fixed;
     height: 100%;
     z-index: 99;
     color: #fff;
-    
-    
     padding-top: 45px;
     }
 
 .navBar ul .pageList{
     height: 80px;
-    font-size: 18px;
+    font-size: 17px;
     font-family: 'Noto Sans KR';
     font-weight: 400;
     color: #fff;
@@ -46,7 +44,7 @@ text-align: left;margin-bottom: 35px;padding-left: 45px;}
 	align-items: center;
 	padding-left: 42px;}
 .navBar ul .on{
-    background: #404B66;
+    background: #3a445d;
 width: 100%;}
 #content{
     display: flex;
