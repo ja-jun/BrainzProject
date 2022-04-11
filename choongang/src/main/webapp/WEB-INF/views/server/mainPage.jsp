@@ -78,14 +78,18 @@ function createAndInitGrid(){
 				cm = $(this).jqGrid('getGridParam','colModel');
 				return (cm[i].name === 'cb');
 			},
-			/*
-			loadComplete : function(){
-				alert(1111);	
-			},
-			*/
-			gridComplete : function(){
-				//alert(3333);	
-			},
+			loadComplete : function(data){
+				var rows = data.rows;
+				console.log("데이터 길이는 : " + rows.length);
+/* 				if(rows.length == 0){
+					$("#list").append("<tr><td align='center' colspan=10>검색 결과가 없습니다.</td></tr>");
+					};
+ */				
+				$("#nodata").remove();
+				if(rows.length == 0){
+					 $("#list.ui-jqgrid-btable").after("<p id='nodata' style='margin-top:5px; text-align: center; font-weight: bold;'>데이터가 없습니다.</p>");
+					};		
+				},
 			// 수정 모달 창 띄우기
  	        ondblClickRow: function (rowId) { 
  	        	
