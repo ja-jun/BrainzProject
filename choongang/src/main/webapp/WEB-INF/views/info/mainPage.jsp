@@ -43,7 +43,6 @@
 	
 	<div id="gnb">
 		<div class="iconBox">
-		<img src="../resources/img/profile.png" class="profile">
 		<div class="icon">
 		<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 		</div>
@@ -75,11 +74,11 @@
 		<div class="barBar2">
 		<ul class="barUl2">
 		<!-- 작업 중 서버 목록 -->
-			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px"><spring:message code="info.schedule.working"/> &nbsp Top6</li>
+			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px"><spring:message code="info.schedule.working"/> &nbsp Top7</li>
 		</ul>
 		<ul class="barUl3">
 		<!-- 작업 예정 서버 목록 -->
-			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px"><spring:message code="info.schedule.preworking"/> &nbsp Top6</li>
+			<li style="text-align: left; margin-bottom: 20px; font-weight: 600; font-size: 17px"><spring:message code="info.schedule.preworking"/> &nbsp Top7</li>
 		</ul>
 		</div>
 		
@@ -366,9 +365,9 @@ $.ajax({
 	    }
 	});
 	
-	$('.doughnutList .titleBox')[0].innerText = 'Window[' + os[1] + ']';
-	$('.doughnutList .titleBox')[1].innerText = 'AIX[' + os[0] + ']';
-	$('.doughnutList .titleBox')[2].innerText = 'Linux[' + os[2] + ']';
+	$('.doughnutList .titleBox')[0].innerText = 'Window [' + os[1] + ']';
+	$('.doughnutList .titleBox')[1].innerText = 'AIX [' + os[0] + ']';
+	$('.doughnutList .titleBox')[2].innerText = 'Linux [' + os[2] + ']';
 	
 	var events = json.weekScheduleInfo.map(function(item){
 		return{

@@ -410,7 +410,6 @@ window.addEventListener("DOMContentLoaded", function(){
 		
 		<div id="gnb">
 			<div class="iconBox">
-			<img src="../resources/img/profile.png" class="profile">
 				<div class="icon">
 				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>
