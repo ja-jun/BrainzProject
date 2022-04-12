@@ -168,7 +168,7 @@ $.ajax({
 			os[2]++;
 		}
 		
-		if(map[server]['status'] == '1' && $('.barUl2 .barList2').length < 7){
+		if(map[server]['status'] == '1' && $('.barUl2 .barList2').length < 8){
 			var list = document.createElement("li");
 			list.setAttribute("class", "barList2");
 			
@@ -189,7 +189,7 @@ $.ajax({
 			
 			$('.barUl2').append(list);
 			
-		} else if(map[server]['status'] == '0' && $('.barUl3 .barList2').length < 7){
+		} else if(map[server]['status'] == '0' && $('.barUl3 .barList2').length < 8){
 			var list = document.createElement("li");
 			list.setAttribute("class", "barList2");
 			

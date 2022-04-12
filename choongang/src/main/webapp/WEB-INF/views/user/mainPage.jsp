@@ -648,7 +648,7 @@ window.addEventListener("DOMContentLoaded", function(){
 			</div>
 			<ul class="btnList">
 				<li class="btnLi"><input type="button" id="inputBtn" value="<spring:message code='user.view.registerBtn'/>" class="writeBtn2" onclick="registerUser()" ></li>
-				<li class="btnLi"><input type="button" value="<spring:message code='user.view.deleteBtn'/>" class="writeBtn2" onclick="modalOff()" ></li>
+				<li class="btnLi"><input type="button" value="<spring:message code='noti.close'/>" class="writeBtn2" onclick="modalOff()" ></li>
 			</ul>
 			</div>
 			</form>

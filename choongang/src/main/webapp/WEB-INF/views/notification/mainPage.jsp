@@ -383,7 +383,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		
 		 var fileName = $("#ex_filename").val();
 		
-		 /* var fileLength = fileName.lastIndexOf('.');
+		 var fileLength = fileName.lastIndexOf('.');
 		 
 		 var fileExtension = '.bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt';
 		 
@@ -392,7 +392,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		 } else {
 			 alert( fileselect2 );
 			 createFileBtn();
-		 } */
+		 }
 		 $(".upload-name").val(fileName);
 	});
 	

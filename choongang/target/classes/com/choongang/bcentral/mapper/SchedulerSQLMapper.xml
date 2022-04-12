@@ -136,6 +136,6 @@
 	<select id="selectCountByTitle" resultType="int">
 		select count(*)
 		from bp_schedule
-		where title = #{title }
+		where title = #{title } and delete_date is null
 	</select>
 </mapper>
