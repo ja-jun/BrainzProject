@@ -210,72 +210,32 @@ const mes_val_ip = '<spring:message code="server.val.ip"/>';
 const mes_val_mac = '<spring:message code="server.val.mac"/>';
 const mes_val_mac2 = '<spring:message code="server.val.mac2"/>';
 const mes_reg_success = '<spring:message code="user.register.success"/>';
-function insertServer(){
- 	if($("#name").val() == ""){
-		 document.getElementById("nameAlertBox").innerText = mes_val_title;
-		 document.getElementById("nameAlertBox").style.color = "red";
-		 $('#name').focus();
-		return;
-	} else{
-		 document.getElementById("nameAlertBox").innerText = "";
-	}
-	
-	if(!regExpIp4.test($('#ip').val()) && !regExpIp6.test($('#ip').val())){
-		 document.getElementById("ipAlertBox").innerText = mes_val_ip;
-		 document.getElementById("ipAlertBox").style.color = "red";
-		$('#ip').focus();
-		return;
-	} else{
-		 document.getElementById("ipAlertBox").innerText = "";
-	}
 
-	var macValue = document.getElementById("mac").value;
-	var validatedMac = false;
+function insertServer(){
 	
-	if(!regExpMac.test($('#mac').val())){
-		document.getElementById("macAlertBox").innerText = mes_val_mac;
-		document.getElementById("macAlertBox").style.color = "red";
-		$('#mac').focus();
+	if(validationCheck() == 0){
 		return;
-	} else{
+	} else {
+		var formData = new FormData(document.getElementById('regServerInfo'));
+		//input태그의 name과 vo변수명이 같을때 자동으로 들어간다
 		 $.ajax({
-		     url: "./validationMac",
+		     url: "./insertServer",
 		     type: "post",
-		     async: false, //비동기식 변환
-		     data: {mac : macValue}
+		     processData: false,
+		     contentType: false,
+		     data: formData
 		 }).done(function(data){
-				if(data.isExistMac == true){
-					document.getElementById("macAlertBox").innerText = mes_val_mac2;
-					document.getElementById("macAlertBox").style.color = "red";
-				} else{
-					macAlertBox.innerText = "";
-					validatedMac = true;
-				}
+			 	var result= data.result;
+			 	if(result != "0"){
+					validationError(result);
+			 	} else{
+					alert( mes_reg_success );			 		
+			 	}
+				$("#list").trigger('reloadGrid');
+				modalOff();
 		 });	 
 	}
-	
-	if(!validatedMac){
-		return;
-	}
-	
-	var formData = new FormData(document.getElementById('regServerInfo'));
-	//input태그의 name과 vo변수명이 같을때 자동으로 들어간다
-	 $.ajax({
-	     url: "./insertServer",
-	     type: "post",
-	     processData: false,
-	     contentType: false,
-	     data: formData
-	 }).done(function(data){
-		 	var result= data.result;
-		 	if(result != "0"){
-				validationError(result);
-		 	} else{
-				alert( mes_reg_success );			 		
-		 	}
-			$("#list").trigger('reloadGrid');
-			modalOff();
-	 });	 
+
 }
 
 
@@ -389,6 +349,64 @@ function updateServer(){
 	});	
 }
 
+function confirmTitle(){
+	
+	
+	if($("#name").val() == ""){
+		 document.getElementById("nameAlertBox").innerText = "서버명을 입력해주세요.";
+		 document.getElementById("nameAlertBox").style.color = "red";
+		 $('#name').focus();
+		return 0;
+	} else{
+		 document.getElementById("nameAlertBox").innerText = "";
+		 return 1;
+	}
+}
+
+
+function validationCheck(){
+	var result = confirmTitle();
+	
+	if(!regExpIp4.test($('#ip').val()) && !regExpIp6.test($('#ip').val())){
+		 document.getElementById("ipAlertBox").innerText = mes_val_ip;
+		 document.getElementById("ipAlertBox").style.color = "red";
+		$('#ip').focus();
+		result =  0;
+	} else{
+		 document.getElementById("ipAlertBox").innerText = "";
+	}
+
+	var macValue = document.getElementById("mac").value;
+	var validatedMac = false;
+	
+	if(!regExpMac.test($('#mac').val())){
+		document.getElementById("macAlertBox").innerText = mes_val_mac;
+		document.getElementById("macAlertBox").style.color = "red";
+		$('#mac').focus();
+		result =  0;
+	} else{
+		 $.ajax({
+		     url: "./validationMac",
+		     type: "post",
+		     async: false, //비동기식 변환
+		     data: {mac : macValue}
+		 }).done(function(data){
+				if(data.isExistMac == true){
+					document.getElementById("macAlertBox").innerText = mes_val_mac2;
+					document.getElementById("macAlertBox").style.color = "red";
+					result = 0;
+				} else{
+					macAlertBox.innerText = "";
+					validatedMac = true;
+				}
+		 });	 
+	}
+
+	return result;
+}
+
+
+
 const mes_val_error2 = '<spring:message code="server.val.error2"/>';
 
  //서버에서 유효성 검사 결과를 alert로 보여주기
@@ -443,6 +461,7 @@ function Onchange(s){
 //모달창 함수	
 function modalOn() {
     modal.style.display = "flex";
+    $('#nameAlertBox').text('');
 }
 function isModalOn() {
     return modal.style.display === "flex";
@@ -549,7 +568,7 @@ window.addEventListener("DOMContentLoaded", function(){
                <div class="bottom">
                <div class="serverInput">
                   <strong class="text"><spring:message code="server.servername"/><span class="star">*</span></strong>
-                  <input type="text" id="name" name="name" class="textBox" >
+                  <input type="text" id="name" name="name" class="textBox" onblur="confirmTitle()">
                   <div id="nameAlertBox" class="confirmAlertBox"></div> 
                </div>
                <div class="serverInput">
