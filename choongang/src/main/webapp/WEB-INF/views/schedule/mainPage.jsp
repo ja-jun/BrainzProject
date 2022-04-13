@@ -427,11 +427,7 @@ function getCalendarList(){
 				            $('#regScheduleInfo').append(input_date);
 				            
 				            /* 계층구조 추가를 위한 수정 내용 */
-				            var manager_name = sc_info.name;
-				            if(sc_info.user_no == '${userInfo.user_no}'){
-				            	manager_name = lang_myself;
-				            }
-				            const cur_manager = $('<option value="">' + manager_name + '</option>');
+				            const cur_manager = $('<option value="">' + sc_info.name + '</option>');
 				            $('#selectUser').attr('disabled', 'true');
 				            $('#selectUser').empty();
 				            $('#selectUser').append(cur_manager);
@@ -852,7 +848,7 @@ function confirmTitle(){
 					return 0;
 				} else {
 					confirmAlertBox.innerText = lang_val_title3;
-					confirmAlertBox.style.color = "green";
+					confirmAlertBox.style.color = "blue";
 					return 1;
 				}
 			}
@@ -1067,7 +1063,7 @@ function selectUser(target){
     	dataType: 'JSON',
 		success: function(json){
 			var userList = json['userList'];
-			target.append($('<option value="' + ${userInfo.user_no} + '">' + lang_myself + '</option>'));
+			target.append($('<option value="' + ${userInfo.user_no } + '">${userInfo.name }</option>'));
 			for(var user in userList){
 				var option = $('<option value="' + userList[user].user_no + '">' + userList[user].name + '</option>');
 				target.append(option)
