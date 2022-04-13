@@ -153,6 +153,7 @@ function insertNotification(){
 			$("#list").trigger('reloadGrid');
 			modalOff();
 			alert( registerd );
+			
 	 });	 
 }
 
@@ -165,10 +166,13 @@ function updateNotification(){
 	    processData: false,
 	    contentType: false,
 	    data: formData
-	}).done(function(){
+	}).done(function(data){
 		$("#list").trigger('reloadGrid');
 		modalOff();
 		alert( modified );
+		if(data.result == 0){
+			alert( "확장자가 올바르지 않습니다.");
+		}
 	});	
 }
 
@@ -292,7 +296,7 @@ function deleteModal() {
 		 }).done(function(){
 				$("#list").trigger('reloadGrid');
 				modalOff();
-				alert( remove2 );
+				alert( remove2 );				
 		 });
 	 	}else{
 			   alert( cancel );
@@ -357,12 +361,12 @@ function insertSelectedFileName(){
 		 
 	 var fileExtension = '.bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt';
 	 
-	 if(fileExtension.lastIndexOf(fileName.substring(fileName.lastIndexOf('.'))) != -1){
+	   if(fileExtension.lastIndexOf(fileName.substring(fileName.lastIndexOf('.'))) != -1){
 		  $(".upload-name").val(fileName);			 
 	 } else {
 		 alert( fileselect2 );
 		 createFileBtn();
-	 }				
+	 } 				
 }
 
 //모달창 열렸을 때 ESC누르면 닫힘
@@ -383,7 +387,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		
 		 var fileName = $("#ex_filename").val();
 		
-		 var fileLength = fileName.lastIndexOf('.');
+		 /* var fileLength = fileName.lastIndexOf('.');
 		 
 		 var fileExtension = '.bmp, .gif, .jpeg, .jpg, .png, .psd, .pic, .raw, .tiff, .avi, .flv, .mkv, .mov, .mp3, .mp4, .wav, .wma, .doc,  .docx, .xls, .xlsx, .ppt, .pptx,  .html,  .hwp, .pdf, .txt';
 		 
@@ -392,7 +396,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		 } else {
 			 alert( fileselect2 );
 			 createFileBtn();
-		 }
+		 } */
 		 $(".upload-name").val(fileName);
 	});
 	
@@ -410,6 +414,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		
 		<div id="gnb">
 			<div class="iconBox">
+			<img src="../resources/img/profile.png" class="profile">
 				<div class="icon">
 				<p class="iconText" style="font-size: 18px">${userInfo.name }</p>
 				</div>
