@@ -504,7 +504,7 @@ window.addEventListener("DOMContentLoaded", function(){
          <div class="btnBox">
             <button class="writeBtn" id="insertBtn" onclick="modalOn()"><spring:message code="server.modal.registbtn"/></button>
             <button class="writeBtn" id="deleteBtn" onclick="deleteServer()"><spring:message code="user.view.deleteBtn"/></button>
-            <a href="./getExcelServerList" id="exportAnchor"><button class="writeBtn" id="excelBtn"><spring:message code="server.export"/></button></a>
+            <div><a href="./getExcelServerList" id="exportAnchor"><button class="writeBtn" id="excelBtn"><spring:message code="server.export"/></button></a></div>
             </div>
                <div id="search">
 	              <select id="statusSelect" onchange="Onchange(this)" class="selectUserBox">

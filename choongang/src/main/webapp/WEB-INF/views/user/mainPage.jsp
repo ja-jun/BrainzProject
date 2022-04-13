@@ -356,6 +356,7 @@ function id_check() {
 	})
 	if ($('.input_id').val() == '') {
 		$('#checkId_Msg').html( checkId_alert );
+		$('#checkId_Msg').attr('style','color: red');
 		return;
 	}
 	

@@ -42,20 +42,8 @@ public class ExcelService {
 		
 		for(ServerVo svo : list) {
 			String status = svService.getServerState(svo.getServer_no());
-			if(vo.getStatus() == null) {
-				if(status.equals("0")) {
-					status = "작업예정";
-				} else if(status.equals("1")) {
-					status = "작업중";
-				} else if(status.equals("2")) {
-					status = "작업완료";
-				} else {
-					status = "작업없음";
-				}
-				svo.setStatus(status);
-				result.add(svo);
-			} else {
-				if(vo.getStatus().equals(status)) {
+			if(vo.getStatus() != null) {
+				if(vo.getStatus().equals("")) {
 					if(status.equals("0")) {
 						status = "작업예정";
 					} else if(status.equals("1")) {
@@ -67,7 +55,33 @@ public class ExcelService {
 					}
 					svo.setStatus(status);
 					result.add(svo);
+				} else {
+					if(vo.getStatus().equals(status)) {
+						if(status.equals("0")) {
+							status = "작업예정";
+						} else if(status.equals("1")) {
+							status = "작업중";
+						} else if(status.equals("2")) {
+							status = "작업완료";
+						} else {
+							status = "작업없음";
+						}
+						svo.setStatus(status);
+						result.add(svo);
+					}
 				}
+			} else {
+				if(status.equals("0")) {
+					status = "작업예정";
+				} else if(status.equals("1")) {
+					status = "작업중";
+				} else if(status.equals("2")) {
+					status = "작업완료";
+				} else {
+					status = "작업없음";
+				}
+				svo.setStatus(status);
+				result.add(svo);
 			}
 		}
 		

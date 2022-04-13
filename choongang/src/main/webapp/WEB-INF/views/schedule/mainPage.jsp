@@ -453,7 +453,7 @@ function getCalendarList(){
 	                  
 	                 title.forEach(function(item, index){
 	                     var text = item.innerText;
-	                     var random = '#' + letters[count];
+	                     var random = '#' + letters[count % 9];
 	                     
 	                     if(map.has(text)){
 	                         var parent = item.closest('.fc-daygrid-event-harness');
