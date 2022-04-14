@@ -58,7 +58,7 @@
 	    	<h3 class="title" style="margin-bottom: 10px"><spring:message code="info.serverstate"/></h3>
 	    	<h6 id="info-standard" style="margin-bottom: 15px; color: #b4b4b4"></h6>
 		</div>
-    	<a href="/choongang/server/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+    	<div class="moreDiv"><a href="/choongang/server/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a></div>
     	</div>
 		<div class="barBox">
 		<div class="barBar">
@@ -91,7 +91,7 @@
 	<div id="scheduleBox">
 	<div class="titleB">
 		<h3 class="title" style="margin-bottom: 50px;"><spring:message code="info.schedule"/></h3>
-		<a href="/choongang/schedule/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+		<div class="moreDiv"><a href="/choongang/schedule/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a></div>
 		</div>
 		<div id="calendar"></div>
 	</div>
@@ -101,7 +101,7 @@
 	<div id="doughnutBox">
 		<div class="titleB">
     	<h3 class="title"><spring:message code="info.serverlist"/></h3>
-    	<a href="/choongang/server/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+    	<div class="moreDiv"><a href="/choongang/server/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a></div>
     	</div>
 		<div class="doughnutBox2">
 		<canvas id="doughnut-chart" width="300" height="300" style="width:100%"></canvas>
@@ -116,7 +116,7 @@
 	<div id="noticeBox">
 	<div class="titleB">
     	<h3 class="title" style="margin-bottom: 30px;"><spring:message code="info.notification"/></h3>
-    	<a href="/choongang/notification/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a>
+    	<div class="moreDiv"><a href="/choongang/notification/mainPage"><p class="more"><spring:message code="info.more"/></p><i class="bi bi-arrow-right-short" style="margin-right:0"></i></a></div>
     	</div>
 		<div class="noticeBox2">
 		<ul class="noticeUl">

@@ -145,7 +145,7 @@ text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
     font-size: 16px;
     font-weight: 400;
     color: #999;
-    display: flex;
+    display: inline-flex;
     margin-right: 10px;
 }
 #bar{
@@ -215,7 +215,7 @@ color: #777;
 .barUl3 .barList2{
     font-size: 16px;
     margin-bottom: 30px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     font-weight: 300;
     margin-right: 30px;
