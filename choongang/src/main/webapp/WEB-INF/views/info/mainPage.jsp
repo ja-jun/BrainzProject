@@ -214,11 +214,16 @@ $.ajax({
 	var totalServer = json.totalServer.length;
 	
 	var maxState = 0;
-	for(var count of json.stateCount){
+	for(var i = 0; i < 3; i++){
+		if(parseInt(maxState) < parseInt(json.stateCount[i])){
+			maxState = json.stateCount[i];
+		}
+	}
+	/*for(var count of json.stateCount){
 		if(parseInt(maxState) < parseInt(count)){
 			maxState = count;
 		}
-	}
+	}*/
 	
 	// 서버 상태 Bar Chart 작성
 	var myChart = new Chart(context, {
@@ -263,7 +268,7 @@ $.ajax({
 			scales: {
 				y: {
 					display: false,
-					max: parseInt(maxState) + 2,
+					max: parseInt(maxState) + 5,
 					grid: {
 						display: false
 					},
