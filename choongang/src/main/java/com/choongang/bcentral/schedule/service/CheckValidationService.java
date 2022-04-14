@@ -29,6 +29,10 @@ public class CheckValidationService {
 			return 1;
 		}
 		
+		if(end_date.toString().equals("9999-12-31")) {
+			end_date = cur_date.plusYears(1);
+		}
+		
 		while(cur_date.isBefore(end_date) || cur_date.isEqual(end_date)) {
 			System.out.println("cur_date는  " + cur_date);
 			int day = cur_date.getDayOfWeek().getValue() - 1;

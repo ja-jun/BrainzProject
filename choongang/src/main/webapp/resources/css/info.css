@@ -145,7 +145,7 @@ text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
     font-size: 16px;
     font-weight: 400;
     color: #999;
-    display: inline-flex;
+    display: flex;
     margin-right: 10px;
 }
 #bar{

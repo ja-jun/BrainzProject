@@ -133,6 +133,7 @@ function writeBtn() {
  	
  	$('#selectUser').empty();
  	selectUser($('#selectUser'));
+ 	
 }
 /* 삭제 버튼 클릭시 */
 function molBtn() {
@@ -211,7 +212,9 @@ function getCalendarList(){
             var map = new Map();
             var count = 0;
 		
-			
+			for(var tt of list){
+				console.log(tt.title + " " + tt.start_date);
+			}
 				var events = list.map(function(item) {
 				return {
 					title : item.title,
@@ -221,6 +224,7 @@ function getCalendarList(){
 				}
 			}); 
 			
+				
 		
 			var calendar = new FullCalendar.Calendar(calendarEl, {
 				 headerToolbar: {
